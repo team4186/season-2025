@@ -1,4 +1,4 @@
-rootProject.name = "empty-robot"
+rootProject.name = "season-2025"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     plugins {
