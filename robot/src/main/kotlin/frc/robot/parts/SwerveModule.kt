@@ -26,7 +26,7 @@ class SwerveModule (
 
     private val kModuleMaxAngularVelocity: Double = Drivetrain.MAX_ANGULAR_SPEED
     private val kModuleMaxAngularAcceleration: Double =
-        2 * Math.PI; // radians per second squared
+        2 * Math.PI // radians per second squared
 
     private val driveMotor: SparkMax
     private val turningMotor: SparkMax

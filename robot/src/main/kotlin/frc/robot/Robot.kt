@@ -48,8 +48,8 @@ class Robot : TimedRobot() {
     }
 
     override fun autonomousPeriodic() {
-        driveWithJoystick(false);
-        swerve.updateOdometry();
+        driveWithJoystick(false)
+        swerve.updateOdometry()
     }
 
     override fun autonomousExit() {
@@ -68,7 +68,7 @@ class Robot : TimedRobot() {
             drive = { forward, turn -> drive.arcadeDrive(forward, turn, true) }
         )*/
 
-        driveWithJoystick(true);
+        driveWithJoystick(true)
 
     }
 
