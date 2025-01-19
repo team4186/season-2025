@@ -28,7 +28,7 @@ public class SwerveModule {
     private val double absoluteEncoderOffsetRad
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed,
-        boolean turningMotorReversed, int absoluteEncoderIdea, double absoluteEncoderOffset,boolean absoluteEncoderReversed) {
+        boolean turningMotorReversed, int absoluteEncoderIdea, double absoluteEncoderOffset,boolean absoluteEncoderRevesrsed) {
 
         this.absoluteEncoderOffsetRad = absoluteEncoderOffset
         this.absoluteEncoderReversed = absoluteEncoderReversed
