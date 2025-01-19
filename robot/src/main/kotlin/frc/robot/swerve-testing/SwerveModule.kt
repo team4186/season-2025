@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ModuleConstants;
 
-public class SwerveModule {
+public class SwerveModule () {
     private val CANSparkMax driveMotors
     private val CANSparkMax turningMotors
 
