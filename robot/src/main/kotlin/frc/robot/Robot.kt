@@ -50,11 +50,18 @@ class Robot : TimedRobot() {
     }
 
     override fun teleopPeriodic() {
-        manualDrive(
-            forward = joystick0.y,
-            turn = joystick0.twist,
-            drive = { forward, turn -> drive.arcadeDrive(forward, turn, true) }
-        )
+        //manualDrive(
+        //    forward = joystick0.y,
+        //    turn = joystick0.twist,
+        //    drive = { forward, turn -> drive.arcadeDrive(forward, turn, true) }
+        //)
+
+        var Yvalues = joystick0.y
+        var Xvalues = joystick0.x
+        var twist = joystick0.twist
+
+
+
     }
 
     override fun teleopExit() {
