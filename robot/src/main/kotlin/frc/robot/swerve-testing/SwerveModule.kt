@@ -1,0 +1,95 @@
+
+package frc.robot.subsystems
+
+import com.revrobotics.RelativeEncoder
+import edu.wpi.first.wpilibj.Encoder
+import com.revrobotics.spark.SparkMax
+import com.revrobotics.spark.SparkLowLevel.MotorType
+import com.revrobotics.spark.SparkLowLevel
+import edu.wpi.first.math.controller.PIDController
+import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.kinematics.SwerveModuleState
+import edu.wpi.first.wpilibj.AnalogInput
+import edu.wpi.first.wpilibj.motorcontrol.MotorController
+
+class SwerveModule(
+    driveMotorId: Int,
+    turningMotorId: Int,
+    driveMotorReversed: Boolean,
+    turningMotorReversed: Boolean,
+    absoluteEncoderId: Int,
+    private val absoluteEncoderOffsetRad: Double,
+    private val absoluteEncoderReversed: Boolean
+) {
+
+    private val driveMotor: SparkMax = SparkMax(driveMotorId, SparkLowLevel.MotorType.kBrushless)
+    private val turningMotor: SparkMax = SparkMax(turningMotorId, SparkLowLevel.MotorType.kBrushless)
+
+    private val driveEncoder: RelativeEncoder = driveMotor.encoder
+    private val turningEncoder: RelativeEncoder = turningMotor.encoder
+
+    private val turningPIDController: PIDController = PIDController(
+        ModuleConstants.kP_Turn,
+        ModuleConstants.kI_Turn,
+        ModuleConstants.kD_Turn
+    )
+
+    private val absoluteEncoder: AnalogInput = AnalogInput(absoluteEncoderId)
+
+    init{
+        // Section removed from video because the functions do not exist anymore
+        //driveEncoder.setPositionConversionFactor(Constants.kDriveEncoderRot2Meter)
+        //driveEncoder.setVelocityConversionFactor(Constants.kDriveEncoderRPM2MeterPerSec)
+        //turningEncoder.setPositionConversionFactor(Constants.kTurningEncoderRot2Rad)
+        //turningEncoder.setVelocityConversionFactor(Constants.kTurningRPM2RadPerSec)
+
+        // Set motor inversion if needed
+        //driveMotor.setInverted(driveMotorReversed)
+        //turningMotor.setInverted(turningMotorReversed)
+
+        // Optionally set up the PID controller settings
+        //turningPIDController.setTolerance(ModuleConstants.kTurnToleranceDeg)
+
+        turningPIDController.enableContinuousInput(-Math.PI, Math.PI)
+
+        resetEncoders()
+    }
+
+    // Add methods to control the swerve module, e.g.:
+    fun setDriveSpeed(speed: Double) {
+        driveMotor.set(speed)
+    }
+
+    fun setTurningAngle(angle: Double) {
+        // Convert the desired angle to PID control and apply to the turning motor
+        val pidOutput = turningPIDController.calculate(turningEncoder.position, angle)
+        turningMotor.set(pidOutput)
+    }
+
+    // Method to get the current turning angle from the absolute encoder
+    fun getAbsoluteAngle(): Double {
+        var angle = absoluteEncoder.voltage * 360.0 / 5.0 // assuming the encoder gives a value between 0-5V
+        if (absoluteEncoderReversed) {
+            angle = 360.0 - angle
+        }
+        return (angle + absoluteEncoderOffsetRad) % 360.0
+    }
+
+    fun resetEncoders() {
+        driveEncoder.setPosition(0.0)
+        turningEncoder.setPosition(getAbsoluteAngle())
+    }
+
+    fun getState(): SwerveModuleState {
+        return SwerveModuleState(driveEncoder.velocity, Rotation2d(turningEncoder.position))
+    }
+
+    fun setDesiredState(state: SwerveModuleState) {
+        val state = SwerveModuleState.optimize(state, getState().angle)
+        driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond)
+        turningMotor.set(turningPIDController.calculate(turningEncoder.position, state.angle.radians))
+    }
+
+    // Optionally, you can add methods to get other encoder values, reset encoders, etc.
+}
+
