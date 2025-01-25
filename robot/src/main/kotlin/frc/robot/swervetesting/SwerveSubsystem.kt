@@ -10,10 +10,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 //below needs to be changed once we actually move our experimental code out of this swerve-test directory.
-import frc.robot.swervetesting.ModuleConstants.DriveConstants
+import frc.robot.swervetesting.Constants.DriveConstants
+
 import frc.robot.swervetesting.SwerveModule
 
-class SwerveSubsystem: SubsystemBase() {
+class SwerveSubsystem: SubsystemBase {
     
     private val SwerveModule frontLeft = SwerveModule(
         DriveConstants.kFrontLeftDriveMotorPort,

@@ -8,7 +8,9 @@ import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.AnalogInput
-import frc.robot.swervetesting.ModuleConstants
+import frc.robot.swervetesting.Constants.ModuleConstants
+import frc.robot.swervetesting.Constants.DriveConstants
+import frc.robot.swervetesting.Constants.OIConstants
 
 class SwerveModule(
     driveMotorId: Int,

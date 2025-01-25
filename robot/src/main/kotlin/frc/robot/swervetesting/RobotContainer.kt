@@ -1,4 +1,4 @@
-package frc.robot.swervetesting
+package frc.robot.swerve-testing
 //rishab y
 import java.util.List
 import edu.wpi.first.wpilibj.Joystick
@@ -15,13 +15,13 @@ import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand
 import edu.wpi.first.wpilibj2.command.button.JoystickButton
-import frc.robot.swervetesting.ModuleConstants.AutoConstants
-import frc.robot.swervetesting.ModuleConstants.DriveConstants
-import frc.robot.swervetesting.ModuleConstants.OIConstants
+import frc.robot.swervetesting.Constants.AutoConstants
+import frc.robot.swervetesting.Constants.DriveConstants
+import frc.robot.swervetesting.Constants.OIConstants
 import frc.robot.swervetesting.SwerveJoystickCmd
 import frc.robot.swervetesting.SwerveSubsystem
 
-class RobotContainer {
+class mathRobotContainer {
     private val swerveSubsystem: SwerveSubsystem = SwerveSubsystem()
 
     //driverJoytick spelled incorrectly, use caution
@@ -37,7 +37,7 @@ class RobotContainer {
                 { driverJoytick.getRawAxis(OIConstants.kDriverXAxis) },
                 { driverJoytick.getRawAxis(OIConstants.kDriverRotAxis) },
                 { !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx) })
-        ) as Commmand // forcefully sets parameter to command
+        )
 
         configureButtonBindings()
     }
@@ -58,20 +58,20 @@ class RobotContainer {
 
             // 2. Generate trajectory
             val trajectory: Trajectory = TrajectoryGenerator.generateTrajectory(
-                Pose2d(0.0, 0.0, Rotation2d(0.0)),
-                ListOf(
-                    Translation2d(1.0, 0.0),
-                    Translation2d(1.0, -1.0)
+                Pose2d(0, 0, Rotation2d(0)),
+                List.of(
+                    Translation2d(1, 0),
+                    Translation2d(1, -1)
                 ),
-                Pose2d(2.0, -1.0, Rotation2d.fromDegrees(180.0)),
+                Pose2d(2, -1, Rotation2d.fromDegrees(180)),
                 trajectoryConfig
             )
 
             // 3. Define PID controllers for tracking trajectory
-            val xController: PIDController = PIDController(AutoConstants.kPXController, 0.0, 0.0)
-            val yController: PIDController = PIDController(AutoConstants.kPYController, 0.0, 0.0)
+            val xController: PIDController = PIDController(AutoConstants.kPXController, 0, 0)
+            val yController: PIDController = PIDController(AutoConstants.kPYController, 0, 0)
             val thetaController: ProfiledPIDController = ProfiledPIDController(
-                AutoConstants.kPThetaController, 0.0, 0.0, AutoConstants.kThetaControllerConstraints
+                AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints
             )
             thetaController.enableContinuousInput(-Math.PI, Math.PI)
 
@@ -89,9 +89,8 @@ class RobotContainer {
 
             // 5. Add some init and wrap-up, and return everything
             return SequentialCommandGroup(
-                InstantCommand(Runnable { swerveSubsystem.resetOdometry(trajectory.initialPose) }),
+                InstantCommand { swerveSubsystem.resetOdometry(trajectory.getInitialPose()) },
                 swerveControllerCommand,
-                InstantCommand(Runnable { swerveSubsystem.stopModules() })
-            )
+                InstantCommand { swerveSubsystem.stopModules() })
         }
 }
