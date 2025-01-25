@@ -2,15 +2,13 @@
 package frc.robot.subsystems
 
 import com.revrobotics.RelativeEncoder
-import edu.wpi.first.wpilibj.Encoder
 import com.revrobotics.spark.SparkMax
-import com.revrobotics.spark.SparkLowLevel.MotorType
 import com.revrobotics.spark.SparkLowLevel
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.AnalogInput
-import edu.wpi.first.wpilibj.motorcontrol.MotorController
+import frc.robot.swervetesting.ModuleConstants
 
 class SwerveModule(
     driveMotorId: Int,
@@ -29,9 +27,9 @@ class SwerveModule(
     private val turningEncoder: RelativeEncoder = turningMotor.encoder
 
     private val turningPIDController: PIDController = PIDController(
-        ModuleConstants.kP_Turn,
-        ModuleConstants.kI_Turn,
-        ModuleConstants.kD_Turn
+        ModuleConstants.kPTurning,
+        0.0,
+        0.0
     )
 
     private val absoluteEncoder: AnalogInput = AnalogInput(absoluteEncoderId)
