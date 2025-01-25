@@ -1,17 +1,17 @@
-package frc.robot.swerve-testing
+package frc.robot.swervetesting
 // quick link: https://github.com/SeanSun6814/FRC0ToAutonomous
 import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.wpilibj.SPI
-import edu.wpi.first.wpilibj.geometry.Pose2d
-import edu.wpi.first.wpilibj.geometry.Rotation2d
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry
-import edu.wpi.first.wpilibj.kinematics.SwerveModuleState
+import edu.wpi.first.math.geometry.Pose2d
+import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry
+import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
 //below needs to be changed once we actually move our experimental code out of this swerve-test directory.
-import frc.robot.swerve-testing.Constants.DriveConstants
-import frc.robot.swerve-testing.SwerveModule
+import frc.robot.swervetesting.ModuleConstants.DriveConstants
+import frc.robot.swervetesting.SwerveModule
 
 class SwerveSubsystem: SubsystemBase() {
     
