@@ -1,4 +1,4 @@
-package frc.robot.swerve-testing
+package frc.robot.swervetesting
 
 import java.util.function.Supplier
 import edu.wpi.first.wpilibj.SlewRateLimiter
@@ -7,17 +7,21 @@ import edu.wpi.first.wpilibj.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj2.command.CommandBase
 import kotlin.math.*
 // Change below when we move these files to their actual directories.
-import frc.robot.swerve-test.Constants.DriveConstants
-import frc.robot.swerve-test.Constants.OIConstants
-import frc.robot.swerve-test..SwerveSubsystem
+import frc.robot.swervetesting.Constants.DriveConstants
+import frc.robot.swervetesting.Constants.OIConstants
+import frc.robot.swervetesting.SwerveSubsystem
 
 class SwerveJoystickCmd: CommandBase() {
     private val swerveSubsystem: SwerveSubsystem
-    private val xSpdFunction: Supplier<Double>, ySpdFunction: Supplier<Double>, turningSpdFunction: Supplier<Double>
-    private val fieldOrientedFunction: Supplier<Boolean>
-    private val xLimiter: SlewRateLimiter, yLimiter: SlewRateLimiter, turningLimiter: SlewRateLimiter
+    private val xSpdFunction: () -> Double
+    private val ySpdFunction: () -> Double
+    private val turningSpdFunction: () -> Double
+    private val fieldOrientedFunction: () -> Boolean
+    private val xLimiter: SlewRateLimiter
+    private val yLimiter: SlewRateLimiter
+    private val turningLimiter: SlewRateLimiter
 
-    constructor(swerveSubsystem: SwerveSubsystem, xSpdFunction: Supplier<Double>, ySpdFunction: Supplier<Double>, turningSpdFunction: Supplier<Double>, fieldOrientedFunction: Supplier<Boolean>) {
+    constructor(swerveSubsystem: SwerveSubsystem, xSpdFunction: () -> Double, ySpdFunction: () -> Double, turningSpdFunction: () -> Double, fieldOrientedFunction: () -> Boolean) {
         this.swerveSubsystem = swerveSubsystem
         this.xSpdFunction = xSpdFunction
         this.ySpdFunction = ySpdFunction
@@ -34,14 +38,14 @@ class SwerveJoystickCmd: CommandBase() {
 
     override fun execute() {
         // 1. get real time joystick inputs.
-        xSpeed: double = xSpdFunction.get()
-        ySpeed: double = ySpdFunction.get()
-        turningSpeed: double = turningSpdFunction.get()
+        var xSpeed: Double = xSpdFunction()
+        var ySpeed: Double = ySpdFunction()
+        var turningSpeed: Double = turningSpdFunction()
 
         // 2. apply deadband.
-        xSpeed = abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0
-        ySpeed = abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0
-        turningSpeed = abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0
+        xSpeed =  if (abs(xSpeed) > OIConstants.kDeadband) xSpeed else 0.0
+        ySpeed = if (abs(ySpeed) > OIConstants.kDeadband) ySpeed else 0.0
+        turningSpeed = if(abs(turningSpeed) > OIConstants.kDeadband) turningSpeed else 0.0
 
         // 3. Make drive smoother.
         xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kTeleDriveMaxSpeedMetersPerSecond
@@ -59,7 +63,7 @@ class SwerveJoystickCmd: CommandBase() {
         }
 
         // 5. Convert chassis speeds to individual module states.
-        private val moduleStates: Array<SwerveModuleState> = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds)
+        val moduleStates: Array<SwerveModuleState> = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds)
 
         swerveSubsystem.setModuleStates(moduleStates)
     }
