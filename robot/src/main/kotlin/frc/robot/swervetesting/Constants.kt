@@ -1,9 +1,9 @@
 package frc.robot.swervetesting
 import kotlin.math.PI
-import edu.wpi.first.wpilibj.geometry.Translation2d
-import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics
-import edu.wpi.first.wpilibj.trajectory.TrapezoidProfile
-import edu.wpi.first.wpilibj.util.Units
+import edu.wpi.first.math.geometry.Translation2d
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics
+import edu.wpi.first.math.trajectory.TrapezoidProfile
+import edu.wpi.first.math.util.Units
 
 //class Constants {
     /* THIS IS THE JAVA VERSION
@@ -32,8 +32,8 @@ class ModuleConstants {
 
     // these are not the actual values, change later
     object DriveConstants {
-        const val kTrackWidth = Units.inchesToMeters(21.0) // Distance between right and left wheels
-        const val kWheelBase = Units.inchesToMeters(25.5) // Distance between front and back wheels
+        val kTrackWidth = Units.inchesToMeters(21.0) // Distance between right and left wheels
+        val kWheelBase = Units.inchesToMeters(25.5) // Distance between front and back wheels
 
         val kDriveKinematics = SwerveDriveKinematics(
             Translation2d(kWheelBase / 2, -kTrackWidth / 2),
