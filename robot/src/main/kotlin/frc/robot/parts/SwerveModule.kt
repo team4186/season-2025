@@ -28,11 +28,11 @@ class SwerveModule (
     private val kModuleMaxAngularAcceleration: Double =
         2 * Math.PI // radians per second squared
 
-    private val driveMotor: SparkMax
-    private val turningMotor: SparkMax
+    private val driveMotor: SparkMax = SparkMax(driveMotorChannel, SparkLowLevel.MotorType.kBrushless)
+    private val turningMotor: SparkMax = SparkMax(turningMotorChannel, SparkLowLevel.MotorType.kBrushless)
 
-    private val driveEncoder: Encoder
-    private val turningEncoder: Encoder
+    private val driveEncoder: Encoder = Encoder(driveEncoderChannelA, driveEncoderChannelB)
+    private val turningEncoder: Encoder = Encoder(turningEncoderChannelA, turningEncoderChannelB)
 
     // TODO: Adjust gains for our robot, these need to be updated
     private val drivePIDController: PIDController = PIDController(1.0, 0.0, 0.0)
@@ -49,11 +49,6 @@ class SwerveModule (
     private val turnFeedforward: SimpleMotorFeedforward = SimpleMotorFeedforward(1.0, 0.5)
 
     init {
-        driveMotor = SparkMax(driveMotorChannel, SparkLowLevel.MotorType.kBrushless)
-        turningMotor = SparkMax(turningMotorChannel, SparkLowLevel.MotorType.kBrushless)
-
-        driveEncoder = Encoder(driveEncoderChannelA, driveEncoderChannelB)
-        turningEncoder = Encoder(turningEncoderChannelA, turningEncoderChannelB)
 
         // Set the distance per pulse for the drive encoder
         // Use distance traveled for one rotation of the wheel divided by the encoder resolution
