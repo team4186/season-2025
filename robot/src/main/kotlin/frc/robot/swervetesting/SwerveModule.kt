@@ -2,17 +2,17 @@ package frc.robot.swervetesting
 
 
 import com.revrobotics.RelativeEncoder
-import com.revrobotics.spark.SparkMax
 import com.revrobotics.spark.SparkLowLevel
+import com.revrobotics.spark.SparkMax
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.geometry.Rotation2d
+import edu.wpi.first.math.kinematics.SwerveModulePosition
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.AnalogInput
-import frc.robot.swervetesting.Constants.ModuleConstants
 import frc.robot.swervetesting.Constants.DriveConstants
-import frc.robot.swervetesting.Constants.OIConstants
+import frc.robot.swervetesting.Constants.ModuleConstants
 
-class SwerveModule(
+class SwerveModule (
     driveMotorId: Int,
     turningMotorId: Int,
     driveMotorReversed: Boolean,
@@ -85,11 +85,23 @@ class SwerveModule(
     }
 
     fun setDesiredState(state: SwerveModuleState) {
+        if (Math.abs(state.speedMetersPerSecond) < 0.001) {
+            stop();
+            return;
+        }
         val state = SwerveModuleState.optimize(state, getState().angle)
         driveMotor.set(state.speedMetersPerSecond / DriveConstants.kPhysicalMaxSpeedMetersPerSecond)
         turningMotor.set(turningPIDController.calculate(turningEncoder.position, state.angle.radians))
     }
 
+    fun getPosition(): SwerveModulePosition {
+        return SwerveModulePosition(driveEncoder.position, Rotation2d(turningEncoder.position))
+    }
+
+    fun stop() {
+        driveMotor.set(0.0)
+        turningMotor.set(0.0)
+    }
     // Optionally, you can add methods to get other encoder values, reset encoders, etc.
 }
 

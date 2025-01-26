@@ -1,4 +1,4 @@
-package frc.robot.swerve-testing
+package frc.robot.swervetesting
 //rishab y
 import java.util.List
 import edu.wpi.first.wpilibj.Joystick
@@ -14,12 +14,13 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand
-import edu.wpi.first.wpilibj2.command.button.JoystickButton
+import edu.wpi.first.wpilibj2.command.button.Trigger
 import frc.robot.swervetesting.Constants.AutoConstants
 import frc.robot.swervetesting.Constants.DriveConstants
 import frc.robot.swervetesting.Constants.OIConstants
 import frc.robot.swervetesting.SwerveJoystickCmd
 import frc.robot.swervetesting.SwerveSubsystem
+
 
 class mathRobotContainer {
     private val swerveSubsystem: SwerveSubsystem = SwerveSubsystem()
@@ -44,7 +45,8 @@ class mathRobotContainer {
 
     //button 2 zeroes the robot heading (assumed)
     private fun configureButtonBindings() {
-        JoystickButton(driverJoytick, 2).whenPressed { swerveSubsystem.zeroHeading() }
+        val buttonTrigger = Trigger {driverJoytick.getRawButton(2)}
+        buttonTrigger.onTrue(InstantCommand({swerveSubsystem.zeroHeading()},swerveSubsystem))
     }
 // auton calculations
     val autonomousCommand: Command
@@ -58,20 +60,20 @@ class mathRobotContainer {
 
             // 2. Generate trajectory
             val trajectory: Trajectory = TrajectoryGenerator.generateTrajectory(
-                Pose2d(0, 0, Rotation2d(0)),
+                Pose2d(0.0, 0.0, Rotation2d()),
                 List.of(
-                    Translation2d(1, 0),
-                    Translation2d(1, -1)
+                    Translation2d(1.0, 0.0),
+                    Translation2d(1.0, -1.0)
                 ),
-                Pose2d(2, -1, Rotation2d.fromDegrees(180)),
+                Pose2d(2.0, -1.0, Rotation2d.fromDegrees(180.0)),
                 trajectoryConfig
             )
 
             // 3. Define PID controllers for tracking trajectory
-            val xController: PIDController = PIDController(AutoConstants.kPXController, 0, 0)
-            val yController: PIDController = PIDController(AutoConstants.kPYController, 0, 0)
+            val xController: PIDController = PIDController(AutoConstants.kPXController, 0.0, 0.0)
+            val yController: PIDController = PIDController(AutoConstants.kPYController, 0.0, 0.0)
             val thetaController: ProfiledPIDController = ProfiledPIDController(
-                AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints
+                AutoConstants.kPThetaController, 0.0, 0.0, AutoConstants.kThetaControllerConstraints
             )
             thetaController.enableContinuousInput(-Math.PI, Math.PI)
 
@@ -89,8 +91,8 @@ class mathRobotContainer {
 
             // 5. Add some init and wrap-up, and return everything
             return SequentialCommandGroup(
-                InstantCommand { swerveSubsystem.resetOdometry(trajectory.getInitialPose()) },
+                InstantCommand({swerveSubsystem.resetOdometry(trajectory.getInitialPose()) }),
                 swerveControllerCommand,
-                InstantCommand { swerveSubsystem.stopModules() })
+                InstantCommand({swerveSubsystem.stopModules()}))
         }
 }

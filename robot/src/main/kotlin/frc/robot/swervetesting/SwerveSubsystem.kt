@@ -1,14 +1,16 @@
 package frc.robot.swervetesting
 // quick link: https://github.com/SeanSun6814/FRC0ToAutonomous
-import com.kauailabs.navx.frc.AHRS
-import edu.wpi.first.wpilibj.SPI
+//import com.kauailabs.navx.frc.AHRS
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
+import edu.wpi.first.math.kinematics.SwerveModulePosition
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
+import edu.wpi.first.wpilibj.AnalogGyro
+import java.util.Arrays
 //below needs to be changed once we actually move our experimental code out of this swerve-test directory.
 import frc.robot.swervetesting.Constants.DriveConstants
 
@@ -16,7 +18,7 @@ import frc.robot.swervetesting.SwerveModule
 
 class SwerveSubsystem: SubsystemBase {
     
-    private val SwerveModule frontLeft = SwerveModule(
+    private val frontLeft = SwerveModule(
         DriveConstants.kFrontLeftDriveMotorPort,
         DriveConstants.kFrontLeftTurningMotorPort,
         DriveConstants.kFrontLeftDriveEncoderReversed,
@@ -26,7 +28,7 @@ class SwerveSubsystem: SubsystemBase {
         DriveConstants.kFrontLeftDriveAbsoluteEncoderReversed
     )
 
-    private val SwerveModule frontRight = SwerveModule(
+    private val frontRight = SwerveModule(
         DriveConstants.kFrontRightDriveMotorPort,
         DriveConstants.kFrontRightTurningMotorPort,
         DriveConstants.kFrontRightDriveEncoderReversed,
@@ -36,7 +38,7 @@ class SwerveSubsystem: SubsystemBase {
         DriveConstants.kFrontRightDriveAbsoluteEncoderReversed
     )
 
-    private val SwerveModule backLeft = SwerveModule(
+    private val backLeft = SwerveModule(
         DriveConstants.kBackLeftDriveMotorPort,
         DriveConstants.kBackLeftTurningMotorPort,
         DriveConstants.kBackLeftDriveEncoderReversed,
@@ -46,7 +48,7 @@ class SwerveSubsystem: SubsystemBase {
         DriveConstants.kBackLeftDriveAbsoluteEncoderReversed
     )
 
-    private val SwerveModule backRight = SwerveModule(
+    private val backRight = SwerveModule(
         DriveConstants.kBackRightDriveMotorPort,
         DriveConstants.kBackRightTurningMotorPort,
         DriveConstants.kBackRightDriveEncoderReversed,
@@ -56,11 +58,10 @@ class SwerveSubsystem: SubsystemBase {
         DriveConstants.kBackRightDriveAbsoluteEncoderReversed
     )
 
-    private val desired
-
-    private val AHRS gyro = AHRS(SPI.Port.xMXP)
-
-    private val SwerveDriveOdometry odometer = SwerveDriveOdometry(DriveConstants.kDriveKinematics, Rotation2d(0))
+    //TODO: Replace PLACEHOLDER with the GYRO's CAN ID
+    private val gyro = AnalogGyro(PLACEHOLDER)
+    private val modulePositions: Array<SwerveModulePosition> = arrayOf(frontLeft.getPosition(), frontRight.getPosition(), backLeft.getPosition(), backRight.getPosition())
+    private val odometer = SwerveDriveOdometry(DriveConstants.kDriveKinematics, Rotation2d(), modulePositions)
 
     constructor() {
         Thread {
@@ -71,31 +72,32 @@ class SwerveSubsystem: SubsystemBase {
         }
         }.start()
     }
-
+    // reset heading
     fun zeroHeading() {
         gyro.reset()
     }
-
-    fun getHeading(): double {
-        return Math.IEEEremainder(gyro.getAngle(), 360)
+    // Convert heading to angles.
+    fun getHeading(): Double {
+        return Math.IEEEremainder(gyro.getAngle(), 360.0)
     }
-
+    // Convert heading to rotation2d.
     fun getRotation2d(): Rotation2d {
-        return Rotation2d.fromDegree(getHeading())
+        return Rotation2d.fromDegrees(getHeading())
     }
-
+    //  return the x,y pos of robot on field in meters.
     fun getPose(): Pose2d {
         return odometer.getPoseMeters()
     }
 
+    // It is what it says.
     fun resetOdometry(pose: Pose2d) {
-        odometer.resetPosition(pose, getRotation2d())
+        odometer.resetPosition(gyro.getRotation2d(), modulePositions, pose)
     }
 
     override fun periodic() {
-        odometer.update(getRotation2d(), frontLeft.getState(), frontRight.getState(), backLeft.getState(), backRight.getState())
+        odometer.update(getRotation2d(), modulePositions)
         SmartDashboard.putNumber("Robot Heading", getHeading())
-        SmartDashboard.putNumber("Robot Location", getPose().getTranslation().toString())
+        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString())
     }
 
     fun stopModules() {
@@ -107,7 +109,7 @@ class SwerveSubsystem: SubsystemBase {
 
     fun setModuleStates(desiredStates: Array<SwerveModuleState>) {
     //Divides each element in desiredStates by MaxModuleSpeed to normalize.
-        SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond)
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond)
 
     //Takes the normalized Array and apply the desiredStates to each swerve module.
         frontLeft.setDesiredState(desiredStates[0])
