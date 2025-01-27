@@ -4,18 +4,18 @@ import edu.wpi.first.hal.FRCNetComm
 import edu.wpi.first.hal.HAL
 import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.TimedRobot
-import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import frc.robot.actions.manualDrive
+import frc.robot.swervetesting.SwerveJoystickCmd
+import frc.robot.swervetesting.SwerveSubsystem
 
 
 class Robot : TimedRobot() {
     private val joystick0 = Joystick(0)
 
-    private val
+    private val swerve = SwerveSubsystem()
 
     private val autonomousChooser = SendableChooser<Command>()
 
@@ -44,21 +44,16 @@ class Robot : TimedRobot() {
     }
 
     override fun teleopInit() {
+        SwerveJoystickCmd(
+            swerveSubsystem = swerve,
+            xSpdFunction = { joystick0.x },
+            ySpdFunction = { joystick0.y },
+            turningSpdFunction = { joystick0.twist },
+            fieldOrientedFunction = { false },
+        ).schedule()
     }
 
     override fun teleopPeriodic() {
-        //manualDrive(
-        //    forward = joystick0.y,
-        //    turn = joystick0.twist,
-        //    drive = { forward, turn -> drive.arcadeDrive(forward, turn, true) }
-        //)
-
-        var Yvalues = joystick0.y
-        var Xvalues = joystick0.x
-        var twist = joystick0.twist
-
-
-
 
 
     }

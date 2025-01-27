@@ -34,10 +34,10 @@ class Constants {
     }
 
     object DriveConstants {
-        val kTrackWidth: Double = Units.inchesToMeters(21.0)
+        val kTrackWidth: Double = Units.inchesToMeters(22.0)
 
         // Distance between right and left wheels
-        val kWheelBase: Double = Units.inchesToMeters(25.5)
+        val kWheelBase: Double = Units.inchesToMeters(22.0)
 
         // Distance between front and back wheels
         val kDriveKinematics: SwerveDriveKinematics = SwerveDriveKinematics(
@@ -47,15 +47,15 @@ class Constants {
             Translation2d(-kWheelBase / 2, kTrackWidth / 2)
         )
 
-        const val kFrontLeftDriveMotorPort: Int = 8
-        const val kBackLeftDriveMotorPort: Int = 2
-        const val kFrontRightDriveMotorPort: Int = 6
-        const val kBackRightDriveMotorPort: Int = 4
+        const val kFrontLeftDriveMotorPort: Int = 7
+        const val kBackLeftDriveMotorPort: Int = 5
+        const val kFrontRightDriveMotorPort: Int = 1
+        const val kBackRightDriveMotorPort: Int = 3
 
-        const val kFrontLeftTurningMotorPort: Int = 7
-        const val kBackLeftTurningMotorPort: Int = 1
-        const val kFrontRightTurningMotorPort: Int = 5
-        const val kBackRightTurningMotorPort: Int = 3
+        const val kFrontLeftTurningMotorPort: Int = 8
+        const val kBackLeftTurningMotorPort: Int = 6
+        const val kFrontRightTurningMotorPort: Int = 2
+        const val kBackRightTurningMotorPort: Int = 4
 
         const val kFrontLeftTurningEncoderReversed: Boolean = true
         const val kBackLeftTurningEncoderReversed: Boolean = true
@@ -67,10 +67,10 @@ class Constants {
         const val kFrontRightDriveEncoderReversed: Boolean = false
         const val kBackRightDriveEncoderReversed: Boolean = false
 
-        const val kFrontLeftDriveAbsoluteEncoderPort: Int = 0
-        const val kBackLeftDriveAbsoluteEncoderPort: Int = 2
+        const val kFrontLeftDriveAbsoluteEncoderPort: Int = 4
+        const val kBackLeftDriveAbsoluteEncoderPort: Int = 3
         const val kFrontRightDriveAbsoluteEncoderPort: Int = 1
-        const val kBackRightDriveAbsoluteEncoderPort: Int = 3
+        const val kBackRightDriveAbsoluteEncoderPort: Int = 2
 
         const val kFrontLeftDriveAbsoluteEncoderReversed: Boolean = false
         const val kBackLeftDriveAbsoluteEncoderReversed: Boolean = false

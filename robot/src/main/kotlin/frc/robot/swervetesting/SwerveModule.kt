@@ -27,7 +27,7 @@ class SwerveModule(
     private val turningMotor: SparkMax = SparkMax(turningMotorId, SparkLowLevel.MotorType.kBrushless)
 
     private val driveEncoder = driveMotor.encoder
-    private val turningEncoder = turningMotor.absoluteEncoder
+    private val turningEncoder = turningMotor.encoder
     private val turningPIDController: PIDController = PIDController(
         ModuleConstants.kPTurning,
         0.0,
@@ -56,9 +56,8 @@ class SwerveModule(
             SparkMaxConfig()
                 .apply {
                     inverted(turningMotorReversed)
-                    absoluteEncoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad)
-                    absoluteEncoder.velocityConversionFactor(ModuleConstants.kTurningRPM2RadPerSec)
-                    absoluteEncoder.zeroOffset(absoluteEncoderOffsetRad)
+                    encoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad)
+                    encoder.velocityConversionFactor(ModuleConstants.kTurningRPM2RadPerSec)
                 },
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters
@@ -95,7 +94,7 @@ class SwerveModule(
 
     fun resetEncoders() {
         driveEncoder.setPosition(0.0)
-//        turningEncoder.setPosition(getAbsoluteAngle())
+        turningEncoder.setPosition(getAbsoluteAngle())
     }
 
     fun getState(): SwerveModuleState {

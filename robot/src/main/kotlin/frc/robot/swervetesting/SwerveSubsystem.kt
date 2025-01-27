@@ -3,6 +3,7 @@ package frc.robot.swervetesting
 //import com.kauailabs.navx.frc.AHRS
 //below needs to be changed once we actually move our experimental code out of this swerve-test directory.
 
+import com.ctre.phoenix6.hardware.Pigeon2
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
@@ -58,7 +59,7 @@ class SwerveSubsystem() : SubsystemBase() {
         DriveConstants.kBackRightDriveAbsoluteEncoderReversed
     )
 
-    private val gyro = AnalogGyro(10)
+    private val gyro = Pigeon2(10)
     private val modulePositions: Array<SwerveModulePosition> = arrayOf(
         frontLeft.getPosition(),
         frontRight.getPosition(),
@@ -86,7 +87,7 @@ class SwerveSubsystem() : SubsystemBase() {
 
     // Convert heading to angles.
     fun getHeading(): Double {
-        return gyro.angle.IEEErem(360.0)
+        return gyro.yaw.valueAsDouble.IEEErem(360.0)
     }
 
     // Convert heading to rotation2d.

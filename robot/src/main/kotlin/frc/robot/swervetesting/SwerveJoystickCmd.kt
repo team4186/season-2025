@@ -11,25 +11,18 @@ import frc.robot.swervetesting.Constants.DriveConstants
 import frc.robot.swervetesting.Constants.OIConstants
 import frc.robot.swervetesting.SwerveSubsystem
 
-class SwerveJoystickCmd: Command {
-    private val swerveSubsystem: SwerveSubsystem
-    private val xSpdFunction: () -> Double
-    private val ySpdFunction: () -> Double
-    private val turningSpdFunction: () -> Double
+class SwerveJoystickCmd(
+    private val swerveSubsystem: SwerveSubsystem,
+    private val xSpdFunction: () -> Double,
+    private val ySpdFunction: () -> Double,
+    private val turningSpdFunction: () -> Double,
     private val fieldOrientedFunction: () -> Boolean
-    private val xLimiter: SlewRateLimiter
-    private val yLimiter: SlewRateLimiter
-    private val turningLimiter: SlewRateLimiter
+) : Command() {
+    private val xLimiter: SlewRateLimiter = SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond)
+    private val yLimiter: SlewRateLimiter = SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond)
+    private val turningLimiter: SlewRateLimiter = SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond)
 
-    constructor(swerveSubsystem: SwerveSubsystem, xSpdFunction: () -> Double, ySpdFunction: () -> Double, turningSpdFunction: () -> Double, fieldOrientedFunction: () -> Boolean) {
-        this.swerveSubsystem = swerveSubsystem
-        this.xSpdFunction = xSpdFunction
-        this.ySpdFunction = ySpdFunction
-        this.turningSpdFunction = turningSpdFunction
-        this.fieldOrientedFunction = fieldOrientedFunction
-        this.xLimiter = SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond)
-        this.yLimiter = SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond)
-        this.turningLimiter = SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond)
+    init {
         addRequirements(swerveSubsystem)
     }
 
