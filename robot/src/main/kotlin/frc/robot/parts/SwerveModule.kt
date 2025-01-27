@@ -1,100 +1,86 @@
 package frc.robot.parts
 
+import com.revrobotics.AbsoluteEncoder
+import com.revrobotics.RelativeEncoder
+import com.revrobotics.spark.SparkBase.ControlType
+import com.revrobotics.spark.SparkClosedLoopController
 import com.revrobotics.spark.SparkLowLevel
 import com.revrobotics.spark.SparkMax
-import edu.wpi.first.math.controller.PIDController
-import edu.wpi.first.math.controller.ProfiledPIDController
-import edu.wpi.first.math.controller.SimpleMotorFeedforward
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveModulePosition
 import edu.wpi.first.math.kinematics.SwerveModuleState
 import edu.wpi.first.math.trajectory.TrapezoidProfile
-import edu.wpi.first.wpilibj.Encoder
-import frc.robot.actions.Drivetrain
+import com.revrobotics.spark.SparkBase.PersistMode
+import com.revrobotics.spark.SparkBase.ResetMode;
+
+import frc.robot.parts.MAXSwerveConfig
+
 
 class SwerveModule (
-    driveMotorChannel: Int,
-    turningMotorChannel: Int,
-    driveEncoderChannelA: Int,
-    driveEncoderChannelB: Int,
-    turningEncoderChannelA: Int,
-    turningEncoderChannelB: Int
+    drivingCanId: Int,
+    turningCanId: Int,
+    chassisAngularOffset: Double
 ) {
+    private val drivingMotor: SparkMax = SparkMax(drivingCanId, SparkLowLevel.MotorType.kBrushless)
+    private val turningMotor: SparkMax = SparkMax(turningCanId, SparkLowLevel.MotorType.kBrushless)
 
-    private val kWheelRadius: Double = 0.0508
-    private val kEncoderResolution: Int = 4096
+    private val drivingEncoder: RelativeEncoder = drivingMotor.encoder
+    private val turningEncoder: AbsoluteEncoder = turningMotor.absoluteEncoder
 
-    private val kModuleMaxAngularVelocity: Double = Drivetrain.MAX_ANGULAR_SPEED
-    private val kModuleMaxAngularAcceleration: Double =
-        2 * Math.PI // radians per second squared
+    private val drivingClosedLoopController: SparkClosedLoopController = drivingMotor.closedLoopController
+    private val turningClosedLoopController: SparkClosedLoopController = turningMotor.closedLoopController
 
-    private val driveMotor: SparkMax = SparkMax(driveMotorChannel, SparkLowLevel.MotorType.kBrushless)
-    private val turningMotor: SparkMax = SparkMax(turningMotorChannel, SparkLowLevel.MotorType.kBrushless)
+    private var chassisAngularOffset: Double = chassisAngularOffset
+    private var desiredState: SwerveModuleState = SwerveModuleState(0.0, Rotation2d())
 
-    private val driveEncoder: Encoder = Encoder(driveEncoderChannelA, driveEncoderChannelB)
-    private val turningEncoder: Encoder = Encoder(turningEncoderChannelA, turningEncoderChannelB)
-
-    // TODO: Adjust gains for our robot, these need to be updated
-    private val drivePIDController: PIDController = PIDController(1.0, 0.0, 0.0)
-    private val turningPIDController: ProfiledPIDController =
-        ProfiledPIDController(
-            1.0,
-            0.0,
-            0.0,
-            TrapezoidProfile.Constraints(kModuleMaxAngularVelocity, kModuleMaxAngularAcceleration)
-        )
-
-    // TODO: Adjust gains for our robot, these need to be updated
-    private val driveFeedforward: SimpleMotorFeedforward = SimpleMotorFeedforward(1.0, 3.0)
-    private val turnFeedforward: SimpleMotorFeedforward = SimpleMotorFeedforward(1.0, 0.5)
 
     init {
-
-        // Set the distance per pulse for the drive encoder
-        // Use distance traveled for one rotation of the wheel divided by the encoder resolution
-        driveEncoder.distancePerPulse = 2 * Math.PI * kWheelRadius / kEncoderResolution
-
-        // Set the angle in radians per pulse for the turning encoder
-        // This is the angle of entire rotation divided by encoder resolution
-        turningEncoder.distancePerPulse = 2 * Math.PI / kEncoderResolution
-
-        // limit PID Controllers input range between -pi and pi and set to continuous
-        turningPIDController.enableContinuousInput(-Math.PI, Math.PI)
+        val config = MAXSwerveConfig()
+        drivingMotor.configure(config.drivingConfig, ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters)
+        turningMotor.configure(config.turningConfig, ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters)
+        desiredState.angle = Rotation2d(turningEncoder.position)
+        drivingEncoder.position = 0.0
     }
 
 
+    // Used for sim setup
     fun getState(): SwerveModuleState {
         return SwerveModuleState(
-            driveEncoder.rate, Rotation2d(turningEncoder.distance)
+            drivingEncoder.position,
+            Rotation2d(turningEncoder.position - chassisAngularOffset)
         )
     }
 
 
+    /** Return current position of the module. */
     fun getPosition(): SwerveModulePosition {
-        return SwerveModulePosition(driveEncoder.distance, Rotation2d(turningEncoder.distance))
+        return SwerveModulePosition(
+            drivingEncoder.position,
+            Rotation2d(turningEncoder.position - chassisAngularOffset)
+        )
     }
 
 
     /** Sets the desired state for the module with speed and angle */
     fun setDesiredState(desiredState: SwerveModuleState) {
-        val encoderRotation = Rotation2d(turningEncoder.distance)
+        val correctedDesiredState = SwerveModuleState()
+        correctedDesiredState.speedMetersPerSecond = desiredState.speedMetersPerSecond
+        correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset))
 
-        // Optimize the reference state to avoid spinning further than 90 degrees
-        desiredState.optimize(encoderRotation)
+        // Optimize the reference state to avoid spinning further than 90 degrees.
+        correctedDesiredState.optimize(Rotation2d(turningEncoder.position))
 
-        // Scale speed by cosine of angle error. This scales down movement perpendicular to the desired direction
-        // of travel that can occur when modules change directions. Results in smoother driving.
-        desiredState.cosineScale(encoderRotation)
+        // Command driving and turning SPARKS towards their respective setpoints.
+        drivingClosedLoopController.setReference(correctedDesiredState.speedMetersPerSecond, ControlType.kVelocity)
+        turningClosedLoopController.setReference(correctedDesiredState.angle.radians, ControlType.kPosition)
 
-        // Calculate the drive output from the drive PID controller
-        val driveOutput: Double = drivePIDController.calculate(driveEncoder.rate, desiredState.speedMetersPerSecond)
-        val driveFeedforward: Double = driveFeedforward.calculate(desiredState.speedMetersPerSecond)
+        this.desiredState = desiredState
+    }
 
-        // Calculate the turning motor output  from the turning PID controller
-        val turnOutput: Double = turningPIDController.calculate(turningEncoder.distance, desiredState.angle.radians)
-        val turnFeedforward: Double = turnFeedforward.calculate(turningPIDController.setpoint.velocity)
-
-        driveMotor.setVoltage(driveOutput + driveFeedforward)
-        turningMotor.setVoltage(turnOutput + turnFeedforward)
+    /** Zeros all the SwerveModule encoders. */
+    fun resetEncoders(){
+        drivingEncoder.position = 0.0
     }
 }
