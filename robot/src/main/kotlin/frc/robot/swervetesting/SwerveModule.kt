@@ -1,9 +1,10 @@
 package frc.robot.swervetesting
 
-
-import com.revrobotics.RelativeEncoder
+import com.revrobotics.spark.SparkBase.PersistMode
+import com.revrobotics.spark.SparkBase.ResetMode
 import com.revrobotics.spark.SparkLowLevel
 import com.revrobotics.spark.SparkMax
+import com.revrobotics.spark.config.SparkMaxConfig
 import edu.wpi.first.math.controller.PIDController
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveModulePosition
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj.AnalogInput
 import frc.robot.swervetesting.Constants.DriveConstants
 import frc.robot.swervetesting.Constants.ModuleConstants
 
-class SwerveModule (
+class SwerveModule(
     driveMotorId: Int,
     turningMotorId: Int,
     driveMotorReversed: Boolean,
@@ -25,9 +26,8 @@ class SwerveModule (
     private val driveMotor: SparkMax = SparkMax(driveMotorId, SparkLowLevel.MotorType.kBrushless)
     private val turningMotor: SparkMax = SparkMax(turningMotorId, SparkLowLevel.MotorType.kBrushless)
 
-    private val driveEncoder: RelativeEncoder = driveMotor.encoder
-    private val turningEncoder: RelativeEncoder = turningMotor.encoder
-
+    private val driveEncoder = driveMotor.encoder
+    private val turningEncoder = turningMotor.absoluteEncoder
     private val turningPIDController: PIDController = PIDController(
         ModuleConstants.kPTurning,
         0.0,
@@ -36,19 +36,37 @@ class SwerveModule (
 
     private val absoluteEncoder: AnalogInput = AnalogInput(absoluteEncoderId)
 
-    init{
+    init {
         // Section removed from video because the functions do not exist anymore
-        //driveEncoder.setPositionConversionFactor(Constants.kDriveEncoderRot2Meter)
-        //driveEncoder.setVelocityConversionFactor(Constants.kDriveEncoderRPM2MeterPerSec)
-        //turningEncoder.setPositionConversionFactor(Constants.kTurningEncoderRot2Rad)
-        //turningEncoder.setVelocityConversionFactor(Constants.kTurningRPM2RadPerSec)
+        //TODO: update to usable code
 
-        // Set motor inversion if needed
-        //driveMotor.setInverted(driveMotorReversed)
-        //turningMotor.setInverted(turningMotorReversed)
 
-        // Optionally set up the PID controller settings
-        //turningPIDController.setTolerance(ModuleConstants.kTurnToleranceDeg)
+        driveMotor.configure(
+            SparkMaxConfig()
+                .apply {
+                    inverted(driveMotorReversed)
+                    encoder.positionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter)
+                    encoder.velocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec)
+                },
+            ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters
+        )
+
+        turningMotor.configure(
+            SparkMaxConfig()
+                .apply {
+                    inverted(turningMotorReversed)
+                    absoluteEncoder.positionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad)
+                    absoluteEncoder.velocityConversionFactor(ModuleConstants.kTurningRPM2RadPerSec)
+                    absoluteEncoder.zeroOffset(absoluteEncoderOffsetRad)
+                },
+            ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters
+        )
+
+        //Optionally set up the PID controller settings
+        //line 54 could possibly require the constant kPTurning rather than kTurnToleranceDeg
+        turningPIDController.setTolerance(ModuleConstants.kPTurning)
 
         turningPIDController.enableContinuousInput(-Math.PI, Math.PI)
 
@@ -77,7 +95,7 @@ class SwerveModule (
 
     fun resetEncoders() {
         driveEncoder.setPosition(0.0)
-        turningEncoder.setPosition(getAbsoluteAngle())
+//        turningEncoder.setPosition(getAbsoluteAngle())
     }
 
     fun getState(): SwerveModuleState {

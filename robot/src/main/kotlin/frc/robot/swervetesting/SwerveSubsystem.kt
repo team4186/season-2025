@@ -1,23 +1,23 @@
 package frc.robot.swervetesting
 // quick link: https://github.com/SeanSun6814/FRC0ToAutonomous
 //import com.kauailabs.navx.frc.AHRS
+//below needs to be changed once we actually move our experimental code out of this swerve-test directory.
+
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry
 import edu.wpi.first.math.kinematics.SwerveModulePosition
 import edu.wpi.first.math.kinematics.SwerveModuleState
+import edu.wpi.first.wpilibj.AnalogGyro
+import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-import edu.wpi.first.wpilibj.AnalogGyro
-import java.util.Arrays
-//below needs to be changed once we actually move our experimental code out of this swerve-test directory.
 import frc.robot.swervetesting.Constants.DriveConstants
+import kotlin.math.IEEErem
 
-import frc.robot.swervetesting.SwerveModule
+class SwerveSubsystem() : SubsystemBase() {
 
-class SwerveSubsystem: SubsystemBase {
-    
     private val frontLeft = SwerveModule(
         DriveConstants.kFrontLeftDriveMotorPort,
         DriveConstants.kFrontLeftTurningMotorPort,
@@ -58,32 +58,42 @@ class SwerveSubsystem: SubsystemBase {
         DriveConstants.kBackRightDriveAbsoluteEncoderReversed
     )
 
-    //TODO: Replace PLACEHOLDER with the GYRO's CAN ID
-    private val gyro = AnalogGyro(PLACEHOLDER)
-    private val modulePositions: Array<SwerveModulePosition> = arrayOf(frontLeft.getPosition(), frontRight.getPosition(), backLeft.getPosition(), backRight.getPosition())
+    private val gyro = AnalogGyro(10)
+    private val modulePositions: Array<SwerveModulePosition> = arrayOf(
+        frontLeft.getPosition(),
+        frontRight.getPosition(),
+        backLeft.getPosition(),
+        backRight.getPosition()
+    )
+
     private val odometer = SwerveDriveOdometry(DriveConstants.kDriveKinematics, Rotation2d(), modulePositions)
 
-    constructor() {
+    init {
         Thread {
-        try {
-            Thread.sleep(1000)
-            zeroHeading()
-        } catch (e: Exception) {
-        }
+            try {
+                Thread.sleep(1000)
+                zeroHeading()
+            } catch (e: Exception) {
+                DriverStation.reportError("Error starting the swerve subsystem", e.stackTrace)
+            }
         }.start()
     }
+
     // reset heading
     fun zeroHeading() {
         gyro.reset()
     }
+
     // Convert heading to angles.
     fun getHeading(): Double {
-        return Math.IEEEremainder(gyro.getAngle(), 360.0)
+        return gyro.angle.IEEErem(360.0)
     }
+
     // Convert heading to rotation2d.
     fun getRotation2d(): Rotation2d {
         return Rotation2d.fromDegrees(getHeading())
     }
+
     //  return the x,y pos of robot on field in meters.
     fun getPose(): Pose2d {
         return odometer.getPoseMeters()
@@ -108,10 +118,10 @@ class SwerveSubsystem: SubsystemBase {
     }
 
     fun setModuleStates(desiredStates: Array<SwerveModuleState>) {
-    //Divides each element in desiredStates by MaxModuleSpeed to normalize.
+        //Divides each element in desiredStates by MaxModuleSpeed to normalize.
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond)
 
-    //Takes the normalized Array and apply the desiredStates to each swerve module.
+        //Takes the normalized Array and apply the desiredStates to each swerve module.
         frontLeft.setDesiredState(desiredStates[0])
         frontRight.setDesiredState(desiredStates[1])
         backLeft.setDesiredState(desiredStates[2])
