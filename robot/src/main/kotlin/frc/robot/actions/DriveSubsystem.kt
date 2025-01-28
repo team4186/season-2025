@@ -22,15 +22,29 @@ class DriveSubsystem: SubsystemBase() {
 
     // TODO: Walkthrough ids with team and set each id for each Swerve Module
     // ( driveMotorController, steerMotorController, encoderConstructor, constants, canbusName, driveTrainId )
-    private val frontLeft = SwerveModule(1, 2, Constants.DriveConstants.)
-    private val frontRight = SwerveModule(3, 4, Constants.DriveConstants.)
-    private val backLeft = SwerveModule(5, 6, Constants.DriveConstants.)
-    private val backRight = SwerveModule(7, 8, Constants.DriveConstants.)
-
-    private val gyro = AnalogGyro(0)
-
+    private val frontLeft = SwerveModule(
+        DriveConstants.frontLeftDrivingCanId,
+        DriveConstants.frontLeftTurningCanId,
+        DriveConstants.frontLeftChassisAngularOffset
+    )
+    private val frontRight = SwerveModule(
+        DriveConstants.frontRightDrivingCanId,
+        DriveConstants.frontRightTurningCanId,
+        DriveConstants.frontRightChassisAngularOffset
+    )
+    private val backLeft = SwerveModule(
+        DriveConstants.backLeftDrivingCanId,
+        DriveConstants.backLeftTurningCanId,
+        DriveConstants.backLeftChassisAngularOffset
+    )
+    private val backRight = SwerveModule(
+        DriveConstants.backRightDrivingCanId,
+        DriveConstants.backRightTurningCanId,
+        DriveConstants.backRightChassisAngularOffset
+    )
+    private val gyro = AnalogGyro(DriveConstants.gyroChannelId)
     private val odometry = SwerveDriveOdometry(
-        Constants.DriveConstants.kDriveKinematics,
+        Constants.DriveConstants.driveKinematics,
         gyro.rotation2d,
         getSwervePositionArray()
     )
@@ -41,6 +55,7 @@ class DriveSubsystem: SubsystemBase() {
     }
 
 
+    /** Update odometry every periodic time-step. */
     override fun periodic() {
         odometry.update(
             gyro.rotation2d,
@@ -49,6 +64,7 @@ class DriveSubsystem: SubsystemBase() {
     }
 
 
+    /** Returns SwervePositionArray object */
     private fun getSwervePositionArray(): Array<SwerveModulePosition> {
         return arrayOf(
             frontLeft.getPosition(),
@@ -59,11 +75,13 @@ class DriveSubsystem: SubsystemBase() {
     }
 
 
+    /** Returns current pose. */
     fun getPose(): Pose2d {
         return odometry.poseMeters
     }
 
 
+    /** Reset Position using pose. */
     fun resetOdometry(pose: Pose2d) {
         odometry.resetPosition(
             gyro.rotation2d,
@@ -71,7 +89,6 @@ class DriveSubsystem: SubsystemBase() {
             pose
         )
     }
-
 
 
     /**
@@ -88,11 +105,11 @@ class DriveSubsystem: SubsystemBase() {
         rot: Double,
         fieldRelative: Boolean,
     ) {
-        val xSpeedDelivered: Double = xSpeed * DriveConstants.kMaxSpeedMetersPerSecond
-        val ySpeedDelivered: Double = ySpeed * DriveConstants.kMaxSpeedMetersPerSecond
-        val rotDelivered: Double = rot * DriveConstants.kMaxAngularSpeed
+        val xSpeedDelivered: Double = xSpeed * DriveConstants.maxSpeedMetersPerSecond
+        val ySpeedDelivered: Double = ySpeed * DriveConstants.maxSpeedMetersPerSecond
+        val rotDelivered: Double = rot * DriveConstants.maxAngularSpeed
 
-        val swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        val swerveModuleStates = DriveConstants.driveKinematics.toSwerveModuleStates(
             if (fieldRelative) {
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                     xSpeedDelivered, ySpeedDelivered, rotDelivered,
@@ -103,7 +120,7 @@ class DriveSubsystem: SubsystemBase() {
             }
         )
         SwerveDriveKinematics.desaturateWheelSpeeds(
-            swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond
+            swerveModuleStates, DriveConstants.maxSpeedMetersPerSecond
         )
         frontLeft.setDesiredState(swerveModuleStates[0])
         frontRight.setDesiredState(swerveModuleStates[1])
@@ -140,7 +157,7 @@ class DriveSubsystem: SubsystemBase() {
 
 
     fun getTurnRate(): Double {
-        val res = if (DriveConstants.kGyroReversed) -1.0 else 1.0
+        val res: Double = if (DriveConstants.gyroReversed) -1.0 else 1.0
         return gyro.rate * res
     }
 }

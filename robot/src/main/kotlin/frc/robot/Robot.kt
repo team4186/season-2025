@@ -71,18 +71,18 @@ class Robot : TimedRobot() {
     private fun driveWithJoystick(fieldRelative: Boolean) {
         // Get the x speed. Inverted from controller setup
         val xSpeed: Double =
-            (-xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.kDriveDeadband))
+            (-xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.driveDeadband))
                     * DriveSubsystem.MAX_SPEED)
 
         // Get the y speed or sideways/strafe speed
         val ySpeed: Double =
-            (-ySpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.y, Constants.OIConstants.kDriveDeadband))
+            (-ySpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.y, Constants.OIConstants.driveDeadband))
                     * DriveSubsystem.MAX_SPEED)
 
         // Get the rate of angular rotation. We are inverting this because we want a
         // positive value when we pull to the left
         val rot: Double =
-            (-rotLimiter.calculate(MathUtil.applyDeadband(joystick0.twist, Constants.OIConstants.kDriveDeadband))
+            (-rotLimiter.calculate(MathUtil.applyDeadband(joystick0.twist, Constants.OIConstants.driveDeadband))
                     * DriveSubsystem.MAX_ANGULAR_SPEED)
 
         swerve.drive(xSpeed, ySpeed, rot, fieldRelative)

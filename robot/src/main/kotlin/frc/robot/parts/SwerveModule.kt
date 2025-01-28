@@ -45,7 +45,7 @@ class SwerveModule (
     }
 
 
-    // Used for sim setup
+    /** Used during simulation to get state. */
     fun getState(): SwerveModuleState {
         return SwerveModuleState(
             drivingEncoder.position,
@@ -78,6 +78,7 @@ class SwerveModule (
 
         this.desiredState = desiredState
     }
+
 
     /** Zeros all the SwerveModule encoders. */
     fun resetEncoders(){
