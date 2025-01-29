@@ -13,7 +13,7 @@ import frc.robot.parts.SwerveModule
 
 
 /** Represents a swerve drive style drivetrain.  */
-class DriveSubsystem: SubsystemBase() {
+class SwerveDriveSubsystem: SubsystemBase() {
     companion object {
         val MAX_SPEED: Double = DriveConstants.maxSpeedMetersPerSecond // Meters per Second
         val MAX_ANGULAR_SPEED: Double = DriveConstants.maxAngularSpeed // Degree rotation per second

@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import frc.robot.actions.DriveSubsystem
+import frc.robot.actions.SwerveDriveSubsystem
 
 class Robot : TimedRobot() {
     private val joystick0 = Joystick(0)
-    private val swerve: DriveSubsystem = DriveSubsystem()
+    private val swerve: SwerveDriveSubsystem = SwerveDriveSubsystem()
 
     // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
     private val xSpeedLimiter = SlewRateLimiter(3.0)
@@ -72,18 +72,18 @@ class Robot : TimedRobot() {
         // Get the x speed. Inverted from controller setup
         val xSpeed: Double =
             (-xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.driveDeadband))
-                    * DriveSubsystem.MAX_SPEED)
+                    * SwerveDriveSubsystem.MAX_SPEED)
 
         // Get the y speed or sideways/strafe speed
         val ySpeed: Double =
             (-ySpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.y, Constants.OIConstants.driveDeadband))
-                    * DriveSubsystem.MAX_SPEED)
+                    * SwerveDriveSubsystem.MAX_SPEED)
 
         // Get the rate of angular rotation. We are inverting this because we want a
         // positive value when we pull to the left
         val rot: Double =
             (-rotLimiter.calculate(MathUtil.applyDeadband(joystick0.twist, Constants.OIConstants.driveDeadband))
-                    * DriveSubsystem.MAX_ANGULAR_SPEED)
+                    * SwerveDriveSubsystem.MAX_ANGULAR_SPEED)
 
         swerve.drive(xSpeed, ySpeed, rot, fieldRelative)
     }
