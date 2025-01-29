@@ -3,12 +3,11 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot.actions
 
+import com.ctre.phoenix6.hardware.Pigeon2
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.kinematics.*
-import edu.wpi.first.wpilibj.AnalogGyro
 import edu.wpi.first.wpilibj2.command.SubsystemBase
-import frc.robot.Constants
 import frc.robot.Constants.DriveConstants
 import frc.robot.parts.SwerveModule
 
@@ -16,8 +15,8 @@ import frc.robot.parts.SwerveModule
 /** Represents a swerve drive style drivetrain.  */
 class DriveSubsystem: SubsystemBase() {
     companion object {
-        const val MAX_SPEED: Double = 3.0 // 3 meters per second
-        const val MAX_ANGULAR_SPEED: Double = Math.PI // 1/2 rotation per second
+        val MAX_SPEED: Double = DriveConstants.maxSpeedMetersPerSecond // Meters per Second
+        val MAX_ANGULAR_SPEED: Double = DriveConstants.maxAngularSpeed // Degree rotation per second
     }
 
     // TODO: Walkthrough ids with team and set each id for each Swerve Module
@@ -42,9 +41,11 @@ class DriveSubsystem: SubsystemBase() {
         DriveConstants.backRightTurningCanId,
         DriveConstants.backRightChassisAngularOffset
     )
-    private val gyro = AnalogGyro(DriveConstants.gyroChannelId)
+    // private val gyro = AnalogGyro(DriveConstants.gyroChannelId)
+    // TODO: Double check Canbus naming
+    private val gyro: Pigeon2 = Pigeon2(DriveConstants.gyroChannelId, "rio")
     private val odometry = SwerveDriveOdometry(
-        Constants.DriveConstants.driveKinematics,
+        DriveConstants.driveKinematics,
         gyro.rotation2d,
         getSwervePositionArray()
     )
@@ -156,6 +157,7 @@ class DriveSubsystem: SubsystemBase() {
     }
 
 
+    // TODO: gyro.rate deprecates 2026, needs to be updated
     fun getTurnRate(): Double {
         val res: Double = if (DriveConstants.gyroReversed) -1.0 else 1.0
         return gyro.rate * res

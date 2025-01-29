@@ -55,12 +55,12 @@ object Constants {
 
         // Calculations required for driving motor conversion factors and feed forward
         val drivingMotorFreeSpeedRps: Double = NeoMotorConstants.freeSpeedRpm / 60
-        val wheelDiameterMeters: Double = 0.0762
+        val wheelDiameterMeters: Double = Units.inchesToMeters(4.0)
         val wheelCircumferenceMeters: Double = wheelDiameterMeters * Math.PI
 
         // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
         // teeth on the bevel pinion
-        val drivingMotorReduction: Double = (45.0 * 22) / (drivingMotorPinionTeeth * 15)
+        val drivingMotorReduction: Double = (50.0 * 28) / (drivingMotorPinionTeeth * 15)
         val driveWheelFreeSpeedRps: Double =
             (drivingMotorFreeSpeedRps * wheelCircumferenceMeters) / drivingMotorReduction
     }
@@ -88,6 +88,6 @@ object Constants {
     }
 
     object NeoMotorConstants {
-        val freeSpeedRpm: Double = 5676.0
+        val freeSpeedRpm: Double = 6784.0
     }
 }
