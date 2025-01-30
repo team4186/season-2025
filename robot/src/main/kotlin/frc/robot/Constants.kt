@@ -9,15 +9,13 @@ object Constants {
     object DriveConstants {
         // Driving Parameters - Note that these are not the maximum capable speeds of
         // the robot, rather the allowed maximum speeds
-        val maxSpeedMetersPerSecond: Double = 4.8
+        val maxSpeedMetersPerSecond: Double = 4.8768 // meters per second
         val maxAngularSpeed: Double = 2 * Math.PI // radians per second
 
         // Chassis configuration
         val trackWidth: Double = Units.inchesToMeters(26.5)
-
         // Distance between centers of right and left wheels on robot
         val wheelBase: Double = Units.inchesToMeters(26.5)
-
         // Distance between front and back wheels on robot
         val driveKinematics: SwerveDriveKinematics = SwerveDriveKinematics(
             Translation2d(wheelBase / 2, trackWidth / 2),
@@ -43,6 +41,11 @@ object Constants {
         val backLeftTurningCanId: Int = 6
         val frontLeftTurningCanId: Int = 8
 
+        val frontRightCanEncoderId: Int = 10
+        val backRightCanEncoderId: Int = 11
+        val backLeftCanEncoderId: Int = 12
+        val frontLeftCanEncoderId: Int = 13
+
         val gyroChannelId: Int = 0
         val gyroReversed: Boolean = false
     }
@@ -58,7 +61,7 @@ object Constants {
         val wheelDiameterMeters: Double = Units.inchesToMeters(4.0)
         val wheelCircumferenceMeters: Double = wheelDiameterMeters * Math.PI
 
-        // 45 teeth on the wheel's bevel gear, 22 teeth on the first-stage spur gear, 15
+        // 50 teeth on the wheel's bevel gear, 28 teeth on the first-stage spur gear, 15
         // teeth on the bevel pinion
         val drivingMotorReduction: Double = (50.0 * 28) / (drivingMotorPinionTeeth * 15)
         val driveWheelFreeSpeedRps: Double =
@@ -67,7 +70,7 @@ object Constants {
 
     object OIConstants {
         val driverControllerPort: Int = 0
-        val driveDeadband: Double = 0.05
+        val driveDeadband: Double = 0.1
     }
 
     /** Auto Parameters */

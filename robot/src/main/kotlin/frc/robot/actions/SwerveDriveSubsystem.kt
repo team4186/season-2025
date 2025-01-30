@@ -24,21 +24,25 @@ class SwerveDriveSubsystem: SubsystemBase() {
     private val frontLeft = SwerveModule(
         DriveConstants.frontLeftDrivingCanId,
         DriveConstants.frontLeftTurningCanId,
+        DriveConstants.frontLeftCanEncoderId,
         DriveConstants.frontLeftChassisAngularOffset
     )
     private val frontRight = SwerveModule(
         DriveConstants.frontRightDrivingCanId,
         DriveConstants.frontRightTurningCanId,
+        DriveConstants.frontRightCanEncoderId,
         DriveConstants.frontRightChassisAngularOffset
     )
     private val backLeft = SwerveModule(
         DriveConstants.backLeftDrivingCanId,
         DriveConstants.backLeftTurningCanId,
+        DriveConstants.backLeftCanEncoderId,
         DriveConstants.backLeftChassisAngularOffset
     )
     private val backRight = SwerveModule(
         DriveConstants.backRightDrivingCanId,
         DriveConstants.backRightTurningCanId,
+        DriveConstants.backRightCanEncoderId,
         DriveConstants.backRightChassisAngularOffset
     )
     // private val gyro = AnalogGyro(DriveConstants.gyroChannelId)

@@ -76,7 +76,7 @@ class MAXSwerveConfig {
             .velocityConversionFactor(drivingFactor / 60.0) // meters per second
         drivingConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            // TODO: These are example gains you may need to them for your own robot!
+            // TODO: Adjust PID gains
             .pid(0.04, 0.0, 0.0)
             .velocityFF(drivingVelocityFeedForward)
             .outputRange(-1.0, 1.0)
@@ -92,7 +92,7 @@ class MAXSwerveConfig {
             .velocityConversionFactor(turningFactor / 60.0) // radians per second
         turningConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-            // TODO: These are example gains you may need to them for your own robot!
+            // TODO: Adjust PID gains
             .pid(1.0, 0.0, 0.0)
             .outputRange(-1.0, 1.0)
             // Enable PID wrap around for the turning motor. This will allow the PID

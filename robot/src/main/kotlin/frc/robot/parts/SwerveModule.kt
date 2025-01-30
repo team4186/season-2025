@@ -1,5 +1,6 @@
 package frc.robot.parts
 
+import com.ctre.phoenix6.hardware.CANcoder
 import com.revrobotics.AbsoluteEncoder
 import com.revrobotics.RelativeEncoder
 import com.revrobotics.spark.SparkBase.ControlType
@@ -19,18 +20,18 @@ import frc.robot.parts.MAXSwerveConfig
 class SwerveModule (
     drivingCanId: Int,
     turningCanId: Int,
-    chassisAngularOffset: Double
+    turningCanEncoderId: Int,
+    private var chassisAngularOffset: Double
 ) {
     private val drivingMotor: SparkMax = SparkMax(drivingCanId, SparkLowLevel.MotorType.kBrushless)
     private val turningMotor: SparkMax = SparkMax(turningCanId, SparkLowLevel.MotorType.kBrushless)
 
     private val drivingEncoder: RelativeEncoder = drivingMotor.encoder
-    private val turningEncoder: AbsoluteEncoder = turningMotor.absoluteEncoder
+    private val turningEncoder: CANcoder = CANcoder(turningCanEncoderId)
 
     private val drivingClosedLoopController: SparkClosedLoopController = drivingMotor.closedLoopController
     private val turningClosedLoopController: SparkClosedLoopController = turningMotor.closedLoopController
 
-    private var chassisAngularOffset: Double = chassisAngularOffset
     private var desiredState: SwerveModuleState = SwerveModuleState(0.0, Rotation2d())
 
 
@@ -40,7 +41,7 @@ class SwerveModule (
             PersistMode.kPersistParameters)
         turningMotor.configure(config.turningConfig, ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters)
-        desiredState.angle = Rotation2d(turningEncoder.position)
+        desiredState.angle = Rotation2d(turningEncoder.position.valueAsDouble)
         drivingEncoder.position = 0.0
     }
 
@@ -49,7 +50,7 @@ class SwerveModule (
     fun getState(): SwerveModuleState {
         return SwerveModuleState(
             drivingEncoder.position,
-            Rotation2d(turningEncoder.position - chassisAngularOffset)
+            Rotation2d(turningEncoder.position.valueAsDouble - chassisAngularOffset)
         )
     }
 
@@ -58,7 +59,7 @@ class SwerveModule (
     fun getPosition(): SwerveModulePosition {
         return SwerveModulePosition(
             drivingEncoder.position,
-            Rotation2d(turningEncoder.position - chassisAngularOffset)
+            Rotation2d(turningEncoder.position.valueAsDouble - chassisAngularOffset)
         )
     }
 
@@ -70,7 +71,7 @@ class SwerveModule (
         correctedDesiredState.angle = desiredState.angle.plus(Rotation2d.fromRadians(chassisAngularOffset))
 
         // Optimize the reference state to avoid spinning further than 90 degrees.
-        correctedDesiredState.optimize(Rotation2d(turningEncoder.position))
+        correctedDesiredState.optimize(Rotation2d(turningEncoder.position.valueAsDouble))
 
         // Command driving and turning SPARKS towards their respective setpoints.
         drivingClosedLoopController.setReference(correctedDesiredState.speedMetersPerSecond, ControlType.kVelocity)
