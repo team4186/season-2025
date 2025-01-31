@@ -13,9 +13,9 @@ object Constants {
         val maxAngularSpeed: Double = 2 * Math.PI // radians per second
 
         // Chassis configuration
-        val trackWidth: Double = Units.inchesToMeters(26.5)
+        val trackWidth: Double = Units.inchesToMeters(21.5)
         // Distance between centers of right and left wheels on robot
-        val wheelBase: Double = Units.inchesToMeters(26.5)
+        val wheelBase: Double = Units.inchesToMeters(21.5)
         // Distance between front and back wheels on robot
         val driveKinematics: SwerveDriveKinematics = SwerveDriveKinematics(
             Translation2d(wheelBase / 2, trackWidth / 2),
