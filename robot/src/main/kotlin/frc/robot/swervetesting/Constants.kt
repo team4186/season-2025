@@ -47,12 +47,12 @@ class Constants {
             Translation2d(-kWheelBase / 2, kTrackWidth / 2)
         )
 
-        const val kFrontLeftDriveMotorPort: Int = 7
+        const val kFrontLeftDriveMotorPort: Int = 8
         const val kBackLeftDriveMotorPort: Int = 5
         const val kFrontRightDriveMotorPort: Int = 1
         const val kBackRightDriveMotorPort: Int = 3
 
-        const val kFrontLeftTurningMotorPort: Int = 8
+        const val kFrontLeftTurningMotorPort: Int = 7
         const val kBackLeftTurningMotorPort: Int = 6
         const val kFrontRightTurningMotorPort: Int = 2
         const val kBackRightTurningMotorPort: Int = 4

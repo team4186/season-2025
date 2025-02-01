@@ -25,7 +25,7 @@ import frc.robot.swervetesting.SwerveSubsystem
 class mathRobotContainer {
     private val swerveSubsystem: SwerveSubsystem = SwerveSubsystem()
 
-    //driverJoytick spelled incorrectly, use caution
+    //driverJoystick spelled incorrectly, use caution
     //configures joystick from port
     private val driverJoytick: Joystick = Joystick(OIConstants.kDriverControllerPort)
 
