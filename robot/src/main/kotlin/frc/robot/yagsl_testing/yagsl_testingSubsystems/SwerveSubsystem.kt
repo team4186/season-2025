@@ -60,37 +60,34 @@ class SwerveSubsystem : SubsystemBase {
     val swerveDrive: SwerveDrive
 
     /**
-     * AprilTag field layout.
+     * Outdated, need to change.
      */
-    private val aprilTagFieldLayout: AprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo)
+    // private val aprilTagFieldLayout: AprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo)
 
     /**
      * Enable vision odometry updates while driving.
      */
-    private val visionDriveTest = false
+    // private val visionDriveTest = false
 
     /**
-     * PhotonVision class to keep an accurate odometry.
+     * We're using limelight.
      */
-    private var vision: Vision? = null
+    // private var vision: Vision? = null
 
     /**
      * Initialize [SwerveDrive] with the directory provided.
-     *
-     * @param directory Directory of swerve drive config files.
      */
     constructor(directory: File?) {
-        // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
+        // Provides more telemetry info.
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH
         try {
             swerveDrive = SwerveParser(directory).createSwerveDrive(
                 Constants.MAX_SPEED,
                 Pose2d(
-                    Translation2d(
-                        Units.Meter.of(1.0),
-                        Units.Meter.of(4.0)
-                    ),
-                    Rotation2d.fromDegrees(0.0)
+                    // x is 0, y is 0 by default.
+                    Translation2d(),
+                    // default 0 degrees.
+                    Rotation2d()
                 )
             )
             // Alternative method if you don't want to supply the conversion factor via JSON files.
@@ -98,57 +95,63 @@ class SwerveSubsystem : SubsystemBase {
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
+        // Below are just to control drive trajectory and makes turning smoother.
+        // Refer to this if robot starts tweaking: https://broncbotz3481.github.io/YAGSL-Lib/docs/swervelib/SwerveDrive.html#setCosineCompensator(boolean)
         swerveDrive.setHeadingCorrection(false) // Heading correction should only be used while controlling the robot via angle.
+
         swerveDrive.setCosineCompensator(false) //!SwerveDriveTelemetry.isSimulation); // Disables cosine compensation for simulations since it causes discrepancies not seen in real life.
+
+        //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
         swerveDrive.setAngularVelocityCompensation(
             true,
             true,
             0.1
-        ) //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
+        )
+        // Synchronize absolute and relative encoders when not moving. Used to prevent encoder drift.
+        // Config deadband during testing, it is in degrees.
         swerveDrive.setModuleEncoderAutoSynchronize(
-            false,
+            true,
             1.0
         ) // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
         //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-        if (visionDriveTest) {
-            setupPhotonVision()
-            // Stop the odometry thread if we are using vision that way we can synchronize updates better.
-            swerveDrive.stopOdometryThread()
-        }
-        setupPathPlanner()
+
+        // Not needed for now, and we are also not using PhotonVision.
+    //        if (visionDriveTest) {
+//            setupPhotonVision()
+//            // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+//            swerveDrive.stopOdometryThread()
+//        }
+//        setupPathPlanner()
     }
 
     /**
-     * Construct the swerve drive.
-     *
-     * @param driveCfg      SwerveDriveConfiguration for the swerve.
-     * @param controllerCfg Swerve Controller.
+     * Alternative Constructor, not necessary because we're creating SwerveDrive from Json.
      */
-    constructor(driveCfg: SwerveDriveConfiguration, controllerCfg: SwerveControllerConfiguration?) {
-        swerveDrive = SwerveDrive(
-            driveCfg,
-            controllerCfg,
-            Constants.MAX_SPEED,
-            Pose2d(
-                Translation2d(Units.Meter.of(2.0), Units.Meter.of(0.0)),
-                Rotation2d.fromDegrees(0.0)
-            )
-        )
-    }
+//    constructor(driveCfg: SwerveDriveConfiguration, controllerCfg: SwerveControllerConfiguration?) {
+//        swerveDrive = SwerveDrive(
+//            driveCfg,
+//            controllerCfg,
+//            Constants.MAX_SPEED,
+//            Pose2d(
+//                Translation2d(Units.Meter.of(2.0), Units.Meter.of(0.0)),
+//                Rotation2d.fromDegrees(0.0)
+//            )
+//        )
+//    }
 
     /**
      * Setup the photon vision class.
      */
-    fun setupPhotonVision() {
-        vision = Vision({ swerveDrive.pose }, swerveDrive.field)
-    }
+//    fun setupPhotonVision() {
+//        vision = Vision({ swerveDrive.pose }, swerveDrive.field)
+//    }
 
     override fun periodic() {
-        // When vision is enabled we must manually update odometry in SwerveDrive
-        if (visionDriveTest) {
-            swerveDrive.updateOdometry()
-            vision.updatePoseEstimation(swerveDrive)
-        }
+        // Not concerned about vision right now.
+//        if (visionDriveTest) {
+//            swerveDrive.updateOdometry()
+//            vision.updatePoseEstimation(swerveDrive)
+//        }
     }
 
     override fun simulationPeriodic() {
@@ -210,40 +213,35 @@ class SwerveSubsystem : SubsystemBase {
 
     /**
      * Aim the robot at the target returned by PhotonVision.
-     *
-     * @return A [Command] which will run the alignment.
      */
-    fun aimAtTarget(camera: Cameras): Command {
-        return run {
-            val resultO: Optional<PhotonPipelineResult> = camera.getBestResult()
-            if (resultO.isPresent()) {
-                val result: PhotonPipelineResult = resultO.get()
-                if (result.hasTargets()) {
-                    drive(
-                        getTargetSpeeds(
-                            0.0,
-                            0.0,
-                            Rotation2d.fromDegrees(
-                                result.getBestTarget()
-                                    .getYaw()
-                            )
-                        )
-                    ) // Not sure if this will work, more math may be required.
-                }
-            }
-        }
-    }
+//    fun aimAtTarget(camera: Cameras): Command {
+//        return run {
+//            val resultO: Optional<PhotonPipelineResult> = camera.getBestResult()
+//            if (resultO.isPresent()) {
+//                val result: PhotonPipelineResult = resultO.get()
+//                if (result.hasTargets()) {
+//                    drive(
+//                        getTargetSpeeds(
+//                            0.0,
+//                            0.0,
+//                            Rotation2d.fromDegrees(
+//                                result.getBestTarget()
+//                                    .getYaw()
+//                            )
+//                        )
+//                    ) // Not sure if this will work, more math may be required.
+//                }
+//            }
+//        }
+//  }
 
     /**
      * Get the path follower with events.
-     *
-     * @param pathName PathPlanner path name.
-     * @return [AutoBuilder.followPath] path command.
      */
-    fun getAutonomousCommand(pathName: String?): Command {
-        // Create a path following command using AutoBuilder. This will also trigger event markers.
-        return PathPlannerAuto(pathName)
-    }
+//    fun getAutonomousCommand(pathName: String?): Command {
+//        // Create a path following command using AutoBuilder. This will also trigger event markers.
+//        return PathPlannerAuto(pathName)
+//    }
 
     /**
      * Use PathPlanner Path finding to go to a point on the field.
@@ -251,20 +249,20 @@ class SwerveSubsystem : SubsystemBase {
      * @param pose Target [Pose2d] to go to.
      * @return PathFinding command
      */
-    fun driveToPose(pose: Pose2d?): Command {
-// Create the constraints to use while pathfinding
-        val constraints: PathConstraints = PathConstraints(
-            swerveDrive.maximumChassisVelocity, 4.0,
-            swerveDrive.maximumChassisAngularVelocity, edu.wpi.first.math.util.Units.degreesToRadians(720.0)
-        )
-
-        // Since AutoBuilder is configured, we can use it to build pathfinding commands
-        return AutoBuilder.pathfindToPose(
-            pose,
-            constraints,
-            Units.MetersPerSecond.of(0.0) // Goal end velocity in meters/sec
-        )
-    }
+//    fun driveToPose(pose: Pose2d?): Command {
+//// Create the constraints to use while pathfinding
+//        val constraints: PathConstraints = PathConstraints(
+//            swerveDrive.maximumChassisVelocity, 4.0,
+//            swerveDrive.maximumChassisAngularVelocity, edu.wpi.first.math.util.Units.degreesToRadians(720.0)
+//        )
+//
+//        // Since AutoBuilder is configured, we can use it to build pathfinding commands
+//        return AutoBuilder.pathfindToPose(
+//            pose,
+//            constraints,
+//            Units.MetersPerSecond.of(0.0) // Goal end velocity in meters/sec
+//        )
+//    }
 
     /**
      * Drive with [SwerveSetpointGenerator] from 254, implemented by PathPlanner.
@@ -274,40 +272,40 @@ class SwerveSubsystem : SubsystemBase {
      * @throws IOException    If the PathPlanner GUI settings is invalid
      * @throws ParseException If PathPlanner GUI settings is nonexistent.
      */
-    @Throws(IOException::class, ParseException::class)
-    private fun driveWithSetpointGenerator(robotRelativeChassisSpeed: Supplier<ChassisSpeeds>): Command {
-        val setpointGenerator: SwerveSetpointGenerator = SwerveSetpointGenerator(
-            RobotConfig.fromGUISettings(),
-            swerveDrive.maximumChassisAngularVelocity
-        )
-        val prevSetpoint
-                : AtomicReference<SwerveSetpoint> = AtomicReference<SwerveSetpoint>(
-            SwerveSetpoint(
-                swerveDrive.robotVelocity,
-                swerveDrive.states,
-                DriveFeedforwards.zeros(swerveDrive.modules.size)
-            )
-        )
-        val previousTime = AtomicReference<Double>()
-
-        return startRun(
-            { previousTime.set(Timer.getFPGATimestamp()) },
-            {
-                val newTime = Timer.getFPGATimestamp()
-                val newSetpoint: SwerveSetpoint = setpointGenerator.generateSetpoint(
-                    prevSetpoint.get(),
-                    robotRelativeChassisSpeed.get(),
-                    newTime - previousTime.get()
-                )
-                swerveDrive.drive(
-                    newSetpoint.robotRelativeSpeeds(),
-                    newSetpoint.moduleStates(),
-                    newSetpoint.feedforwards().linearForces()
-                )
-                prevSetpoint.set(newSetpoint)
-                previousTime.set(newTime)
-            })
-    }
+//    @Throws(IOException::class, ParseException::class)
+//    private fun driveWithSetpointGenerator(robotRelativeChassisSpeed: Supplier<ChassisSpeeds>): Command {
+//        val setpointGenerator: SwerveSetpointGenerator = SwerveSetpointGenerator(
+//            RobotConfig.fromGUISettings(),
+//            swerveDrive.maximumChassisAngularVelocity
+//        )
+//        val prevSetpoint
+//                : AtomicReference<SwerveSetpoint> = AtomicReference<SwerveSetpoint>(
+//            SwerveSetpoint(
+//                swerveDrive.robotVelocity,
+//                swerveDrive.states,
+//                DriveFeedforwards.zeros(swerveDrive.modules.size)
+//            )
+//        )
+//        val previousTime = AtomicReference<Double>()
+//
+//        return startRun(
+//            { previousTime.set(Timer.getFPGATimestamp()) },
+//            {
+//                val newTime = Timer.getFPGATimestamp()
+//                val newSetpoint: SwerveSetpoint = setpointGenerator.generateSetpoint(
+//                    prevSetpoint.get(),
+//                    robotRelativeChassisSpeed.get(),
+//                    newTime - previousTime.get()
+//                )
+//                swerveDrive.drive(
+//                    newSetpoint.robotRelativeSpeeds(),
+//                    newSetpoint.moduleStates(),
+//                    newSetpoint.feedforwards().linearForces()
+//                )
+//                prevSetpoint.set(newSetpoint)
+//                previousTime.set(newTime)
+//            })
+//    }
 
     /**
      * Drive with 254's Setpoint generator; port written by PathPlanner.
@@ -315,19 +313,19 @@ class SwerveSubsystem : SubsystemBase {
      * @param fieldRelativeSpeeds Field-Relative [ChassisSpeeds]
      * @return Command to drive the robot using the setpoint generator.
      */
-    fun driveWithSetpointGeneratorFieldRelative(fieldRelativeSpeeds: Supplier<ChassisSpeeds?>): Command {
-        try {
-            return driveWithSetpointGenerator {
-                ChassisSpeeds.fromFieldRelativeSpeeds(
-                    fieldRelativeSpeeds.get(),
-                    heading
-                )
-            }
-        } catch (e: Exception) {
-            DriverStation.reportError(e.toString(), true)
-        }
-        return Commands.none()
-    }
+//    fun driveWithSetpointGeneratorFieldRelative(fieldRelativeSpeeds: Supplier<ChassisSpeeds?>): Command {
+//        try {
+//            return driveWithSetpointGenerator {
+//                ChassisSpeeds.fromFieldRelativeSpeeds(
+//                    fieldRelativeSpeeds.get(),
+//                    heading
+//                )
+//            }
+//        } catch (e: Exception) {
+//            DriverStation.reportError(e.toString(), true)
+//        }
+//        return Commands.none()
+//    }
 
 
     /**
@@ -335,30 +333,30 @@ class SwerveSubsystem : SubsystemBase {
      *
      * @return SysId Drive Command
      */
-    fun sysIdDriveMotorCommand(): Command {
-        return SwerveDriveTest.generateSysIdCommand(
-            SwerveDriveTest.setDriveSysIdRoutine(
-                SysIdRoutine.Config(),
-                this, swerveDrive, 12.0, true
-            ),
-            3.0, 5.0, 3.0
-        )
-    }
+//    fun sysIdDriveMotorCommand(): Command {
+//        return SwerveDriveTest.generateSysIdCommand(
+//            SwerveDriveTest.setDriveSysIdRoutine(
+//                SysIdRoutine.Config(),
+//                this, swerveDrive, 12.0, true
+//            ),
+//            3.0, 5.0, 3.0
+//        )
+//    }
 
     /**
      * Command to characterize the robot angle motors using SysId
      *
      * @return SysId Angle Command
      */
-    fun sysIdAngleMotorCommand(): Command {
-        return SwerveDriveTest.generateSysIdCommand(
-            SwerveDriveTest.setAngleSysIdRoutine(
-                SysIdRoutine.Config(),
-                this, swerveDrive
-            ),
-            3.0, 5.0, 3.0
-        )
-    }
+//    fun sysIdAngleMotorCommand(): Command {
+//        return SwerveDriveTest.generateSysIdCommand(
+//            SwerveDriveTest.setAngleSysIdRoutine(
+//                SysIdRoutine.Config(),
+//                this, swerveDrive
+//            ),
+//            3.0, 5.0, 3.0
+//        )
+//    }
 
     /**
      * Returns a Command that centers the modules of the SwerveDrive subsystem.
@@ -383,13 +381,13 @@ class SwerveSubsystem : SubsystemBase {
      * @param speedInMetersPerSecond the speed at which to drive in meters per second
      * @return a Command that drives the swerve drive to a specific distance at a given speed
      */
-    fun driveToDistanceCommand(distanceInMeters: Double, speedInMetersPerSecond: Double): Command {
-        return run { drive(ChassisSpeeds(speedInMetersPerSecond, 0.0, 0.0)) }
-            .until {
-                swerveDrive.pose.translation.getDistance(Translation2d(0.0, 0.0)) >
-                        distanceInMeters
-            }
-    }
+//    fun driveToDistanceCommand(distanceInMeters: Double, speedInMetersPerSecond: Double): Command {
+//        return run { drive(ChassisSpeeds(speedInMetersPerSecond, 0.0, 0.0)) }
+//            .until {
+//                swerveDrive.pose.translation.getDistance(Translation2d(0.0, 0.0)) >
+//                        distanceInMeters
+//            }
+//    }
 
     /**
      * Replaces the swerve module feedforward with a new SimpleMotorFeedforward object.
@@ -504,7 +502,7 @@ class SwerveSubsystem : SubsystemBase {
      */
     fun driveFieldOriented(velocity: Supplier<ChassisSpeeds?>): Command {
         return run {
-            swerveDrive.driveFieldOriented(velocity.get())
+            swerveDrive.driveFieldOriented(velocity.get(), Translation2d())
         }
     }
 
@@ -708,9 +706,9 @@ class SwerveSubsystem : SubsystemBase {
     /**
      * Add a fake vision reading for testing purposes.
      */
-    fun addFakeVisionReading() {
-        swerveDrive.addVisionMeasurement(Pose2d(3.0, 3.0, Rotation2d.fromDegrees(65.0)), Timer.getFPGATimestamp())
-    }
+//    fun addFakeVisionReading() {
+//        swerveDrive.addVisionMeasurement(Pose2d(3.0, 3.0, Rotation2d.fromDegrees(65.0)), Timer.getFPGATimestamp())
+//    }
 }
 
 
