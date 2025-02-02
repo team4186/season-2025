@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem
 import edu.wpi.first.wpilibj.RobotBase
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Commands
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 import frc.robot.subsystems.swervedrive.SwerveSubsystem
 import frc.robot.yagsl_testing.Constants.OperatorConstants
@@ -25,7 +26,8 @@ import kotlin.math.sin
  */
 class RobotContainer {
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    val driverXbox: CommandXboxController = CommandXboxController(0)
+    //val driverXbox: CommandXboxController = CommandXboxController(0)
+    val joystick: CommandJoystick = CommandJoystick(0)
 
     // The robot's subsystems and commands are defined here...
     private val drivebase = SwerveSubsystem(
@@ -40,9 +42,9 @@ class RobotContainer {
      */
     var driveAngularVelocity: SwerveInputStream = SwerveInputStream.of(
         drivebase.swerveDrive,
-        { driverXbox.leftY * -1 },
-        { driverXbox.leftX * -1 })
-        .withControllerRotationAxis { driverXbox.rightX }
+        { joystick.y * -1 },
+        { joystick.x * -1 })
+        .withControllerRotationAxis { joystick.twist}
         .deadband(OperatorConstants.DEADBAND)
         .scaleTranslation(0.8)
         .allianceRelativeControl(true)
@@ -50,10 +52,12 @@ class RobotContainer {
     /**
      * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
      */
-    var driveDirectAngle: SwerveInputStream = driveAngularVelocity.copy().withControllerHeadingAxis(
-        { driverXbox.rightX },
-        { driverXbox.rightY })
-        .headingWhile(true)
+
+    //useful for controllers, not applicable for 1 joysticks, needs second joystick
+//    var driveDirectAngle: SwerveInputStream = driveAngularVelocity.copy().withControllerHeadingAxis(
+//        { driverXbox.rightX },
+//        { driverXbox.rightY })
+//        .headingWhile(true)
 
     /**
      * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
@@ -63,10 +67,10 @@ class RobotContainer {
 
     var driveAngularVelocityKeyboard: SwerveInputStream = SwerveInputStream.of(
         drivebase.swerveDrive,
-        { -driverXbox.leftY },
-        { -driverXbox.leftX })
+        { -joystick.y },
+        { -joystick.x })
         .withControllerRotationAxis {
-            driverXbox.getRawAxis(
+            joystick.getRawAxis(
                 2
             )
         }
@@ -79,7 +83,7 @@ class RobotContainer {
         .withControllerHeadingAxis(
             {
                 sin(
-                    driverXbox.getRawAxis(
+                    joystick.getRawAxis(
                         2
                     ) *
                             Math.PI
@@ -89,7 +93,7 @@ class RobotContainer {
             },
             {
                 cos(
-                    driverXbox.getRawAxis(
+                    joystick.getRawAxis(
                         2
                     ) *
                             Math.PI
@@ -117,12 +121,17 @@ class RobotContainer {
      * controllers or [Flight joysticks][edu.wpi.first.wpilibj2.command.button.CommandJoystick].
      */
     private fun configureBindings() {
-        val driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle)
+        //direct angle not functional
+        //val driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle)
+
         val driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity)
         val driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented)
-        val driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
-            driveDirectAngle
-        )
+
+        // direct angle not functional
+//        val driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(
+//            driveDirectAngle
+//        )
+
         val driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard)
         val driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard)
         val driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
@@ -136,30 +145,31 @@ class RobotContainer {
         }
 
         if (Robot.isSimulation()) {
-            driverXbox.start().onTrue(Commands.runOnce({ drivebase.resetOdometry(Pose2d(3.0, 3.0, Rotation2d())) }))
-            driverXbox.button(1).whileTrue(drivebase.sysIdDriveMotorCommand())
+            joystick.start().onTrue(Commands.runOnce({ drivebase.resetOdometry(Pose2d(3.0, 3.0, Rotation2d())) }))
+            joystick.button(1).whileTrue(drivebase.sysIdDriveMotorCommand())
         }
+
         if (DriverStation.isTest()) {
             drivebase.defaultCommand = driveFieldOrientedAnglularVelocity // Overrides drive command above!
 
-            driverXbox.x().whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
-            driverXbox.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2))
-            driverXbox.start().onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
-            driverXbox.back().whileTrue(drivebase.centerModulesCommand())
-            driverXbox.leftBumper().onTrue(Commands.none())
-            driverXbox.rightBumper().onTrue(Commands.none())
+            joystick.x().whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
+            joystick.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2))
+            joystick.start().onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
+            joystick.back().whileTrue(drivebase.centerModulesCommand())
+            joystick.leftBumper().onTrue(Commands.none())
+            joystick.rightBumper().onTrue(Commands.none())
         } else {
-            driverXbox.a().onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
-            driverXbox.x().onTrue(Commands.runOnce({ drivebase.addFakeVisionReading() }))
-            driverXbox.b().whileTrue(
+            joystick.a().onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
+            joystick.x().onTrue(Commands.runOnce({ drivebase.addFakeVisionReading() }))
+            joystick.b().whileTrue(
                 drivebase.driveToPose(
                     Pose2d(Translation2d(4.0, 4.0), Rotation2d.fromDegrees(0.0))
                 )
             )
-            driverXbox.start().whileTrue(Commands.none())
-            driverXbox.back().whileTrue(Commands.none())
-            driverXbox.leftBumper().whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
-            driverXbox.rightBumper().onTrue(Commands.none())
+            joystick.start().whileTrue(Commands.none())
+            joystick.back().whileTrue(Commands.none())
+            joystick.leftBumper().whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
+            joystick.rightBumper().onTrue(Commands.none())
         }
     }
 

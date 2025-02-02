@@ -13,12 +13,12 @@ import frc.robot.actions.manualDrive
 
 
 class Robot : TimedRobot() {
-    private val joystick0 = Joystick(0)
+    //private val joystick0 = Joystick(0)
 
-    private val drive = DifferentialDrive(
-        Components.Propulsion.LeftMotorSet,
-        Components.Propulsion.RightMotorSet,
-    )
+//    private val drive = DifferentialDrive(
+//        Components.Propulsion.LeftMotorSet,
+//        Components.Propulsion.RightMotorSet,
+//    )
 
     private val autonomousChooser = SendableChooser<Command>()
 
