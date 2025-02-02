@@ -2,14 +2,13 @@ package frc.robot
 
 import edu.wpi.first.hal.FRCNetComm
 import edu.wpi.first.hal.HAL
-import edu.wpi.first.wpilibj.Joystick
 import edu.wpi.first.wpilibj.TimedRobot
-import edu.wpi.first.wpilibj.drive.DifferentialDrive
+import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
-import frc.robot.actions.manualDrive
+import frc.robot.yagsl_testing.RobotContainer
 
 
 class Robot : TimedRobot() {
@@ -20,6 +19,21 @@ class Robot : TimedRobot() {
 //        Components.Propulsion.RightMotorSet,
 //    )
 
+    var instance: Robot? = null
+    private val m_autonomousCommand: Command? = null
+
+    private val m_robotContainer: RobotContainer? = null
+
+    private val disabledTimer: Timer? = null
+
+    init {
+        instance = this
+    }
+
+    fun getInstance(): Robot? {
+        return instance
+    }
+
     private val autonomousChooser = SendableChooser<Command>()
 
     override fun robotInit() {
@@ -29,6 +43,9 @@ class Robot : TimedRobot() {
             setDefaultOption("Nothing", null)
             SmartDashboard.putData("Autonomous Mode", this)
         }
+
+        val m_robotContainer = RobotContainer()
+
     }
 
     override fun robotPeriodic() {
@@ -51,11 +68,11 @@ class Robot : TimedRobot() {
     }
 
     override fun teleopPeriodic() {
-        manualDrive(
-            forward = joystick0.y,
-            turn = joystick0.twist,
-            drive = { forward, turn -> drive.arcadeDrive(forward, turn, true) }
-        )
+//        manualDrive(
+//            forward = joystick0.y,
+//            turn = joystick0.twist,
+//            drive = { forward, turn -> drive.arcadeDrive(forward, turn, true) }
+//        )
     }
 
     override fun teleopExit() {
