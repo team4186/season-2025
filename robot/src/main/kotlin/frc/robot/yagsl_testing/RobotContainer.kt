@@ -1,7 +1,7 @@
 package frc.robot.yagsl_testing
 
 
-import com.pathplanner.lib.auto.NamedCommands
+//import com.pathplanner.lib.auto.NamedCommands
 import edu.wpi.first.math.geometry.Pose2d
 import edu.wpi.first.math.geometry.Rotation2d
 import edu.wpi.first.math.geometry.Translation2d
@@ -18,6 +18,8 @@ import swervelib.SwerveInputStream
 import java.io.File
 import kotlin.math.cos
 import kotlin.math.sin
+import frc.robot.Robot
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -110,7 +112,7 @@ class RobotContainer {
         // Configure the trigger bindings
         configureBindings()
         DriverStation.silenceJoystickConnectionWarning(true)
-        NamedCommands.registerCommand("test", Commands.print("I EXIST"))
+        //NamedCommands.registerCommand("test", Commands.print("I EXIST"))
     }
 
     /**
@@ -144,32 +146,35 @@ class RobotContainer {
             drivebase.defaultCommand = driveFieldOrientedAnglularVelocity
         }
 
-        if (Robot.isSimulation()) {
-            joystick.start().onTrue(Commands.runOnce({ drivebase.resetOdometry(Pose2d(3.0, 3.0, Rotation2d())) }))
-            joystick.button(1).whileTrue(drivebase.sysIdDriveMotorCommand())
-        }
+        // buttons could be set up better
+
+        //simulation not important right now
+//        if (Robot.isSimulation()) {
+//            joystick.button(7).onTrue(Commands.runOnce({ drivebase.resetOdometry(Pose2d(3.0, 3.0, Rotation2d())) }))
+//            joystick.button(8).whileTrue(drivebase.sysIdDriveMotorCommand())
+//        }
 
         if (DriverStation.isTest()) {
             drivebase.defaultCommand = driveFieldOrientedAnglularVelocity // Overrides drive command above!
 
-            joystick.x().whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
-            joystick.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2))
-            joystick.start().onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
-            joystick.back().whileTrue(drivebase.centerModulesCommand())
-            joystick.leftBumper().onTrue(Commands.none())
-            joystick.rightBumper().onTrue(Commands.none())
+            joystick.button(3).whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
+            joystick.button(4).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2))
+            joystick.button(5).onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
+            joystick.button(6).whileTrue(drivebase.centerModulesCommand())
+            joystick.button(7).onTrue(Commands.none())
+            joystick.button(8).onTrue(Commands.none())
         } else {
-            joystick.a().onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
-            joystick.x().onTrue(Commands.runOnce({ drivebase.addFakeVisionReading() }))
-            joystick.b().whileTrue(
+            joystick.button(9).onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
+            joystick.button(10).onTrue(Commands.runOnce({ drivebase.addFakeVisionReading() }))
+            joystick.button(11).whileTrue(
                 drivebase.driveToPose(
                     Pose2d(Translation2d(4.0, 4.0), Rotation2d.fromDegrees(0.0))
                 )
             )
-            joystick.start().whileTrue(Commands.none())
-            joystick.back().whileTrue(Commands.none())
-            joystick.leftBumper().whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
-            joystick.rightBumper().onTrue(Commands.none())
+            joystick.button(5).whileTrue(Commands.none())
+            joystick.button(6).whileTrue(Commands.none())
+            joystick.button(7).whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
+            joystick.button(8).onTrue(Commands.none())
         }
     }
 
