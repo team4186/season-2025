@@ -34,19 +34,19 @@ object Constants {
         val frontRightDrivingCanId: Int = 1
         val backRightDrivingCanId: Int = 3
         val backLeftDrivingCanId: Int = 5
-        val frontLeftDrivingCanId: Int = 7
+        val frontLeftDrivingCanId: Int = 8
 
         val frontRightTurningCanId: Int = 2
         val backRightTurningCanId: Int = 4
         val backLeftTurningCanId: Int = 6
-        val frontLeftTurningCanId: Int = 8
+        val frontLeftTurningCanId: Int = 7
 
-        val frontRightCanEncoderId: Int = 10
-        val backRightCanEncoderId: Int = 11
-        val backLeftCanEncoderId: Int = 12
-        val frontLeftCanEncoderId: Int = 13
+        val frontRightCanEncoderId: Int = 1
+        val backRightCanEncoderId: Int = 2
+        val backLeftCanEncoderId: Int = 3
+        val frontLeftCanEncoderId: Int = 4
 
-        val gyroChannelId: Int = 0
+        val gyroChannelId: Int = 10
         val gyroReversed: Boolean = false
     }
 

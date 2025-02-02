@@ -45,8 +45,7 @@ class SwerveDriveSubsystem: SubsystemBase() {
         DriveConstants.backRightCanEncoderId,
         DriveConstants.backRightChassisAngularOffset
     )
-    // private val gyro = AnalogGyro(DriveConstants.gyroChannelId)
-    // TODO: Double check Canbus naming
+
     private val gyro: Pigeon2 = Pigeon2(DriveConstants.gyroChannelId, "rio")
     private val odometry = SwerveDriveOdometry(
         DriveConstants.driveKinematics,

@@ -91,7 +91,7 @@ class MAXSwerveConfig {
             .positionConversionFactor(turningFactor) // radians
             .velocityConversionFactor(turningFactor / 60.0) // radians per second
         turningConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
             // TODO: Adjust PID gains
             .pid(1.0, 0.0, 0.0)
             .outputRange(-1.0, 1.0)
