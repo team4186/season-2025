@@ -45,6 +45,11 @@ dependencyResolutionManagement {
         maven("https://dev.studica.com/maven/release/2025/")
         maven("https://maven.ctr-electronics.com/release/")
         maven("https://maven.revrobotics.com/")
+        maven("https://maven.reduxrobotics.com/")
+        maven("https://docs.home.thethriftybot.com")
+        maven("https://repo1.maven.org/maven2")
+        maven("https://shenzhen-robotics-alliance.github.io/maple-sim/vendordep/repos/releases")
+        maven("https://broncbotz3481.github.io/YAGSL-Lib/yagsl/repos")
     }
 }
 
