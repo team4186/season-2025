@@ -67,43 +67,43 @@ class RobotContainer {
     var driveRobotOriented: SwerveInputStream = driveAngularVelocity.copy().robotRelative(true)
         .allianceRelativeControl(false)
 
-    var driveAngularVelocityKeyboard: SwerveInputStream = SwerveInputStream.of(
-        drivebase.swerveDrive,
-        { -joystick.y },
-        { -joystick.x })
-        .withControllerRotationAxis {
-            joystick.getRawAxis(
-                2
-            )
-        }
-        .deadband(OperatorConstants.DEADBAND)
-        .scaleTranslation(0.8)
-        .allianceRelativeControl(true)
-
-    // Derive the heading axis with math!
-    var driveDirectAngleKeyboard: SwerveInputStream = driveAngularVelocityKeyboard.copy()
-        .withControllerHeadingAxis(
-            {
-                sin(
-                    joystick.getRawAxis(
-                        2
-                    ) *
-                            Math.PI
-                ) *
-                        (Math.PI *
-                                2)
-            },
-            {
-                cos(
-                    joystick.getRawAxis(
-                        2
-                    ) *
-                            Math.PI
-                ) *
-                        (Math.PI *
-                                2)
-            })
-        .headingWhile(true)
+//    var driveAngularVelocityKeyboard: SwerveInputStream = SwerveInputStream.of(
+//        drivebase.swerveDrive,
+//        { -joystick.y },
+//        { -joystick.x })
+//        .withControllerRotationAxis {
+//            joystick.getRawAxis(
+//                2
+//            )
+//        }
+//        .deadband(OperatorConstants.DEADBAND)
+//        .scaleTranslation(0.8)
+//        .allianceRelativeControl(true)
+//
+//    // Derive the heading axis with math!
+//    var driveDirectAngleKeyboard: SwerveInputStream = driveAngularVelocityKeyboard.copy()
+//        .withControllerHeadingAxis(
+//            {
+//                sin(
+//                    joystick.getRawAxis(
+//                        2
+//                    ) *
+//                            Math.PI
+//                ) *
+//                        (Math.PI *
+//                                2)
+//            },
+//            {
+//                cos(
+//                    joystick.getRawAxis(
+//                        2
+//                    ) *
+//                            Math.PI
+//                ) *
+//                        (Math.PI *
+//                                2)
+//            })
+//        .headingWhile(true)
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -134,11 +134,11 @@ class RobotContainer {
 //            driveDirectAngle
 //        )
 
-        val driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard)
-        val driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard)
-        val driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
-            driveDirectAngleKeyboard
-        )
+//        val driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard)
+//        val driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard)
+//        val driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(
+//            driveDirectAngleKeyboard
+//        )
 
         if (RobotBase.isSimulation()) {
             drivebase.defaultCommand = driveFieldOrientedDirectAngleKeyboard
