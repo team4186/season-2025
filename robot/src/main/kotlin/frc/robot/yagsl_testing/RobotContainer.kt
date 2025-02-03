@@ -164,8 +164,9 @@ class RobotContainer {
             joystick.button(7).onTrue(Commands.none())
             joystick.button(8).onTrue(Commands.none())
         } else {
+            //drivebase.defaultCommand = driveCommand(joystick.getX(), joystick.getY(), )
             joystick.button(9).onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
-            joystick.button(10).onTrue(Commands.runOnce({ drivebase.addFakeVisionReading() }))
+//            joystick.button(10).onTrue(Commands.runOnce({ drivebase.addFakeVisionReading() }))
             joystick.button(11).whileTrue(
                 drivebase.driveToPose(
                     Pose2d(Translation2d(4.0, 4.0), Rotation2d.fromDegrees(0.0))
