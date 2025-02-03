@@ -35,10 +35,11 @@ class RobotContainer {
     private val drivebase = SwerveSubsystem(
         File(
             Filesystem.getDeployDirectory(),
-            "swerve/neo"
+            "swerve" // TODO: Find naming for child directory
         )
     )
 
+    // Unhandled exception instantiating robot java.io.FileInputStream java.io.FileNotFoundException: /home/lvuser/deploy/swerve/swervedrive.json (No such file or directory) java.base/java.io.FileInputStream.open0(Native Method)
     /**
      * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
      */
@@ -141,7 +142,7 @@ class RobotContainer {
 //        )
 
         if (RobotBase.isSimulation()) {
-            drivebase.defaultCommand = driveFieldOrientedDirectAngleKeyboard
+//            drivebase.defaultCommand = driveFieldOrientedDirectAngleKeyboard
         } else {
             drivebase.defaultCommand = driveFieldOrientedAnglularVelocity
         }
@@ -158,7 +159,7 @@ class RobotContainer {
             drivebase.defaultCommand = driveFieldOrientedAnglularVelocity // Overrides drive command above!
 
             joystick.button(3).whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
-            joystick.button(4).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2))
+//            joystick.button(4).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2))
             joystick.button(5).onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
             joystick.button(6).whileTrue(drivebase.centerModulesCommand())
             joystick.button(7).onTrue(Commands.none())
@@ -167,11 +168,11 @@ class RobotContainer {
             //drivebase.defaultCommand = driveCommand(joystick.getX(), joystick.getY(), )
             joystick.button(9).onTrue((Commands.runOnce({ drivebase.zeroGyro() })))
 //            joystick.button(10).onTrue(Commands.runOnce({ drivebase.addFakeVisionReading() }))
-            joystick.button(11).whileTrue(
-                drivebase.driveToPose(
-                    Pose2d(Translation2d(4.0, 4.0), Rotation2d.fromDegrees(0.0))
-                )
-            )
+//            joystick.button(11).whileTrue(
+//                drivebase.driveToPose(
+//                    Pose2d(Translation2d(4.0, 4.0), Rotation2d.fromDegrees(0.0))
+//                )
+//            )
             joystick.button(5).whileTrue(Commands.none())
             joystick.button(6).whileTrue(Commands.none())
             joystick.button(7).whileTrue(Commands.runOnce({ drivebase.lock() }, drivebase).repeatedly())
@@ -179,14 +180,17 @@ class RobotContainer {
         }
     }
 
-    val autonomousCommand: Command
-        /**
-         * Use this to pass the autonomous command to the main [Robot] class.
-         *
-         * @return the command to run in autonomous
-         */
-        get() =// An example command will be run in autonomous
-            drivebase.getAutonomousCommand("New Auto")
+
+    /**
+     * Use this to pass the autonomous command to the main [Robot] class.
+     *
+     * @return the command to run in autonomous
+     */
+//    fun autonomousCommand(): Command {
+//        return drivebase.getAutonomousCommand("New Auto")
+//    }
+
+
 
     fun setMotorBrake(brake: Boolean) {
         drivebase.setMotorBrake(brake)
