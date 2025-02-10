@@ -23,6 +23,39 @@ val DefaultRightConfig: SparkBaseConfig = SparkMaxConfig()
     .inverted(false)
 
 
+val SimpleMotorConfig: SparkBaseConfig = SparkMaxConfig()
+    .apply(BaseConfig)
+    .inverted(false)
+
+
+class SingleMotor(
+    val motor: SparkMax,
+    val baseConfig: SparkBaseConfig
+) {
+    init {
+        motor.configure(baseConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters)
+    }
+
+    fun accept(value: Double) {
+        motor.set(value)
+    }
+
+    fun stop() {
+        motor.stopMotor()
+    }
+
+    fun setIdleMode(mode: SparkBaseConfig.IdleMode) {
+        motor.configure(
+            SparkMaxConfig()
+                .apply(baseConfig)
+                .idleMode(mode),
+            ResetMode.kResetSafeParameters,
+            PersistMode.kPersistParameters,
+        )
+    }
+}
+
+
 class MotorSet(
     val lead: SparkMax,
     val follower0: SparkMax,

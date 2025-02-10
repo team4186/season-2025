@@ -1,10 +1,9 @@
 package frc.robot
 
+import com.revrobotics.config.BaseConfig
 import com.revrobotics.spark.SparkLowLevel
 import com.revrobotics.spark.SparkMax
-import frc.robot.parts.DefaultLeftConfig
-import frc.robot.parts.DefaultRightConfig
-import frc.robot.parts.MotorSet
+import frc.robot.parts.*
 
 /**
  * The [Components] singleton can be used to configure and hold reference to hardware parts
@@ -24,5 +23,9 @@ object Components {
             follower0 = SparkMax(10, SparkLowLevel.MotorType.kBrushless),
             baseConfig = DefaultRightConfig,
         )
+    }
+    object SimpleMotorTesting {
+        val motor = SimpleMotor(12, SparkLowLevel.MotorType.kBrushless),
+        val baseConfig = SimpleMotorConfig
     }
 }
