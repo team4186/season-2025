@@ -20,8 +20,7 @@ import swervelib.math.SwerveMath;
 /**
  * A more advanced Swerve Control System that has 4 buttons for which direction to face
  */
-public class AbsoluteDriveAdv extends Command
-{
+public class AbsoluteDriveAdv extends Command {
 
   private final SwerveSubsystem swerve;
   private final DoubleSupplier  vX, vY;
@@ -29,11 +28,12 @@ public class AbsoluteDriveAdv extends Command
   private final BooleanSupplier lookAway, lookTowards, lookLeft, lookRight;
   private boolean resetHeading = false;
 
+
   /**
    * Used to drive a swerve robot in full field-centric mode.  vX and vY supply translation inputs, where x is
    * torwards/away from alliance wall and y is left/right. Heading Adjust changes the current heading after being
    * multipied by a constant. The look booleans are shortcuts to get the robot to face a certian direction. Based off of
-   * ideas in https://www.chiefdelphi.com/t/experiments-with-a-swerve-steering-knob/446172
+   * ideas in <a href="https://www.chiefdelphi.com/t/experiments-with-a-swerve-steering-knob/446172">...</a>
    *
    * @param swerve        The swerve drivebase subsystem.
    * @param vX            DoubleSupplier that supplies the x-translation joystick input.  Should be in the range -1 to 1
@@ -49,10 +49,16 @@ public class AbsoluteDriveAdv extends Command
    * @param lookLeft      Face the robot left
    * @param lookRight     Face the robot right
    */
-  public AbsoluteDriveAdv(SwerveSubsystem swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier headingAdjust,
-                          BooleanSupplier lookAway, BooleanSupplier lookTowards, BooleanSupplier lookLeft,
-                          BooleanSupplier lookRight)
-  {
+  public AbsoluteDriveAdv(
+          SwerveSubsystem swerve,
+          DoubleSupplier vX,
+          DoubleSupplier vY,
+          DoubleSupplier headingAdjust,
+          BooleanSupplier lookAway,
+          BooleanSupplier lookTowards,
+          BooleanSupplier lookLeft,
+          BooleanSupplier lookRight
+  ) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;
@@ -65,16 +71,17 @@ public class AbsoluteDriveAdv extends Command
     addRequirements(swerve);
   }
 
+
   @Override
   public void initialize()
   {
     resetHeading = true;
   }
 
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
-  {
+  public void execute() {
     double headingX = 0;
     double headingY = 0;
 
@@ -120,28 +127,32 @@ public class AbsoluteDriveAdv extends Command
 
     // Limit velocity to prevent tippy
     Translation2d translation = SwerveController.getTranslation2d(desiredSpeeds);
-    translation = SwerveMath.limitVelocity(translation, swerve.getFieldVelocity(), swerve.getPose(),
-                                           Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),
-                                           swerve.getSwerveDriveConfiguration());
+    translation = SwerveMath.limitVelocity(
+            translation,
+            swerve.getFieldVelocity(),
+            swerve.getPose(),
+            Constants.LOOP_TIME,
+            Constants.ROBOT_MASS,
+            List.of(Constants.CHASSIS),
+            swerve.getSwerveDriveConfiguration()
+    );
     SmartDashboard.putNumber("LimitedTranslation", translation.getX());
     SmartDashboard.putString("Translation", translation.toString());
 
     // Make the robot move
-    if (headingX == 0 && headingY == 0 && Math.abs(headingAdjust.getAsDouble()) > 0)
-    {
+    if (headingX == 0 && headingY == 0 && Math.abs(headingAdjust.getAsDouble()) > 0) {
       resetHeading = true;
       swerve.drive(translation, (Constants.OperatorConstants.TURN_CONSTANT * -headingAdjust.getAsDouble()), true);
-    } else
-    {
+    } else {
       swerve.drive(translation, desiredSpeeds.omegaRadiansPerSecond, true);
     }
   }
 
+
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)
-  {
-  }
+  public void end(boolean interrupted) { }
+
 
   // Returns true when the command should end.
   @Override
@@ -149,6 +160,4 @@ public class AbsoluteDriveAdv extends Command
   {
     return false;
   }
-
-
 }
