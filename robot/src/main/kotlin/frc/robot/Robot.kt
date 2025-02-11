@@ -22,9 +22,7 @@ class Robot : TimedRobot() {
     private val ySpeedLimiter = SlewRateLimiter(3.0)
     private val rotLimiter = SlewRateLimiter(3.0)
 
-
-    val single_motor: SimpleMotor = SimpleMotor()
-
+    private val singleMotor: SimpleMotor = SimpleMotor()
 
     private val autonomousChooser = SendableChooser<Command>()
 
@@ -57,7 +55,8 @@ class Robot : TimedRobot() {
     }
 
     override fun teleopPeriodic() {
-        driveWithJoystick(true)
+        // driveWithJoystick(true)
+        driveSingleMotorWithJoystick()
     }
 
     override fun teleopExit() {
@@ -72,13 +71,16 @@ class Robot : TimedRobot() {
         val xSpeed: Double =
             (-xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.driveDeadband))
                     * SwerveDriveSubsystem.MAX_SPEED)
-
         // Get the y speed or sideways/strafe speed
         val ySpeed: Double =
             (-ySpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.y, Constants.OIConstants.driveDeadband))
                     * SwerveDriveSubsystem.MAX_SPEED)
-
         // TODO: run motor
 
+    }
+
+    private fun driveSingleMotorWithJoystick() {
+        val xSpeed: Double = -xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.driveDeadband))
+        singleMotor.move(xSpeed)
     }
 }

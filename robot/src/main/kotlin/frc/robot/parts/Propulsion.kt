@@ -23,12 +23,13 @@ val DefaultRightConfig: SparkBaseConfig = SparkMaxConfig()
     .inverted(false)
 
 
-val SimpleMotorConfig: SparkBaseConfig = SparkMaxConfig()
+val DefaultSimpleMotorConfig: SparkBaseConfig = SparkMaxConfig()
     .apply(BaseConfig)
     .inverted(false)
 
 
-class SingleMotor(
+// Configure spark max motor, object created in Components
+class SingleMotorTestingConfig(
     val motor: SparkMax,
     val baseConfig: SparkBaseConfig
 ) {

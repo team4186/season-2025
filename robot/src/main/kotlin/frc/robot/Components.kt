@@ -24,8 +24,10 @@ object Components {
             baseConfig = DefaultRightConfig,
         )
     }
-    object SimpleMotorTesting {
-        val motor = SimpleMotor(12, SparkLowLevel.MotorType.kBrushless),
-        val baseConfig = SimpleMotorConfig
+    object SingleMotorComponent{
+        val SingleMotor = SingleMotorTestingConfig(
+            motor = SparkMax(10, SparkLowLevel.MotorType.kBrushless),
+            baseConfig = DefaultSimpleMotorConfig
+        )
     }
 }
