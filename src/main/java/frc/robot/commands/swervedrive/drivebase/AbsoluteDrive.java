@@ -19,13 +19,13 @@ import swervelib.math.SwerveMath;
 /**
  * An example command that uses an example subsystem.
  */
-public class AbsoluteDrive extends Command
-{
+public class AbsoluteDrive extends Command {
 
   private final SwerveSubsystem swerve;
   private final DoubleSupplier  vX, vY;
   private final DoubleSupplier headingHorizontal, headingVertical;
   private boolean initRotation = false;
+
 
   /**
    * Used to drive a swerve robot in full field-centric mode.  vX and vY supply translation inputs, where x is
@@ -47,9 +47,13 @@ public class AbsoluteDrive extends Command
    *                          robot coordinate system, this is along the same axis as vX.  Should range from -1 to 1
    *                          with no deadband. Positive is away from the alliance wall.
    */
-  public AbsoluteDrive(SwerveSubsystem swerve, DoubleSupplier vX, DoubleSupplier vY, DoubleSupplier headingHorizontal,
-                       DoubleSupplier headingVertical)
-  {
+  public AbsoluteDrive(
+          SwerveSubsystem swerve,
+          DoubleSupplier vX,
+          DoubleSupplier vY,
+          DoubleSupplier headingHorizontal,
+          DoubleSupplier headingVertical
+  ) {
     this.swerve = swerve;
     this.vX = vX;
     this.vY = vY;
@@ -67,20 +71,18 @@ public class AbsoluteDrive extends Command
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute()
-  {
-
+  public void execute() {
     // Get the desired chassis speeds based on a 2 joystick module.
-    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(vX.getAsDouble(), vY.getAsDouble(),
-                                                         headingHorizontal.getAsDouble(),
-                                                         headingVertical.getAsDouble());
+    ChassisSpeeds desiredSpeeds = swerve.getTargetSpeeds(
+            vX.getAsDouble(),
+            vY.getAsDouble(),
+            headingHorizontal.getAsDouble(),
+            headingVertical.getAsDouble());
 
     // Prevent Movement After Auto
-    if (initRotation)
-    {
-      if (headingHorizontal.getAsDouble() == 0 && headingVertical.getAsDouble() == 0)
-      {
-        // Get the curretHeading
+    if (initRotation) {
+      if (headingHorizontal.getAsDouble() == 0 && headingVertical.getAsDouble() == 0) {
+        // Get the current Heading
         Rotation2d firstLoopHeading = swerve.getHeading();
 
         // Set the Current Heading to the desired Heading
@@ -92,9 +94,13 @@ public class AbsoluteDrive extends Command
 
     // Limit velocity to prevent tippy
     Translation2d translation = SwerveController.getTranslation2d(desiredSpeeds);
-    translation = SwerveMath.limitVelocity(translation, swerve.getFieldVelocity(), swerve.getPose(),
-                                           Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),
-                                           swerve.getSwerveDriveConfiguration());
+    translation = SwerveMath.limitVelocity(
+            translation,
+            swerve.getFieldVelocity(),
+            swerve.getPose(),
+            Constants.LOOP_TIME, Constants.ROBOT_MASS, List.of(Constants.CHASSIS),
+            swerve.getSwerveDriveConfiguration()
+    );
     SmartDashboard.putNumber("LimitedTranslation", translation.getX());
     SmartDashboard.putString("Translation", translation.toString());
 
@@ -103,11 +109,12 @@ public class AbsoluteDrive extends Command
 
   }
 
+
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted)
-  {
+  public void end(boolean interrupted) {
   }
+
 
   // Returns true when the command should end.
   @Override
@@ -115,6 +122,4 @@ public class AbsoluteDrive extends Command
   {
     return false;
   }
-
-
 }
