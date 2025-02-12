@@ -55,9 +55,9 @@ import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveSubsystem extends SubsystemBase {
-  private final SwerveDrive         swerveDrive;
+  private final SwerveDrive swerveDrive;
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
-  private final boolean             visionDriveTest     = false;
+  private final boolean visionDriveTest = false;
   private Vision vision;
 
   /**
@@ -92,6 +92,7 @@ public class SwerveSubsystem extends SubsystemBase {
             false,
             1); // TODO: Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
 //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
+
     if (visionDriveTest) {
       setupPhotonVision();
       // Stop the odometry thread if we are using vision that way we can synchronize updates better.
@@ -190,7 +191,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     } catch (Exception e) {
       // Handle exception as needed
-      e.printStackTrace();
+      System.out.println(e);
     }
 
     // Preload PathPlanner Path finding
