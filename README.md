@@ -40,3 +40,9 @@ If you want to push code directly, you need to ask for writing permissions.
 - [ ] Update Rio Software [link](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-3/imaging-your-roborio.html)
 - [ ] Radio [link](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-3/radio-programming.html)
 - [ ] Check for other hardware that needs update
+
+## Getting Started with Sim
+- [ ] Download WPILib [link](https://docs.wpilib.org/en/stable/docs/zero-to-robot/step-2/wpilib-setup.html#downloading)
+- [ ] FRC Sim Instructions [link](https://docs.wpilib.org/en/stable/docs/software/wpilib-tools/robot-simulation/introduction.html)
+- [ ] Run Build Gradle Script
+- [ ] Run Simulate Gradle Script
