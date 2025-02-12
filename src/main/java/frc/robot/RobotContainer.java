@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.swervedrive.SwerveSubsystem;
+import frc.robot.subsystems.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -122,17 +122,12 @@ public class RobotContainer {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       joystick.button(5).whileTrue(drivebase.centerModulesCommand());
       joystick.button(6).onTrue(Commands.none());
-      joystick.button(7).onTrue(Commands.none());
-
     } else {
-      joystick.button(8).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       joystick.button(9).whileTrue(
           drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                              );
-      // joystick.button(0).whileTrue(Commands.none());
-      // joystick.button(0).whileTrue(Commands.none());
+              new Pose2d( new Translation2d(4, 4), Rotation2d.fromDegrees(0) )));
       joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
     }
