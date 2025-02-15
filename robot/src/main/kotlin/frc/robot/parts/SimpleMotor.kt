@@ -3,6 +3,7 @@ package frc.robot.parts
 import com.revrobotics.RelativeEncoder
 import com.revrobotics.spark.SparkMax
 import edu.wpi.first.math.controller.PIDController
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard
 import frc.robot.Components.SingleMotorComponent
 
 
@@ -11,7 +12,7 @@ class SimpleMotor() {
     private val motor: SparkMax = SingleMotorComponent.SingleMotor.motor
     private val motorEncoder: RelativeEncoder = motor.encoder
     private val pid: PIDController = PIDController(0.2, 0.0, 0.0)
-    private val MAX_SPEED: Double = 10.0
+    private val MAX_SPEED: Double = 1.0
 
     init {
         // setup encoder
@@ -32,12 +33,14 @@ class SimpleMotor() {
         pid.reset()
     }
 
-    fun move(forward: Double) {
-        val speed = pid
-                .calculate(forward)
+    fun move(speed: Double) {
+        val adjSpeed = pid
+                .calculate(speed)
                 .coerceIn(-MAX_SPEED, MAX_SPEED)
-        motor.set( speed )
-        if ( motorEncoder.velocity <= 0.1 ) {
+        SmartDashboard.putNumber("controller_motor_speed_pidadj", adjSpeed )
+        motor.set( adjSpeed )
+        SmartDashboard.putNumber("controller_motor_velocity", motorEncoder.velocity )
+        if ( motorEncoder.velocity <= 0.8 ) {
             zeroEncoder()
         }
     }

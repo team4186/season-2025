@@ -82,5 +82,6 @@ class Robot : TimedRobot() {
     private fun driveSingleMotorWithJoystick() {
         val xSpeed: Double = -xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.driveDeadband))
         singleMotor.move(xSpeed)
+        SmartDashboard.putNumber("controller_motor_speed", xSpeed )
     }
 }

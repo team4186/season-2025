@@ -26,7 +26,7 @@ object Components {
     }
     object SingleMotorComponent{
         val SingleMotor = SingleMotorTestingConfig(
-            motor = SparkMax(10, SparkLowLevel.MotorType.kBrushless),
+            motor = SparkMax(3, SparkLowLevel.MotorType.kBrushless),
             baseConfig = DefaultSimpleMotorConfig
         )
     }
