@@ -1,4 +1,4 @@
 package frc.robot.subsystems;
 
-public class AlgeaProcessor {
+public class AlgaeProcessor {
 }
