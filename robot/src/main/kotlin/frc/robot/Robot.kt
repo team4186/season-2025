@@ -80,8 +80,16 @@ class Robot : TimedRobot() {
     }
 
     private fun driveSingleMotorWithJoystick() {
-        val xSpeed: Double = -xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.driveDeadband))
-        singleMotor.move(xSpeed)
-        SmartDashboard.putNumber("controller_motor_speed", xSpeed )
+        // val xSpeed: Double = -xSpeedLimiter.calculate(MathUtil.applyDeadband(joystick0.x, Constants.OIConstants.driveDeadband))
+        val on = joystick0.trigger
+        val direction = true
+
+        if ( on && !direction ) {
+            singleMotor.move(true, direction)
+        } else if (on && direction) {
+            singleMotor.move( true, direction)
+        } else {
+            singleMotor.move(false, direction)
+        }
     }
 }

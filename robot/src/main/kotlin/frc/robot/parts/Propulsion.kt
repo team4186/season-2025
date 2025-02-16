@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.SparkMaxConfig
 import frc.robot.Constants.ModuleConstants
 import java.util.function.DoubleConsumer
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor
+import edu.wpi.first.math.util.Units
 
 
 private val BaseConfig = SparkMaxConfig()
@@ -34,6 +35,17 @@ class SingleMotorTestingConfig(
     val baseConfig: SparkBaseConfig
 ) {
     init {
+        val drivingFactor: Double = Units.inchesToMeters(3.0) * Math.PI
+        // val drivingVelocityFeedForward: Double = 1.0 / ModuleConstants.driveWheelFreeSpeedRps
+        baseConfig.encoder
+            .positionConversionFactor(drivingFactor) // meters
+            .velocityConversionFactor(drivingFactor / 30.0) // meters per second
+        baseConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            // TODO: Adjust PID gains
+            .pid(0.5, 0.0, 0.0)
+            //.velocityFF(drivingVelocityFeedForward)
+            .outputRange(-1.0, 1.0)
         motor.configure(baseConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters)
     }
 

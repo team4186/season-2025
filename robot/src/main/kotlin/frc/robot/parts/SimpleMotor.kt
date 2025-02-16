@@ -11,13 +11,13 @@ class SimpleMotor() {
     // private val component: SingleMotorTestingConfig = SingleMotorComponent.SingleMotor
     private val motor: SparkMax = SingleMotorComponent.SingleMotor.motor
     private val motorEncoder: RelativeEncoder = motor.encoder
-    private val pid: PIDController = PIDController(0.2, 0.0, 0.0)
-    private val MAX_SPEED: Double = 1.0
+    // private val pid: PIDController = PIDController(0.2, 0.0, 0.0)
+    private val MAX_SPEED: Double = 20.0
 
     init {
         // setup encoder
         zeroEncoder()
-        pid.reset()
+//        pid.reset()
     }
 
     fun getState(): Double {
@@ -30,15 +30,24 @@ class SimpleMotor() {
 
     fun stopMotor() {
         motor.stopMotor()
-        pid.reset()
+//        pid.reset()
     }
 
-    fun move(speed: Double) {
-        val adjSpeed = pid
-                .calculate(speed)
-                .coerceIn(-MAX_SPEED, MAX_SPEED)
-        SmartDashboard.putNumber("controller_motor_speed_pidadj", adjSpeed )
-        motor.set( adjSpeed )
+    fun move(go: Boolean, inverse: Boolean) {
+//        val adjSpeed = pid
+//                .calculate(speed)
+//                .coerceIn(-MAX_SPEED, MAX_SPEED)
+//        SmartDashboard.putNumber("controller_motor_speed_pidadj", adjSpeed )
+        var updated: Double = MAX_SPEED
+        if (!go) {
+            motor.stopMotor()
+        } else {
+            if ( inverse ) {
+                updated *= -1
+            }
+            motor.set( updated )
+        }
+
         SmartDashboard.putNumber("controller_motor_velocity", motorEncoder.velocity )
         if ( motorEncoder.velocity <= 0.8 ) {
             zeroEncoder()
