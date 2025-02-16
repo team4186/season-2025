@@ -3,7 +3,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel;
+
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Components;
 
 
 public class AlgaeProcessor extends SubsystemBase {
@@ -15,6 +17,7 @@ public class AlgaeProcessor extends SubsystemBase {
     // Placeholder CAN
     private static final int CANIDIntake = 2;
     // Change the input channel based on what is on the RoboRIO.
+
     private final DigitalInput TFLuna =  new DigitalInput(0);
 
     private final SparkMax swingMotor = new SparkMax(CANIDSwing, SparkLowLevel.MotorType.kBrushless);
@@ -28,8 +31,11 @@ public class AlgaeProcessor extends SubsystemBase {
     // This will be placed on a loop in RobotContainer.
     public Command intakeAlgaeCommand() {
         if (!algaeDetected()){
-           swingMotor.
+           // Current voltage is 20, change in constants if you want to.
+            swingMotor.setVoltage(Components.AlgaeProcessorConstants.swingMotorVoltage);
+            intakeMotor.setVoltage(Components.AlgaeProcessorConstants.intakeMotorVoltage);
         } else if (algaeDetected()) {
+
             // Make the intakeMotor continue to rotate capped at 10 Amps
             // so that the algae doesn't fall out.
         }
