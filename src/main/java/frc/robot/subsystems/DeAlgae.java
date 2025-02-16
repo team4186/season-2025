@@ -12,17 +12,18 @@ public class DeAlgae extends SubsystemBase {
     private final SparkMax angleMotor;
     private final RelativeEncoder angleEncoder;
 
-    private static int CanId = 0; //TODO: placeHolder
-    private static double speed = 1.0; //TODO: placeHolder
-    private static double armDefaultAngle = 0.0; //TODO: find arm offset
-    private static double flatAngle = 0.0; //TODO: find the 'distance' of 90 degrees
+    private static final int CanId = 0; //TODO: placeHolder
+    private static final int CanId2 = 0; //TODO: placeHolder
+    private static final double speed = 1.0; //TODO: placeHolder
+    private static final double armDefaultAngle = 0.0; //TODO: find arm offset
+    private static final double flatAngle = 0.0; //TODO: find the 'distance' of 90 degrees
 
 
     public DeAlgae(){
         rollMotor = new SparkMax(CanId, MotorType.kBrushless);
         rollEncoder = rollMotor.getEncoder();
 
-        angleMotor = new SparkMax(CanId, MotorType.kBrushless);
+        angleMotor = new SparkMax(CanId2, MotorType.kBrushless);
         angleEncoder = angleMotor.getEncoder();
     }
 
@@ -32,10 +33,12 @@ public class DeAlgae extends SubsystemBase {
         rollMotor.set(speed);
     }
 
-    public void runMotor_inverted_Down(){
+
+    public void runMotor_Inverted_Down(){
         angleMotor.set(-speed/4);
         rollMotor.set(-speed);
     }
+
 
     public void stickOut(){
         if(angleEncoder.getPosition() < flatAngle){
@@ -43,21 +46,22 @@ public class DeAlgae extends SubsystemBase {
         }
     }
 
+
     public void stop(){
         rollMotor.stopMotor();
         angleMotor.stopMotor();
     }
 
+
+    // TODO: replace with pid or set to position within higher tolerance
     public void reset(){
-        if(angleEncoder.getPosition() < armDefaultAngle){
+        double tolerance = 0.5;
+        if (angleEncoder.getPosition() < armDefaultAngle - tolerance){
             angleMotor.set(speed/4);
-        }
-        else if(angleEncoder.getPosition() > armDefaultAngle){
+        } else if (angleEncoder.getPosition() > armDefaultAngle + tolerance){
             angleMotor.set(-speed/4);
-        }
-        else{
+        } else {
             stop();
         }
     }
-
 }
