@@ -1,5 +1,7 @@
 package frc.robot;
 
+// JLR - nit: Does the class have what we need already -> import edu.wpi.first.math.util.Units
+// Utility Class
 public final class Units {
     
     private Units() {}
@@ -50,6 +52,7 @@ public final class Units {
 	MetricConversion(double conversion) {
 		this.metricConversion = conversion;
 	}	
+	
     }
 
 }
