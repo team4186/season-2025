@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -35,6 +36,10 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
+
+  //TODO: deAlgae stuff
+  DeAlgae deAlgae = new DeAlgae();
+  private boolean inverted = false; //TODO: needs vision to decide or can be manually set
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
@@ -135,9 +140,15 @@ public class RobotContainer {
       //TODO: deAlgae commands config buttons later
       //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
       //TODO: alternatively could manually decide
-      DeAlgae deAlgae = new DeAlgae();
-      joystick.button(5).whileTrue(deAlgae.runMotor(false));
-      joystick.button(5).whileFalse(Commands.runOnce(deAlgae.stop()));
+      if(inverted){
+        joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
+      }
+
+      else{
+        joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
+        }
+
+      joystick.button(5).whileFalse(Commands.runOnce(deAlgae::stop));
     }
   }
 

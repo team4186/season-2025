@@ -2,9 +2,9 @@ package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class DeAlgae {
+public class DeAlgae extends SubsystemBase {
 
     private SparkMax motor;
     private RelativeEncoder encoder;
@@ -17,21 +17,16 @@ public class DeAlgae {
         encoder = motor.getEncoder();
     }
 
-    public Command runMotor(boolean inverted){
 
-        if(inverted){
-            speed *= -1;
-        }
-
+    public void runMotor(){
         motor.set(speed);
-
-        return null;
     }
 
-    public Runnable stop(){
+    public void runMotor_inverted(){
+        motor.set(-speed);
+    }
 
+    public void stop(){
         motor.stopMotor();
-
-        return null;
     }
 }
