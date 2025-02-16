@@ -31,14 +31,17 @@ public class AlgaeProcessor extends SubsystemBase {
     // This will be placed on a loop in RobotContainer.
     public Command intakeAlgaeCommand() {
         if (!algaeDetected()){
-           // Current voltage is 20, change in constants if you want to.
+            // Current voltage is 20, change in constants if needed.
             swingMotor.setVoltage(Components.AlgaeProcessorConstants.swingMotorVoltage);
+            // Current voltage is 10, change in constants if needed.
             intakeMotor.setVoltage(Components.AlgaeProcessorConstants.intakeMotorVoltage);
         } else if (algaeDetected()) {
-
+            intakeMotor.setVoltage(Components.AlgaeProcessorConstants.intakeMotorVoltage);
             // Make the intakeMotor continue to rotate capped at 10 Amps
             // so that the algae doesn't fall out.
         }
+        // TODO: Fix this later.
+        return ;
     }
 
     public Command launchAlgaeCommand() {
