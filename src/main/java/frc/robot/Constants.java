@@ -40,11 +40,24 @@ public final class Constants {
   }
 
 
-  public static class OperatorConstants {
+  public static final class OperatorConstants {
     // Joystick Deadband
     public static final double DEADBAND = 0.1;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6.0;
   }
+
+
+  // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
+  // Climber, DeAlgae, Elevator, AlgaeProcessor Motor Constants
+  public static final class SubsystemMotorConstants {
+    // EXAMPLE:
+    // public static final double CLIMBER_MAX_SPEED = 0.0;
+
+    // TODO: Reminder -> Moved from Components
+    public static final double ALGAE_PROCESSOR_SWING_VOLTAGE = 10.0;
+    public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 10.0;
+  }
+
 }

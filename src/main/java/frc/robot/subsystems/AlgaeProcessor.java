@@ -5,10 +5,14 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.Components;
+import frc.robot.Constants;
+import frc.robot.sparkmaxconfigs.Components;
+import frc.robot.sparkmaxconfigs.SingleMotor;
 
 
 public class AlgaeProcessor extends SubsystemBase {
+    private SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
+
     // processorPos is the current position of the processor encoder ticks.
     private final double processorPos;
 
@@ -32,20 +36,21 @@ public class AlgaeProcessor extends SubsystemBase {
     public Command intakeAlgaeCommand() {
         if (!algaeDetected()){
             // Current voltage is 20, change in constants if needed.
-            swingMotor.setVoltage(Components.AlgaeProcessorConstants.swingMotorVoltage);
+            swingMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
             // Current voltage is 10, change in constants if needed.
-            intakeMotor.setVoltage(Components.AlgaeProcessorConstants.intakeMotorVoltage);
+            intakeMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
         } else if (algaeDetected()) {
-            intakeMotor.setVoltage(Components.AlgaeProcessorConstants.intakeMotorVoltage);
+            intakeMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
             // Make the intakeMotor continue to rotate capped at 10 Amps
             // so that the algae doesn't fall out.
         }
         // TODO: Fix this later.
-        return ;
+        return null;
     }
 
     public Command launchAlgaeCommand() {
         // Should move the motors to launch algae.
+        return null;
     }
 
     public boolean algaeDetected() {
