@@ -39,7 +39,6 @@ public class RobotContainer {
 
   //TODO: deAlgae stuff
   DeAlgae deAlgae = new DeAlgae();
-  private boolean inverted = false; //TODO: needs vision to decide or can be manually set
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
@@ -132,23 +131,19 @@ public class RobotContainer {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       joystick.button(9).whileTrue(
-          drivebase.driveToPose(
-              new Pose2d( new Translation2d(4, 4), Rotation2d.fromDegrees(0) )));
+              drivebase.driveToPose(
+                      new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
 
       //TODO: deAlgae commands config buttons later
       //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
       //TODO: alternatively could manually decide
-      if(inverted){
-        joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
-      }
-
-      else{
-        joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
-      }
-
-      joystick.button(5).whileFalse(Commands.runOnce(deAlgae::stop));
+//      joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
+//
+//      joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
+//
+//      joystick.button(5).whileFalse(Commands.runOnce(deAlgae::stop));
     }
   }
 
