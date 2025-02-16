@@ -11,7 +11,7 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 
 
 public class AlgaeProcessor extends SubsystemBase {
-    private SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
+    private final SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
 
     // processorPos is the current position of the processor encoder ticks.
     private final double processorPos;
@@ -23,14 +23,14 @@ public class AlgaeProcessor extends SubsystemBase {
     // Change the input channel based on what is on the RoboRIO.
 
     private final DigitalInput TFLuna =  new DigitalInput(0);
-
     private final SparkMax swingMotor = new SparkMax(CANIDSwing, SparkLowLevel.MotorType.kBrushless);
-
     private final SparkMax intakeMotor = new SparkMax(CANIDIntake, SparkLowLevel.MotorType.kBrushless);
+
 
     public AlgaeProcessor(double processorPos) {
         this.processorPos = processorPos;
     }
+
 
     // This will be placed on a loop in RobotContainer.
     public Command intakeAlgaeCommand() {
