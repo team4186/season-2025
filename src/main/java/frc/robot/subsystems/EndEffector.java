@@ -12,13 +12,11 @@ public class EndEffector extends SubsystemBase {
     //private RelativeEncoder encoder;
     private DigitalInput luna;
 
-    private final double speed = 1; // TODO: change speed later
+    private final double speed = 1.0; // TODO: change speed later
 
-    public Command EndEffector(){
+    public EndEffector(){
         //encoder = endEffectorMotor.motor.getEncoder();
         luna = new DigitalInput(0); // TODO: change channel later
-
-        return null;
     }
 
     public Command intake(){
