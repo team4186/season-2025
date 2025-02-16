@@ -11,12 +11,16 @@ public final class Units {
     public static double TicksToMeters(double encoderTicks, double wheelDiameter, String motorType) {
     	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
         	return (42.0/wheelDiameter) * encoderTicks;
-        }
+        } else {
+		return 0.0;
+	}
     }
     
     public static double TicksToDegrees(double encoderTicks, String motorType) {
 	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
 		return (encoderTicks/42.0) * 360;
+	} else {
+		return 0.0;
 	}
     }
     
@@ -43,7 +47,7 @@ public final class Units {
 
 	private final double metricConversion;
 
-	MetricConversion(conversion) {
+	MetricConversion(double conversion) {
 		this.metricConversion = conversion;
 	}	
     }
