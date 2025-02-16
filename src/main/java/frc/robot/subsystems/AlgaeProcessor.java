@@ -5,14 +5,15 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 
+
 public class AlgaeProcessor extends SubsystemBase {
-    // processorPos is the current position of the processor in degrees.
+    // processorPos is the current position of the processor encoder ticks.
     private final double processorPos;
+
     // Placeholder CanID (Not actually 1).
     private static final int CANIDSwing = 1;
     // Placeholder CAN
     private static final int CANIDIntake = 2;
-
     // Change the input channel based on what is on the RoboRIO.
     private final DigitalInput TFLuna =  new DigitalInput(0);
 
@@ -24,11 +25,17 @@ public class AlgaeProcessor extends SubsystemBase {
         this.processorPos = processorPos;
     }
 
-    public Command intakeAlgae() {
-        // Should move to ready position and intake algae.
+    // This will be placed on a loop in RobotContainer.
+    public Command intakeAlgaeCommand() {
+        if (!algaeDetected()){
+           swingMotor.
+        } else if (algaeDetected()) {
+            // Make the intakeMotor continue to rotate capped at 10 Amps
+            // so that the algae doesn't fall out.
+        }
     }
 
-    public Command launchAlgae() {
+    public Command launchAlgaeCommand() {
         // Should move the motors to launch algae.
     }
 
