@@ -3,11 +3,10 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Units;
 
 public class DeAlgae extends SubsystemBase {
 
-    private final SparkMax rollMotor;
+    private final SparkMax wheelMotor;
     private final RelativeEncoder rollEncoder;
     private final SparkMax angleMotor;
     private final RelativeEncoder angleEncoder;
@@ -20,27 +19,27 @@ public class DeAlgae extends SubsystemBase {
 
 
     public DeAlgae(){
-        rollMotor = new SparkMax(CanId, MotorType.kBrushless);
-        rollEncoder = rollMotor.getEncoder();
+        wheelMotor = new SparkMax(CanId, MotorType.kBrushless);
+        rollEncoder = wheelMotor.getEncoder();
 
         angleMotor = new SparkMax(CanId2, MotorType.kBrushless);
         angleEncoder = angleMotor.getEncoder();
     }
 
-
+    //TODO: find angle motor speed ratio
     public void runMotor_Up(){
         angleMotor.set(speed/4);
-        rollMotor.set(speed);
+        wheelMotor.set(speed);
     }
 
 
-    public void runMotor_Inverted_Down(){
+    public void runMotor_Down(){
         angleMotor.set(-speed/4);
-        rollMotor.set(-speed);
+        wheelMotor.set(-speed);
     }
 
 
-    public void stickOut(){
+    public void deploy(){
         if(angleEncoder.getPosition() < flatAngle){
             angleMotor.set(speed/4);
         }
@@ -48,7 +47,7 @@ public class DeAlgae extends SubsystemBase {
 
 
     public void stop(){
-        rollMotor.stopMotor();
+        wheelMotor.stopMotor();
         angleMotor.stopMotor();
     }
 
