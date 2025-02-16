@@ -1,5 +1,6 @@
 package frc.robot.sparkmaxconfigs;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -27,11 +28,11 @@ public class MotorSet {
         this.lead = lead;
     }
 
+    public RelativeEncoder getLeadEncoder() { return this.lead.getEncoder(); }
 
     public void setSpeed(double value) {
         this.lead.set(value);
     }
-
 
     public void stop(){
         this.lead.stopMotor();
