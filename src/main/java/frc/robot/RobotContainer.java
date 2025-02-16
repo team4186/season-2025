@@ -146,7 +146,7 @@ public class RobotContainer {
 
       else{
         joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
-        }
+      }
 
       joystick.button(5).whileFalse(Commands.runOnce(deAlgae::stop));
     }
