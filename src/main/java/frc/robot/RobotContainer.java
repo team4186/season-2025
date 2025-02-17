@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -21,6 +20,8 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.DeAlgae;
 import java.io.File;
+import java.util.function.DoubleSupplier;
+
 import swervelib.SwerveInputStream;
 
 /**
@@ -45,11 +46,11 @@ public class RobotContainer {
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
           drivebase.getSwerveDrive(),
-                  () -> joystick.getY() * -1,
-                  () -> joystick.getX() * -1)
-          .withControllerRotationAxis(joystick::getTwist)
+                  () -> attenuated( joystick.getY() ) * -1,
+                  () -> attenuated( joystick.getX() ) * -1)
+          .withControllerRotationAxis(
+                  () -> attenuated( joystick.getTwist() ))
           .deadband(OperatorConstants.DEADBAND)
-          .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
   // Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
@@ -145,6 +146,14 @@ public class RobotContainer {
 //
 //      joystick.button(5).whileFalse(Commands.runOnce(deAlgae::stop));
     }
+  }
+
+
+  // Adjust joystick input from linear to exponential curve
+  private double attenuated(double value) {
+    double res = 0.90 * Math.pow( Math.abs(value), 2 );
+    if ( value < 0 ) { res *= -1; }
+    return res;
   }
 
 

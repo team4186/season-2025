@@ -26,27 +26,27 @@ public class Climber extends SubsystemBase {
         encoder = motor.getEncoder();
     }
 
-
+    //Avoid using for now, no safeties
     public Command deployClimb(){
-        if (!beamBreak.get()) {
-            motor.setVoltage(moveVoltage);
-        }
+        motor.setVoltage(moveVoltage);
         return null;
     }
 
-    //Avoid using for now, no safeties
+
     public Command stowClimb(){
-        motor.setVoltage(-moveVoltage);
+        if (!beamBreak.get()) {
+            motor.setVoltage(-moveVoltage);
+        }
         return null;
     }
 
     //engageClimb uses beam breaks, has safety and uses higher voltage than deploy
     public Command engageClimb() {
         try {
-            if (!beamBreak.get()) {
-                motor.setVoltage(climbVoltage);
+            if (beamBreak.get()) {
+                motor.stopMotor();
             } else {
-                motor.stopMotor(); //only use if motor requires power while up
+                motor.setVoltage(climbVoltage);//only use if motor requires power while up
             }
         } catch (IllegalStateException e) {
             motor.stopMotor();
