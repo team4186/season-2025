@@ -10,14 +10,14 @@ import frc.robot.sparkmaxconfigs.MotorSet;
 public class Elevator {
 
     // Motor, Encoder, and Limit Switches variables
-    private MotorSet elevatorMotors = Components.getInstance().elevatorMotors;
-    private RelativeEncoder encoder;
+    private final MotorSet elevatorMotors = Components.getInstance().elevatorMotors;
+    private final RelativeEncoder encoder;
 
     // Make id # correct
-    private DigitalInput bottomLimitSwitch = new DigitalInput(2);
-    private DigitalInput topLimitSwitch = new DigitalInput(3);
+    private final DigitalInput bottomLimitSwitch = new DigitalInput(2);
+    private final DigitalInput topLimitSwitch = new DigitalInput(3);
 
-    private PIDController pid;
+    private final PIDController pid;
 
     private int level;
     private double currentElevatorHeight;

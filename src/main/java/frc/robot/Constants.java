@@ -59,22 +59,26 @@ public final class Constants {
   }
 
 
-  public static final class ClimberConstants_ {
+  public static final class ClimberConstants {
       // public static final double CLIMBER_MAX_SPEED = 0.0;
   }
 
 
-  public static final class DeAlgaeConstants_ {
+  public static final class DeAlgaeConstants {
+    public static final int CanId = 0; //TODO: placeHolder
+    public static final int CanId2 = 0; //TODO: placeHolder
+    public static final double speed = 1.0; //TODO: placeHolder
+    public static final double armDefaultAngle = 0.0; //TODO: find arm offset
+    public static final double flatAngle = 0.0; //TODO: find the 'distance' of 90 degrees
+  }
+
+
+  public static final class ElevatorConstants {
 
   }
 
 
-  public static final class ElevatorConstants_ {
-
-  }
-
-
-  public static final class EndEffectorConstants_ {
+  public static final class EndEffectorConstants {
 
   }
 
