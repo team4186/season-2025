@@ -27,12 +27,14 @@ public class Elevator {
     private final double DEFAULT_FREE_MOVE_SPEED = 0.4;
     private final double DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     private final double DEFAULT_SETPOINT_THRESHOLD = 2.5;
+    private final double ENCODER_CONVERSION_FACTOR = 2; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
     public Elevator(int elevatorMotor1ID, int elevatorMotor2ID, PIDController pidParam) {
         encoder = elevatorMotors.getLeadEncoder();
+        encoder.setPosition(0.0);
 
         pid = pidParam;
-        currentElevatorHeight = 0;
+        currentElevatorHeight = encoder.getPosition();
     }
 
     /*
@@ -53,53 +55,58 @@ Calculate distance traveled: Multiply the "distance per pulse" by the number of 
 
         switch (level) {
             case 1:
-                distanceToLevel = LEVEL_ONE_HEIGHT - getHeight();
+                distanceToLevel = LEVEL_ONE_HEIGHT - getEncoderDistance();
                 goUp(1, distanceToLevel, LEVEL_ONE_HEIGHT);
                 break;
             case 2:
-                distanceToLevel = LEVEL_TWO_HEIGHT - getHeight();
+                distanceToLevel = LEVEL_TWO_HEIGHT - getEncoderDistance();
                 goUp(2, distanceToLevel, LEVEL_TWO_HEIGHT);
                 break;
             case 3:
-                distanceToLevel = LEVEL_THREE_HEIGHT - getHeight();
+                distanceToLevel = LEVEL_THREE_HEIGHT - getEncoderDistance();
                 goUp(3, distanceToLevel, LEVEL_THREE_HEIGHT);
                 break;
         }
     }
 
     public void goUp(int level, double distanceToLevel, double height) {
-        //double speed = pid.calculate(position, height).coerceIn(-DEFAULT_FREE_MOVE_SPEED, DEFAULT_FREE_MOVE_SPEED);
+        double speed = coerceIn(pid.calculate(getEncoderDistance(), height), -DEFAULT_FREE_MOVE_SPEED, DEFAULT_FREE_MOVE_SPEED);
 
         if (distanceToLevel == 0) {
-            setHeight(height);
+            encoder.setPosition(height);
             stopMotor();
         } else {
-            elevatorMotors.setSpeed(-0.2);
+            elevatorMotors.setSpeed(speed);
         }
     }
 
     public void goDown() {
+        double speed = coerceIn(pid.calculate(getEncoderDistance(), 0.0), -DEFAULT_FREE_MOVE_SPEED, DEFAULT_FREE_MOVE_SPEED);
+
         if (!bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
-            elevatorMotors.setSpeed(-0.2);
+            elevatorMotors.setSpeed(speed);
         } else {
-            setHeight(0.0);
+            encoder.setPosition(0.0);
             stopMotor();
+        }
+    }
+
+    public double getEncoderDistance() {
+        return encoder.getPosition() * ENCODER_CONVERSION_FACTOR;
+    }
+
+    public double coerceIn(double value, double lowerBound, double upperBound) {
+        if (value > upperBound) {
+            return upperBound;
+        } else if (value < lowerBound) {
+            return lowerBound;
+        } else {
+            return value;
         }
     }
 
     public void stopMotor() {
         elevatorMotors.stop();
         pid.reset();
-    }
-
-    public double getHeight() {
-        return currentElevatorHeight;
-    }
-
-    // stops height from being set to an impossible height.
-    public void setHeight(double height) {
-        if (height > 0 && height < 20) { // 20 should be changed to max height
-            currentElevatorHeight = height;
-        }
     }
 }
