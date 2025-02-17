@@ -22,6 +22,7 @@ import edu.wpi.first.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import java.awt.Desktop;
 import java.util.ArrayList;
@@ -47,11 +48,6 @@ import swervelib.telemetry.SwerveDriveTelemetry;
  * <a href="https://gitlab.com/ironclad_code/ironclad-2024/-/blob/master/src/main/java/frc/robot/vision/Vision.java?ref_type=heads">...</a>
  */
 public class Vision {
-  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
-
-  // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
-  private final double maximumAmbiguity = 0.25;
-
   // Photon Vision Simulation
   public VisionSystemSim visionSim;
 
@@ -77,7 +73,7 @@ public class Vision {
 
     if ( Robot.isSimulation() ) {
       visionSim = new VisionSystemSim("Vision");
-      visionSim.addAprilTags(fieldLayout);
+      visionSim.addAprilTags(Constants.VisionConstants.fieldLayout);
 
       for (Cameras c : Cameras.values()) {
         c.addToVisionSim(visionSim);
@@ -97,11 +93,11 @@ public class Vision {
    * @return The target pose of the AprilTag.
    */
   public static Pose2d getAprilTagPose(int aprilTag, Transform2d robotOffset) {
-    Optional<Pose3d> aprilTagPose3d = fieldLayout.getTagPose(aprilTag);
+    Optional<Pose3d> aprilTagPose3d = Constants.VisionConstants.fieldLayout.getTagPose(aprilTag);
     if ( aprilTagPose3d.isPresent() ) {
       return aprilTagPose3d.get().toPose2d().transformBy(robotOffset);
     } else {
-      throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + fieldLayout);
+      throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + Constants.VisionConstants.fieldLayout);
     }
   }
 
@@ -169,7 +165,7 @@ public class Vision {
    * @return Distance
    */
   public double getDistanceFromAprilTag(int id) {
-    Optional<Pose3d> tag = fieldLayout.getTagPose(id);
+    Optional<Pose3d> tag = Constants.VisionConstants.fieldLayout.getTagPose(id);
     return tag.map(
             pose3d -> PhotonUtils.getDistanceToPose(
                     currentPose.get(),
@@ -248,8 +244,8 @@ public class Vision {
 
     List<Pose2d> poses = new ArrayList<>();
     for (PhotonTrackedTarget target : targets) {
-      if ( fieldLayout.getTagPose(target.getFiducialId()).isPresent() ){
-        Pose2d targetPose = fieldLayout.getTagPose(target.getFiducialId()).get().toPose2d();
+      if ( Constants.VisionConstants.fieldLayout.getTagPose(target.getFiducialId()).isPresent() ){
+        Pose2d targetPose = Constants.VisionConstants.fieldLayout.getTagPose(target.getFiducialId()).get().toPose2d();
         poses.add(targetPose);
       }
     }
@@ -342,7 +338,7 @@ public class Vision {
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
 
       poseEstimator = new PhotonPoseEstimator(
-              Vision.fieldLayout,
+              Constants.VisionConstants.fieldLayout,
               PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
               robotToCamTransform);
       poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);

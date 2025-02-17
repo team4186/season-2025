@@ -5,6 +5,8 @@
 package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
@@ -96,6 +98,10 @@ public final class Constants {
 
 
   public static final class VisionConstants {
+    //update to 2025
+    public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
 
+    // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
+    public final double maximumAmbiguity = 0.25;
   }
 }
