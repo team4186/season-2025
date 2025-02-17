@@ -10,7 +10,10 @@ import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 
 public class AlgaeProcessor extends SubsystemBase {
-    private final PIDController deployPID = new PIDController(Constants.PIDConstants.proportional, Constants.PIDConstants.integral, Constants.PIDConstants.derivative);
+    private final PIDController deployPID = new PIDController(
+            Constants.AlgaeProcessorConstants.proportional,
+            Constants.AlgaeProcessorConstants.integral,
+            Constants.AlgaeProcessorConstants.derivative);
 
     private final SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
 
@@ -28,14 +31,14 @@ public class AlgaeProcessor extends SubsystemBase {
     public Command intakeAlgaeCommand() {
         if (!algaeDetected()){
             // Current voltage is 20, change in constants if needed.
-            algaeMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
+            algaeMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
             // Current voltage is 10, change in constants if needed.
-            deployMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            deployMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
             this.endPos = getProcessorPos();
             processorPos.setPosition(0.0);
         } else if (algaeDetected()) {
             deployPID.setSetpoint(-endPos);
-            algaeMotor.setVoltage(-Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            algaeMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
             deployMotor.setSpeed(deployPID.calculate(getProcessorPos()));
         }
         // TODO: Fix this later.

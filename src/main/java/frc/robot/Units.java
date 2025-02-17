@@ -1,5 +1,8 @@
 package frc.robot;
 
+// JLR - nit: Does the class have what we need already -> import edu.wpi.first.math.util.Units
+// Utility Class
+// Ziyao - I'm not sure if they have the TicksToMeters or TicksToDegrees methods.
 import java.lang.Math;
 public final class Units {
     
@@ -51,6 +54,7 @@ public final class Units {
 	MetricConversion(double conversion) {
 		this.metricConversion = conversion;
 	}	
+
     }
 
 }
