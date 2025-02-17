@@ -15,12 +15,12 @@ public class AlgaeProcessor extends SubsystemBase {
             Constants.AlgaeProcessorConstants.integral,
             Constants.AlgaeProcessorConstants.derivative);
 
-    private final SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
+    private final SingleMotor wheelMotor = Components.getInstance().algaeProcessorMotor;
 
-    private final SingleMotor deployMotor = Components.getInstance().algaeAngleMotor;
+    private final SingleMotor angleMotor = Components.getInstance().algaeProcessorAngleMotor;
 
     // processorPos is the current position of the processor encoder ticks.
-    private final RelativeEncoder processorPos = deployMotor.motor.getAlternateEncoder();
+    private final RelativeEncoder processorPos = angleMotor.motor.getAlternateEncoder();
 
     private double endPos;
 
@@ -31,15 +31,15 @@ public class AlgaeProcessor extends SubsystemBase {
     public Command intakeAlgaeCommand() {
         if (!algaeDetected()){
             // Current voltage is 20, change in constants if needed.
-            algaeMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
+            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
             // Current voltage is 10, change in constants if needed.
-            deployMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            angleMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
             this.endPos = getProcessorPos();
             processorPos.setPosition(0.0);
         } else if (algaeDetected()) {
             deployPID.setSetpoint(-endPos);
-            algaeMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
-            deployMotor.setSpeed(deployPID.calculate(getProcessorPos()));
+            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            angleMotor.setSpeed(deployPID.calculate(getProcessorPos()));
             processorPos.setPosition(0.0);
         }
         // TODO: Fix this later.
@@ -47,7 +47,7 @@ public class AlgaeProcessor extends SubsystemBase {
     }
 
     public Command launchAlgaeCommand() {
-        algaeMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+        wheelMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
         return null;
     }
 

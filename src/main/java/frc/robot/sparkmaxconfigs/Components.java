@@ -9,8 +9,8 @@ public final class Components {
 
     private static Components instance = null;
 
-    public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeMotor;
-    public SingleMotor algaeAngleMotor = new AlgaeProcessorMotor().deployMotor;
+    public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeWheelMotor;
+    public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
     public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
 
@@ -32,11 +32,11 @@ public final class Components {
 
     // TODO: Set proper CAN ID.
     public static final class AlgaeProcessorMotor {
-        public SingleMotor algaeMotor = new SingleMotor(
+        public SingleMotor algaeWheelMotor = new SingleMotor(
                 new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
 
-        public SingleMotor deployMotor = new SingleMotor(
+        public SingleMotor algaeProcessorAngleMotor = new SingleMotor(
                 new SparkMax(1, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().HoldingConfig);
     }
