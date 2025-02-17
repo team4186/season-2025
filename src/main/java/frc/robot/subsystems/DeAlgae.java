@@ -20,9 +20,6 @@ public class DeAlgae extends SubsystemBase {
     private PIDController pid;
 
 
-    private static final double minSpeed = 0.5; //TODO: placeHolder
-    private static double p = 0.5 , i = 0.0, d = 0.0; //TODO: tune pid values
-
     public DeAlgae(){
         //wheelMotor = new SparkMax(CanId, MotorType.kBrushless);
         //rollEncoder = wheelMotor.getEncoder();
@@ -30,7 +27,10 @@ public class DeAlgae extends SubsystemBase {
         //angleMotor = new SparkMax(CanId2, MotorType.kBrushless);
         angleEncoder = angleMotor.getLeadEncoder();
 
-        pid = new PIDController(p,i,d);
+        pid = new PIDController(
+                Constants.DeAlgaeConstants.p,
+                Constants.DeAlgaeConstants.i,
+                Constants.DeAlgaeConstants.d);
     }
 
     //TODO: find angle motor speed ratio
@@ -55,7 +55,7 @@ public class DeAlgae extends SubsystemBase {
 
         PIDoutput = pid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.flatAngle);
 
-        if (PIDoutput < minSpeed){
+        if (PIDoutput < Constants.DeAlgaeConstants.minSpeed){
             angleMotor.stop();
         }
         else{
@@ -84,7 +84,7 @@ public class DeAlgae extends SubsystemBase {
 //        }
         PIDoutput = pid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.armDefaultAngle);
 
-        if (PIDoutput < minSpeed){
+        if (PIDoutput < Constants.DeAlgaeConstants.minSpeed){
             angleMotor.stop();
         } else {
             angleMotor.setSpeed(PIDoutput);
