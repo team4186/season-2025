@@ -84,7 +84,8 @@ public final class Constants {
 
 
   public static final class EndEffectorConstants {
-
+    public static final int beamBreakChannel = 0; //TODO: placeHolder
+    public static final double speed = 1.0; // TODO: change speed
   }
 
 

@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 
@@ -12,17 +13,15 @@ public class EndEffector extends SubsystemBase {
     //private RelativeEncoder encoder;
     private DigitalInput luna;
 
-    private final double speed = 1.0; // TODO: change speed later
-
     public EndEffector(){
         //encoder = endEffectorMotor.motor.getEncoder();
-        luna = new DigitalInput(0); // TODO: change channel later
+        luna = new DigitalInput(Constants.EndEffectorConstants.beamBreakChannel);
     }
 
     public Command intake(){
         try {
             if (!luna.get()) {
-                endEffectorMotor.setSpeed(speed);
+                endEffectorMotor.setSpeed(Constants.EndEffectorConstants.speed);
             } else {
                 endEffectorMotor.stop();
             }
@@ -37,7 +36,7 @@ public class EndEffector extends SubsystemBase {
     }
 
     public Command eject() {
-        endEffectorMotor.setSpeed(-speed);
+        endEffectorMotor.setSpeed(-Constants.EndEffectorConstants.speed);
 
         return null;
     }
