@@ -50,8 +50,7 @@ public final class Constants {
 
 
   // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
-  // Climber, DeAlgae, Elevator, AlgaeProcessor Motor Constants
-  public static final class SubsystemMotorConstants {
+  public static final class AlgaeProcessorConstants {
     // EXAMPLE:
     // public static final double CLIMBER_MAX_SPEED = 0.0;
 
@@ -60,4 +59,28 @@ public final class Constants {
     public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 10.0;
   }
 
+
+  public static final class ClimberConstants_ {
+
+  }
+
+
+  public static final class DeAlgaeConstants_ {
+
+  }
+
+
+  public static final class ElevatorConstants_ {
+
+  }
+
+
+  public static final class EndEffectorConstants_ {
+
+  }
+
+
+  public static final class VisionConstants {
+
+  }
 }
