@@ -60,7 +60,10 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      // public static final double CLIMBER_MAX_SPEED = 0.0;
+    public static final int sparkID = 0; //TODO: placeHolder
+    //Climb voltage requires much higher values than move voltage.
+    public static final int climbVoltage = 0; //TODO: placeHolder
+    public static final int moveVoltage = 0; //TODO: placeHolder
   }
 
 

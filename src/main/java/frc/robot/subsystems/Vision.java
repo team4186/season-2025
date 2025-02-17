@@ -47,7 +47,7 @@ import swervelib.telemetry.SwerveDriveTelemetry;
  * <a href="https://gitlab.com/ironclad_code/ironclad-2024/-/blob/master/src/main/java/frc/robot/vision/Vision.java?ref_type=heads">...</a>
  */
 public class Vision {
-  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField( AprilTagFields.k2025Reefscape );
+  public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
 
   // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
   private final double maximumAmbiguity = 0.25;
