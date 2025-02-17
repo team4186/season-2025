@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.MotorSet;
 
@@ -21,13 +22,6 @@ public class Elevator {
 
     private int level;
     private double currentElevatorHeight;
-    private final double LEVEL_ONE_HEIGHT = 5; //Change the level heights here
-    private final double LEVEL_TWO_HEIGHT = 10;
-    private final double LEVEL_THREE_HEIGHT = 15;
-    private final double DEFAULT_FREE_MOVE_SPEED = 0.4;
-    private final double DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
-    private final double DEFAULT_SETPOINT_THRESHOLD = 2.5;
-    private final double ENCODER_CONVERSION_FACTOR = 2; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
     public Elevator(int elevatorMotor1ID, int elevatorMotor2ID, PIDController pidParam) {
         encoder = elevatorMotors.getLeadEncoder();
@@ -54,22 +48,24 @@ Calculate distance traveled: Multiply the "distance per pulse" by the number of 
 
         switch (controllerInput) {
             case 1:
-                distanceToLevel = LEVEL_ONE_HEIGHT - getEncoderDistance();
-                goUp(distanceToLevel, LEVEL_ONE_HEIGHT);
+                distanceToLevel = Constants.ElevatorConstants.LEVEL_ONE_HEIGHT - getEncoderDistance();
+                goUp(distanceToLevel, Constants.ElevatorConstants.LEVEL_ONE_HEIGHT);
                 break;
             case 2:
-                distanceToLevel = LEVEL_TWO_HEIGHT - getEncoderDistance();
-                goUp(distanceToLevel, LEVEL_TWO_HEIGHT);
+                distanceToLevel = Constants.ElevatorConstants.LEVEL_TWO_HEIGHT - getEncoderDistance();
+                goUp(distanceToLevel, Constants.ElevatorConstants.LEVEL_TWO_HEIGHT);
                 break;
             case 3:
-                distanceToLevel = LEVEL_THREE_HEIGHT - getEncoderDistance();
-                goUp(distanceToLevel, LEVEL_THREE_HEIGHT);
+                distanceToLevel = Constants.ElevatorConstants.LEVEL_THREE_HEIGHT - getEncoderDistance();
+                goUp(distanceToLevel, Constants.ElevatorConstants.LEVEL_THREE_HEIGHT);
                 break;
         }
     }
 
     public void goUp(double distanceToLevel, double height) {
-        double speed = coerceIn(pid.calculate(getEncoderDistance(), height), -DEFAULT_FREE_MOVE_SPEED, DEFAULT_FREE_MOVE_SPEED);
+        double speed = coerceIn(pid.calculate(getEncoderDistance(), height),
+                -Constants.ElevatorConstants.DEFAULT_FREE_MOVE_SPEED,
+                Constants.ElevatorConstants.DEFAULT_FREE_MOVE_SPEED);
 
         if (distanceToLevel == 0) {
             setEncoderDistance(height);
@@ -80,7 +76,9 @@ Calculate distance traveled: Multiply the "distance per pulse" by the number of 
     }
 
     public void goDown() {
-        double speed = coerceIn(pid.calculate(getEncoderDistance(), 0.0), -DEFAULT_FREE_MOVE_SPEED, DEFAULT_FREE_MOVE_SPEED);
+        double speed = coerceIn(pid.calculate(getEncoderDistance(), 0.0),
+                -Constants.ElevatorConstants.DEFAULT_FREE_MOVE_SPEED,
+                Constants.ElevatorConstants.DEFAULT_FREE_MOVE_SPEED);
 
         if (!bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
             elevatorMotors.setSpeed(speed);
@@ -91,11 +89,11 @@ Calculate distance traveled: Multiply the "distance per pulse" by the number of 
     }
 
     public double getEncoderDistance() {
-        return encoder.getPosition() * ENCODER_CONVERSION_FACTOR;
+        return encoder.getPosition() * Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR;
     }
 
     public void setEncoderDistance(double height) {
-        encoder.setPosition(height / ENCODER_CONVERSION_FACTOR);
+        encoder.setPosition(height / Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR);
     }
 
     public double coerceIn(double value, double lowerBound, double upperBound) {
