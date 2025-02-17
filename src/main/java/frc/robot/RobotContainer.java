@@ -151,6 +151,16 @@ public class RobotContainer {
        * Remove Algae (down)
        */
 
+      //TODO: deAlgae commands config buttons later
+      //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
+      //TODO: alternatively could manually decide
+
+      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
+
+      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
+
+      Commands.runOnce(deAlgae::stop);
+
       // Elevator Tests
       /**
        * Level 1, 2, 3
@@ -171,15 +181,6 @@ public class RobotContainer {
                       new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
-
-      //TODO: deAlgae commands config buttons later
-      //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
-      //TODO: alternatively could manually decide
-//      joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
-//
-//      joystick.button(5).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
-//
-//      joystick.button(5).whileFalse(Commands.runOnce(deAlgae::stop));
     }
   }
 
