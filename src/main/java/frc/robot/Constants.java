@@ -67,10 +67,10 @@ public final class Constants {
   public static final class DeAlgaeConstants {
     public static final int CanId = 0; //TODO: placeHolder
     public static final int CanId2 = 0; //TODO: placeHolder
-    public static final double speed = 1.0; //TODO: placeHolder
     public static final double armDefaultAngle = 0.0; //TODO: find arm offset
     public static final double flatAngle = 0.0; //TODO: find the 'distance' of 90 degrees
-    public static final double minSpeed = 0.5; //TODO: placeHolder
+    public static final double topSpeed = 5.0; // TODO: placeholder
+    public static final double minSpeed = 1.0; //TODO: placeHolder
     public static double p = 0.5 , i = 0.0, d = 0.0; //TODO: tune pid values
   }
 

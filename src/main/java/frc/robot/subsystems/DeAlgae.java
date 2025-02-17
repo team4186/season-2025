@@ -13,18 +13,11 @@ public class DeAlgae extends SubsystemBase {
 
     private final SingleMotor wheelMotor = Components.getInstance().deAlgaeWheelMotor;
     private final SingleMotor angleMotor = Components.getInstance().deAlgaeAngleMotor;
-    //private final SparkMax wheelMotor;
-    //private final RelativeEncoder rollEncoder;
-    //private final SparkMax angleMotor;
     private final RelativeEncoder angleEncoder;
     private PIDController pid;
 
 
     public DeAlgae(){
-        //wheelMotor = new SparkMax(CanId, MotorType.kBrushless);
-        //rollEncoder = wheelMotor.getEncoder();
-
-        //angleMotor = new SparkMax(CanId2, MotorType.kBrushless);
         angleEncoder = angleMotor.getLeadEncoder();
 
         pid = new PIDController(
@@ -35,33 +28,40 @@ public class DeAlgae extends SubsystemBase {
 
     //TODO: find angle motor speed ratio
     public void runMotor_Up(){
-        angleMotor.setSpeed(Constants.DeAlgaeConstants.speed/4);
-        wheelMotor.setSpeed(Constants.DeAlgaeConstants.speed);
+        angleMotor.setSpeed(Constants.DeAlgaeConstants.topSpeed/4);
+        wheelMotor.setSpeed(Constants.DeAlgaeConstants.topSpeed);
     }
 
 
     public void runMotor_Down(){
-        angleMotor.setSpeed(-Constants.DeAlgaeConstants.speed/4);
-        wheelMotor.setSpeed(-Constants.DeAlgaeConstants.speed);
+        angleMotor.setSpeed(-Constants.DeAlgaeConstants.topSpeed/4);
+        wheelMotor.setSpeed(-Constants.DeAlgaeConstants.topSpeed);
     }
+
+
+    private double coerceIn(double value) {
+        if (value > Constants.DeAlgaeConstants.topSpeed) {
+            return Constants.DeAlgaeConstants.topSpeed;
+        } else if (value < Constants.DeAlgaeConstants.minSpeed) {
+            return Constants.DeAlgaeConstants.minSpeed;
+        } else {
+            return value;
+        }
+    }
+
 
     //TODO: PID implementation
     public void deploy(){
         double PIDoutput ;
 
         if(angleEncoder.getPosition() < Constants.DeAlgaeConstants.flatAngle){
-            angleMotor.setSpeed(Constants.DeAlgaeConstants.speed/4);
+            angleMotor.setSpeed(Constants.DeAlgaeConstants.topSpeed/4);
         }
 
-        PIDoutput = pid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.flatAngle);
+        PIDoutput = coerceIn(pid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.flatAngle));
 
-        if (PIDoutput < Constants.DeAlgaeConstants.minSpeed){
-            angleMotor.stop();
+        angleMotor.setSpeed(PIDoutput);
         }
-        else{
-            angleMotor.setSpeed(PIDoutput);
-        }
-    }
 
 
     public void stop(){
@@ -74,23 +74,8 @@ public class DeAlgae extends SubsystemBase {
     public void reset(){
         double PIDoutput;
 
-//        double tolerance = 0.5;
-//        if (angleEncoder.getPosition() < Constants.DeAlgaeConstants.armDefaultAngle - tolerance){
-//            angleMotor.setSpeed(Constants.DeAlgaeConstants.speed/4);
-//        } else if (angleEncoder.getPosition() > Constants.DeAlgaeConstants.armDefaultAngle + tolerance){
-//            angleMotor.setSpeed(-Constants.DeAlgaeConstants.speed/4);
-//        } else {
-//            stop();
-//        }
-        PIDoutput = pid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.armDefaultAngle);
-
-        if (PIDoutput < Constants.DeAlgaeConstants.minSpeed){
-            angleMotor.stop();
-        } else {
-            angleMotor.setSpeed(PIDoutput);
-        }
-
-
-
+        PIDoutput = coerceIn(pid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.armDefaultAngle));
+        angleMotor.setSpeed(PIDoutput);
     }
 }
+

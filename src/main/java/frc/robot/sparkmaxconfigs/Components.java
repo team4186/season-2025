@@ -3,6 +3,7 @@ package frc.robot.sparkmaxconfigs;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import frc.robot.Constants;
 
 // Components Singleton
 public final class Components {
@@ -46,11 +47,11 @@ public final class Components {
     public static class DeAlgaeMotor {
 
         public SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(Constants.DeAlgaeConstants.CanId, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
 
         public SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(Constants.DeAlgaeConstants.CanId2, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
     }
 
