@@ -7,9 +7,11 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
-//TODO: Update sparkID, sensorID, climbVoltage, moveVoltage, check if motor requires voltage to lock
+//TODO: Update sparkID, sensorID, climbVoltage, moveVoltage,
+// check if motor requires voltage to lock, fix return statements
 public class Climber extends SubsystemBase {
     private static final int sparkID = 0;
+    //Climb voltage requires much higher values than move voltage.
     private static final int climbVoltage = 0;
     private static final int moveVoltage = climbVoltage / 3;
 
@@ -29,16 +31,16 @@ public class Climber extends SubsystemBase {
         if (!beamBreak.get()) {
             motor.setVoltage(moveVoltage);
         }
-        return null; //idk how to do these
+        return null;
     }
 
-
+    //Avoid using for now, no safeties
     public Command stowClimb(){
         motor.setVoltage(-moveVoltage);
-        return null; //idk how to do these
+        return null;
     }
 
-
+    //engageClimb uses beam breaks, has safety and uses higher voltage than deploy
     public Command engageClimb() {
         try {
             if (!beamBreak.get()) {
@@ -48,17 +50,9 @@ public class Climber extends SubsystemBase {
             }
         } catch (IllegalStateException e) {
             motor.stopMotor();
-            String msg = "Beambreak error: " + e.toString();
+            String msg = "Climber Beambreak error: " + e.toString();
             System.out.println( msg );
         }
-
-        return null; //idk how to do these
-    }
-
-
-    // Different Functionality then Stow?
-    public Command resetClimb() {
-        motor.setVoltage(-10);
-        return null; //idk how to do these
+        return null;
     }
 }

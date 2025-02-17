@@ -29,7 +29,7 @@ public class EndEffector extends SubsystemBase {
 
         } catch (IllegalStateException e) {
             endEffectorMotor.stop();
-            String msg = "Beambreak error: " + e.toString();
+            String msg = "EndEffector Beambreak error: " + e.toString();
             System.out.println(msg);
         }
 

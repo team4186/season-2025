@@ -12,7 +12,11 @@ public final class Components {
     public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeMotor;
     public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
-    public SingleMotor processorDeployMotor = new AlgaeProcessorMotor().deployMotor;
+
+    public DeAlgaeMotor deAlgaeMotors = new DeAlgaeMotor();
+    public SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
+    public SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
+
     // private Constructor
     private Components() {}
 
@@ -27,12 +31,31 @@ public final class Components {
 
     // TODO: Set proper CAN ID.
     public static final class AlgaeProcessorMotor {
-        // private final MotorConfigs motorConfigs = MotorConfigs.getInstance();
-
         public SingleMotor algaeMotor = new SingleMotor(
                 new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
+
         public SingleMotor deployMotor = new SingleMotor(
+                new SparkMax(1, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().HoldingConfig);
+    }
+
+    public static class ClimberMotor { }
+
+    public static class DeAlgaeMotor {
+
+        public SingleMotor wheelMotor = new SingleMotor(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DefaultConfig);
+
+        public SingleMotor angleMotor = new SingleMotor(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DefaultConfig);
+    }
+
+    public static class ElevatorMotors {
+        public MotorSet elevatorMotors = new MotorSet(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // change 0 and 1 for id's
                 new SparkMax(1, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().HoldingConfig);
     }
@@ -42,10 +65,6 @@ public final class Components {
         // TODO
     }
 
-
-    public static class DeAlgaeMotor {
-        // TODO
-    }
 
     //TODO: Set proper CAN ID.
     public static class ElevatorMotors {

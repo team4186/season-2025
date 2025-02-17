@@ -3,12 +3,16 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.sparkmaxconfigs.SingleMotor;
+import frc.robot.sparkmaxconfigs.Components;
 
 public class DeAlgae extends SubsystemBase {
 
-    private final SparkMax wheelMotor;
-    private final RelativeEncoder rollEncoder;
-    private final SparkMax angleMotor;
+    private final SingleMotor wheelMotor = Components.getInstance().deAlgaeWheelMotor;
+    private final SingleMotor angleMotor = Components.getInstance().deAlgaeAngleMotor;
+    //private final SparkMax wheelMotor;
+    //private final RelativeEncoder rollEncoder;
+    //private final SparkMax angleMotor;
     private final RelativeEncoder angleEncoder;
 
     private static final int CanId = 0; //TODO: placeHolder
@@ -19,36 +23,36 @@ public class DeAlgae extends SubsystemBase {
 
 
     public DeAlgae(){
-        wheelMotor = new SparkMax(CanId, MotorType.kBrushless);
-        rollEncoder = wheelMotor.getEncoder();
+        //wheelMotor = new SparkMax(CanId, MotorType.kBrushless);
+        //rollEncoder = wheelMotor.getEncoder();
 
-        angleMotor = new SparkMax(CanId2, MotorType.kBrushless);
-        angleEncoder = angleMotor.getEncoder();
+        //angleMotor = new SparkMax(CanId2, MotorType.kBrushless);
+        angleEncoder = angleMotor.getLeadEncoder();
     }
 
     //TODO: find angle motor speed ratio
     public void runMotor_Up(){
-        angleMotor.set(speed/4);
-        wheelMotor.set(speed);
+        angleMotor.setSpeed(speed/4);
+        wheelMotor.setSpeed(speed);
     }
 
 
     public void runMotor_Down(){
-        angleMotor.set(-speed/4);
-        wheelMotor.set(-speed);
+        angleMotor.setSpeed(-speed/4);
+        wheelMotor.setSpeed(-speed);
     }
 
 
     public void deploy(){
         if(angleEncoder.getPosition() < flatAngle){
-            angleMotor.set(speed/4);
+            angleMotor.setSpeed(speed/4);
         }
     }
 
 
     public void stop(){
-        wheelMotor.stopMotor();
-        angleMotor.stopMotor();
+        wheelMotor.stop();
+        angleMotor.stop();
     }
 
 
@@ -56,9 +60,9 @@ public class DeAlgae extends SubsystemBase {
     public void reset(){
         double tolerance = 0.5;
         if (angleEncoder.getPosition() < armDefaultAngle - tolerance){
-            angleMotor.set(speed/4);
+            angleMotor.setSpeed(speed/4);
         } else if (angleEncoder.getPosition() > armDefaultAngle + tolerance){
-            angleMotor.set(-speed/4);
+            angleMotor.setSpeed(-speed/4);
         } else {
             stop();
         }
