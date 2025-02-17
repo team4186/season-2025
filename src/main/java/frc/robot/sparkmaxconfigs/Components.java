@@ -10,6 +10,7 @@ public final class Components {
     private static Components instance = null;
 
     public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeMotor;
+    public SingleMotor algaeAngleMotor = new AlgaeProcessorMotor().deployMotor;
     public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
 

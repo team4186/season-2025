@@ -17,7 +17,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
     private final SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
 
-    private final SingleMotor deployMotor = Components.getInstance().processorDeployMotor;
+    private final SingleMotor deployMotor = Components.getInstance().algaeAngleMotor;
 
     // processorPos is the current position of the processor encoder ticks.
     private final RelativeEncoder processorPos = deployMotor.motor.getAlternateEncoder();
