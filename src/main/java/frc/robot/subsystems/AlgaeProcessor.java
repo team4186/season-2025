@@ -38,16 +38,16 @@ public class AlgaeProcessor extends SubsystemBase {
             processorPos.setPosition(0.0);
         } else if (algaeDetected()) {
             deployPID.setSetpoint(-endPos);
-            algaeMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            algaeMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
             deployMotor.setSpeed(deployPID.calculate(getProcessorPos()));
+            processorPos.setPosition(0.0);
         }
         // TODO: Fix this later.
         return null;
     }
 
     public Command launchAlgaeCommand() {
-        // Should move the motors to launch algae.
-
+        algaeMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
         return null;
     }
 
