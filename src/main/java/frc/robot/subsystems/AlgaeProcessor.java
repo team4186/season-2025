@@ -1,48 +1,42 @@
 package frc.robot.subsystems;
+import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel;
-
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
+import frc.robot.Units;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 
-
 public class AlgaeProcessor extends SubsystemBase {
-    private SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
+    private final PIDController deployPID = new PIDController(Constants.PIDConstants.proportional, Constants.PIDConstants.integral, Constants.PIDConstants.derivative);
+
+    private final SingleMotor algaeMotor = Components.getInstance().algaeProcessorMotor;
+
+    private final SingleMotor deployMotor = Components.getInstance().processorDeployMotor;
 
     // processorPos is the current position of the processor encoder ticks.
-    private final double processorPos;
+    private final RelativeEncoder processorPos = deployMotor.motor.getAlternateEncoder();
 
-    // Placeholder CanID (Not actually 1).
-    private static final int CANIDSwing = 1;
-    // Placeholder CAN
-    private static final int CANIDIntake = 2;
+    private double endPos;
+
     // Change the input channel based on what is on the RoboRIO.
-
     private final DigitalInput TFLuna =  new DigitalInput(0);
-
-    private final SparkMax swingMotor = new SparkMax(CANIDSwing, SparkLowLevel.MotorType.kBrushless);
-
-    private final SparkMax intakeMotor = new SparkMax(CANIDIntake, SparkLowLevel.MotorType.kBrushless);
-
-    public AlgaeProcessor(double processorPos) {
-        this.processorPos = processorPos;
-    }
 
     // This will be placed on a loop in RobotContainer.
     public Command intakeAlgaeCommand() {
         if (!algaeDetected()){
             // Current voltage is 20, change in constants if needed.
-            swingMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
+            algaeMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
             // Current voltage is 10, change in constants if needed.
-            intakeMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            deployMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            this.endPos = getProcessorPos();
+            processorPos.setPosition(0.0);
         } else if (algaeDetected()) {
-            intakeMotor.setVoltage(Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
-            // Make the intakeMotor continue to rotate capped at 10 Amps
-            // so that the algae doesn't fall out.
+            deployPID.setSetpoint(-endPos);
+            algaeMotor.setVoltage(-Constants.SubsystemMotorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            deployMotor.setSpeed(deployPID.calculate(getProcessorPos()));
         }
         // TODO: Fix this later.
         return null;
@@ -50,6 +44,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
     public Command launchAlgaeCommand() {
         // Should move the motors to launch algae.
+
         return null;
     }
 
@@ -64,6 +59,6 @@ public class AlgaeProcessor extends SubsystemBase {
     }
 
     public double getProcessorPos() {
-        return processorPos;
+        return Units.TicksToDegrees(processorPos.getPosition(), "NEO550");
     }
 }

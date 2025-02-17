@@ -60,4 +60,10 @@ public final class Constants {
     public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 10.0;
   }
 
+  public static final class PIDConstants {
+    public static final double proportional = 0.05;
+    public static final double integral = 0.0;
+    public static final double derivative = 0.0;
+  }
+
 }

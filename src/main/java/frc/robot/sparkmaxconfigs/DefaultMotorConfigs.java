@@ -11,6 +11,10 @@ public class DefaultMotorConfigs {
             .smartCurrentLimit(50)
             .idleMode(SparkBaseConfig.IdleMode.kCoast);
 
+    public final SparkMaxConfig HoldingConfig = (SparkMaxConfig) new SparkMaxConfig()
+            .smartCurrentLimit(10)
+            .idleMode(SparkBaseConfig.IdleMode.kCoast);
+
     public final SparkBaseConfig DefaultLeftMotorConfig = new SparkMaxConfig()
             .apply(DefaultConfig)
             .inverted(true);

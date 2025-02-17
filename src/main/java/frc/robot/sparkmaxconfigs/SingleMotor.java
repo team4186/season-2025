@@ -1,5 +1,6 @@
 package frc.robot.sparkmaxconfigs;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -20,6 +21,7 @@ public class SingleMotor {
         this.motor.set(value);
     }
 
+    public void setVoltage(double value) {this.motor.setVoltage(value); }
 
     public void stop() {
         this.motor.stopMotor();
