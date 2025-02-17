@@ -53,18 +53,6 @@ public final class Components {
                 DefaultMotorConfigs.getInstance().DefaultConfig);
     }
 
-    public static class ElevatorMotors {
-        public MotorSet elevatorMotors = new MotorSet(
-                new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // change 0 and 1 for id's
-                new SparkMax(1, SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().HoldingConfig);
-    }
-
-
-    public static class ClimberMotor {
-        // TODO
-    }
-
 
     //TODO: Set proper CAN ID.
     public static class ElevatorMotors {
