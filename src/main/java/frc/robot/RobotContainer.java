@@ -104,7 +104,7 @@ public class RobotContainer {
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
-    Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
+    Command driveFieldOrientedAngularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
     if ( RobotBase.isSimulation() ){
@@ -128,6 +128,41 @@ public class RobotContainer {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       joystick.button(5).whileTrue(drivebase.centerModulesCommand());
       joystick.button(6).onTrue(Commands.none());
+
+      // AlgaeProcessor Tests
+      /**
+       * Extend
+       * Retract
+       * Intake Algae
+       * Eject Algae
+       */
+
+      // Climber Tests
+      /**
+       * Extend
+       * Latch
+       * Retract
+       */
+
+      // DeAlgae Tests
+      /**
+       * Extend
+       * Remove Algae (up)
+       * Remove Algae (down)
+       */
+
+      // Elevator Tests
+      /**
+       * Level 1, 2, 3
+       * Limit switch (upper, lower)
+       */
+
+      // EndEffector Tests
+      /**
+       * Intake / Eject Coral
+       */
+
+
     } else {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
