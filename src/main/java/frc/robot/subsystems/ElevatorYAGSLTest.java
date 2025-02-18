@@ -11,18 +11,21 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.MotorSet;
-import frc.robot.sparkmaxconfigs.SingleMotor;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints
+
+import static edu.wpi.first.units.Units.*;
 
 public class ElevatorYAGSLTest extends SubsystemBase {
     private final MotorSet elevatorMotors = Components.getInstance().elevatorMotors; //we are using multiple motors
     private final SparkMax elevatorMotor = new SparkMax(13, SparkLowLevel.MotorType.kBrushless);
-    private final SparkMaxSim elevatorMotorSim = new SparkMaxSim(elevatorMotors, elevatorGearbox);
+    // private final SparkMaxSim elevatorMotorSim = new SparkMaxSim(elevatorMotors, elevatorGearbox);
     private final ProfiledPIDController pidController =
-            new ProfiledPIDController(ElevatorKp, ElevatorKi, ElevatorKd,
+            new ProfiledPIDController(
+                    ElevatorKp,
+                    ElevatorKi,
+                    ElevatorKd,
                     new TrapezoidProfile.Constraints(ElevatorMaxVelocity, ElevatorMaxAcceleration));
 
-    private final ElevatorFeedforward feedForward = new ElevatorFeedforward()
+    // private final ElevatorFeedforward feedForward = new ElevatorFeedforward();
 
     private static final double ElevatorKp = 5;
     private static final double ElevatorKi = 0;
@@ -40,4 +43,3 @@ public class ElevatorYAGSLTest extends SubsystemBase {
     private static final double ElevatorMinHeightMeters = 5;
     private static final double ElevatorMaxHeightMeters = 0;
 }
-
