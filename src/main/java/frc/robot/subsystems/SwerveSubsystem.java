@@ -89,7 +89,7 @@ public class SwerveSubsystem extends SubsystemBase {
             true,
             0.1); // TODO: Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(
-            false,
+            true,
             1); // TODO: Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
 //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
 
@@ -166,15 +166,15 @@ public class SwerveSubsystem extends SubsystemBase {
                           speedsRobotRelative,
                           swerveDrive.kinematics.toSwerveModuleStates(speedsRobotRelative),
                           moduleFeedForwards.linearForces());
-                  } else {
-                      swerveDrive.setChassisSpeeds(speedsRobotRelative);
-                  }
+                } else {
+                  swerveDrive.setChassisSpeeds(speedsRobotRelative);
+                }
               },
               // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
               new PPHolonomicDriveController(
-                  // PPHolonomicController is the built in path following controller for holonomic drive trains
-                  new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                  new PIDConstants(5.0, 0.0, 0.0)  // Rotation PID constants
+                      // PPHolonomicController is the built in path following controller for holonomic drive trains
+                      new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                      new PIDConstants(5.0, 0.0, 0.0)  // Rotation PID constants
               ),
               config,
               // The robot configuration
@@ -184,7 +184,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
                 var alliance = DriverStation.getAlliance();
-                  return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
+                return alliance.filter(value -> value == DriverStation.Alliance.Red).isPresent();
               },
               this // Reference to this subsystem to set requirements
       );
@@ -243,14 +243,14 @@ public class SwerveSubsystem extends SubsystemBase {
   public Command driveToPose(Pose2d pose) {
     // Create the constraints to use while pathfinding
     PathConstraints constraints = new PathConstraints(
-        swerveDrive.getMaximumChassisVelocity(), 4.0,
-        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+            swerveDrive.getMaximumChassisVelocity(), 4.0,
+            swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
 
     // Since AutoBuilder is configured, we can use it to build pathfinding commands
     return AutoBuilder.pathfindToPose(
-        pose,
-        constraints,
-        edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
+            pose,
+            constraints,
+            edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
     );
   }
 
@@ -435,9 +435,9 @@ public class SwerveSubsystem extends SubsystemBase {
             () -> {
               Translation2d scaledInputs = SwerveMath.scaleTranslation(
                       new Translation2d(
-                            translationX.getAsDouble(),
-                            translationY.getAsDouble()),
-                    0.8);
+                              translationX.getAsDouble(),
+                              translationY.getAsDouble()),
+                      0.8);
 
               driveFieldOriented( swerveDrive.swerveController.getTargetSpeeds(
                       scaledInputs.getX(),
