@@ -50,7 +50,7 @@ public class RobotContainer {
                   () -> attenuated( joystick.getY(), 2, 1.0 ) * -1,
                   () -> attenuated( joystick.getX(), 2, 1.0 ) * -1)
           .withControllerRotationAxis(
-                  () -> attenuated( joystick.getTwist(), 3, 0.8 ) * -1)
+                  () -> attenuated( joystick.getTwist(), 3, 1.0 ) * -1)
           .deadband(OperatorConstants.DEADBAND)
           .allianceRelativeControl(true);
 
