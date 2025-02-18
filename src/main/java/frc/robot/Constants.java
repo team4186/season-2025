@@ -76,7 +76,9 @@ public final class Constants {
     public static final double flatAngle = 0.0; //TODO: find the 'distance' of 90 degrees
     public static final double topSpeed = 5.0; // TODO: placeholder
     public static final double minSpeed = 1.0; //TODO: placeHolder
-    public static double p = 0.5 , i = 0.0, d = 0.0; //TODO: tune pid values
+    public static final double p = 0.5 , i = 0.0, d = 0.0; //TODO: tune pid values
+    public static final double maxAngle = 135; // TODO: find max arc
+    public static final double minAngle = 45; // TODO: find min arc
   }
 
 

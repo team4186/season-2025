@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.*;
 import java.io.File;
+import java.util.function.DoubleSupplier;
+
 import swervelib.SwerveInputStream;
 
 /**
