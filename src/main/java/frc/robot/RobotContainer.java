@@ -36,7 +36,7 @@ public class RobotContainer {
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
   //TODO: Implement Components
-  private final DeAlgae deAlgae = new DeAlgae();
+//  private final DeAlgae deAlgae = new DeAlgae();
 //  private final Climber climber = new Climber();
 //  private final Elevator elevator = new Elevator();
 //  private final EndEffector endEffector = new EndEffector();
