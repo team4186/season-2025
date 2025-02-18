@@ -17,11 +17,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.subsystems.DeAlgae;
+import frc.robot.subsystems.*;
 import java.io.File;
-import java.util.function.DoubleSupplier;
-
 import swervelib.SwerveInputStream;
 
 /**
@@ -38,18 +35,22 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
-  //TODO: deAlgae stuff
-  DeAlgae deAlgae = new DeAlgae();
+  //TODO: Implement Components
+//  private final DeAlgae deAlgae = new DeAlgae();
+//  private final Climber climber = new Climber();
+//  private final Elevator elevator = new Elevator();
+//  private final EndEffector endEffector = new EndEffector();
+//  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
           drivebase.getSwerveDrive(),
-                  () -> attenuated( joystick.getY() ) * -1,
-                  () -> attenuated( joystick.getX() ) * -1)
+                  () -> attenuated( joystick.getY(), 2, 1.0 ) * -1,
+                  () -> attenuated( joystick.getX(), 2, 1.0 ) * -1)
           .withControllerRotationAxis(
-                  () -> attenuated( joystick.getTwist() ))
+                  () -> attenuated( joystick.getTwist(), 3, 0.8 ) * -1)
           .deadband(OperatorConstants.DEADBAND)
           .allianceRelativeControl(true);
 
@@ -107,16 +108,14 @@ public class RobotContainer {
     Command driveFieldOrientedAngularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
-    if ( RobotBase.isSimulation() ){
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-    } else {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     if ( Robot.isSimulation() ){
+      // override to sim controls
+      // drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
       // joystick.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
       // NOTE: Change later?
-      joystick.trigger().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+      joystick.trigger().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(10, 3, new Rotation2d()))));
       joystick.button(11).whileTrue(drivebase.sysIdDriveMotorCommand());
     }
 
@@ -154,12 +153,11 @@ public class RobotContainer {
       //TODO: deAlgae commands config buttons later
       //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
       //TODO: alternatively could manually decide
-
-      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
-
-      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
-
-      Commands.runOnce(deAlgae::stop);
+//      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
+//
+//      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
+//
+//      Commands.runOnce(deAlgae::stop);
 
       // Elevator Tests
       /**
@@ -186,8 +184,8 @@ public class RobotContainer {
 
 
   // Adjust joystick input from linear to exponential curve
-  private double attenuated(double value) {
-    double res = 0.90 * Math.pow( Math.abs(value), 2 );
+  private double attenuated(double value, int exponent, double scale) {
+    double res = scale * Math.pow( Math.abs(value), exponent );
     if ( value < 0 ) { res *= -1; }
     return res;
   }
