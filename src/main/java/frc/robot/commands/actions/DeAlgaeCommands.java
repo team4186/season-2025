@@ -10,7 +10,8 @@ public class DeAlgaeCommands extends Command {
     //TODO: deAlgae commands config buttons later
 
     private final DeAlgae deAlgae;
-    private int timer1 = 0, timer2 = 0;
+    private int timer = 0;
+    private boolean isFinished = false;
 
     public DeAlgaeCommands(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
@@ -34,16 +35,20 @@ public class DeAlgaeCommands extends Command {
             second press makes arm go up and down while spinning motor
         */
 
-        if(deAlgae.deploy()){
-            if(timer1 < 20){
+        if(deAlgae.deploy() && !isFinished){
+            if(timer < 20){
                 deAlgae.runMotor_Up();
-                timer1++;
             }
 
-            else if(timer2 < 30){
+            else if(timer < 50){
                 deAlgae.runMotor_Down();
-                timer2++;
             }
+            else {
+                if(deAlgae.reset()){
+                    isFinished = true;
+                }
+            }
+            timer++;
         }
     }
 
@@ -64,7 +69,7 @@ public class DeAlgaeCommands extends Command {
     @Override
     public boolean isFinished()
     {
-        return deAlgae.reset();
+        return isFinished;
     }
 
 
