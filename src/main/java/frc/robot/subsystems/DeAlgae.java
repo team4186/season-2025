@@ -28,13 +28,21 @@ public class DeAlgae extends SubsystemBase {
 
     //TODO: find angle motor speed ratio
     public void runMotor_Up(){
-        angleMotor.setSpeed(Constants.DeAlgaeConstants.topSpeed/4);
+        if (angleEncoder.getPosition() < Constants.DeAlgaeConstants.maxAngle) {
+            double pidOutput = coerceIn(pid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.maxAngle));
+            angleMotor.setSpeed(pidOutput);
+        }
+
         wheelMotor.setSpeed(Constants.DeAlgaeConstants.topSpeed);
     }
 
-
+    // TODO: not sure about pid behavior when given position is more than target position
     public void runMotor_Down(){
-        angleMotor.setSpeed(-Constants.DeAlgaeConstants.topSpeed/4);
+        if (angleEncoder.getPosition() > Constants.DeAlgaeConstants.minAngle){
+            double pidOutput = coerceIn(pid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.minAngle));
+            angleMotor.setSpeed(-pidOutput);
+        }
+
         wheelMotor.setSpeed(-Constants.DeAlgaeConstants.topSpeed);
     }
 
@@ -51,18 +59,20 @@ public class DeAlgae extends SubsystemBase {
 
 
     //TODO: PID implementation
-    public void deploy(){
-        double PIDoutput ;
+    public boolean deploy() {
+        double PIDoutput;
 
-        if(angleEncoder.getPosition() < Constants.DeAlgaeConstants.flatAngle){
-            angleMotor.setSpeed(Constants.DeAlgaeConstants.topSpeed/4);
+        if (angleEncoder.getPosition() < Constants.DeAlgaeConstants.flatAngle) {
+            PIDoutput = coerceIn(pid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.flatAngle));
+
+            angleMotor.setSpeed(PIDoutput);
+        }
+        else {
+            return true;
         }
 
-        PIDoutput = coerceIn(pid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.flatAngle));
-
-        angleMotor.setSpeed(PIDoutput);
-        }
-
+        return false;
+    }
 
     public void stop(){
         wheelMotor.stop();
@@ -71,11 +81,17 @@ public class DeAlgae extends SubsystemBase {
 
 
     // TODO: replace with pid or set to position within higher tolerance // done, needs testing
-    public void reset(){
+    public boolean reset(){
         double PIDoutput;
 
-        PIDoutput = coerceIn(pid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.armDefaultAngle));
-        angleMotor.setSpeed(PIDoutput);
+        if(angleEncoder.getPosition() > Constants.DeAlgaeConstants.armDefaultAngle) {
+            PIDoutput = coerceIn(pid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.armDefaultAngle));
+            angleMotor.setSpeed(PIDoutput);
+
+            return false;
+        }
+
+        return true;
     }
 }
 

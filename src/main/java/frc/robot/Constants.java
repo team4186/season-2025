@@ -25,7 +25,7 @@ public final class Constants {
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprak max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(14.5);
+  public static final double MAX_SPEED  = Units.feetToMeters(16.0);
   // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 
@@ -76,7 +76,9 @@ public final class Constants {
     public static final double flatAngle = 0.0; //TODO: find the 'distance' of 90 degrees
     public static final double topSpeed = 5.0; // TODO: placeholder
     public static final double minSpeed = 1.0; //TODO: placeHolder
-    public static double p = 0.5 , i = 0.0, d = 0.0; //TODO: tune pid values
+    public static final double p = 0.5 , i = 0.0, d = 0.0; //TODO: tune pid values
+    public static final double maxAngle = 135; // TODO: find max arc
+    public static final double minAngle = 45; // TODO: find min arc
   }
 
 
