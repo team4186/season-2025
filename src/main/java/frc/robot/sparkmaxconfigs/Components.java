@@ -3,7 +3,9 @@ package frc.robot.sparkmaxconfigs;
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants;
+import frc.robot.subsystems.Climber;
 
 // Components Singleton
 public final class Components {
@@ -14,11 +16,11 @@ public final class Components {
     public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
     public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
+    public SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
     public DeAlgaeMotor deAlgaeMotors = new DeAlgaeMotor();
     public SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
     public SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
-
     // private Constructor
     private Components() {}
 
@@ -42,9 +44,13 @@ public final class Components {
                 DefaultMotorConfigs.getInstance().HoldingConfig);
     }
 
-    public static class ClimberMotor { }
+    public static final class ClimberMotor {
+        public SingleMotor climberMotor = new SingleMotor(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DefaultConfig);
+    }
 
-    public static class DeAlgaeMotor {
+    public static final class DeAlgaeMotor {
 
         public SingleMotor wheelMotor = new SingleMotor(
                 new SparkMax(Constants.DeAlgaeConstants.CanId, SparkLowLevel.MotorType.kBrushless),
@@ -57,7 +63,7 @@ public final class Components {
 
 
     //TODO: Set proper CAN ID.
-    public static class ElevatorMotors {
+    public static final class ElevatorMotors {
         public final MotorSet elevatorMotors = new MotorSet(
                 new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower

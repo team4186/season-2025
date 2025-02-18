@@ -7,19 +7,15 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.sparkmaxconfigs.Components;
+import frc.robot.sparkmaxconfigs.SingleMotor;
 
 //TODO: check if motor requires voltage to lock, fix return statements
 public class Climber extends SubsystemBase {
-    private final SparkMax motor;
-    private final RelativeEncoder encoder;
-    private final DigitalInput beamBreak;
-
-
-    public Climber( int beamBreakId ){
-        beamBreak = new DigitalInput(beamBreakId);
-        motor = new SparkMax(Constants.ClimberConstants.sparkID, SparkLowLevel.MotorType.kBrushless);
-        encoder = motor.getEncoder();
-    }
+    private final SingleMotor motor = Components.getInstance().climberMotor;
+    private final RelativeEncoder encoder  = motor.getLeadEncoder();
+    // Change the digital input channel later.
+    private final DigitalInput beamBreak  = new DigitalInput(0);
 
     //Avoid using for now, no safeties
     public Command deployClimb(){

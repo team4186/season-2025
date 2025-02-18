@@ -17,6 +17,8 @@ public class SingleMotor {
         this.motor = motor;
     }
 
+    public void stopMotor() {motor.stopMotor();}
+
     public RelativeEncoder getLeadEncoder() { return this.motor.getEncoder(); }
 
     public void setSpeed(double value) {
