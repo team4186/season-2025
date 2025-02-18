@@ -153,12 +153,11 @@ public class RobotContainer {
       //TODO: deAlgae commands config buttons later
       //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
       //TODO: alternatively could manually decide
-
-      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
-
-      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
-
-      Commands.runOnce(deAlgae::stop);
+//      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
+//
+//      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
+//
+//      Commands.runOnce(deAlgae::stop);
 
       // Elevator Tests
       /**
