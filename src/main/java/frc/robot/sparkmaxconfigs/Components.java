@@ -6,6 +6,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Elevator;
 
 // Components Singleton
 public final class Components {
@@ -15,6 +16,7 @@ public final class Components {
     public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeWheelMotor;
     public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
     public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
+    public ElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
     public SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
@@ -51,7 +53,6 @@ public final class Components {
     }
 
     public static final class DeAlgaeMotor {
-
         public SingleMotor wheelMotor = new SingleMotor(
                 new SparkMax(Constants.DeAlgaeConstants.CanId, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
@@ -67,7 +68,15 @@ public final class Components {
         public final MotorSet elevatorMotors = new MotorSet(
                 new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().DefaultConfig
+                DefaultMotorConfigs.getInstance().SparkElevatorConfig
+        );
+    }
+
+    public static final class ElevatorMotorsYagsl {
+        public final ElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorSet(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
+                new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
+                DefaultMotorConfigs.getInstance().SparkElevatorConfig
         );
     }
 

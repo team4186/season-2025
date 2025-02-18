@@ -104,4 +104,22 @@ public final class Constants {
     // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
     public final double maximumAmbiguity = 0.25;
   }
+
+  public static final class ElevatorYAGSLConstants {
+    public static final double ElevatorKp = 5;
+    public static final double ElevatorKi = 0;
+    public static final double ElevatorKd = 0;
+    public static final double ElevatorMaxVelocity = 4.0;
+    public static final double ElevatorMaxAcceleration = 6.0;
+    public static final double ElevatorKs = 5; //voltage to overcome static friction
+    public static final double ElevatorKg = 0; //voltage to overcome gravity
+    public static final double ElevatorKv = 0; //velocity
+    public static final double ElevatorKa = 0; //acceleration
+    public static final double ElevatorRampRate = 5;
+    public static final double ElevatorGearing = 0;
+    public static final double ElevatorCarriageMass = 0;
+    public static final double ElevatorDrumRadius = 0;
+    public static final double ElevatorMinHeightMeters = 5;
+    public static final double ElevatorMaxHeightMeters = 0;
+  }
 }

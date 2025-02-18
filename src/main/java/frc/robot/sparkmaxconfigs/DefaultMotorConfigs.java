@@ -2,6 +2,7 @@ package frc.robot.sparkmaxconfigs;
 
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import frc.robot.Constants;
 
 // MotorConfigs Singleton
 public class DefaultMotorConfigs {
@@ -23,6 +24,9 @@ public class DefaultMotorConfigs {
             .apply(DefaultConfig)
             .inverted(false);
 
+    public final SparkBaseConfig SparkElevatorConfig = new SparkMaxConfig()
+            .smartCurrentLimit(40)
+            .openLoopRampRate(Constants.ElevatorYAGSLConstants.ElevatorRampRate);
 
     private DefaultMotorConfigs(){ }
 

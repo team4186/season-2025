@@ -1,3 +1,4 @@
+
 package frc.robot.sparkmaxconfigs;
 
 import com.revrobotics.RelativeEncoder;
@@ -6,13 +7,12 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-public class MotorSet {
-    private final SparkMax lead;
-
-    public MotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig){
+public class ElevatorMotorSet {
+    public final SparkMax lead;
+    public ElevatorMotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig){
         lead.configure(
                 baseConfig,
-                SparkBase.ResetMode.kResetSafeParameters,
+                SparkBase.ResetMode.kNoResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
 
         SparkMaxConfig followerConfig = new SparkMaxConfig();
@@ -22,13 +22,11 @@ public class MotorSet {
 
         follower.configure(
                 followerConfig,
-                SparkBase.ResetMode.kResetSafeParameters,
+                SparkBase.ResetMode.kNoResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
 
         this.lead = lead;
     }
-
-
 
     public RelativeEncoder getLeadEncoder() { return this.lead.getEncoder(); }
 

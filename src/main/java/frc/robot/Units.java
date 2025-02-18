@@ -14,11 +14,15 @@ public final class Units {
 
     public static double TicksToMeters(double encoderTicks, double wheelDiameter, String motorType) {
     	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
-        	return (42.0/(wheelDiameter*Math.PI) * encoderTicks);
+        	return (encoderTicks/42.0) * (Math.PI * wheelDiameter);
         } else {
 		return 0.0;
 	}
     }
+
+	public static double TicksToMeters(double encoderTicks, double wheelDiameter, double gearRatio) {
+		return (encoderTicks/gearRatio) * (Math.PI * wheelDiameter);
+	}
     
     public static double TicksToDegrees(double encoderTicks, String motorType) {
 	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
