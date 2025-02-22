@@ -88,9 +88,9 @@ public final class Constants {
     public static final double ELEVATOR_LEVEL_ONE = 0.70; //70 cm
     public static final double ELEVATOR_LEVEL_TWO = 1.18; //118 cm
     public static final double ELEVATOR_LEVEL_THREE = 1.89; //189 cm
-    public static final double DEFAULT_FREE_MOVE_SPEED = 0.4;
-    public static final double DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
-    public static final double DEFAULT_SETPOINT_THRESHOLD = 2.5;
+    public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
+    public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
+    public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
     public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
   }
 
