@@ -13,7 +13,7 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 //TODO: check if motor requires voltage to lock, fix return statements
 public class Climber extends SubsystemBase {
     private final SingleMotor motor = Components.getInstance().climberMotor;
-    private final RelativeEncoder encoder  = motor.getLeadEncoder();
+    private final RelativeEncoder encoder  = motor.getEncoder();
     // Change the digital input channel later.
     private final DigitalInput beamBreak  = new DigitalInput(0);
 

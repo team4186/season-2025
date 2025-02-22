@@ -18,7 +18,7 @@ public class DeAlgae extends SubsystemBase {
 
 
     public DeAlgae(){
-        angleEncoder = angleMotor.getLeadEncoder();
+        angleEncoder = angleMotor.getEncoder();
 
         pid = new PIDController(
                 Constants.DeAlgaeConstants.p,
