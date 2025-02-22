@@ -5,10 +5,13 @@ import frc.robot.Constants;
 
 
 public final class ElevatorCommands extends Command {
-    private final Elevator elevatorSubsystem = new Elevator();
+    // TODO: NOT a new elevator, you pass subsystem from robot container when calling command!
+    private final Elevator elevatorSubsystem;
     private boolean isFinished = false;
 
-    private ElevatorCommands() {}
+    public ElevatorCommands(Elevator elevatorSubsystem) {
+        this.elevatorSubsystem = elevatorSubsystem;
+    }
 
     @Override
     public void initialize() {
