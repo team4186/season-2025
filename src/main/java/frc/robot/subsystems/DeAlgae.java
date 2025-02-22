@@ -47,25 +47,16 @@ public class DeAlgae extends SubsystemBase {
 
 
     private double coerceIn(double value) {
-        if (value > Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED) {
-            return Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
+        int sign = 1;
+        if (value < 0) {
+            sign = -1;
+        }
+
+        if ( Math.abs( value ) > Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED) {
+            return Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED * sign;
         } else {
-            return Math.max(value, Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED);
+            return Math.max( Math.abs(value), Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED) * sign;
         }
-
-        // Resolve after
-        if (Math.abs(value) > Constants.DeAlgaeConstants.topSpeed) {
-            if(value > 0) {return Constants.DeAlgaeConstants.topSpeed;}
-
-            else{return -Constants.DeAlgaeConstants.topSpeed;}
-
-        }
-        else if (Math.abs(value) < Constants.DeAlgaeConstants.minSpeed) {
-            if(value > 0){return Constants.DeAlgaeConstants.minSpeed;}
-
-            else{return -Constants.DeAlgaeConstants.minSpeed;}
-        }
-        else {return value;}
     }
 
 
