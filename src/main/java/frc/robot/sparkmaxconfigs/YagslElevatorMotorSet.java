@@ -8,11 +8,11 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 
-public class ElevatorMotorSet {
+public class YagslElevatorMotorSet {
     public final SparkMax lead;
 
 
-    public ElevatorMotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig) {
+    public YagslElevatorMotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig) {
         lead.configure(
                 baseConfig,
                 SparkBase.ResetMode.kNoResetSafeParameters,

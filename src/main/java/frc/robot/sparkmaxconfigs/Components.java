@@ -17,13 +17,11 @@ public final class Components {
     public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
     public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
 
-    public ElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
+    public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
     public SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
     public DeAlgaeMotor deAlgaeMotors = new DeAlgaeMotor();
-    public SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
-    public SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
 
 
     // private Constructor
@@ -80,7 +78,7 @@ public final class Components {
 
 
     public static final class ElevatorMotorsYagsl {
-        public final ElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorSet(
+        public final YagslElevatorMotorSet elevatorMotorsYagsl = new YagslElevatorMotorSet(
                 new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
                 DefaultMotorConfigs.getInstance().SparkElevatorConfig
