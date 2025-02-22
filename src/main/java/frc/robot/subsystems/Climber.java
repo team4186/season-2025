@@ -20,7 +20,6 @@ public class Climber extends SubsystemBase {
         return null;
     }
 
-
     public Command stowClimb(){
         if (!beamBreak.get()) {
             motor.setVoltage(-Constants.ClimberConstants.CLIMBER_MOVE_VOLTAGE);
