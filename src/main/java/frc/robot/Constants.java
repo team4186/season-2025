@@ -84,10 +84,18 @@ public final class Constants {
 
 
   public static final class ElevatorConstants {
+    public static final int ELEVATOR_BOTTOM_LIMIT_ID = 0;
+    public static final int ELEVATOR_TOP_LIMIT_ID = 0;
+    public static final int ELEVATOR_ENCODER_ID = 0;
+
     public static final double ELEVATOR_DEFAULT = 0.0;
     public static final double ELEVATOR_LEVEL_ONE = 0.70; //70 cm
     public static final double ELEVATOR_LEVEL_TWO = 1.18; //118 cm
     public static final double ELEVATOR_LEVEL_THREE = 1.89; //189 cm
+    public static final double ELEVATOR_LEVEL_FOUR = 0.0; // TODO: Update heights
+    public static final double ELEVATOR_P = 0.015;
+    public static final double ELEVATOR_I = 0.0;
+    public static final double ELEVATOR_D = 0.0;
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
