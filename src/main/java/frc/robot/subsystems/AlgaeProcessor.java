@@ -10,22 +10,26 @@ import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 
 public class AlgaeProcessor extends SubsystemBase {
-    private final PIDController deployPID = new PIDController(
-            Constants.AlgaeProcessorConstants.proportional,
-            Constants.AlgaeProcessorConstants.integral,
-            Constants.AlgaeProcessorConstants.derivative);
-
-    private final SingleMotor wheelMotor = Components.getInstance().algaeProcessorMotor;
-
-    private final SingleMotor angleMotor = Components.getInstance().algaeProcessorAngleMotor;
+    private final SingleMotor wheelMotor;
+    private final SingleMotor angleMotor;
 
     // processorPos is the current position of the processor encoder ticks.
-    private final RelativeEncoder processorPos = angleMotor.getEncoder();
+    private final RelativeEncoder processorPos;
+    private final DigitalInput tfLuna;
+    private final PIDController deployPID;
 
     private double endPos;
 
-    // Change the input channel based on what is on the RoboRIO.
-    private final DigitalInput TFLuna =  new DigitalInput(0);
+
+    public AlgaeProcessor(DigitalInput tfLuna, SingleMotor wheelMotor, SingleMotor angleMotor, PIDController deployPID){
+        this.wheelMotor = wheelMotor;
+        this.angleMotor = angleMotor;
+        this.tfLuna = tfLuna;
+        this.deployPID = deployPID;
+
+        processorPos = this.angleMotor.getEncoder();
+    }
+
 
     // This will be placed on a loop in RobotContainer.
     public Command intakeAlgaeCommand() {
@@ -39,22 +43,31 @@ public class AlgaeProcessor extends SubsystemBase {
         } else if (algaeDetected()) {
             deployPID.setSetpoint(-endPos);
             wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
-            angleMotor.setSpeed(deployPID.calculate(getProcessorPos()));
+            angleMotor.accept(deployPID.calculate(getProcessorPos()));
             processorPos.setPosition(0.0);
         }
         // TODO: Fix this later.
         return null;
     }
 
+
     public Command launchAlgaeCommand() {
         wheelMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
         return null;
     }
 
+
     public boolean algaeDetected() {
-        if (TFLuna.get()) {
+        try {
+
+        } catch (IllegalStateException e){
+            String msg = "";
+            System.out.println(msg);
+        }
+
+        if (tfLuna.get()) {
             return true;
-        } else if (!TFLuna.get()) {
+        } else if (!tfLuna.get()) {
             return false;
         } else {
             throw new IllegalStateException();
