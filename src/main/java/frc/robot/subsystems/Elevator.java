@@ -66,26 +66,25 @@ public class Elevator {
         double currentPos = encoder.getDistance();
 
         // TODO: Pass requested level to move function
-        switch (requestedLevel) {
-            case 1:
+        levelHeight = switch (requestedLevel) {
+            case 1 -> {
                 distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE - currentPos;
-                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE;
-                break;
-            case 2:
+                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE;
+            }
+            case 2 -> {
                 distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO - currentPos;
-                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO;
-                break;
-            case 3:
+                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO;
+            }
+            case 3 -> {
                 distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE - currentPos;
-                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE;
-                break;
-            case 4:
+                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE;
+            }
+            case 4 -> {
                 distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR - currentPos;
-                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR;
-                break;
-            default:
-                throw new InputMismatchException("Received unexpected requested elevator checkpoint");
-        }
+                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR;
+            }
+            default -> throw new InputMismatchException("Received unexpected requested elevator checkpoint");
+        };
 
         double speed = coerceIn(pid.calculate(distanceToLevel, levelHeight),
                 -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
