@@ -30,13 +30,14 @@ public class MotorSet {
 
 
 
-    public RelativeEncoder getLeadEncoder() {
+    public RelativeEncoder getMotorEncoder() {
         return this.lead.getEncoder();
     }
 
-    public void setSpeed(double value) {
+    public void accept(double value) {
         this.lead.set(value);
     }
+
 
     public void stop(){
         this.lead.stopMotor();

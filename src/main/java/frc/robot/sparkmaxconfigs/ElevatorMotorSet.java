@@ -16,6 +16,7 @@ public class ElevatorMotorSet {
                 SparkBase.PersistMode.kPersistParameters);
 
         SparkMaxConfig followerConfig = new SparkMaxConfig();
+
         followerConfig
                 .apply(baseConfig)
                 .follow(lead);
@@ -28,13 +29,16 @@ public class ElevatorMotorSet {
         this.lead = lead;
     }
 
+
     public RelativeEncoder getLeadEncoder() {
         return this.lead.getEncoder();
     }
 
-    public void setSpeed(double value) {
+
+    public void accept(double value) {
         this.lead.set(value);
     }
+
 
     public void stop(){
         this.lead.stopMotor();

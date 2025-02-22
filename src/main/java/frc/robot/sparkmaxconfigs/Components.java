@@ -25,6 +25,7 @@ public final class Components {
     public SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
     public SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
 
+
     // private Constructor
     private Components() {}
 
@@ -44,9 +45,10 @@ public final class Components {
                 DefaultMotorConfigs.getInstance().DefaultConfig);
 
         public SingleMotor algaeProcessorAngleMotor = new SingleMotor(
-                new SparkMax(1, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().HoldingConfig);
     }
+
 
     public static final class ClimberMotor {
         public SingleMotor climberMotor = new SingleMotor(
@@ -54,13 +56,14 @@ public final class Components {
                 DefaultMotorConfigs.getInstance().DefaultConfig);
     }
 
+
     public static final class DeAlgaeMotor {
         public SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(Constants.DeAlgaeConstants.CanId, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
 
         public SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(Constants.DeAlgaeConstants.CanId2, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
     }
 
@@ -73,6 +76,7 @@ public final class Components {
                 DefaultMotorConfigs.getInstance().SparkElevatorConfig
         );
     }
+
 
     public static final class ElevatorMotorsYagsl {
         public final ElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorSet(
