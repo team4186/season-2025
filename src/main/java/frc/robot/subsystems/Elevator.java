@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.MotorSet;
@@ -11,7 +12,7 @@ import frc.robot.sparkmaxconfigs.MotorSet;
 public class Elevator {
 
     // Motor, Encoder, and Limit Switches variables
-    private final MotorSet elevatorMotors = Components.getInstance().elevatorMotors;
+    private final MotorSet elevatorMotors;
     private final RelativeEncoder encoder;
 
     // Make id # correct
@@ -23,11 +24,13 @@ public class Elevator {
     private int level;
     private double currentElevatorHeight;
 
-    public Elevator(int elevatorMotor1ID, int elevatorMotor2ID, PIDController pidParam) {
-        encoder = elevatorMotors.getLeadEncoder();
-        encoder.setPosition(0.0);
+    public Elevator(int elevatorMotor1ID, int elevatorMotor2ID, Encoder encoder, PIDController pidParam) {
+//        encoder = elevatorMotors.getLeadEncoder();
+//        encoder.setPosition(0.0);
 
         pid = pidParam;
+
+        //
         currentElevatorHeight = encoder.getPosition();
     }
 
@@ -46,6 +49,7 @@ Calculate distance traveled: Multiply the "distance per pulse" by the number of 
     public void goToLevel(int controllerInput) {
         double distanceToLevel;
 
+        // TODO: Pass requested level to move function
         switch (controllerInput) {
             case 1:
                 distanceToLevel = Constants.ElevatorConstants.LEVEL_ONE_HEIGHT - getEncoderDistance();
@@ -67,6 +71,7 @@ Calculate distance traveled: Multiply the "distance per pulse" by the number of 
                 -Constants.ElevatorConstants.DEFAULT_FREE_MOVE_SPEED,
                 Constants.ElevatorConstants.DEFAULT_FREE_MOVE_SPEED);
 
+        // TODO: Need to include tolerance for double comparison!
         if (distanceToLevel == 0) {
             setEncoderDistance(height);
             stopMotor();

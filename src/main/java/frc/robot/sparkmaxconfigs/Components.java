@@ -16,6 +16,7 @@ public final class Components {
     public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeWheelMotor;
     public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
     public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
+
     public ElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
     public SingleMotor climberMotor = new ClimberMotor().climberMotor;
@@ -23,6 +24,7 @@ public final class Components {
     public DeAlgaeMotor deAlgaeMotors = new DeAlgaeMotor();
     public SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
     public SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
+
     // private Constructor
     private Components() {}
 

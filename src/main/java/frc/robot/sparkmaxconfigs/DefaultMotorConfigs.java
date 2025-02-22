@@ -27,7 +27,8 @@ public class DefaultMotorConfigs {
     public final SparkBaseConfig SparkElevatorConfig = new SparkMaxConfig()
             .smartCurrentLimit(40)
             .openLoopRampRate(Constants.ElevatorYAGSLConstants.ElevatorRampRate);
-            
+
+
     private DefaultMotorConfigs(){ }
 
 

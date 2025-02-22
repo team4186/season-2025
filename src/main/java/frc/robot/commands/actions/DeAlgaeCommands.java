@@ -9,6 +9,13 @@ public class DeAlgaeCommands extends Command {
 
     //TODO: deAlgae commands config buttons later
 
+    /* Intended Usage:
+    * Run with command while being held, alternate directions for 2 seconds in alternating directions.
+    *
+    * isFinished -> N/A (NOTE: If we set timer )
+    * Interrupted -> Send reset command, stop motor, ...
+    * */
+
     private final DeAlgae deAlgae;
     private int timer = 0;
     private boolean isFinished = false;
