@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,14 +16,14 @@ public class Climber extends SubsystemBase {
 
     //Avoid using for now, no safeties
     public Command deployClimb(){
-        motor.setVoltage(Constants.ClimberConstants.moveVoltage);
+        motor.setVoltage(Constants.ClimberConstants.CLIMBER_MOVE_VOLTAGE);
         return null;
     }
 
 
     public Command stowClimb(){
         if (!beamBreak.get()) {
-            motor.setVoltage(-Constants.ClimberConstants.moveVoltage);
+            motor.setVoltage(-Constants.ClimberConstants.CLIMBER_MOVE_VOLTAGE);
         }
         return null;
     }
@@ -35,12 +32,12 @@ public class Climber extends SubsystemBase {
     public Command engageClimb() {
         try {
             if (beamBreak.get()) {
-                motor.stopMotor();
+                motor.stop();
             } else {
-                motor.setVoltage(Constants.ClimberConstants.climbVoltage);//only use if motor requires power while up
+                motor.setVoltage(Constants.ClimberConstants.CLIMBER_CLIMB_VOLTAGE);//only use if motor requires power while up
             }
         } catch (IllegalStateException e) {
-            motor.stopMotor();
+            motor.stop();
             String msg = "Climber Beambreak error: " + e.toString();
             System.out.println( msg );
         }
