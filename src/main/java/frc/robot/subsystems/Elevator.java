@@ -1,13 +1,8 @@
 package frc.robot.subsystems;
-import com.revrobotics.spark.SparkLowLevel;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
-import frc.robot.sparkmaxconfigs.Components;
-import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import frc.robot.sparkmaxconfigs.MotorSet;
 
 import java.util.InputMismatchException;
