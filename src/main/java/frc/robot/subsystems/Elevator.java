@@ -24,9 +24,6 @@ public class Elevator {
 
     private final PIDController pid;
 
-    private double position;
-
-
 
     public Elevator(
             DigitalInput bottomLimitSwitch,
@@ -38,14 +35,13 @@ public class Elevator {
         this.elevatorMotors = elevatorMotor;
         this.encoder = encoder;
         this.pid = pid;
-        position = encoder.getDistance();
 
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
 
         pid.reset();
         encoder.reset();
-        encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse
+        encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
     }
 
     /*
@@ -65,58 +61,49 @@ public class Elevator {
      */
     public void goToLevel(int requestedLevel) {
         double distanceToLevel;
-        double setpoint;
+        double levelHeight;
 
-        double currentPos = getEncoderDistance();
+        double currentPos = encoder.getDistance();
 
         // TODO: Pass requested level to move function
         switch (requestedLevel) {
             case 1:
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE - getEncoderDistance();
-                goUp(distanceToLevel, Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE);
+                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE - currentPos;
+                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE;
                 break;
             case 2:
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO - getEncoderDistance();
-                goUp(distanceToLevel, Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO);
+                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO - currentPos;
+                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO;
                 break;
             case 3:
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE - getEncoderDistance();
-                goUp(distanceToLevel, Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE);
+                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE - currentPos;
+                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE;
                 break;
             case 4:
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR - getEncoderDistance();
-                setpoint = Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR;
+                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR - currentPos;
+                levelHeight = Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR;
                 break;
             default:
                 throw new InputMismatchException("Received unexpected requested elevator checkpoint");
         }
 
-        double speed = coerceIn(pid.calculate(getEncoderDistance(), height),
+        double speed = coerceIn(pid.calculate(distanceToLevel, levelHeight),
                 -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
                 Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
-        moveUp(distanceToLevel, setpoint);
+
+        moveUp(speed, levelHeight);
     }
 
 
     // public void goUp(double distanceToLevel, double height) {
-    public void moveUp(
-            double speed,
-            double height) {
-
-        double speed = coerceIn(pid.calculate(getEncoderDistance(), height),
-                -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
-                Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
-
+    public void moveUp( double speed, double height) {
         // TODO: Need to include tolerance for double comparison!
-        if (distanceToLevel == 0) {
-            setEncoderDistance(height);
+        if ( height  >= 0 || topLimitSwitch.get() ) {
             stopMotor();
         } else {
             elevatorMotors.accept(speed);
         }
     }
-
-
 
 
     // TODO: BRAINSTORM: Useful for adjusting past breakpoint? should just reset instead probably?
@@ -126,25 +113,24 @@ public class Elevator {
                 Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
 
         // TODO: Need to catch not finding true/false result?
-        if (!bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
-            elevatorMotors.accept(speed);
-        } else {
+        if (bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
             stopMotor();
-            encoder.setPosition(0.0);
+        } else {
+            elevatorMotors.accept(speed);
         }
     }
 
 
-
-
-
+    // TODO: BEFORE TESTING Replace with setting in configs
     public double getEncoderDistance() {
-        return encoder.getPosition() * Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR;
+        // return encoder.getPosition() * Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR;
+        return 0.0;
     }
 
 
+    // TODO: BEFORE TESTING Replace with settings in configs
     public void setEncoderDistance(double height) {
-        encoder.setPosition(height / Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR);
+        // encoder.setPosition(height / Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR);
     }
 
 
