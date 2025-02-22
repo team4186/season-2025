@@ -73,7 +73,8 @@ public final class Components {
         public final MotorSet elevatorMotors = new MotorSet(
                 new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().SparkElevatorConfig
+                DefaultMotorConfigs.getInstance().SparkElevatorConfig,
+                false
         );
     }
 

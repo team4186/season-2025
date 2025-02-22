@@ -19,15 +19,6 @@ public final class DefaultMotorConfigs {
             .smartCurrentLimit(10)
             .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
-    public final SparkBaseConfig DefaultLeftMotorConfig = new SparkMaxConfig()
-            .apply(DefaultConfig)
-            .inverted(true);
-
-
-    public final SparkBaseConfig DefaultRightMotorConfig = new SparkMaxConfig()
-            .apply(DefaultConfig)
-            .inverted(false);
-
 
     public final SparkBaseConfig SparkElevatorConfig = new SparkMaxConfig()
             .apply(DefaultConfig)

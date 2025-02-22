@@ -11,7 +11,9 @@ public class MotorSet {
     private final SparkMax lead;
 
 
-    public MotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig) {
+    public MotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig, boolean inverted) {
+        baseConfig.inverted( inverted );
+
         lead.configure(
                 baseConfig,
                 SparkBase.ResetMode.kResetSafeParameters,
@@ -21,7 +23,8 @@ public class MotorSet {
 
         followerConfig
                 .apply(baseConfig)
-                .follow(lead);
+                .follow(lead)
+                .inverted( !inverted );
 
         follower.configure(
                 followerConfig,
