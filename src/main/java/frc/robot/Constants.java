@@ -9,6 +9,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.AlgaeProcessor;
 import swervelib.math.Matter;
 
 /**
@@ -31,8 +32,8 @@ public final class Constants {
 
   // TODO: Update after testing auto
   public static final class AutonConstants {
-    public static final PIDConstants TRANSLATION_PID = new PIDConstants(0.0, 0.0, 0.0);
-    public static final PIDConstants ANGLE_PID = new PIDConstants(0.0, 0.0, 0.0);
+    public static final PIDConstants AUTO_TRANSLATION_PID = new PIDConstants(0.0, 0.0, 0.0);
+    public static final PIDConstants AUTO_ANGLE_PID = new PIDConstants(0.0, 0.0, 0.0);
   }
 
 
@@ -55,73 +56,74 @@ public final class Constants {
   public static final class AlgaeProcessorConstants {
     public static final double ALGAE_PROCESSOR_SWING_VOLTAGE = 5.0;
     public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 5.0;
-    public static final double proportional = 0.05;
-    public static final double integral = 0.0;
-    public static final double derivative = 0.0;
+    public static final double ALGAEPROCESSOR_P = 0.05;
+    public static final double ALGAEPROCESSOR_I = 0.0;
+    public static final double ALGAEPROCESSOR_D = 0.0;
   }
 
 
   public static final class ClimberConstants {
     public static final int sparkID = 0; //TODO: placeHolder
     //Climb voltage requires much higher values than move voltage.
-    public static final int climbVoltage = 0; //TODO: placeHolder
-    public static final int moveVoltage = 0; //TODO: placeHolder
+    public static final int CLIMBER_CLIMB_VOLTAGE = 0; //TODO: placeHolder
+    public static final int CLIMBER_MOVE_VOLTAGE = 0; //TODO: placeHolder
   }
 
 
   public static final class DeAlgaeConstants {
-    public static final int CanId = 0; //TODO: placeHolder
-    public static final int CanId2 = 0; //TODO: placeHolder
-    public static final double armDefaultAngle = 0.0; //TODO: find arm offset
-    public static final double flatAngle = 0.0; //TODO: find the 'distance' of 90 degrees
-    public static final double topSpeed = 5.0; // TODO: placeholder
-    public static final double minSpeed = 1.0; //TODO: placeHolder
-    public static final double p = 0.5 , i = 0.0, d = 0.0; //TODO: tune pid values
-    public static final double maxAngle = 135; // TODO: find max arc
-    public static final double minAngle = 45; // TODO: find min arc
+    public static final double DE_ALGAE_DEFAULT_ANGLE = 0.0; //TODO: find arm offset
+    public static final double DE_ALGAE_FLAT_ANGLE = 0.0; //TODO: find the 'distance' of 90 degrees
+    public static final double DE_ALGAE_MAX_SPEED = 5.0; // TODO: placeholder
+    public static final double DE_ALGAE_MIN_SPEED = 1.0; //TODO: placeHolder
+    public static final double DE_ALGAE_P = 0.5; //TODO: tune pid values
+    public static final double DE_ALGAE_I = 0.0;
+    public static final double DE_ALGAE_D = 0.0;
+    public static final double DE_ALGAE_MAX_ANGLE = 135; // TODO: find max arc
+    public static final double DE_ALGAE_MIN_ANGLE = 45; // TODO: find min arc
   }
 
 
   public static final class ElevatorConstants {
-    public static final double LEVEL_ONE_HEIGHT = .70; //70 cm
-    public static final double LEVEL_TWO_HEIGHT = 1.18; //118 cm
-    public static final double LEVEL_THREE_HEIGHT = 1.89; //189 cm
+    public static final double ELEVATOR_DEFAULT = 0.0;
+    public static final double ELEVATOR_LEVEL_ONE = 0.70; //70 cm
+    public static final double ELEVATOR_LEVEL_TWO = 1.18; //118 cm
+    public static final double ELEVATOR_LEVEL_THREE = 1.89; //189 cm
     public static final double DEFAULT_FREE_MOVE_SPEED = 0.4;
     public static final double DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     public static final double DEFAULT_SETPOINT_THRESHOLD = 2.5;
-    public static final double ENCODER_CONVERSION_FACTOR = 2; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
+    public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
   }
 
 
   public static final class EndEffectorConstants {
-    public static final int beamBreakChannel = 0; //TODO: placeHolder
-    public static final double speed = 1.0; // TODO: change speed
+    public static final int END_EFFECTOR_BEAM_BREAK = 0; //TODO: placeHolder
+    public static final double END_EFFECTOR_SPEED = 1.0; // TODO: change speed
   }
 
 
   public static final class VisionConstants {
-    //update to 2025
-    public static final AprilTagFieldLayout fieldLayout = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
-
+    // Update to 2025
+    public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
     // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
-    public final double maximumAmbiguity = 0.25;
+    public final double MAXIMUM_AMBIGUITY = 0.25;
   }
 
+
   public static final class ElevatorYAGSLConstants {
-    public static final double ElevatorKp = 5;
-    public static final double ElevatorKi = 0;
-    public static final double ElevatorKd = 0;
-    public static final double ElevatorMaxVelocity = 4.0;
-    public static final double ElevatorMaxAcceleration = 6.0;
-    public static final double ElevatorKs = 5; //voltage to overcome static friction
-    public static final double ElevatorKg = 0; //voltage to overcome gravity
-    public static final double ElevatorKv = 0; //velocity
-    public static final double ElevatorKa = 0; //acceleration
-    public static final double ElevatorRampRate = 5;
-    public static final double ElevatorGearing = 0;
-    public static final double ElevatorCarriageMass = 0;
-    public static final double ElevatorDrumRadius = 0;
-    public static final double ElevatorMinHeightMeters = 5;
-    public static final double ElevatorMaxHeightMeters = 0;
+    public static final double ELEVATOR_P = 5;
+    public static final double ELEVATOR_I = 0;
+    public static final double ELEVATOR_D = 0;
+    public static final double ELEVATOR_MAX_VELOCITY = 4.0;
+    public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
+    public static final double ELEVATOR_S = 5; //voltage to overcome static friction
+    public static final double ELEVATOR_G = 0; //voltage to overcome gravity
+    public static final double ELEVATOR_V = 0; //velocity
+    public static final double ELEVATOR_A = 0; //acceleration
+    public static final double ELEVATOR_RAMP_RATE = 5;
+    public static final double ELEVATOR_GEARING = 0;
+    public static final double ELEVATOR_CARRIAGE_MASS = 0;
+    public static final double ELEVATOR_DRUM_RADIUS = 0;
+    public static final double ELEVATOR_MIN_HEIGHT_METERS = 5;
+    public static final double ELEVATOR_MAX_HEIGHT_METERS = 0;
   }
 }
