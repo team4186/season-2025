@@ -16,8 +16,8 @@ public final class DefaultMotorConfigs {
 
     public final SparkMaxConfig HoldingConfig = (SparkMaxConfig) new SparkMaxConfig()
             .apply(DefaultConfig)
-            .smartCurrentLimit(10);
-
+            .smartCurrentLimit(10)
+            .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
     public final SparkBaseConfig DefaultLeftMotorConfig = new SparkMaxConfig()
             .apply(DefaultConfig)
@@ -32,7 +32,8 @@ public final class DefaultMotorConfigs {
     public final SparkBaseConfig SparkElevatorConfig = new SparkMaxConfig()
             .apply(DefaultConfig)
             .smartCurrentLimit(40)
-            .openLoopRampRate(Constants.ElevatorYAGSLConstants.ELEVATOR_RAMP_RATE);
+            .openLoopRampRate(Constants.ElevatorYAGSLConstants.ELEVATOR_RAMP_RATE)
+            .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
 
     private DefaultMotorConfigs(){ }
@@ -45,3 +46,4 @@ public final class DefaultMotorConfigs {
         return instance;
     }
 }
+

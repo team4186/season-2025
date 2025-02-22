@@ -48,6 +48,8 @@ public class Elevator {
         encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse
     }
 
+    /*
+        This is the thing we can do to find the distance the motor has traveled.
 
     /**
      * This is the thing we can do to find the distance the motor has traveled.

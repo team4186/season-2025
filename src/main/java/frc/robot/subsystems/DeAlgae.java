@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
+import java.lang.Math;
 
 
 public class DeAlgae extends SubsystemBase {
@@ -51,6 +52,20 @@ public class DeAlgae extends SubsystemBase {
         } else {
             return Math.max(value, Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED);
         }
+
+        // Resolve after
+        if (Math.abs(value) > Constants.DeAlgaeConstants.topSpeed) {
+            if(value > 0) {return Constants.DeAlgaeConstants.topSpeed;}
+
+            else{return -Constants.DeAlgaeConstants.topSpeed;}
+
+        }
+        else if (Math.abs(value) < Constants.DeAlgaeConstants.minSpeed) {
+            if(value > 0){return Constants.DeAlgaeConstants.minSpeed;}
+
+            else{return -Constants.DeAlgaeConstants.minSpeed;}
+        }
+        else {return value;}
     }
 
 
