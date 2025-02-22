@@ -73,7 +73,7 @@ public class Vision {
 
     if ( Robot.isSimulation() ) {
       visionSim = new VisionSystemSim("Vision");
-      visionSim.addAprilTags(Constants.VisionConstants.fieldLayout);
+      visionSim.addAprilTags(Constants.VisionConstants.FIELD_LAYOUT);
 
       for (Cameras c : Cameras.values()) {
         c.addToVisionSim(visionSim);
@@ -93,11 +93,11 @@ public class Vision {
    * @return The target pose of the AprilTag.
    */
   public static Pose2d getAprilTagPose(int aprilTag, Transform2d robotOffset) {
-    Optional<Pose3d> aprilTagPose3d = Constants.VisionConstants.fieldLayout.getTagPose(aprilTag);
+    Optional<Pose3d> aprilTagPose3d = Constants.VisionConstants.FIELD_LAYOUT.getTagPose(aprilTag);
     if ( aprilTagPose3d.isPresent() ) {
       return aprilTagPose3d.get().toPose2d().transformBy(robotOffset);
     } else {
-      throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + Constants.VisionConstants.fieldLayout);
+      throw new RuntimeException("Cannot get AprilTag " + aprilTag + " from field " + Constants.VisionConstants.FIELD_LAYOUT);
     }
   }
 
@@ -165,7 +165,7 @@ public class Vision {
    * @return Distance
    */
   public double getDistanceFromAprilTag(int id) {
-    Optional<Pose3d> tag = Constants.VisionConstants.fieldLayout.getTagPose(id);
+    Optional<Pose3d> tag = Constants.VisionConstants.FIELD_LAYOUT.getTagPose(id);
     return tag.map(
             pose3d -> PhotonUtils.getDistanceToPose(
                     currentPose.get(),
@@ -244,8 +244,8 @@ public class Vision {
 
     List<Pose2d> poses = new ArrayList<>();
     for (PhotonTrackedTarget target : targets) {
-      if ( Constants.VisionConstants.fieldLayout.getTagPose(target.getFiducialId()).isPresent() ){
-        Pose2d targetPose = Constants.VisionConstants.fieldLayout.getTagPose(target.getFiducialId()).get().toPose2d();
+      if ( Constants.VisionConstants.FIELD_LAYOUT.getTagPose(target.getFiducialId()).isPresent() ){
+        Pose2d targetPose = Constants.VisionConstants.FIELD_LAYOUT.getTagPose(target.getFiducialId()).get().toPose2d();
         poses.add(targetPose);
       }
     }
@@ -338,7 +338,7 @@ public class Vision {
       robotToCamTransform = new Transform3d(robotToCamTranslation, robotToCamRotation);
 
       poseEstimator = new PhotonPoseEstimator(
-              Constants.VisionConstants.fieldLayout,
+              Constants.VisionConstants.FIELD_LAYOUT,
               PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
               robotToCamTransform);
       poseEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
