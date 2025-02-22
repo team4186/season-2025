@@ -17,15 +17,21 @@ public class SingleMotor {
         this.motor = motor;
     }
 
-    public void stopMotor() {motor.stopMotor();}
+    public void stopMotor() {
+        motor.stopMotor();
+    }
 
-    public RelativeEncoder getLeadEncoder() { return this.motor.getEncoder(); }
+    public RelativeEncoder getLeadEncoder() {
+        return this.motor.getEncoder();
+    }
 
     public void setSpeed(double value) {
         this.motor.set(value);
     }
 
-    public void setVoltage(double value) {this.motor.setVoltage(value); }
+    public void setVoltage(double value) {
+        this.motor.setVoltage(value);
+    }
 
     public void stop() {
         this.motor.stopMotor();
