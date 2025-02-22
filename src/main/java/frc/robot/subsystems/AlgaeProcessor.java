@@ -12,7 +12,6 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 public class AlgaeProcessor extends SubsystemBase {
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
-
     // processorPos is the current position of the processor encoder ticks.
     private final RelativeEncoder processorPos;
     private final DigitalInput tfLuna;
