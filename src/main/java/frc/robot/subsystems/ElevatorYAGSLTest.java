@@ -15,7 +15,7 @@ import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import frc.robot.sparkmaxconfigs.MotorSet;
-<<<<<<< HEAD
+//<<<<<<< HEAD //someone left this here, not sure what it means
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.Units;
@@ -56,9 +56,9 @@ public class ElevatorYAGSLTest extends SubsystemBase {
         // return Units.TicksToMeters(encoder.getVelocity().)   <-- Unfinished.
     }
 
-=======
+//======= //some more weird text leftover
 
-import static edu.wpi.first.units.Units.*;
+
 
 public class ElevatorYAGSLTest extends SubsystemBase {
     private final MotorSet elevatorMotors = Components.getInstance().elevatorMotors; //we are using multiple motors
@@ -66,12 +66,12 @@ public class ElevatorYAGSLTest extends SubsystemBase {
     // private final SparkMaxSim elevatorMotorSim = new SparkMaxSim(elevatorMotors, elevatorGearbox);
     private final ProfiledPIDController pidController =
             new ProfiledPIDController(
-                    ElevatorKp,
-                    ElevatorKi,
-                    ElevatorKd,
-                    new TrapezoidProfile.Constraints(ElevatorMaxVelocity, ElevatorMaxAcceleration));
+                    Constants.ElevatorYAGSLConstants.ElevatorKp,
+                    Constants.ElevatorYAGSLConstants.ElevatorKi,
+                    Constants.ElevatorYAGSLConstants.ElevatorKd,
+                    new TrapezoidProfile.Constraints(Constants.ElevatorYAGSLConstants.ElevatorMaxVelocity, Constants.ElevatorYAGSLConstants.ElevatorMaxAcceleration));
 
     // private final ElevatorFeedforward feedForward = new ElevatorFeedforward();
->>>>>>> 30d46cee24fd091671aff17f003b846b49a73dc5
+// >>>>>>> 30d46cee24fd091671aff17f003b846b49a73dc5 //some more weird text leftover
 
 }
