@@ -5,23 +5,24 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
 import java.io.File;
 import java.util.function.DoubleSupplier;
 
 import swervelib.SwerveInputStream;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -30,19 +31,42 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  // final CommandXboxController joystick = new CommandXboxController(0);
   final CommandJoystick joystick = new CommandJoystick(0);
+
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
+  private final Components motorComponents = Components.getInstance();
+
   //TODO: Implement Components
-//  private final DeAlgae deAlgae = new DeAlgae();
 //  private final Climber climber = new Climber();
-//  private final Elevator elevator = new Elevator();
 //  private final EndEffector endEffector = new EndEffector();
 //  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
+
+  // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
+  private final Elevator elevator = new Elevator(
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+          motorComponents.elevatorMotors,
+          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
+          new Encoder(
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  false,
+                  CounterBase.EncodingType.k1X),
+          new PIDController(
+                  Constants.ElevatorConstants.ELEVATOR_P,
+                  Constants.ElevatorConstants.ELEVATOR_I,
+                  Constants.ElevatorConstants.ELEVATOR_D));
+
+  private final DeAlgae deAlgae = new DeAlgae(
+          motorComponents.deAlgaeWheelMotor,
+          motorComponents.deAlgaeAngleMotor,
+          new PIDController(
+                  Constants.DeAlgaeConstants.DE_ALGAE_P,
+                  Constants.DeAlgaeConstants.DE_ALGAE_P,
+                  Constants.DeAlgaeConstants.DE_ALGAE_P));
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
