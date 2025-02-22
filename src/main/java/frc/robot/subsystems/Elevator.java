@@ -108,6 +108,7 @@ public class Elevator {
 
         // TODO: Need to catch not finding true/false result?
         if (bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
+            encoder.reset();
             stopMotor();
         } else {
             elevatorMotors.accept(speed);

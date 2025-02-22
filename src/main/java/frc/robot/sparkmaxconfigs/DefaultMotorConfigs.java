@@ -23,8 +23,7 @@ public final class DefaultMotorConfigs {
     public final SparkBaseConfig SparkElevatorConfig = new SparkMaxConfig()
             .apply(DefaultConfig)
             .smartCurrentLimit(40)
-            .openLoopRampRate(Constants.ElevatorYAGSLConstants.ELEVATOR_RAMP_RATE)
-            .idleMode(SparkBaseConfig.IdleMode.kBrake);
+            .openLoopRampRate(Constants.ElevatorYAGSLConstants.ELEVATOR_RAMP_RATE);
 
 
     private DefaultMotorConfigs(){ }
