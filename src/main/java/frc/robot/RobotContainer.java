@@ -5,21 +5,24 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.sparkmaxconfigs.Components;
+import frc.robot.subsystems.*;
 import java.io.File;
+import java.util.function.DoubleSupplier;
+
 import swervelib.SwerveInputStream;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -28,23 +31,53 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  // final CommandXboxController joystick = new CommandXboxController(0);
   final CommandJoystick joystick = new CommandJoystick(0);
+
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
+
+  private final Components motorComponents = Components.getInstance();
+
+  //TODO: Implement Components
+//  private final Climber climber = new Climber();
+//  private final EndEffector endEffector = new EndEffector();
+//  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
+
+  // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
+  private final Elevator elevator = new Elevator(
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+          motorComponents.elevatorMotors,
+          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
+          new Encoder(
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  false,
+                  CounterBase.EncodingType.k1X),
+          new PIDController(
+                  Constants.ElevatorConstants.ELEVATOR_P,
+                  Constants.ElevatorConstants.ELEVATOR_I,
+                  Constants.ElevatorConstants.ELEVATOR_D));
+
+  private final DeAlgae deAlgae = new DeAlgae(
+          motorComponents.deAlgaeWheelMotor,
+          motorComponents.deAlgaeAngleMotor,
+          new PIDController(
+                  Constants.DeAlgaeConstants.DE_ALGAE_P,
+                  Constants.DeAlgaeConstants.DE_ALGAE_P,
+                  Constants.DeAlgaeConstants.DE_ALGAE_P));
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
           drivebase.getSwerveDrive(),
-                  () -> joystick.getY() * -1,
-                  () -> joystick.getX() * -1)
-          .withControllerRotationAxis(joystick::getTwist)
+                  () -> attenuated( joystick.getY(), 2, 1.0 ) * -1,
+                  () -> attenuated( joystick.getX(), 2, 1.0 ) * -1)
+          .withControllerRotationAxis(
+                  () -> attenuated( joystick.getTwist(), 3, 1.0 ) * -1)
           .deadband(OperatorConstants.DEADBAND)
-          .scaleTranslation(0.8)
           .allianceRelativeControl(true);
 
   // Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
@@ -98,19 +131,17 @@ public class RobotContainer {
     Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
     Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
     Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
-    Command driveFieldOrientedAnglularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
+    Command driveFieldOrientedAngularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
-    if ( RobotBase.isSimulation() ){
-      drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-    } else {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    }
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     if ( Robot.isSimulation() ){
+      // override to sim controls
+      // drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
       // joystick.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
       // NOTE: Change later?
-      joystick.trigger().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+      joystick.trigger().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(10, 3, new Rotation2d()))));
       joystick.button(11).whileTrue(drivebase.sysIdDriveMotorCommand());
     }
 
@@ -122,15 +153,67 @@ public class RobotContainer {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       joystick.button(5).whileTrue(drivebase.centerModulesCommand());
       joystick.button(6).onTrue(Commands.none());
+
+      // AlgaeProcessor Tests
+      /**
+       * Extend
+       * Retract
+       * Intake Algae
+       * Eject Algae
+       */
+
+      // Climber Tests
+      /**
+       * Extend
+       * Latch
+       * Retract
+       */
+
+      // DeAlgae Tests
+      /**
+       * Extend
+       * Remove Algae (up)
+       * Remove Algae (down)
+       */
+
+      //TODO: deAlgae commands config buttons later
+      //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
+      //TODO: alternatively could manually decide
+//      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
+//
+//      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
+//
+//      Commands.runOnce(deAlgae::stop);
+
+      // Elevator Tests
+      /**
+       * Level 1, 2, 3
+       * Limit switch (upper, lower)
+       */
+
+      // EndEffector Tests
+      /**
+       * Intake / Eject Coral
+       */
+
+
     } else {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       joystick.button(9).whileTrue(
-          drivebase.driveToPose(
-              new Pose2d( new Translation2d(4, 4), Rotation2d.fromDegrees(0) )));
+              drivebase.driveToPose(
+                      new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
     }
+  }
+
+
+  // Adjust joystick input from linear to exponential curve
+  private double attenuated(double value, int exponent, double scale) {
+    double res = scale * Math.pow( Math.abs(value), exponent );
+    if ( value < 0 ) { res *= -1; }
+    return res;
   }
 
 
