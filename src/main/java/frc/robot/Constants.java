@@ -83,9 +83,9 @@ public final class Constants {
 
 
   public static final class ElevatorConstants {
-    public static final double LEVEL_ONE_HEIGHT = 5; //Change the level heights here
-    public static final double LEVEL_TWO_HEIGHT = 10;
-    public static final double LEVEL_THREE_HEIGHT = 15;
+    public static final double LEVEL_ONE_HEIGHT = .70; //70 cm
+    public static final double LEVEL_TWO_HEIGHT = 1.18; //118 cm
+    public static final double LEVEL_THREE_HEIGHT = 1.89; //189 cm
     public static final double DEFAULT_FREE_MOVE_SPEED = 0.4;
     public static final double DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     public static final double DEFAULT_SETPOINT_THRESHOLD = 2.5;
