@@ -8,38 +8,44 @@ import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 
+
 public class EndEffector extends SubsystemBase {
-    private final SingleMotor endEffectorMotor = Components.getInstance().endEffectorMotor;
+    private final SingleMotor endEffectorMotor;
     //private RelativeEncoder encoder;
     private DigitalInput luna;
 
-    public EndEffector(){
+
+    public EndEffector(SingleMotor endEffectorMotor, DigitalInput luna){
         //encoder = endEffectorMotor.motor.getEncoder();
-        luna = new DigitalInput(Constants.EndEffectorConstants.beamBreakChannel);
+        luna = this.luna;
+        this.endEffectorMotor = endEffectorMotor;
     }
+
 
     public Command intake(){
         try {
             if (!luna.get()) {
-                endEffectorMotor.setSpeed(Constants.EndEffectorConstants.speed);
+                endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_SPEED);
             } else {
                 endEffectorMotor.stop();
             }
 
         } catch (IllegalStateException e) {
             endEffectorMotor.stop();
-            String msg = "EndEffector Beambreak error: " + e.toString();
+            String msg = "EndEffector Beambreak error: " + e;
             System.out.println(msg);
         }
 
         return null;
     }
 
+
     public Command eject() {
-        endEffectorMotor.setSpeed(-Constants.EndEffectorConstants.speed);
+        endEffectorMotor.accept(-Constants.EndEffectorConstants.END_EFFECTOR_SPEED);
 
         return null;
     }
+
 
     public Command stop(){
         endEffectorMotor.stop();
