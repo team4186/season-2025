@@ -49,16 +49,16 @@ public class DeAlgae extends SubsystemBase {
 
 
     private double coerceIn(double value) {
-        if (abs(value) > Constants.DeAlgaeConstants.topSpeed) {
+        if (Math.abs(value) > Constants.DeAlgaeConstants.topSpeed) {
             if(value > 0) {return Constants.DeAlgaeConstants.topSpeed;}
 
             else{return -Constants.DeAlgaeConstants.topSpeed;}
 
         } 
-        else if (abs(value) < Constants.DeAlgaeConstants.minSpeed) {
+        else if (Math.abs(value) < Constants.DeAlgaeConstants.minSpeed) {
             if(value > 0){return Constants.DeAlgaeConstants.minSpeed;}
 
-            else{return Constants.DeAlgaeConstants.minSpeed;}
+            else{return -Constants.DeAlgaeConstants.minSpeed;}
         } 
         else {return value;}
     }

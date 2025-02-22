@@ -83,6 +83,9 @@ public final class Constants {
 
 
   public static final class ElevatorConstants {
+    public static final double PROPORTIONAL = 0.05;
+    public static final double INTEGRAL = 0.0;
+    public static final double DERIVATIVE = 0.0;
     public static final double LEVEL_ONE_HEIGHT = .70; //70 cm
     public static final double LEVEL_TWO_HEIGHT = 1.18; //118 cm
     public static final double LEVEL_THREE_HEIGHT = 1.89; //189 cm
