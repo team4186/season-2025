@@ -5,8 +5,10 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.RelativeEncoder;
 
+
 public class SingleMotor {
     public final SparkMax motor;
+
 
     public SingleMotor(SparkMax motor, SparkBaseConfig baseConfig){
         motor.configure(

@@ -6,16 +6,19 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+
 public class MotorSet {
     private final SparkMax lead;
 
-    public MotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig){
+
+    public MotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig) {
         lead.configure(
                 baseConfig,
                 SparkBase.ResetMode.kResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
 
         SparkMaxConfig followerConfig = new SparkMaxConfig();
+
         followerConfig
                 .apply(baseConfig)
                 .follow(lead);
@@ -29,10 +32,10 @@ public class MotorSet {
     }
 
 
-
-    public RelativeEncoder getMotorEncoder() {
+    public RelativeEncoder getLeadEncoder() {
         return this.lead.getEncoder();
     }
+
 
     public void accept(double value) {
         this.lead.set(value);
