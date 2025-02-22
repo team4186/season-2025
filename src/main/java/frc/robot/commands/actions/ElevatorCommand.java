@@ -31,6 +31,7 @@ public final class ElevatorCommand extends Command {
     @Override
     public void execute() {
         // Loop stuff here.
+        elevatorSubsystem.goToLevel(goalLevel);
         // Move to level
 
 
