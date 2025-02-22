@@ -1,11 +1,8 @@
 package frc.robot.commands.actions;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.DeAlgae;
-import frc.robot.subsystems.SwerveSubsystem;
 
-public class DeAlgaeCommands extends Command {
+public class DeAlgaeCommand extends Command {
 
     //TODO: deAlgae commands config buttons later
 
@@ -20,7 +17,7 @@ public class DeAlgaeCommands extends Command {
     private int timer = 0;
     private boolean isFinished = false;
 
-    public DeAlgaeCommands(DeAlgae deAlgae) {
+    public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
     }
 

@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.actions.AlignToTargetCommand;
+import frc.robot.commands.actions.ElevatorCommand;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
 import java.io.File;
@@ -32,12 +34,14 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
 
   final CommandJoystick joystick = new CommandJoystick(0);
+  private final Components motorComponents = Components.getInstance();
 
-  // The robot's subsystems and commands are defined here...
+
+  // The robot's subsystems defined here...
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
-  private final Components motorComponents = Components.getInstance();
+
 
   //TODO: Implement Components
 //  private final Climber climber = new Climber();
@@ -68,6 +72,34 @@ public class RobotContainer {
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
                   Constants.DeAlgaeConstants.DE_ALGAE_P));
 
+
+  /**
+   * Commands are implemented here...
+   */
+  AlignToTargetCommand alignCommand = new AlignToTargetCommand(
+          // vision
+          // swervesubsystem
+          // (x, y) offsets, april tag, ect ????
+  );
+
+
+  ElevatorCommand elevatorCommand = new ElevatorCommand(
+          elevator, // elevatorsubsystem
+          3 // level
+  );
+
+
+//  // Conditions to be met: In front of target april tag
+//  ScoreCorralCommand scoreCorralCommand = new ScoreCorralCommand(
+//          // vision
+//          // swervesubsystem
+//          // elevator
+//          // end effector
+//          // left, right offset
+//          // level
+//  );
+
+
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
@@ -76,7 +108,7 @@ public class RobotContainer {
                   () -> attenuated( joystick.getY(), 2, 1.0 ) * -1,
                   () -> attenuated( joystick.getX(), 2, 1.0 ) * -1)
           .withControllerRotationAxis(
-                  () -> attenuated( joystick.getTwist(), 3, 1.0 ) * -1)
+                  () -> attenuated( joystick.getTwist(), 3, 0.9 ) * -1)
           .deadband(OperatorConstants.DEADBAND)
           .allianceRelativeControl(true);
 
@@ -153,6 +185,9 @@ public class RobotContainer {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       joystick.button(5).whileTrue(drivebase.centerModulesCommand());
       joystick.button(6).onTrue(Commands.none());
+
+      // Example Align Command Object
+      joystick.button(10).whileTrue(alignCommand);
 
       // AlgaeProcessor Tests
       /**
