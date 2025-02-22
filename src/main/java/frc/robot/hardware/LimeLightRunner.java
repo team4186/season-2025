@@ -34,12 +34,12 @@ public class LimeLightRunner {
     }
 
     public void periodic() {
-        SmartDashboard.putBoolean("Has Target Ring?", hasTargetRing);
-        SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag);
-        SmartDashboard.putNumber("X Offset", tagXOffset);
-        //SmartDashboard.putNumber("Y Offset", tagYOffset);
-        SmartDashboard.putNumber("% of Image", tagArea);
-        SmartDashboard.putNumber("Distance", Units.metersToInches(distance));
+//        SmartDashboard.putBoolean("Has Target Ring?", hasTargetRing);
+//        SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag);
+//        SmartDashboard.putNumber("X Offset", tagXOffset);
+//        SmartDashboard.putNumber("Y Offset", tagYOffset);
+//        SmartDashboard.putNumber("% of Image", tagArea);
+//        SmartDashboard.putNumber("Distance", Units.metersToInches(distance));
     }
 
 
@@ -52,9 +52,9 @@ public class LimeLightRunner {
 
     // TODO: Measure offsets of camera to <front|center|end_effector>
     public int lookupTableRound(double distanceToTag) {
-        int res = Math.round();
-        Units.
-        return ;
+//        int res = Math.round();
+//        Units.
+        return 0;
     }
 
     public double getRingXOffset() {
@@ -85,11 +85,9 @@ public class LimeLightRunner {
         return tagArea;
     }
 
-    public boolean getTableRing() {
-        return null;
-    }
+//    public boolean getTableRing() { return tableRing; }
 
-    public boolean getTableTag() {
-        return null;
-    }
+//    public boolean getTargetTag() {
+//        return targetTag;
+//    }
 }
