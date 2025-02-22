@@ -7,6 +7,7 @@ import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import frc.robot.sparkmaxconfigs.Components;
 import edu.wpi.first.math.controller.PIDController;
+import java.lang.Math;
 
 
 public class DeAlgae extends SubsystemBase {
@@ -36,11 +37,11 @@ public class DeAlgae extends SubsystemBase {
         wheelMotor.setSpeed(Constants.DeAlgaeConstants.topSpeed);
     }
 
-    // TODO: not sure about pid behavior when given position is more than target position
+
     public void runMotor_Down(){
         if (angleEncoder.getPosition() > Constants.DeAlgaeConstants.minAngle){
             double pidOutput = coerceIn(pid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.minAngle));
-            angleMotor.setSpeed(-pidOutput);
+            angleMotor.setSpeed(pidOutput);
         }
 
         wheelMotor.setSpeed(-Constants.DeAlgaeConstants.topSpeed);
@@ -48,17 +49,21 @@ public class DeAlgae extends SubsystemBase {
 
 
     private double coerceIn(double value) {
-        if (value > Constants.DeAlgaeConstants.topSpeed) {
-            return Constants.DeAlgaeConstants.topSpeed;
-        } else if (value < Constants.DeAlgaeConstants.minSpeed) {
-            return Constants.DeAlgaeConstants.minSpeed;
-        } else {
-            return value;
-        }
+        if (abs(value) > Constants.DeAlgaeConstants.topSpeed) {
+            if(value > 0) {return Constants.DeAlgaeConstants.topSpeed;}
+
+            else{return -Constants.DeAlgaeConstants.topSpeed;}
+
+        } 
+        else if (abs(value) < Constants.DeAlgaeConstants.minSpeed) {
+            if(value > 0){return Constants.DeAlgaeConstants.minSpeed;}
+
+            else{return Constants.DeAlgaeConstants.minSpeed;}
+        } 
+        else {return value;}
     }
 
 
-    //TODO: PID implementation
     public boolean deploy() {
         double PIDoutput;
 
