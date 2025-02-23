@@ -62,7 +62,7 @@ public final class Components {
                 DefaultMotorConfigs.getInstance().DefaultConfig);
 
         public SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(1, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
     }
 

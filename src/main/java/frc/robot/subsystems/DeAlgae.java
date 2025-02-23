@@ -5,6 +5,7 @@ import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
+import frc.robot.Units;
 
 
 public class DeAlgae extends SubsystemBase {
@@ -13,6 +14,8 @@ public class DeAlgae extends SubsystemBase {
     private final SingleMotor angleMotor;
     private final RelativeEncoder angleEncoder;
     private final PIDController anglePid;
+    private static double current_angle;
+    private static double maxAngle, minAngle, maxSpeed, minSpeed, defualtAngle, flatAngle;
 
 
     public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid){
@@ -21,29 +24,37 @@ public class DeAlgae extends SubsystemBase {
         this.anglePid = anglePid;
 
         angleEncoder = angleMotor.getEncoder();
+
+        current_angle = Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550");
+        maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
+        minAngle = Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE;
+        maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
+        minSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED;
+        defualtAngle = Constants.DeAlgaeConstants.DE_ALGAE_DEFAULT_ANGLE;
+        flatAngle = Constants.DeAlgaeConstants.DE_ALGAE_FLAT_ANGLE;
     }
 
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
     public void runMotor_Up(){
-        if (angleEncoder.getPosition() < Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE) {
-            double pidOutput = coerceIn(anglePid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE));
+        if (current_angle < maxAngle) {
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
             angleMotor.accept(pidOutput);
         }
 
-        wheelMotor.accept(Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED);
+        wheelMotor.accept(maxSpeed);
     }
 
 
     // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
     public void runMotor_Down(){
-        if (angleEncoder.getPosition() > Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE){
-            double pidOutput = coerceIn(anglePid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE));
+        if (current_angle > minAngle){
+            double pidOutput = coerceIn(anglePid.calculate(current_angle,minAngle));
             angleMotor.accept(-pidOutput);
         }
 
-        wheelMotor.accept(-Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED);
+        wheelMotor.accept(-maxSpeed);
     }
 
     // used to limit the pid calculation output to be within acceptable speeds
@@ -53,10 +64,10 @@ public class DeAlgae extends SubsystemBase {
             sign = -1;
         }
 
-        if ( Math.abs( value ) > Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED) {
-            return Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED * sign;
+        if ( Math.abs( value ) > maxSpeed) {
+            return maxSpeed * sign;
         } else {
-            return Math.max( Math.abs(value), Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED) * sign;
+            return Math.max( Math.abs(value), minSpeed) * sign;
         }
     }
 
@@ -65,11 +76,11 @@ public class DeAlgae extends SubsystemBase {
     public boolean deploy() {
         double PIDoutput;
 
-        if (angleEncoder.getPosition() >= Constants.DeAlgaeConstants.DE_ALGAE_FLAT_ANGLE) {
+        if (current_angle >= flatAngle) {
             return true;
         }
 
-        PIDoutput = coerceIn(anglePid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_FLAT_ANGLE));
+        PIDoutput = coerceIn(anglePid.calculate(current_angle, flatAngle));
         angleMotor.accept(PIDoutput);
 
         return false;
@@ -86,8 +97,8 @@ public class DeAlgae extends SubsystemBase {
     public boolean reset(){
         double PIDoutput;
 
-        if(angleEncoder.getPosition() > Constants.DeAlgaeConstants.DE_ALGAE_DEFAULT_ANGLE) {
-            PIDoutput = coerceIn(anglePid.calculate(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_DEFAULT_ANGLE));
+        if(current_angle > defualtAngle) {
+            PIDoutput = coerceIn(anglePid.calculate(current_angle, defualtAngle));
             angleMotor.accept(PIDoutput);
             return false;
         }
