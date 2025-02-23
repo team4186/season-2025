@@ -67,6 +67,16 @@ public final class Constants {
     //Climb voltage requires much higher values than move voltage.
     public static final int CLIMBER_CLIMB_VOLTAGE = 0; //TODO: placeHolder
     public static final int CLIMBER_MOVE_VOLTAGE = 0; //TODO: placeHolder
+    public static final int TFChannel = 0;
+    public static final double DERIVATIVE = 0.0;
+    public static final double INTEGRAL = 0.0;
+    public static final double PROPORTIONAL = 0.05;
+    // Subject to change, ask Chris later. 25:1 but it isn't linear.
+    public static final double GEARRATIO = 0.04;
+    // Subject to change, change later after testing.
+    public static final double TARGETANGLE = 110.0;
+    public static final double MAXVOLTS = 14.0;
+    public static final double MINVOLTS = 10.0;
   }
 
 

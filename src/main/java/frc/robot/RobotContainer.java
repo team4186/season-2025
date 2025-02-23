@@ -7,7 +7,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.*;
@@ -68,6 +67,18 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_I,
                   Constants.ElevatorConstants.ELEVATOR_D));
 
+  private final Climber climber = new Climber(
+          Components.getInstance().climberMotor,
+          new DigitalInput(Constants.ClimberConstants.TFChannel),
+          new PIDController(
+                  Constants.ClimberConstants.PROPORTIONAL,
+                  Constants.ClimberConstants.INTEGRAL,
+                  Constants.ClimberConstants.DERIVATIVE),
+          Constants.ClimberConstants.TARGETANGLE,
+          Constants.ClimberConstants.MAXVOLTS,
+          Constants.ClimberConstants.MINVOLTS
+  );
+
   private final DeAlgae deAlgae = new DeAlgae(
           motorComponents.deAlgaeWheelMotor,
           motorComponents.deAlgaeAngleMotor,
@@ -78,8 +89,9 @@ public class RobotContainer {
 
   Supplier<Pose2d> pose2dSupplier = () -> drivebase.getPose();
 
+  // Ignore below, Jarek is working on LimeLightRunner.
   private final LimeLightRunner visionSubsystem;
-  // initialize above later.
+
 
 
   /**

@@ -23,7 +23,11 @@ public final class Units {
 	public static double TicksToMeters(double encoderTicks, double wheelDiameter, double gearRatio) {
 		return (encoderTicks/gearRatio) * (Math.PI * wheelDiameter);
 	}
-    
+
+	public static double TicksToDegrees(double encoderTicks, double gearRatio) {
+		return (encoderTicks/gearRatio) % 360;
+	}
+
     public static double TicksToDegrees(double encoderTicks, String motorType) {
 	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
 		return (encoderTicks/42.0) % 360;

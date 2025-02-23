@@ -13,7 +13,7 @@ public final class ClimberCommand extends Command {
 
     @Override
     public void initialize() {
-        // Init stuff here.
+
     }
 
     @Override
