@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.actions.AlignToTargetCommand;
+//import frc.robot.commands.actions.AlignToTargetCommand;
 import frc.robot.commands.actions.DeAlgaeCommand;
-import frc.robot.commands.actions.ElevatorCommand;
-import frc.robot.hardware.LimeLightRunner;
+//import frc.robot.commands.actions.ElevatorCommand;
+//import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
 import java.io.File;
@@ -52,32 +52,32 @@ public class RobotContainer {
 //  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
 
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
-  private final Elevator elevator = new Elevator(
-          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
-          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
-          motorComponents.elevatorMotors,
-          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
-          new Encoder(
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  false,
-                  CounterBase.EncodingType.k1X),
-          new PIDController(
-                  Constants.ElevatorConstants.ELEVATOR_P,
-                  Constants.ElevatorConstants.ELEVATOR_I,
-                  Constants.ElevatorConstants.ELEVATOR_D));
-
-  private final Climber climber = new Climber(
-          Components.getInstance().climberMotor,
-          new DigitalInput(Constants.ClimberConstants.TFChannel),
-          new PIDController(
-                  Constants.ClimberConstants.PROPORTIONAL,
-                  Constants.ClimberConstants.INTEGRAL,
-                  Constants.ClimberConstants.DERIVATIVE),
-          Constants.ClimberConstants.TARGETANGLE,
-          Constants.ClimberConstants.MAXVOLTS,
-          Constants.ClimberConstants.MINVOLTS
-  );
+//  private final Elevator elevator = new Elevator(
+//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+//          motorComponents.elevatorMotors,
+//          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
+//          new Encoder(
+//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+//                  false,
+//                  CounterBase.EncodingType.k1X),
+//          new PIDController(
+//                  Constants.ElevatorConstants.ELEVATOR_P,
+//                  Constants.ElevatorConstants.ELEVATOR_I,
+//                  Constants.ElevatorConstants.ELEVATOR_D));
+//
+//  private final Climber climber = new Climber(
+//          Components.getInstance().climberMotor,
+//          new DigitalInput(Constants.ClimberConstants.TFChannel),
+//          new PIDController(
+//                  Constants.ClimberConstants.PROPORTIONAL,
+//                  Constants.ClimberConstants.INTEGRAL,
+//                  Constants.ClimberConstants.DERIVATIVE),
+//          Constants.ClimberConstants.TARGETANGLE,
+//          Constants.ClimberConstants.MAXVOLTS,
+//          Constants.ClimberConstants.MINVOLTS
+//  );
 
   private final DeAlgae deAlgae = new DeAlgae(
           motorComponents.deAlgaeWheelMotor,
@@ -92,21 +92,21 @@ public class RobotContainer {
   // initialize above later.
 
 
+
   /**
    * Commands are implemented here...
    */
-  AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          //visionSubsystem,
-          drivebase,
-          // ignore below offset may not be needed.
-          new Translation2d(0.0,0.0)
-  );
-
-
-  ElevatorCommand elevatorCommand = new ElevatorCommand(
-          elevator, // elevatorsubsystem
-          3 // level
-  );
+//  AlignToTargetCommand alignCommand = new AlignToTargetCommand(
+//          //visionSubsystem,
+//          drivebase,
+//          // ignore below offset may not be needed.
+//          new Translation2d(0.0,0.0)
+//  );
+//
+//  ElevatorCommand elevatorCommand = new ElevatorCommand(
+//          elevator, // elevatorsubsystem
+//          3 // level
+//  );
 
   DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
 
@@ -209,7 +209,7 @@ public class RobotContainer {
       joystick.button(6).onTrue(Commands.none());
 
       // Example Align Command Object
-      joystick.button(10).whileTrue(alignCommand);
+      //joystick.button(10).whileTrue(alignCommand);
       // AlgaeProcessor Tests
       /**
        * Extend
@@ -237,7 +237,11 @@ public class RobotContainer {
       Is interrupted when let go and automatically moves back to default position
       and stops rolling motor.
       */
-      joystick.button(7).whileTrue(deAlgaeCommand);
+
+      //joystick.button(7).whileTrue(deAlgaeCommand);
+
+
+
 
       // Elevator Tests
       /**
@@ -254,11 +258,17 @@ public class RobotContainer {
     } else {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      joystick.button(9).whileTrue(
-              drivebase.driveToPose(
-                      new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      //joystick.button(9).whileTrue(
+              //drivebase.driveToPose(
+               //       new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+      //joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
+
+      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::deploy).repeatedly());
+      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor_Up).repeatedly());
+      joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly());
+      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::reset).repeatedly());
+      joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
     }
   }
 
