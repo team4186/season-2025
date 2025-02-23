@@ -15,20 +15,18 @@ public class Climber extends SubsystemBase {
     private final DigitalInput beamBreak  = new DigitalInput(0);
 
     //Avoid using for now, no safeties
-    public Command deployClimb(){
+    public void deployClimb(){
         motor.setVoltage(Constants.ClimberConstants.CLIMBER_MOVE_VOLTAGE);
-        return null;
     }
 
-    public Command stowClimb(){
+    public void stowClimb(){
         if (!beamBreak.get()) {
             motor.setVoltage(-Constants.ClimberConstants.CLIMBER_MOVE_VOLTAGE);
         }
-        return null;
     }
 
     //engageClimb uses beam breaks, has safety and uses higher voltage than deploy
-    public Command engageClimb() {
+    public void engageClimb() {
         try {
             if (beamBreak.get()) {
                 motor.stop();
@@ -40,11 +38,9 @@ public class Climber extends SubsystemBase {
             String msg = "Climber Beambreak error: " + e.toString();
             System.out.println( msg );
         }
-        return null;
     }
 
-    public Command stop() {
-        motor.setVoltage(0);
-        return null;
+    public void stop() {
+        motor.stop();
     }
 }
