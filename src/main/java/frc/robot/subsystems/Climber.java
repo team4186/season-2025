@@ -42,4 +42,9 @@ public class Climber extends SubsystemBase {
         }
         return null;
     }
+
+    public Command stop() {
+        motor.setVoltage(0);
+        return null;
+    }
 }

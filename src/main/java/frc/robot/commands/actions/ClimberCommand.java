@@ -4,11 +4,11 @@ import frc.robot.subsystems.Climber;
 
 public final class ClimberCommand extends Command {
     // TODO: NOT a new climber, you pass subsystem from robot container when calling command!
-    private final Climber climberSubsystem;
+    private final Climber climber;
     private boolean isFinished = false;
 
-    public ClimberCommand(Climber climberSubsystem) {
-        this.climberSubsystem = climberSubsystem;
+    public ClimberCommand(Climber climber) {
+        this.climber = climber;
     }
 
     @Override
@@ -38,7 +38,7 @@ public final class ClimberCommand extends Command {
     public void end(boolean interrupted) {
         // Idle mode is set to brake. However, this will not hold the climber in place.
         // However, brake does make the elevator descend slowly, so it wouldn't crash (this also resets encoders).
-        // climberSubsystem.stopMotor();
-
+        // climber.stopMotor();
+        climber.stop();
     }
 }
