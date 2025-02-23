@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.*;
@@ -18,10 +19,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.actions.AlignToTargetCommand;
 import frc.robot.commands.actions.ElevatorCommand;
+import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
 import java.io.File;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import swervelib.SwerveInputStream;
 
@@ -72,14 +75,20 @@ public class RobotContainer {
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
                   Constants.DeAlgaeConstants.DE_ALGAE_P));
 
+  Supplier<Pose2d> pose2dSupplier = () -> drivebase.getPose();
+
+  private final Vision visionSubsystem;
+  // initialize above later.
+
 
   /**
    * Commands are implemented here...
    */
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          // vision
-          // swervesubsystem
-          // (x, y) offsets, april tag, ect ????
+          visionSubsystem,
+          drivebase,
+          // ignore below offset may not be needed.
+          new Translation2d(0.0,0.0)
   );
 
 
@@ -187,8 +196,7 @@ public class RobotContainer {
       joystick.button(6).onTrue(Commands.none());
 
       // Example Align Command Object
-      joystick.button(10).whileTrue(alignCommand);
-
+      joystick.button(10).whileTrue(new AlignToTargetCommand(Vision));
       // AlgaeProcessor Tests
       /**
        * Extend
