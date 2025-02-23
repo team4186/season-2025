@@ -39,9 +39,9 @@ public class Elevator {
         encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
     }
 
+
     /*
         This is the thing we can do to find the distance the motor has traveled.
-
     /**
      * This is the thing we can do to find the distance the motor has traveled.
      *
@@ -59,44 +59,42 @@ public class Elevator {
         double levelHeight;
 
         double currentPos = encoder.getDistance();
-
-        // TODO: Pass requested level to move function
-        levelHeight = switch (requestedLevel) {
-            case 1 -> {
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE - currentPos;
-                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE;
-            }
-            case 2 -> {
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO - currentPos;
-                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO;
-            }
-            case 3 -> {
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE - currentPos;
-                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE;
-            }
-            case 4 -> {
-                distanceToLevel = Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR - currentPos;
-                yield Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR;
-            }
-            default -> throw new InputMismatchException("Received unexpected requested elevator checkpoint");
-        };
+        levelHeight = getLevelConstant(requestedLevel);
+        distanceToLevel = levelHeight - currentPos;
 
         double speed = coerceIn(pid.calculate(distanceToLevel, levelHeight),
                 -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
                 Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
 
-        moveUp(speed, levelHeight);
+        moveUp(speed, distanceToLevel);
     }
 
 
-    // public void goUp(double distanceToLevel, double height) {
-    public void moveUp( double speed, double height) {
+    // public void goUp(double distanceToLevel, double goalHeight) {
+    public void moveUp( double speed, double distanceToLevel) {
         // TODO: Need to include tolerance for double comparison!
-        if ( height  >= 0 || topLimitSwitch.get() ) {
+        if ( distanceToLevel <= 0.0 || topLimitSwitch.get() ) {
             stopMotor();
         } else {
             elevatorMotors.accept(speed);
         }
+    }
+
+
+    public double getLevelConstant( int level){
+        return switch (level) {
+            case 1 -> Constants.ElevatorConstants.ELEVATOR_LEVEL_ONE;
+            case 2 -> Constants.ElevatorConstants.ELEVATOR_LEVEL_TWO;
+            case 3 -> Constants.ElevatorConstants.ELEVATOR_LEVEL_THREE;
+            case 4 -> Constants.ElevatorConstants.ELEVATOR_LEVEL_FOUR;
+            default -> throw new InputMismatchException("Received unexpected requested elevator checkpoint");
+        };
+    }
+
+
+    // Check
+    public boolean isAtLevelThreshold(int level){
+        return ( encoder.getDistance() >= getLevelConstant(level) || topLimitSwitch.get() );
     }
 
 
