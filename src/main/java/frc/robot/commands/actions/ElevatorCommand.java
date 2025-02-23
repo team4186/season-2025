@@ -10,8 +10,11 @@ public final class ElevatorCommand extends Command {
     private final int goalLevel;
     private Task taskState;
 
+    private int timer = 0;
+
     private enum Task {
         GO_TO_LEVEL,
+        HOLD,
         RESET,
         STOP
     }
@@ -29,7 +32,7 @@ public final class ElevatorCommand extends Command {
      */
     @Override
     public void initialize() {
-        // Init stuff here.
+        elevatorSubsystem.reset();
     }
 
 
@@ -43,14 +46,21 @@ public final class ElevatorCommand extends Command {
         if (taskState == Task.GO_TO_LEVEL) {
             // if break case -> taskState = Task.RESET
             if(elevatorSubsystem.isAtLevelThreshold(goalLevel)){
-                taskState = Task.RESET;
+                taskState = Task.HOLD;
             }
             // do thing to reach break point
             elevatorSubsystem.goToLevel(goalLevel);
         }
 
+        if ( taskState == Task.HOLD ) {
+            if (elevatorSubsystem.isAtLevelThreshold(goalLevel) && timer >= 20) {
+                taskState = Task.RESET;
+            }
+            elevatorSubsystem.stopMotor();
+            timer+=1;
+        }
         // Moved to level completed -> reset!
-        else if ( taskState == Task.RESET ) {
+        if ( taskState == Task.RESET ) {
             // if break case -> taskState = Task.STOP
             if(elevatorSubsystem.getEncoderDistance() == 0.0){
                 taskState = Task.STOP;
@@ -59,7 +69,7 @@ public final class ElevatorCommand extends Command {
         }
 
         // STOP case, Finish!
-        else if( taskState == Task.STOP){
+        if( taskState == Task.STOP ){
             //todo: IDK what this is, figure out
             //isFinished = ( taskState.equals( Task.STOP ) );
             elevatorSubsystem.stopMotor();
@@ -82,7 +92,7 @@ public final class ElevatorCommand extends Command {
      */
     @Override
     public boolean isFinished() {
-        return isFinished;
+        return taskState == Task.STOP;
     }
 
 

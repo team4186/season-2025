@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.MotorSet;
+import frc.robot.Units;
 
 import java.util.InputMismatchException;
 
@@ -65,7 +66,7 @@ public class Elevator {
         levelHeight = getLevelConstant(requestedLevel);
         distanceToLevel = levelHeight - currentPos;
 
-        double speed = coerceIn(pid.calculate(distanceToLevel, levelHeight),
+        double speed = Units.ClampValue(pid.calculate(distanceToLevel, levelHeight),
                 -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
                 Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
 
@@ -103,13 +104,14 @@ public class Elevator {
 
     // TODO: BRAINSTORM: Useful for adjusting past breakpoint? should just reset instead probably?
     public void reset() {
-        double speed = coerceIn(pid.calculate(getEncoderDistance(), 0.0),
+        double speed = Units.ClampValue(pid.calculate(getEncoderDistance(), 0.0),
                 -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
                 Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
 
         // TODO: Need to catch not finding true/false result?
         if (bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
             encoder.reset();
+            pid.reset();
             stopMotor();
         } else {
             elevatorMotors.accept(speed);
@@ -129,14 +131,6 @@ public class Elevator {
         // encoder.setPosition(height / Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR);
     }
 
-
-    public double coerceIn(double value, double lowerBound, double upperBound) {
-        if (value > upperBound) {
-            return upperBound;
-        } else {
-            return Math.max(value, lowerBound);
-        }
-    }
 
 
     public void stopMotor() {
