@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.actions.AlignToTargetCommand;
+import frc.robot.commands.actions.DeAlgaeCommand;
 import frc.robot.commands.actions.ElevatorCommand;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
@@ -68,8 +69,8 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_D));
 
   private final DeAlgae deAlgae = new DeAlgae(
-          motorComponents.deAlgaeMotors.wheelMotor,
-          motorComponents.deAlgaeMotors.angleMotor,
+          motorComponents.deAlgaeWheelMotor,
+          motorComponents.deAlgaeAngleMotor,
           new PIDController(
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
@@ -96,6 +97,8 @@ public class RobotContainer {
           elevator, // elevatorsubsystem
           3 // level
   );
+
+  DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
 
 
 //  // Conditions to be met: In front of target april tag
@@ -189,7 +192,7 @@ public class RobotContainer {
     if ( DriverStation.isTest() ){
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
 
-      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly() );
       joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       joystick.button(5).whileTrue(drivebase.centerModulesCommand());
@@ -219,14 +222,7 @@ public class RobotContainer {
        * Remove Algae (down)
        */
 
-      //TODO: deAlgae commands config buttons later
-      //TODO: Vision needs to tell DeAlgae whether the roller should be inverted
-      //TODO: alternatively could manually decide
-//      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::runMotor_inverted, deAlgae).repeatedly());
-//
-//      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor, deAlgae).repeatedly());
-//
-//      Commands.runOnce(deAlgae::stop);
+      joystick.button(7).whileTrue(deAlgaeCommand);
 
       // Elevator Tests
       /**

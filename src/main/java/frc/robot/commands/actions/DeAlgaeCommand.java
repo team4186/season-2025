@@ -8,14 +8,15 @@ public class DeAlgaeCommand extends Command {
 
     /* Intended Usage:
     * Run with command while being held, alternate directions for 2 seconds in alternating directions.
+    * intended to be used with whileTrue()
     *
-    * isFinished -> N/A (NOTE: If we set timer )
-    * Interrupted -> Send reset command, stop motor, ...
+    * isFinished -> when exit_timer reaches 500/ ~10 seconds
+    * Interrupted -> Send reset command, stop motor, reset arm ...
     * */
 
     private final DeAlgae deAlgae;
     private int timer = 0;
-    private boolean isFinished = false;
+    private int exit_timer = 0;
 
     public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
@@ -39,21 +40,20 @@ public class DeAlgaeCommand extends Command {
             second press makes arm go up and down while spinning motor
         */
 
-        if(deAlgae.deploy() && !isFinished){
+        if(deAlgae.deploy()){
             if(timer < 20){
                 deAlgae.runMotor_Up();
             }
-
             else if(timer < 50){
                 deAlgae.runMotor_Down();
             }
-            else {
-                if(deAlgae.reset()){
-                    isFinished = true;
-                }
+            else if(deAlgae.deploy()){
+                timer = 0;
             }
             timer++;
         }
+
+        exit_timer++;
     }
 
 
@@ -71,10 +71,7 @@ public class DeAlgaeCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished()
-    {
-        return isFinished;
-    }
+    public boolean isFinished() {return exit_timer >= 500;}
 
 
     /**
@@ -87,6 +84,7 @@ public class DeAlgaeCommand extends Command {
     @Override
     public void end(boolean interrupted)
     {
+        deAlgae.stop();
         deAlgae.reset();
     }
 }
