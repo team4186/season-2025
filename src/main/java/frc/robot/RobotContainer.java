@@ -66,8 +66,8 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_D));
 
   private final DeAlgae deAlgae = new DeAlgae(
-          motorComponents.deAlgaeMotors.wheelMotor,
-          motorComponents.deAlgaeMotors.angleMotor,
+          motorComponents.deAlgaeWheelMotor,
+          motorComponents.deAlgaeAngleMotor,
           new PIDController(
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
                   Constants.DeAlgaeConstants.DE_ALGAE_P,

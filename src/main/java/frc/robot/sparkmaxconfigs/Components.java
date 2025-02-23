@@ -21,7 +21,8 @@ public final class Components {
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
     public SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
-    public DeAlgaeMotor deAlgaeMotors = new DeAlgaeMotor();
+    public SingleMotor deAlgaeWheelMotor = new DeAlgaeMotors().wheelMotor;
+    public SingleMotor deAlgaeAngleMotor = new DeAlgaeMotors().angleMotor;
 
 
     // private Constructor
@@ -55,7 +56,7 @@ public final class Components {
     }
 
 
-    public static final class DeAlgaeMotor {
+    public static final class DeAlgaeMotors {
         public SingleMotor wheelMotor = new SingleMotor(
                 new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
