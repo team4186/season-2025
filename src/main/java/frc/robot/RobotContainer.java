@@ -77,7 +77,7 @@ public class RobotContainer {
 
   Supplier<Pose2d> pose2dSupplier = () -> drivebase.getPose();
 
-  private final Vision visionSubsystem;
+  private final LimeLightRunner visionSubsystem;
   // initialize above later.
 
 
@@ -196,7 +196,7 @@ public class RobotContainer {
       joystick.button(6).onTrue(Commands.none());
 
       // Example Align Command Object
-      joystick.button(10).whileTrue(new AlignToTargetCommand(Vision));
+      joystick.button(10).whileTrue(alignCommand);
       // AlgaeProcessor Tests
       /**
        * Extend
