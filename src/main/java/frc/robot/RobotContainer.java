@@ -73,12 +73,12 @@ public class RobotContainer {
           motorComponents.deAlgaeAngleMotor,
           new PIDController(
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
-                  Constants.DeAlgaeConstants.DE_ALGAE_P,
-                  Constants.DeAlgaeConstants.DE_ALGAE_P));
+                  Constants.DeAlgaeConstants.DE_ALGAE_I,
+                  Constants.DeAlgaeConstants.DE_ALGAE_D));
 
   Supplier<Pose2d> pose2dSupplier = () -> drivebase.getPose();
 
-  private final LimeLightRunner visionSubsystem;
+  //private final LimeLightRunner visionSubsystem;
   // initialize above later.
 
 
@@ -86,7 +86,7 @@ public class RobotContainer {
    * Commands are implemented here...
    */
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          visionSubsystem,
+          //visionSubsystem,
           drivebase,
           // ignore below offset may not be needed.
           new Translation2d(0.0,0.0)
