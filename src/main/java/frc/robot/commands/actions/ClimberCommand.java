@@ -7,7 +7,7 @@ public final class ClimberCommand extends Command {
     private final Climber climberSubsystem;
     private boolean isFinished = false;
 
-    public ClimberCommand(Climber ClimberSubsystem) {
+    public ClimberCommand(Climber climberSubsystem) {
         this.climberSubsystem = climberSubsystem;
     }
 

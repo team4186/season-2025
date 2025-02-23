@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
@@ -30,7 +30,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
 
     // This will be placed on a loop in RobotContainer.
-    public void intakeAlgaeCommand() {
+    public void intakeAlgae() {
         if (!algaeDetected()){
             // Current voltage is 20, change in constants if needed.
             wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
@@ -46,8 +46,7 @@ public class AlgaeProcessor extends SubsystemBase {
         }
     }
 
-
-    public void launchAlgaeCommand() {
+    public void launchAlgae() {
         wheelMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
     }
 
@@ -64,5 +63,17 @@ public class AlgaeProcessor extends SubsystemBase {
 
     public double getProcessorPos() {
         return Units.TicksToDegrees(processorPos.getPosition(), "NEO550");
+    }
+
+    public void stopAngle() {
+        angleMotor.stop();
+    }
+
+    public void stopIntake() {
+        wheelMotor.stop();
+    }
+
+    public void resetEncoder() {
+        processorPos.setPosition(0.0);
     }
 }
