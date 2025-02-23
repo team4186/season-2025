@@ -3,6 +3,7 @@ package frc.robot.hardware;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static java.lang.Math.tan;
@@ -10,13 +11,11 @@ import static java.lang.Math.tan;
 public class LimeLightRunner {
 
     private final NetworkTable tableTag;
-    private final double mountedAngle;
 
-
-    public LimeLightRunner(double mountedAngle) {
+    public LimeLightRunner() {
         tableTag = NetworkTableInstance.getDefault().getTable("limelight-tag");
-        this.mountedAngle = mountedAngle;
     }
+
 
     public void periodic() {
         SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag());
@@ -24,8 +23,8 @@ public class LimeLightRunner {
         SmartDashboard.putNumber("Y Offset", getTagYOffset());
         SmartDashboard.putNumber("% of Image", getTagArea());
         SmartDashboard.putNumber("Distance", Units.metersToInches(getDistance()));
+        setLight(hasTargetTag());
     }
-
 
     public void setLight(boolean mode) {
         final double res;
@@ -38,13 +37,6 @@ public class LimeLightRunner {
     }
 
 
-    // TODO: Measure offsets of camera to <front|center|end_effector>
-    public int lookupTableRound(double distanceToTag) {
-//        int res = Math.round();
-//        Units.
-        return 0;
-    }
-
     public boolean hasTargetTag() {
         return tableTag.getEntry("tv").getDouble(0.0) > 0.0;
     }
@@ -54,13 +46,16 @@ public class LimeLightRunner {
         return tableTag.getEntry("tx").getDouble(0.0);
     }
 
+
     public double getTagYOffset() {
         return tableTag.getEntry("ty").getDouble(0.0);
     }
 
+
     public double getTagArea() {
         return tableTag.getEntry("ta").getDouble(0.0);
     }
+
 
     public double getDistance() {
         double angleInRadians = Math.toRadians((mountedAngle + getTagYOffset()));
