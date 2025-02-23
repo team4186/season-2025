@@ -22,12 +22,13 @@ public class EndEffector extends SubsystemBase {
     }
 
 
-    public Command intake(){
+    public boolean intake(){
         try {
             if (!luna.get()) {
                 endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_SPEED);
             } else {
                 endEffectorMotor.stop();
+                return true;
             }
 
         } catch (IllegalStateException e) {
@@ -36,7 +37,7 @@ public class EndEffector extends SubsystemBase {
             System.out.println(msg);
         }
 
-        return null;
+        return false;
     }
 
 

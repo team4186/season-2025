@@ -47,9 +47,13 @@ public class RobotContainer {
 
 
   //TODO: Implement Components
-//  private final Climber climber = new Climber();
-//  private final EndEffector endEffector = new EndEffector();
+  //private final Climber climber = new Climber();
 //  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
+
+  private final EndEffector endEffector = new EndEffector(
+          motorComponents.endEffectorMotor,
+          new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
+  );
 
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
   private final Elevator elevator = new Elevator(
