@@ -9,14 +9,14 @@ import frc.robot.hardware.LimeLightRunner;
 
 
 public class AlignToTargetCommand extends Command {
-    private final LimeLightRunner visionSubsystem;
+    //private final LimeLightRunner visionSubsystem;
     private final SwerveSubsystem swerveSubsystem;
     // Probably configurable in limelight app thing with GUI.
     private final Translation2d limelightOffset;
     private boolean isFinished = false;
 
-    public AlignToTargetCommand(LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, Translation2d limelightOffset) {
-        this.visionSubsystem = visionSubsystem;
+    public AlignToTargetCommand(/*LimeLightRunner visionSubsystem,*/ SwerveSubsystem swerveSubsystem, Translation2d limelightOffset) {
+        //this.visionSubsystem = visionSubsystem;
         this.swerveSubsystem = swerveSubsystem;
         this.limelightOffset = limelightOffset;
     }

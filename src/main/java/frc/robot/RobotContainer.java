@@ -78,7 +78,7 @@ public class RobotContainer {
 
   Supplier<Pose2d> pose2dSupplier = () -> drivebase.getPose();
 
-  private final LimeLightRunner visionSubsystem;
+  //private final LimeLightRunner visionSubsystem;
   // initialize above later.
 
 
@@ -86,7 +86,7 @@ public class RobotContainer {
    * Commands are implemented here...
    */
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          visionSubsystem,
+          //visionSubsystem,
           drivebase,
           // ignore below offset may not be needed.
           new Translation2d(0.0,0.0)
