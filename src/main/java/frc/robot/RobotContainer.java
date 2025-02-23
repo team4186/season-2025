@@ -92,8 +92,7 @@ public class RobotContainer {
                   Constants.DeAlgaeConstants.DE_ALGAE_D));
 
   // TODO: Uncomment below later.
-  //private final LimeLightRunner visionSubsystem;
-  // initialize above later.
+  private final LimeLightRunner visionSubsystem = new LimeLightRunner();
 
 
   /**
@@ -109,7 +108,6 @@ public class RobotContainer {
 /**
  * Elevator commands
  */
-
   ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
         elevator, 
         1);
@@ -121,10 +119,9 @@ public class RobotContainer {
           elevator, // elevatorsubsystem
           3 // level
           );
+
   ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator, 
   4);
-  
-  
 
   DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
 
@@ -298,6 +295,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return drivebase.getAutonomousCommand("New Auto");
   }
+
 
   public void setMotorBrake(boolean brake) { drivebase.setMotorBrake(brake); }
 }
