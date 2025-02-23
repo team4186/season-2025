@@ -9,7 +9,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
-import frc.robot.subsystems.AlgaeProcessor;
 import swervelib.math.Matter;
 
 /**
@@ -56,6 +55,7 @@ public final class Constants {
   public static final class AlgaeProcessorConstants {
     public static final double ALGAE_PROCESSOR_SWING_VOLTAGE = 5.0;
     public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 5.0;
+    public static final int lunaChannel = 0;
     public static final double ALGAEPROCESSOR_P = 0.05;
     public static final double ALGAEPROCESSOR_I = 0.0;
     public static final double ALGAEPROCESSOR_D = 0.0;
