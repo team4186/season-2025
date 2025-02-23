@@ -2,51 +2,39 @@ package frc.robot.hardware;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import static java.lang.Math.tan;
 
 public class LimeLightRunner {
 
-    private final NetworkTable tableRing;
     private final NetworkTable tableTag;
+    private final double mountedAngle;
 
-    // Distance to April Tag
-    private double distance;
 
-    private double ringXOffset;
-    private double ringYOffset;
-    private double ringArea;
-
-    private double tagXOffset;
-    private double tagYOffset;
-    private double tagArea;
-
-    public LimeLightRunner(NetworkTable tableRing, NetworkTable tableTag){
-        this.tableRing = tableRing;
-        this.tableTag = tableTag;
-
-        ringXOffset = tableRing.getEntry("tx").getDouble(0.0);
-        ringYOffset = tableRing.getEntry("tx").getDouble(0.0);
-        ringArea = tableRing.getEntry("tx").getDouble(0.0);
-        tagXOffset = tableRing.getEntry("tx").getDouble(0.0);
-        tagYOffset = tableRing.getEntry("tx").getDouble(0.0);
-        tagArea = tableRing.getEntry("tx").getDouble(0.0);
-
+    public LimeLightRunner(double mountedAngle) {
+        tableTag = NetworkTableInstance.getDefault().getTable("limelight-tag");
+        this.mountedAngle = mountedAngle;
     }
 
     public void periodic() {
-//        SmartDashboard.putBoolean("Has Target Ring?", hasTargetRing);
-//        SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag);
-//        SmartDashboard.putNumber("X Offset", tagXOffset);
-//        SmartDashboard.putNumber("Y Offset", tagYOffset);
-//        SmartDashboard.putNumber("% of Image", tagArea);
-//        SmartDashboard.putNumber("Distance", Units.metersToInches(distance));
+        SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag());
+        SmartDashboard.putNumber("X Offset", getTagXOffset());
+        SmartDashboard.putNumber("Y Offset", getTagYOffset());
+        SmartDashboard.putNumber("% of Image", getTagArea());
+        SmartDashboard.putNumber("Distance", Units.metersToInches(getDistance()));
     }
 
 
-    public void setLight(boolean mode){
+    public void setLight(boolean mode) {
         final double res;
-        if (mode) { res = 3.0; } else { res = 1.0; }
-        tableRing.getEntry("ledMode").setValue( res );
+        if (mode) {
+            res = 3.0;
+        } else {
+            res = 1.0;
+        }
+        tableTag.getEntry("ledMode").setValue(res);
     }
 
 
@@ -57,37 +45,31 @@ public class LimeLightRunner {
         return 0;
     }
 
-    public double getRingXOffset() {
-        return ringXOffset;
+    public boolean hasTargetTag() {
+        return tableTag.getEntry("tv").getDouble(0.0) > 0.0;
     }
 
-    public double getRingYOffset() {
-        return ringYOffset;
-    }
 
-    public double getRingArea(){
-        return ringArea;
-    }
-
-    public double getTagXOffset(){
-        return tagXOffset;
+    public double getTagXOffset() {
+        return tableTag.getEntry("tx").getDouble(0.0);
     }
 
     public double getTagYOffset() {
-        return tagYOffset;
-    }
-
-    public double getDistance() {
-        return distance;
+        return tableTag.getEntry("ty").getDouble(0.0);
     }
 
     public double getTagArea() {
-        return tagArea;
+        return tableTag.getEntry("ta").getDouble(0.0);
     }
 
-//    public boolean getTableRing() { return tableRing; }
+    public double getDistance() {
+        double angleInRadians = Math.toRadians((mountedAngle + getTagYOffset()));
+        double distance = 33.75 / tan(angleInRadians); // TODO: update mountedAngle and distance offset after mounting
 
-//    public boolean getTargetTag() {
-//        return targetTag;
-//    }
+        if (hasTargetTag()) {
+            return distance;
+        }
+
+        return Double.NaN;
+    }
 }
