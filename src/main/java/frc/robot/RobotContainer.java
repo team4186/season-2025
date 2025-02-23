@@ -106,11 +106,25 @@ public class RobotContainer {
           new Translation2d(0.0,0.0)
   );
 
+/**
+ * Elevator commands
+ */
 
-  ElevatorCommand elevatorCommand = new ElevatorCommand(
+  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
+        elevator, 
+        1);
+
+  ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator, 
+  2);
+
+  ElevatorCommand elevatorCommandL3 = new ElevatorCommand(
           elevator, // elevatorsubsystem
           3 // level
-  );
+          );
+  ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator, 
+  4);
+  
+  
 
   DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
 

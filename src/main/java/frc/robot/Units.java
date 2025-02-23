@@ -16,24 +16,24 @@ public final class Units {
     	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
         	return (encoderTicks/42.0) * (Math.PI * wheelDiameter);
         } else {
-		return 0.0;
-	}
+		throw new IllegalArgumentException();
+		}
     }
 
 	public static double TicksToMeters(double encoderTicks, double wheelDiameter, double gearRatio) {
-		return (encoderTicks/gearRatio) * (Math.PI * wheelDiameter);
+		return (encoderTicks/(42.0 * gearRatio)) * (Math.PI * wheelDiameter);
 	}
 
 	public static double TicksToDegrees(double encoderTicks, double gearRatio) {
-		return (encoderTicks/gearRatio) % 360;
+		return ((encoderTicks/ gearRatio) * 360) % 360;
 	}
 
     public static double TicksToDegrees(double encoderTicks, String motorType) {
-	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
-		return (encoderTicks/42.0) % 360;
-	} else {
-		return 0.0;
-	}
+		if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
+			return ((encoderTicks/42.0) * 360) % 360;
+		} else {
+			throw new IllegalArgumentException();
+		}
     }
     
     public static double InchesToCentimeters(double inches) {

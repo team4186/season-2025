@@ -4,7 +4,7 @@ import frc.robot.subsystems.Elevator;
 
 
 public final class ElevatorCommand extends Command {
-    // TODO: NOT a new elevator, you pass subsystem from robot container when calling command!
+    // WARNING: NOT a new elevator, you pass subsystem from robot container when calling command!
     private final Elevator elevatorSubsystem;
     private boolean isFinished = false;
     private final int goalLevel;

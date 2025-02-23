@@ -4,8 +4,9 @@ import frc.robot.subsystems.EndEffector;
 
 public class EndEffectorCommand extends Command {
     private final EndEffector endEffector;
+    private boolean isFinished = false;
     private static int button_counter;
-    private static int timer;
+    private static int eject_timer;
 
 
 
@@ -59,7 +60,7 @@ public class EndEffectorCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return isFinished}
+    public boolean isFinished() {return isFinished;}
 
 
     /**
