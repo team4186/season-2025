@@ -4,20 +4,19 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import frc.robot.Constants;
 
-// MotorConfigs Singleton
+// MotorConfigs Singleton for Subsystem Motors (Swerve Subsystem not included)
 public final class DefaultMotorConfigs {
     private static DefaultMotorConfigs instance = null;
 
 
     public final SparkMaxConfig DefaultConfig = (SparkMaxConfig) new SparkMaxConfig()
             .smartCurrentLimit(50)
-            .idleMode(SparkBaseConfig.IdleMode.kCoast);
+            .idleMode(SparkBaseConfig.IdleMode.kBrake);
 
 
     public final SparkMaxConfig HoldingConfig = (SparkMaxConfig) new SparkMaxConfig()
             .apply(DefaultConfig)
-            .smartCurrentLimit(10)
-            .idleMode(SparkBaseConfig.IdleMode.kBrake);
+            .smartCurrentLimit(10);
 
 
     public final SparkBaseConfig SparkElevatorConfig = new SparkMaxConfig()
