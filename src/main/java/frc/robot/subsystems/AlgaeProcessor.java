@@ -10,23 +10,24 @@ import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 
 public class AlgaeProcessor extends SubsystemBase {
-    private final SingleMotor wheelMotor = Components.getInstance().algaeProcessorMotor;
-    private final SingleMotor angleMotor = Components.getInstance().algaeProcessorAngleMotor;
-
+    private final SingleMotor wheelMotor;
+    private final SingleMotor angleMotor;
     // processorPos is the current position of the processor encoder ticks.
-    private final RelativeEncoder processorPos = angleMotor.getEncoder();
-
-    private final DigitalInput tfLuna = new DigitalInput(
-            Constants.AlgaeProcessorConstants.lunaChannel);
-
-    private final PIDController deployPID = new PIDController(
-            Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_P,
-            Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_I,
-            Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_D
-    );
+    private final RelativeEncoder processorPos;
+    private final DigitalInput tfLuna;
+    private final PIDController deployPID;
 
     private double endPos;
 
+
+    public AlgaeProcessor(DigitalInput tfLuna, SingleMotor wheelMotor, SingleMotor angleMotor, PIDController deployPID){
+        this.wheelMotor = wheelMotor;
+        this.angleMotor = angleMotor;
+        this.tfLuna = tfLuna;
+        this.deployPID = deployPID;
+
+        processorPos = this.angleMotor.getEncoder();
+    }
 
 
     // This will be placed on a loop in RobotContainer.

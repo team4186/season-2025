@@ -17,7 +17,7 @@ public class EndEffector extends SubsystemBase {
 
     public EndEffector(SingleMotor endEffectorMotor, DigitalInput luna){
         //encoder = endEffectorMotor.motor.getEncoder();
-        luna = this.luna;
+        this.luna = luna;
         this.endEffectorMotor = endEffectorMotor;
     }
 

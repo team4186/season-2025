@@ -34,8 +34,11 @@ public class Elevator {
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
 
+        // TODO: set elevator to bottom threshold and zero
         pid.reset();
         encoder.reset();
+
+        // TODO: assign conversion of elevator distance with rotations of encoder to (SparkMaxConfig or directly to encoder???)
         encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
     }
 
