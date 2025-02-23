@@ -42,18 +42,28 @@ public final class ElevatorCommand extends Command {
 
         if (taskState == Task.GO_TO_LEVEL) {
             // if break case -> taskState = Task.RESET
-
+            if(elevatorSubsystem.isAtLevelThreshold(goalLevel)){
+                taskState = Task.RESET;
+            }
             // do thing to reach break point
             elevatorSubsystem.goToLevel(goalLevel);
         }
 
         // Moved to level completed -> reset!
-        if ( taskState == Task.RESET ) {
+        else if ( taskState == Task.RESET ) {
             // if break case -> taskState = Task.STOP
+            if(elevatorSubsystem.getEncoderDistance() == 0.0){
+                taskState = Task.STOP;
+            }
+            elevatorSubsystem.reset();
         }
 
         // STOP case, Finish!
-        isFinished = ( taskState.equals( Task.STOP ) );
+        else if( taskState == Task.STOP){
+            //todo: IDK what this is, figure out
+            //isFinished = ( taskState.equals( Task.STOP ) );
+            elevatorSubsystem.stopMotor();
+        }
     }
 
 
