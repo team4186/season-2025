@@ -62,7 +62,12 @@ public final class Units {
 	MetricConversion(double conversion) {
 		this.metricConversion = conversion;
 	}	
-
     }
+	public static double ClampSpeed (double value) {
+		return Math.max(-1.0, Math.min(1.0, value));
+	}
 
+	public static double ClampValue(double value, double max, double min) {
+		return Math.max(min, Math.min(max, value));
+	}
 }
