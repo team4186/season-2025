@@ -8,10 +8,19 @@ public final class ElevatorCommand extends Command {
     private final Elevator elevatorSubsystem;
     private boolean isFinished = false;
     private final int goalLevel;
+    private Task taskState;
+
+    private enum Task {
+        GO_TO_LEVEL,
+        RESET,
+        STOP
+    }
+
 
     public ElevatorCommand(Elevator elevatorSubsystemParam, int requestedLevel) {
         elevatorSubsystem = elevatorSubsystemParam;
         goalLevel = requestedLevel;
+        taskState = Task.GO_TO_LEVEL;
     }
 
 
@@ -30,17 +39,21 @@ public final class ElevatorCommand extends Command {
      */
     @Override
     public void execute() {
-        // Loop stuff here.
-        elevatorSubsystem.goToLevel(goalLevel);
-        // Move to level
 
+        if (taskState == Task.GO_TO_LEVEL) {
+            // if break case -> taskState = Task.RESET
+
+            // do thing to reach break point
+            elevatorSubsystem.goToLevel(goalLevel);
+        }
 
         // Moved to level completed -> reset!
+        if ( taskState == Task.RESET ) {
+            // if break case -> taskState = Task.STOP
+        }
 
-
-        // reset completed -> isFinished = True
-
-        isFinished = true;
+        // STOP case, Finish!
+        isFinished = ( taskState.equals( Task.STOP ) );
     }
 
 
