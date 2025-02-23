@@ -25,6 +25,7 @@ public class DeAlgae extends SubsystemBase {
 
 
     //TODO: find angle motor speed ratio
+    //moves arm up with pid until it reaches the max angle while spinning the rolling motor
     public void runMotor_Up(){
         if (angleEncoder.getPosition() < Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE) {
             double pidOutput = coerceIn(anglePid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE));
@@ -35,7 +36,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
-    // TODO: not sure about pid behavior when given position is more than target position
+    // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
     public void runMotor_Down(){
         if (angleEncoder.getPosition() > Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE){
             double pidOutput = coerceIn(anglePid.calculate(angleEncoder.getPosition(),Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE));
@@ -45,7 +46,7 @@ public class DeAlgae extends SubsystemBase {
         wheelMotor.accept(-Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED);
     }
 
-
+    // used to limit the pid calculation output to be within acceptable speeds
     private double coerceIn(double value) {
         int sign = 1;
         if (value < 0) {
@@ -60,7 +61,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
-    //TODO: PID implementation
+    //moves arm to be between two possible algae locations, estimated to be perpendicular to the elevator
     public boolean deploy() {
         double PIDoutput;
 
@@ -74,14 +75,14 @@ public class DeAlgae extends SubsystemBase {
         return false;
     }
 
-
+    // stops the arm and rolling motors
     public void stop(){
         wheelMotor.stop();
         angleMotor.stop();
     }
 
 
-    // TODO: replace with pid or set to position within higher tolerance // done, needs testing
+    // moves arm back to being parallel with the elevator with pid
     public boolean reset(){
         double PIDoutput;
 

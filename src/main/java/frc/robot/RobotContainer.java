@@ -222,6 +222,11 @@ public class RobotContainer {
        * Remove Algae (down)
        */
 
+      /*
+      runs deAlgaeCommand when button is held down.
+      Is interrupted when let go and automatically moves back to default position
+      and stops rolling motor.
+      */
       joystick.button(7).whileTrue(deAlgaeCommand);
 
       // Elevator Tests

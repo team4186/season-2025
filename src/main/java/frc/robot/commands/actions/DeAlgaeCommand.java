@@ -36,10 +36,7 @@ public class DeAlgaeCommand extends Command {
      */
     @Override
     public void execute() {
-        /*TODO: first press sticks out arm
-            second press makes arm go up and down while spinning motor
-        */
-
+        // moves arm up and down while rolling possible algae until interrupted
         if(deAlgae.deploy()){
             if(timer < 20){
                 deAlgae.runMotor_Up();
