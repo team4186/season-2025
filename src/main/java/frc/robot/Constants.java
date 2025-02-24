@@ -53,10 +53,6 @@ public final class Constants {
 
   // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
   public static final class AlgaeProcessorConstants {
-    // TODO: CHANGE BEFORE TESTING
-    public static final int AngleCANID = 0;
-    // TODO: CHANGE BEFORE TESTING
-    public static final int WheelCANID = 1;
     public static final double ALGAE_PROCESSOR_SWING_VOLTAGE = 5.0;
     public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 5.0;
     // TODO: CHANGE BEFORE TESTING
@@ -68,7 +64,6 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-    public static final int sparkID = 0; //TODO: placeHolder
     //Climb voltage requires much higher values than move voltage.
     public static final int CLIMBER_CLIMB_VOLTAGE = 0; //TODO: placeHolder
     public static final int CLIMBER_MOVE_VOLTAGE = 0; //TODO: placeHolder
@@ -86,8 +81,6 @@ public final class Constants {
 
 
   public static final class DeAlgaeConstants {
-    public static final int AngleCANID = 0; // TODO: Set proper CAN ID.
-    public static final int WheelCANID = 0; // TODO: Set proper CAN ID.
     public static final double DE_ALGAE_DEFAULT_ANGLE = 0.0; //TODO: find arm offset
     public static final double DE_ALGAE_FLAT_ANGLE = 90.0; //TODO: find the 'distance' of 90 degrees
     public static final double DE_ALGAE_MAX_SPEED = 3.0; // TODO: placeholder
@@ -104,9 +97,6 @@ public final class Constants {
     public static final int ELEVATOR_BOTTOM_LIMIT_ID = 0;
     public static final int ELEVATOR_TOP_LIMIT_ID = 0;
     public static final int ELEVATOR_ENCODER_ID = 0;
-
-    public static final int ELEVATOR_LEAD_ID = 0;  // TODOL SET CAN ID BEFORE TESTING.
-    public static final int ELEVATOR_FOLLOWER_ID = 1; // TODO: SET CAN ID BEFORE TESTING.
 
     public static final double ELEVATOR_RAMP_RATE = 5;
     public static final double ELEVATOR_MAX_VELOCITY = 4.0;
@@ -133,8 +123,6 @@ public final class Constants {
   }
   
 public static final class ElevatorYAGSLConstants {
-    public static final int YAGSL_ELEVATOR_LEAD_ID = 0;  // TODO: CHANGE BEFORE TESTING.
-    public static final int YAGSL_ELEVATOR_FOLLOWER_ID = 1; // TODO: CHANGE BEFORE TESTING.
 
     public static final double ELEVATOR_P = 5;
     public static final double ELEVATOR_I = 0;
@@ -154,7 +142,6 @@ public static final class ElevatorYAGSLConstants {
   }
 
   public static final class EndEffectorConstants {
-    public static final int EE_SPARKMAX_ID = 3; // TODO: CHANGE CAN ID BEFORE TESTING.
     public static final int END_EFFECTOR_BEAM_BREAK = 0; //TODO: placeHolder
 
     public static final double END_EFFECTOR_EJECT_SPEED = 1.0; // TODO: change speed
