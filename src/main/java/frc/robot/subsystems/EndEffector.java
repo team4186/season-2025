@@ -12,21 +12,30 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 public class EndEffector extends SubsystemBase {
     private final SingleMotor endEffectorMotor;
     //private RelativeEncoder encoder;
-    private DigitalInput luna;
+    // private DigitalInput luna;
 
 
     public EndEffector(SingleMotor endEffectorMotor, DigitalInput luna){
-        //encoder = endEffectorMotor.motor.getEncoder();
-        this.luna = luna;
+        // encoder = endEffectorMotor.motor.getEncoder();
+        // this.luna = luna;
         this.endEffectorMotor = endEffectorMotor;
     }
 
+    public EndEffector(SingleMotor endEffectorMotor){
+        this.endEffectorMotor = endEffectorMotor;
+    }
 
-    public boolean intake(){
+    public boolean hasGamePiece(){
+        return true;
+        // return luna.get();
+    }
+
+
+    public void intake(){
         try {
-            if ( luna.get() ) {
+            if ( hasGamePiece() ) {
                 endEffectorMotor.stop();
-                return true;
+                return;
             }
 
             endEffectorMotor.accept( Constants.EndEffectorConstants.END_EFFECTOR_INTAKE_SPEED );
@@ -36,8 +45,6 @@ public class EndEffector extends SubsystemBase {
             String msg = "EndEffector Beambreak error: " + e;
             System.out.println(msg);
         }
-
-        return false;
     }
 
 
