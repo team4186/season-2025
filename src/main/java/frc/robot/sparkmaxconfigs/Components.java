@@ -16,7 +16,7 @@ public final class Components {
     public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeWheelMotor;
     public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
 
-    public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
+    public ElevatorMotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
 
     public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
 
@@ -77,12 +77,12 @@ public final class Components {
 
     //TODO: Set proper CAN ID.
     public static final class ElevatorMotors {
-        public final MotorSet elevatorMotors = new MotorSet(
+        public final ElevatorMotorSet elevatorMotors = new ElevatorMotorSet(
                 new SparkMax(Constants.ElevatorConstants.ELEVATOR_LEAD_ID,
                 SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(Constants.ElevatorConstants.ELEVATOR_FOLLOWER_ID, 
                 SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().SparkElevatorConfig,
+                DefaultMotorConfigs.getInstance().DefaultConfig,
                 false
         );
     }
@@ -94,7 +94,7 @@ public final class Components {
                 SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(Constants.ElevatorYAGSLConstants.YAGSL_ELEVATOR_FOLLOWER_ID, 
                 SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().SparkElevatorConfig
+                DefaultMotorConfigs.getInstance().YagslElevatorConfig
         );
     }
 
