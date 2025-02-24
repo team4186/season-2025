@@ -44,7 +44,7 @@ public final class Constants {
 
   public static final class OperatorConstants {
     // Joystick Deadband
-    public static final double DEADBAND = 0.1;
+    public static final double DEADBAND = 0.3;
     public static final double LEFT_Y_DEADBAND = 0.1;
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT = 6.0;
@@ -68,9 +68,9 @@ public final class Constants {
     public static final int CLIMBER_CLIMB_VOLTAGE = 0; //TODO: placeHolder
     public static final int CLIMBER_MOVE_VOLTAGE = 0; //TODO: placeHolder
     public static final int TFChannel = 0;
-    public static final double DERIVATIVE = 0.0;
-    public static final double INTEGRAL = 0.0;
     public static final double PROPORTIONAL = 0.05;
+    public static final double INTEGRAL = 0.0;
+    public static final double DERIVATIVE = 0.0;
     // Subject to change, ask Chris later. 25:1 but it isn't linear.
     public static final double GEARRATIO = 0.04;
     // Subject to change, change later after testing.
@@ -81,15 +81,18 @@ public final class Constants {
 
 
   public static final class DeAlgaeConstants {
-    public static final double DE_ALGAE_DEFAULT_ANGLE = 0.0; //TODO: find arm offset
-    public static final double DE_ALGAE_FLAT_ANGLE = 90.0; //TODO: find the 'distance' of 90 degrees
-    public static final double DE_ALGAE_MAX_SPEED = 0.2; // TODO: placeholder
-    public static final double DE_ALGAE_MIN_SPEED = 0.01; //TODO: placeHolder
-    public static final double DE_ALGAE_P = 0.05; //TODO: tune pid values
+    public static final double DE_ALGAE_DEFAULT_ANGLE = 1.114; //TODO: find arm offset
+    public static final double DE_ALGAE_FLAT_ANGLE = 90; //TODO: find the 'distance' of 90 degrees
+    public static final double DE_ALGAE_MAX_SPEED = 0.1; // TODO: placeholder
+    public static final double DE_ALGAE_MIN_SPEED = 0.05; //TODO: placeHolder
+    public static final double DE_ALGAE_P = 1; //TODO: tune pid values
     public static final double DE_ALGAE_I = 0.0;
     public static final double DE_ALGAE_D = 0.0;
-    public static final double DE_ALGAE_MAX_ANGLE = 135.0; // TODO: find max arc
-    public static final double DE_ALGAE_MIN_ANGLE = 45.0; // TODO: find min arc
+    public static final double DE_ALGAE_MAX_ANGLE = 110.0; // TODO: find max arc
+    public static final double DE_ALGAE_MIN_ANGLE = 35.0; // TODO: find min arc
+
+    public static final double DE_ALGAE_WHEEL_MAX_SPEED = 0.2; // TODO: placeholder
+    public static final double DE_ALGAE_WHEEL_MIN_SPEED = 0.1; //TODO: placeHolder
   }
 
 

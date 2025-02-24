@@ -30,7 +30,7 @@ public final class Units {
 
     public static double TicksToDegrees(double encoderTicks, String motorType) {
 	if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
-		return (encoderTicks/42.0) % 360;
+		return (encoderTicks/8.57) % 360;
 	} else {
 		return 0.0;
 	}

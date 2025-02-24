@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -264,11 +265,16 @@ public class RobotContainer {
       //joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
 
-      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::deploy).repeatedly());
+      joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly()); //replaced deploy with manDeploy
       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor_Up).repeatedly());
       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly());
-      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::reset).repeatedly());
+      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly()); // replaced reset with manReset
       joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
+      joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
+      joystick.button(7).onFalse(Commands.runOnce(deAlgae::stop));
+      joystick.button(8).onFalse(Commands.runOnce(deAlgae::stop));
+      joystick.button(9).onFalse(Commands.runOnce(deAlgae::stop));
+      joystick.button(10).onFalse(Commands.runOnce(deAlgae::stop));
     }
   }
 
@@ -292,4 +298,8 @@ public class RobotContainer {
   }
 
   public void setMotorBrake(boolean brake) { drivebase.setMotorBrake(brake); }
+
+  public void displaySubsystemSuffleboard(){
+    SmartDashboard.putNumber("DeAlgae Angle:", deAlgae.getCurrentAngle());
+  }
 }

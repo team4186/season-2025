@@ -16,13 +16,14 @@ public final class Components {
 //    public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeWheelMotor;
 //    public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
 //    public MotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
-
+//
 //    public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
 //    public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
 //    public SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
-    public SingleMotor deAlgaeWheelMotor = new DeAlgaeMotors().wheelMotor;
-    public SingleMotor deAlgaeAngleMotor = new DeAlgaeMotors().angleMotor;
+    private final DeAlgaeMotors deAlgaeMotors = new DeAlgaeMotors();
+    public SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
+    public SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
 
 
     // private Constructor
@@ -37,60 +38,60 @@ public final class Components {
     }
 
 
-//    // TODO: Set proper CAN ID.
-//    public static final class AlgaeProcessorMotor {
-//        public SingleMotor algaeWheelMotor = new SingleMotor(
-//                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
-//                DefaultMotorConfigs.getInstance().DefaultConfig);
-//
-//        public SingleMotor algaeProcessorAngleMotor = new SingleMotor(
-//                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
-//                DefaultMotorConfigs.getInstance().HoldingConfig);
-//    }
-
-
-//    public static final class ClimberMotor {
-//        public SingleMotor climberMotor = new SingleMotor(
-//                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
-//                DefaultMotorConfigs.getInstance().DefaultConfig);
-//    }
-
-
-    public static final class DeAlgaeMotors {
-        public SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(30, SparkLowLevel.MotorType.kBrushless),
+    // TODO: Set proper CAN ID.
+    public static final class AlgaeProcessorMotor {
+        public SingleMotor algaeWheelMotor = new SingleMotor(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
 
-        public SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(31, SparkLowLevel.MotorType.kBrushless),
+        public SingleMotor algaeProcessorAngleMotor = new SingleMotor(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().HoldingConfig);
+    }
+
+
+    public static final class ClimberMotor {
+        public SingleMotor climberMotor = new SingleMotor(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
     }
 
 
-//    //TODO: Set proper CAN ID.
-//    public static final class ElevatorMotors {
-//        public final MotorSet elevatorMotors = new MotorSet(
-//                new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
-//                new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
-//                DefaultMotorConfigs.getInstance().SparkElevatorConfig,
-//                false
-//        );
-//    }
+    public static final class DeAlgaeMotors {
+        public SingleMotor wheelMotor = new SingleMotor(
+                new SparkMax(31, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DefaultConfig);
+
+        public SingleMotor angleMotor = new SingleMotor(
+                new SparkMax(30, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DeAlgaeConfig);
+    }
 
 
-//    public static final class ElevatorMotorsYagsl {
-//        public final YagslElevatorMotorSet elevatorMotorsYagsl = new YagslElevatorMotorSet(
-//                new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
-//                new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
-//                DefaultMotorConfigs.getInstance().SparkElevatorConfig
-//        );
-//    }
+    //TODO: Set proper CAN ID.
+    public static final class ElevatorMotors {
+        public final MotorSet elevatorMotors = new MotorSet(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
+                new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
+                DefaultMotorConfigs.getInstance().SparkElevatorConfig,
+                false
+        );
+    }
 
 
-//    // TODO: change IDs
-//    public static final class EndEffectorMotor {
-//        public final SingleMotor endEffectorMotor = new SingleMotor(
-//                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
-//                DefaultMotorConfigs.getInstance().DefaultConfig);
-//    }
+    public static final class ElevatorMotorsYagsl {
+        public final YagslElevatorMotorSet elevatorMotorsYagsl = new YagslElevatorMotorSet(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless), // lead
+                new SparkMax(1, SparkLowLevel.MotorType.kBrushless), // follower
+                DefaultMotorConfigs.getInstance().SparkElevatorConfig
+        );
+    }
+
+
+    // TODO: change IDs
+    public static final class EndEffectorMotor {
+        public final SingleMotor endEffectorMotor = new SingleMotor(
+                new SparkMax(0, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DefaultConfig);
+    }
 }
