@@ -203,6 +203,8 @@ public class RobotContainer {
     Command driveFieldOrientedAngularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
+    joystick.trigger().onTrue(elevatorCommandL2);
+
     drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
     if ( Robot.isSimulation() ){
@@ -226,6 +228,7 @@ public class RobotContainer {
       // Example Align Command Object
       joystick.button(10).whileTrue(alignCommand);
       // AlgaeProcessor Tests
+
       /**
        * Extend
        * Retract

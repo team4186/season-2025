@@ -24,6 +24,7 @@ public final class ElevatorCommand extends Command {
         elevatorSubsystem = elevatorSubsystemParam;
         goalLevel = requestedLevel;
         taskState = Task.GO_TO_LEVEL;
+        addRequirements(elevatorSubsystem);
     }
 
 
@@ -32,7 +33,6 @@ public final class ElevatorCommand extends Command {
      */
     @Override
     public void initialize() {
-        elevatorSubsystem.reset();
     }
 
 
@@ -69,7 +69,7 @@ public final class ElevatorCommand extends Command {
         }
 
         // STOP case, Finish!
-        if( taskState == Task.STOP ){
+        if(taskState == Task.STOP){
             //todo: IDK what this is, figure out
             //isFinished = ( taskState.equals( Task.STOP ) );
             elevatorSubsystem.stopMotor();
