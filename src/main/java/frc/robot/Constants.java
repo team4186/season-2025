@@ -156,8 +156,9 @@ public static final class ElevatorYAGSLConstants {
   public static final class EndEffectorConstants {
     public static final int EE_SPARKMAX_ID = 3; // TODO: CHANGE CAN ID BEFORE TESTING.
     public static final int END_EFFECTOR_BEAM_BREAK = 0; //TODO: placeHolder
+
     public static final double END_EFFECTOR_EJECT_SPEED = 1.0; // TODO: change speed
-    public static final double END_EFFECTOR_INTAKE_SPEED = 1.0;
+    public static final double END_EFFECTOR_INTAKE_SPEED = 0.5;
   }
 
   
