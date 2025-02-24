@@ -69,25 +69,22 @@ public class Elevator extends SubsystemBase{
      *      Calculate distance traveled: Multiply the "distance per pulse" by the number of encoder pulses rea
      */
     public void goToLevel(int requestedLevel) {
-        double distanceToLevel;
         double levelHeight;
 
         double currentPos = encoder.getDistance();
         levelHeight = getLevelConstant(requestedLevel);
-        distanceToLevel = levelHeight - currentPos;
 
-        double speed = Units.ClampValue(pid.calculate(distanceToLevel, levelHeight),
+        double speed = Units.ClampValue(pid.calculate(currentPos, levelHeight),
                 -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
                 Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
 
-        moveUp(speed, distanceToLevel);
+        moveUp(speed, requestedLevel);
     }
 
 
-    // public void goUp(double distanceToLevel, double goalHeight) {
-    public void moveUp( double speed, double distanceToLevel) {
-        // TODO: Need to include tolerance for double comparison!
-        if ( distanceToLevel <= 0.0 || topLimitSwitch.get() ) {
+    // Integrate ElevatorFeedForward into this.
+    public void moveUp( double speed, int requestedLevel) {
+        if ( isAtLevelThreshold(requestedLevel) || topLimitSwitch.get() ) {
             stopMotor();
         } else {
             elevatorMotors.accept(speed);
@@ -106,7 +103,7 @@ public class Elevator extends SubsystemBase{
     }
 
 
-    // Check
+    // TODO: create and set a tolerance variable.
     public boolean isAtLevelThreshold(int level){
         return ( encoder.getDistance() >= getLevelConstant(level) || topLimitSwitch.get() );
     }
@@ -114,17 +111,13 @@ public class Elevator extends SubsystemBase{
 
     // TODO: BRAINSTORM: Useful for adjusting past breakpoint? should just reset instead probably?
     public void reset() {
-        double speed = Units.ClampValue(pid.calculate(getEncoderDistance(), 0.0),
-                -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
-                Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
-
         // TODO: Need to catch not finding true/false result?
-        if (bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
+        if (bottomLimitSwitch.get() == true) {  //might have to change if bottomLimitSwitch is false when activated
             encoder.reset();
             pid.reset();
             stopMotor();
         } else {
-            elevatorMotors.accept(speed);
+            goToLevel(1);
         }
     }
 
