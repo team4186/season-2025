@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-//import frc.robot.commands.actions.AlignToTargetCommand;
+import frc.robot.commands.actions.AlignToTargetCommand;
 import frc.robot.commands.actions.DeAlgaeCommand;
 import frc.robot.commands.actions.ElevatorCommand;
 import frc.robot.commands.actions.EndEffectorCommand;
