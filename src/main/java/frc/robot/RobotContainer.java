@@ -101,7 +101,6 @@ public class RobotContainer {
           Constants.ClimberConstants.MINVOLTS
   );
 
-
   private final DeAlgae deAlgae = new DeAlgae(
           motorComponents.deAlgaeWheelMotor,
           motorComponents.deAlgaeAngleMotor,
@@ -114,11 +113,9 @@ public class RobotContainer {
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
 
 
-
   /**
    * Commands are implemented here...
    */
-
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
           visionSubsystem,
           drivebase,
