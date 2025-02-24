@@ -108,6 +108,10 @@ public final class Constants {
     public static final int ELEVATOR_LEAD_ID = 0;  // TODOL SET CAN ID BEFORE TESTING.
     public static final int ELEVATOR_FOLLOWER_ID = 1; // TODO: SET CAN ID BEFORE TESTING.
 
+    public static final double ELEVATOR_RAMP_RATE = 5;
+    public static final double ELEVATOR_MAX_VELOCITY = 4.0;
+    public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
+
     public static final double ELEVATOR_DEFAULT = 0.0; //TODO: Update heights
     public static final double ELEVATOR_LEVEL_ONE = 0.0; // why even consider the tray? can we score with the elevator?
     public static final double ELEVATOR_LEVEL_TWO = 0.70; //70 cm
@@ -116,10 +120,16 @@ public final class Constants {
     public static final double ELEVATOR_P = 0.015;
     public static final double ELEVATOR_I = 0.0;
     public static final double ELEVATOR_D = 0.0;
+
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
     public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
+
+//    public static final double ELEVATOR_KG = ;
+//    public static final double ELEVATOR_KA = ;
+//    public static final double ELEVATOR_KV = ;
+
   }
   
 public static final class ElevatorYAGSLConstants {
