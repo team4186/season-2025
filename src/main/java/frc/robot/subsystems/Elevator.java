@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
-import frc.robot.sparkmaxconfigs.MotorSet;
+import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import frc.robot.Units;
 
 import java.util.InputMismatchException;
@@ -11,7 +13,7 @@ import java.util.InputMismatchException;
 public class Elevator {
 
     // Motor, Encoder, and Limit Switches variables
-    private final MotorSet elevatorMotors;
+    private final ElevatorMotorSet elevatorMotors;
     private final Encoder encoder;
 
     // Make id # correct
@@ -19,21 +21,28 @@ public class Elevator {
     private final DigitalInput topLimitSwitch;
 
     private final PIDController pid;
+    private final ElevatorFeedforward elevatorFeedforward;
 
 
     public Elevator(
             DigitalInput bottomLimitSwitch,
             DigitalInput topLimitSwitch,
-            MotorSet elevatorMotor,
+            ElevatorMotorSet elevatorMotor,
             Encoder encoder,
-            PIDController pid
+            PIDController pid,
+            ElevatorFeedforward elevatorFeedforward
     ) {
+        // motors
         this.elevatorMotors = elevatorMotor;
         this.encoder = encoder;
-        this.pid = pid;
 
+        // sensors
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
+
+        // control
+        this.pid = pid;
+        this.elevatorFeedforward = elevatorFeedforward;
 
         // TODO: set elevator to bottom threshold and zero
         pid.reset();

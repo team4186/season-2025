@@ -5,10 +5,13 @@
 package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -69,7 +72,16 @@ public class RobotContainer {
           new PIDController(
                   Constants.ElevatorConstants.ELEVATOR_P,
                   Constants.ElevatorConstants.ELEVATOR_I,
-                  Constants.ElevatorConstants.ELEVATOR_D));
+                  Constants.ElevatorConstants.ELEVATOR_D
+//                  new TrapezoidProfile.Constraints(
+//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
+          ),
+          new ElevatorFeedforward(
+                  Constants.ElevatorConstants.ELEVATOR_KG,
+                  Constants.ElevatorConstants.ELEVATOR_KV,
+                  Constants.ElevatorConstants.ELEVATOR_KA)
+  );
 
   private final Climber climber = new Climber(
           Components.getInstance().climberMotor,
@@ -99,7 +111,7 @@ public class RobotContainer {
    * Commands are implemented here...
    */
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          //visionSubsystem,
+          visionSubsystem,
           drivebase,
           // ignore below offset may not be needed.
           new Translation2d(0.0,0.0)
