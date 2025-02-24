@@ -26,6 +26,7 @@ public class LimeLightRunner {
         setLight(hasTargetTag());
     }
 
+
     public void setLight(boolean mode) {
         final double res;
         if (mode) {
