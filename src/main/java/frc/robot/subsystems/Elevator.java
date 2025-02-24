@@ -60,25 +60,23 @@ public class Elevator extends SubsystemBase {
      *      Calculate distance traveled: Multiply the "distance per pulse" by the number of encoder pulses rea
      */
     public void goToLevel(int requestedLevel) {
-        double distanceToLevel;
         double levelHeight;
 
         double currentPos = encoder.getDistance();
         levelHeight = getLevelConstant(requestedLevel);
-        distanceToLevel = levelHeight - currentPos;
 
-        double speed = Units.ClampValue(pid.calculate(distanceToLevel, levelHeight),
+        double speed = Units.ClampValue(pid.calculate(currentPos, levelHeight),
                 -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
                 Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
 
-        moveUp(speed, distanceToLevel);
+        moveUp(speed, requestedLevel);
     }
 
 
     // public void goUp(double distanceToLevel, double goalHeight) {
-    public void moveUp( double speed, double distanceToLevel) {
+    public void moveUp( double speed, int requestedLevel) {
         // TODO: Need to include tolerance for double comparison!
-        if ( distanceToLevel <= 0.0 || topLimitSwitch.get() ) {
+        if ( isAtLevelThreshold(requestedLevel) || topLimitSwitch.get() ) {
             stopMotor();
         } else {
             elevatorMotors.accept(speed);
