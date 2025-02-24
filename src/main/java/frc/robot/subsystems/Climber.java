@@ -1,3 +1,4 @@
+/*
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -83,3 +84,4 @@ public class Climber extends SubsystemBase {
         return output;
     }
 }
+*/

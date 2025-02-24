@@ -1,3 +1,4 @@
+/*
 package frc.robot.subsystems;
 
 
@@ -53,3 +54,4 @@ public class ElevatorYAGSLTest extends SubsystemBase {
         // return Units.TicksToMeters(encoder.getVelocity().)   <-- Unfinished.
     }
 }
+*/

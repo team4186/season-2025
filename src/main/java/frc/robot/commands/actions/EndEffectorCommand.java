@@ -1,3 +1,4 @@
+/*
 package frc.robot.commands.actions;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.EndEffector;
@@ -15,17 +16,21 @@ public class EndEffectorCommand extends Command {
     }
 
 
-    /**
+    */
+/**
      * The initial subroutine of a command.  Called once when the command is initially scheduled.
-     */
+     *//*
+
     @Override
     public void initialize() {}
 
 
-    /**
+    */
+/**
      * The main body of a command.  Called repeatedly while the command is scheduled. (That is, it is called repeatedly
      * until {@link #isFinished()}) returns true.)
-     */
+     *//*
+
     @Override
     public void execute() {
         if(button_counter % 2 == 0){
@@ -46,7 +51,8 @@ public class EndEffectorCommand extends Command {
     }
 
 
-    /**
+    */
+/**
      * <p>
      * Returns whether this command has finished. Once a command finishes -- indicated by this method returning true --
      * the scheduler will call its {@link #end(boolean)} method.
@@ -58,18 +64,22 @@ public class EndEffectorCommand extends Command {
      * </p>
      *
      * @return whether this command has finished.
-     */
+     *//*
+
     @Override
     public boolean isFinished() {return isFinished;}
 
 
-    /**
+    */
+/**
      * The action to take when the command ends. Called when either the command finishes normally -- that is it is called
      * when {@link #isFinished()} returns true -- or when  it is interrupted/canceled. This is where you may want to wrap
      * up loose ends, like shutting off a motor that was being used in the command.
      *
      * @param interrupted whether the command was interrupted/canceled
-     */
+     *//*
+
     @Override
     public void end(boolean interrupted) {}
 }
+*/

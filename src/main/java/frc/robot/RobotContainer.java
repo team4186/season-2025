@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.actions.AlignToTargetCommand;
-import frc.robot.commands.actions.DeAlgaeCommand;
+/*import frc.robot.commands.actions.AlignToTargetCommand;
+import frc.robot.commands.actions.DeAlgaeCommand;*/
 import frc.robot.commands.actions.ElevatorCommand;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
@@ -50,10 +50,10 @@ public class RobotContainer {
   //private final Climber climber = new Climber();
 //  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
 
-  private final EndEffector endEffector = new EndEffector(
+  /*private final EndEffector endEffector = new EndEffector(
           motorComponents.endEffectorMotor,
           new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
-  );
+  );*/
 
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
   private final Elevator elevator = new Elevator(
@@ -71,7 +71,7 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_I,
                   Constants.ElevatorConstants.ELEVATOR_D));
 
-  private final Climber climber = new Climber(
+  /*private final Climber climber = new Climber(
           Components.getInstance().climberMotor,
           new DigitalInput(Constants.ClimberConstants.TFChannel),
           new PIDController(
@@ -89,7 +89,7 @@ public class RobotContainer {
           new PIDController(
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
                   Constants.DeAlgaeConstants.DE_ALGAE_I,
-                  Constants.DeAlgaeConstants.DE_ALGAE_D));
+                  Constants.DeAlgaeConstants.DE_ALGAE_D));*/
 
   // TODO: Uncomment below later.
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
@@ -98,12 +98,12 @@ public class RobotContainer {
   /**
    * Commands are implemented here...
    */
-  AlignToTargetCommand alignCommand = new AlignToTargetCommand(
+  /*AlignToTargetCommand alignCommand = new AlignToTargetCommand(
           //visionSubsystem,
           drivebase,
           // ignore below offset may not be needed.
           new Translation2d(0.0,0.0)
-  );
+  );*/
 
 /**
  * Elevator commands
@@ -123,7 +123,7 @@ public class RobotContainer {
   ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator, 
   4);
 
-  DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
+  /*DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);*/
 
 
 //  // Conditions to be met: In front of target april tag
@@ -226,7 +226,7 @@ public class RobotContainer {
       joystick.button(6).onTrue(Commands.none());
 
       // Example Align Command Object
-      joystick.button(10).whileTrue(alignCommand);
+      /*joystick.button(10).whileTrue(alignCommand);*/
       // AlgaeProcessor Tests
 
       /**
@@ -255,7 +255,7 @@ public class RobotContainer {
       Is interrupted when let go and automatically moves back to default position
       and stops rolling motor.
       */
-      joystick.button(7).whileTrue(deAlgaeCommand);
+   /*   joystick.button(7).whileTrue(deAlgaeCommand);*/
 
       // Elevator Tests
       /**

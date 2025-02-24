@@ -1,3 +1,4 @@
+/*
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
@@ -78,3 +79,4 @@ public class AlgaeProcessor extends SubsystemBase {
         processorPos.setPosition(0.0);
     }
 }
+*/

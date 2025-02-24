@@ -107,16 +107,15 @@ public final class Constants {
 
     public static final int ELEVATOR_LEAD_ID = 0;  // TODOL SET CAN ID BEFORE TESTING.
     public static final int ELEVATOR_FOLLOWER_ID = 1; // TODO: SET CAN ID BEFORE TESTING.
-
-    public static final double ELEVATOR_DEFAULT = 0.0; //TODO: Update heights
-    public static final double ELEVATOR_LEVEL_ONE = 0.0; // why even consider the tray? can we score with the elevator?
-    public static final double ELEVATOR_LEVEL_TWO = 0.70; //70 cm
-    public static final double ELEVATOR_LEVEL_THREE = 1.18; //118 cm
-    public static final double ELEVATOR_LEVEL_FOUR = 1.89; //189 cm
+    // These are all meters.
+    public static final double ELEVATOR_LEVEL_ONE = 0.0; // Assume 0 is the height of the EndEffect at elevator bottom.
+    public static final double ELEVATOR_LEVEL_TWO = 0.147; // Offset from L1 to L2
+    public static final double ELEVATOR_LEVEL_THREE = 0.147 + 0.385; // Offset from L1 to L3
+    public static final double ELEVATOR_LEVEL_FOUR = 0.147 + 0.385 + 0.674; // Offset from L1 to L4
     public static final double ELEVATOR_P = 0.015;
     public static final double ELEVATOR_I = 0.0;
     public static final double ELEVATOR_D = 0.0;
-    public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
+    public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.2;
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
     public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
