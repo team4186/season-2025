@@ -55,6 +55,7 @@ public final class Constants {
   public static final class AlgaeProcessorConstants {
     public static final double ALGAE_PROCESSOR_SWING_VOLTAGE = 5.0;
     public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 5.0;
+    // TODO: CHANGE BEFORE TESTING
     public static final int lunaChannel = 0;
     public static final double ALGAEPROCESSOR_P = 0.05;
     public static final double ALGAEPROCESSOR_I = 0.0;
@@ -63,7 +64,6 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-    public static final int sparkID = 0; //TODO: placeHolder
     //Climb voltage requires much higher values than move voltage.
     public static final int CLIMBER_CLIMB_VOLTAGE = 0; //TODO: placeHolder
     public static final int CLIMBER_MOVE_VOLTAGE = 0; //TODO: placeHolder
@@ -100,6 +100,10 @@ public final class Constants {
     public static final int ELEVATOR_TOP_LIMIT_ID = 0;
     public static final int ELEVATOR_ENCODER_ID = 0;
 
+    public static final double ELEVATOR_RAMP_RATE = 5;
+    public static final double ELEVATOR_MAX_VELOCITY = 4.0;
+    public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
+
     public static final double ELEVATOR_DEFAULT = 0.0; //TODO: Update heights
     public static final double ELEVATOR_LEVEL_ONE = 0.0; // why even consider the tray? can we score with the elevator?
     public static final double ELEVATOR_LEVEL_TWO = 0.70; //70 cm
@@ -108,28 +112,20 @@ public final class Constants {
     public static final double ELEVATOR_P = 0.015;
     public static final double ELEVATOR_I = 0.0;
     public static final double ELEVATOR_D = 0.0;
+
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
     public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
+
+    // TODO: Update values
+    public static final double ELEVATOR_KG = 0.0;
+    public static final double ELEVATOR_KA = 0.0;
+    public static final double ELEVATOR_KV = 0.0;
   }
+  
+public static final class ElevatorYAGSLConstants {
 
-
-  public static final class EndEffectorConstants {
-    public static final int END_EFFECTOR_BEAM_BREAK = 0; //TODO: placeHolder
-    public static final double END_EFFECTOR_SPEED = 1.0; // TODO: change speed
-  }
-
-
-  public static final class VisionConstants {
-    // Update to 2025
-    public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
-    // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
-    public final double MAXIMUM_AMBIGUITY = 0.25;
-  }
-
-
-  public static final class ElevatorYAGSLConstants {
     public static final double ELEVATOR_P = 5;
     public static final double ELEVATOR_I = 0;
     public static final double ELEVATOR_D = 0;
@@ -145,5 +141,20 @@ public final class Constants {
     public static final double ELEVATOR_DRUM_RADIUS = 0;
     public static final double ELEVATOR_MIN_HEIGHT_METERS = 5;
     public static final double ELEVATOR_MAX_HEIGHT_METERS = 0;
+  }
+
+  public static final class EndEffectorConstants {
+    public static final int END_EFFECTOR_BEAM_BREAK = 0; //TODO: placeHolder
+
+    public static final double END_EFFECTOR_EJECT_SPEED = 1.0; // TODO: change speed
+    public static final double END_EFFECTOR_INTAKE_SPEED = 0.5;
+  }
+
+  
+  public static final class VisionConstants {
+    // Update to 2025
+    public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
+    // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
+    public final double MAXIMUM_AMBIGUITY = 0.25;
   }
 }

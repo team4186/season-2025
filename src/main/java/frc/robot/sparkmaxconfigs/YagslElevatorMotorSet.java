@@ -12,7 +12,9 @@ public class YagslElevatorMotorSet {
     public final SparkMax lead;
 
 
-    public YagslElevatorMotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig) {
+    public YagslElevatorMotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig, boolean inverted) {
+        baseConfig.inverted(inverted);
+
         lead.configure(
                 baseConfig,
                 SparkBase.ResetMode.kNoResetSafeParameters,
@@ -22,6 +24,7 @@ public class YagslElevatorMotorSet {
 
         followerConfig
                 .apply(baseConfig)
+                .inverted(!inverted)
                 .follow(lead);
 
         follower.configure(
