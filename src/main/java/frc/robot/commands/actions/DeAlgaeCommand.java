@@ -17,6 +17,7 @@ public class DeAlgaeCommand extends Command {
     private final DeAlgae deAlgae;
     private int timer = 0;
     private int exit_timer = 0;
+    private int button_count = 0;
 
     public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
@@ -27,7 +28,11 @@ public class DeAlgaeCommand extends Command {
      * The initial subroutine of a command.  Called once when the command is initially scheduled.
      */
     @Override
-    public void initialize() {}
+    public void initialize() {
+        if(button_count == 1){
+            button_count++;
+        };
+    }
 
 
     /**
@@ -37,7 +42,10 @@ public class DeAlgaeCommand extends Command {
     @Override
     public void execute() {
         // moves arm up and down while rolling possible algae until interrupted
-        if(deAlgae.deploy()){
+        if(button_count % 2 == 0 && deAlgae.deploy()) {
+            button_count++;
+        }
+        else{
             if(timer < 20){
                 deAlgae.runMotor_Up();
             }
@@ -45,12 +53,10 @@ public class DeAlgaeCommand extends Command {
                 deAlgae.runMotor_Down();
             }
             else if(deAlgae.deploy()){
-                timer = 0;
+               timer = 0;
             }
-            timer++;
+            exit_timer++;
         }
-
-        exit_timer++;
     }
 
 
@@ -81,6 +87,7 @@ public class DeAlgaeCommand extends Command {
     @Override
     public void end(boolean interrupted)
     {
+        button_count = 0;
         deAlgae.stop();
         deAlgae.reset();
     }
