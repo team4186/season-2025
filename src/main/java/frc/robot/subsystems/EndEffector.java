@@ -11,22 +11,18 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 
 public class EndEffector extends SubsystemBase {
     private final SingleMotor endEffectorMotor;
-    //private RelativeEncoder encoder;
-    // private DigitalInput luna;
+    private final DigitalInput luna;
 
 
     public EndEffector(SingleMotor endEffectorMotor, DigitalInput luna){
-        // encoder = endEffectorMotor.motor.getEncoder();
-        // this.luna = luna;
+        this.luna = luna;
         this.endEffectorMotor = endEffectorMotor;
     }
 
-    public EndEffector(SingleMotor endEffectorMotor){
-        this.endEffectorMotor = endEffectorMotor;
-    }
 
+    // TODO: Update logic when luna is installed
     public boolean hasGamePiece(){
-        return true;
+        return false;
         // return luna.get();
     }
 

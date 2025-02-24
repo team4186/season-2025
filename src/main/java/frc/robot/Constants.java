@@ -116,10 +116,10 @@ public final class Constants {
     public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
     public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
-//    public static final double ELEVATOR_KG = ;
-//    public static final double ELEVATOR_KA = ;
-//    public static final double ELEVATOR_KV = ;
-
+    // TODO: Update values
+    public static final double ELEVATOR_KG = 0.0;
+    public static final double ELEVATOR_KA = 0.0;
+    public static final double ELEVATOR_KV = 0.0;
   }
   
 public static final class ElevatorYAGSLConstants {

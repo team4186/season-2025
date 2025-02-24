@@ -48,63 +48,65 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
-
-
-  // TODO: Implement Components
-  // private final Climber climber = new Climber();
-  // private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
+   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
+           new DigitalInput(Constants.AlgaeProcessorConstants.lunaChannel),
+          motorComponents.algaeProcessorMotor,
+          motorComponents.algaeProcessorAngleMotor,
+          new PIDController(
+                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_P,
+                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_I,
+                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_D)
+   );
 
   private final EndEffector endEffector = new EndEffector(
-          motorComponents.endEffectorMotor
-          //new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
+          motorComponents.endEffectorMotor,
+          new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
   );
 
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
-//  private final Elevator elevator = new Elevator(
-//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
-//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
-//          motorComponents.elevatorMotors,
-//          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
-//          new Encoder(
-//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-//                  false,
-//                  CounterBase.EncodingType.k1X),
-//          new PIDController(
-//                  Constants.ElevatorConstants.ELEVATOR_P,
-//                  Constants.ElevatorConstants.ELEVATOR_I,
-//                  Constants.ElevatorConstants.ELEVATOR_D
-////                  new TrapezoidProfile.Constraints(
-////                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-////                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
+  private final Elevator elevator = new Elevator(
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+          motorComponents.elevatorMotors,
+          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
+          new Encoder(
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  false,
+                  CounterBase.EncodingType.k1X),
+          new PIDController(
+                  Constants.ElevatorConstants.ELEVATOR_P,
+                  Constants.ElevatorConstants.ELEVATOR_I,
+                  Constants.ElevatorConstants.ELEVATOR_D),
+//                  new TrapezoidProfile.Constraints(
+//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
 //          ),
-//          new ElevatorFeedforward(
-//                  Constants.ElevatorConstants.ELEVATOR_KG,
-//                  Constants.ElevatorConstants.ELEVATOR_KV,
-//                  Constants.ElevatorConstants.ELEVATOR_KA)
-//  );
+          new ElevatorFeedforward(
+                  Constants.ElevatorConstants.ELEVATOR_KG,
+                  Constants.ElevatorConstants.ELEVATOR_KV,
+                  Constants.ElevatorConstants.ELEVATOR_KA)
+  );
 
+  private final Climber climber = new Climber(
+          Components.getInstance().climberMotor,
+          new DigitalInput(Constants.ClimberConstants.TFChannel),
+          new PIDController(
+                  Constants.ClimberConstants.PROPORTIONAL,
+                  Constants.ClimberConstants.INTEGRAL,
+                  Constants.ClimberConstants.DERIVATIVE),
+          Constants.ClimberConstants.TARGETANGLE,
+          Constants.ClimberConstants.MAXVOLTS,
+          Constants.ClimberConstants.MINVOLTS
+  );
 
-//  private final Climber climber = new Climber(
-//          Components.getInstance().climberMotor,
-//          new DigitalInput(Constants.ClimberConstants.TFChannel),
-//          new PIDController(
-//                  Constants.ClimberConstants.PROPORTIONAL,
-//                  Constants.ClimberConstants.INTEGRAL,
-//                  Constants.ClimberConstants.DERIVATIVE),
-//          Constants.ClimberConstants.TARGETANGLE,
-//          Constants.ClimberConstants.MAXVOLTS,
-//          Constants.ClimberConstants.MINVOLTS
-//  );
-//
-
-//  private final DeAlgae deAlgae = new DeAlgae(
-//          motorComponents.deAlgaeWheelMotor,
-//          motorComponents.deAlgaeAngleMotor,
-//          new PIDController(
-//                  Constants.DeAlgaeConstants.DE_ALGAE_P,
-//                  Constants.DeAlgaeConstants.DE_ALGAE_I,
-//                  Constants.DeAlgaeConstants.DE_ALGAE_D));
+  private final DeAlgae deAlgae = new DeAlgae(
+          motorComponents.deAlgaeWheelMotor,
+          motorComponents.deAlgaeAngleMotor,
+          new PIDController(
+                  Constants.DeAlgaeConstants.DE_ALGAE_P,
+                  Constants.DeAlgaeConstants.DE_ALGAE_I,
+                  Constants.DeAlgaeConstants.DE_ALGAE_D));
 
   // TODO: Uncomment below later.
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
