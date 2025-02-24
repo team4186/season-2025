@@ -74,7 +74,7 @@ public class DeAlgaeCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return exit_timer >= 500;}
+    public boolean isFinished() {return exit_timer >= 500 || button_count > 1;}
 
 
     /**
