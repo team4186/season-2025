@@ -275,6 +275,9 @@ public class RobotContainer {
       joystick.button(8).onFalse(Commands.runOnce(deAlgae::stop));
       joystick.button(9).onFalse(Commands.runOnce(deAlgae::stop));
       joystick.button(10).onFalse(Commands.runOnce(deAlgae::stop));
+
+      joystick.button(3).onTrue(deAlgaeCommand);
+      joystick.button(3).onTrue(Commands.runOnce(deAlgaeCommand::button_detect));
     }
   }
 
@@ -301,5 +304,6 @@ public class RobotContainer {
 
   public void displaySubsystemSuffleboard(){
     SmartDashboard.putNumber("DeAlgae Angle:", deAlgae.getCurrentAngle());
+    SmartDashboard.putNumber("DeAlgae Speed:", deAlgae.getCurrent_Speed());
   }
 }

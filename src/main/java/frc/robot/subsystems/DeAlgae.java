@@ -16,7 +16,7 @@ public class DeAlgae extends SubsystemBase {
     private final RelativeEncoder angleEncoder;
     private final PIDController anglePid;
     private static double current_angle;
-    private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle, flatAngle, wheelMaxSpeed, wheelMinSpeed;
+    private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle, flatAngle, wheelMaxSpeed, angleSpeed;
 
 
     public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid){
@@ -35,7 +35,6 @@ public class DeAlgae extends SubsystemBase {
         flatAngle = Constants.DeAlgaeConstants.DE_ALGAE_FLAT_ANGLE;
 
         wheelMaxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_WHEEL_MAX_SPEED;
-        wheelMinSpeed = Constants.DeAlgaeConstants.DE_ALGAE_WHEEL_MIN_SPEED;
     }
 
 
@@ -46,18 +45,22 @@ public class DeAlgae extends SubsystemBase {
         if (current_angle < maxAngle) {
 
             double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
-            angleMotor.accept(-pidOutput);
+            angleMotor.accept(pidOutput);
         }
         else {
             angleMotor.stop();
         }
-        SmartDashboard.putNumber("AngleSpeed:", angleMotor.motor.get());
-        // wheelMotor.accept(wheelMaxSpeed);
+        wheelMotor.accept(-wheelMaxSpeed);
     }
 
     public double getCurrentAngle() {
         current_angle = Math.toDegrees(Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
         return current_angle;
+    }
+
+    public double getCurrent_Speed(){
+        angleSpeed = angleMotor.motor.get();
+        return angleSpeed;
     }
 
     // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
@@ -72,7 +75,7 @@ public class DeAlgae extends SubsystemBase {
             angleMotor.stop();
         }
 
-        // wheelMotor.accept(-wheelMaxSpeed);
+        wheelMotor.accept(wheelMaxSpeed);
     }
 
 
@@ -101,7 +104,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if (current_angle >= flatAngle - 2.0 && current_angle <= flatAngle + 2.0) {
+        if (current_angle >= flatAngle - 10.0 && current_angle <= flatAngle + 5.0) {
             angleMotor.stop();
             return true;
 
@@ -163,5 +166,9 @@ public class DeAlgae extends SubsystemBase {
         }
 
         angleMotor.stop();
+    }
+
+    public void invertWheel(){
+        wheelMotor.accept(-wheelMotor.motor.get());
     }
 }
