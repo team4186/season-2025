@@ -102,7 +102,7 @@ public final class Components {
     // TODO: change CAN IDs
     public static final class EndEffectorMotor {
         public final SingleMotor endEffectorMotor = new SingleMotor(
-                new SparkMax(Constants.EndEffectorConstants.CANID, 
+                new SparkMax(Constants.EndEffectorConstants.EE_SPARKMAX_ID,
                 SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig);
     }
