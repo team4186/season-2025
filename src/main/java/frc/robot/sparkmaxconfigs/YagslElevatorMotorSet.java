@@ -36,7 +36,7 @@ public class YagslElevatorMotorSet {
     }
 
 
-    public RelativeEncoder getLeadEncoder() {
+    public RelativeEncoder getRelativeEncoder() {
         return this.lead.getEncoder();
     }
 

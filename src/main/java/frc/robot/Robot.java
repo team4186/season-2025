@@ -17,35 +17,35 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
 
-  private static Robot instance;
-  private Command autonomousCommand;
-  private RobotContainer robotContainer;
-  private Timer disabledTimer;
+    private static Robot instance;
+    private Command autonomousCommand;
+    private RobotContainer robotContainer;
+    private Timer disabledTimer;
 
 
-  public Robot() { instance = this; }
+    public Robot() { instance = this; }
 
 
-  public static Robot getInstance() { return instance; }
+    public static Robot getInstance() { return instance; }
 
 
-  /**
-   * This function is run when the robot is first started up and should be used for any initialization code.
-   */
-  @Override
-  public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    robotContainer = new RobotContainer();
+    /**
+     * This function is run when the robot is first started up and should be used for any initialization code.
+     */
+    @Override
+    public void robotInit() {
+        // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+        // autonomous chooser on the dashboard.
+        robotContainer = new RobotContainer();
 
-    // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
-    // immediately when disabled, but then also let it be pushed more 
-    disabledTimer = new Timer();
+        // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
+        // immediately when disabled, but then also let it be pushed more
+        disabledTimer = new Timer();
 
-    if (isSimulation()) {
-      DriverStation.silenceJoystickConnectionWarning(true);
+        if (isSimulation()) {
+            DriverStation.silenceJoystickConnectionWarning(true);
+        }
     }
-  }
 
 
   /**
@@ -67,94 +67,93 @@ public class Robot extends TimedRobot {
   }
 
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   */
-  @Override
-  public void disabledInit() {
-    robotContainer.setMotorBrake(true);
-    disabledTimer.reset();
-    disabledTimer.start();
-  }
-
-
-  @Override
-  public void disabledPeriodic() {
-    if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME)) {
-      robotContainer.setMotorBrake(false);
-      disabledTimer.stop();
+    /**
+     * This function is called once each time the robot enters Disabled mode.
+     */
+    @Override
+    public void disabledInit() {
+        robotContainer.setMotorBrake(true);
+        disabledTimer.reset();
+        disabledTimer.start();
     }
-  }
 
 
-  /**
-   * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
-   */
-  @Override
-  public void autonomousInit() {
-    robotContainer.setMotorBrake(true);
-    autonomousCommand = robotContainer.getAutonomousCommand();
-
-    // schedule the autonomous command (example)
-    if (autonomousCommand != null) {
-      autonomousCommand.schedule();
+    @Override
+    public void disabledPeriodic() {
+        if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME)) {
+            robotContainer.setMotorBrake(false);
+            disabledTimer.stop();
+        }
     }
-  }
 
 
-  /**
-   * This function is called periodically during autonomous.
-   */
-  @Override
-  public void autonomousPeriodic() { }
+    /**
+     * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
+     */
+    @Override
+    public void autonomousInit() {
+        robotContainer.setMotorBrake(true);
+        autonomousCommand = robotContainer.getAutonomousCommand();
 
-
-  @Override
-  public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (autonomousCommand != null) {
-      autonomousCommand.cancel();
-    } else {
-      CommandScheduler.getInstance().cancelAll();
+        // schedule the autonomous command (example)
+        if (autonomousCommand != null) {
+            autonomousCommand.schedule();
+        }
     }
-  }
 
 
-  /**
-   * This function is called periodically during operator control.
-   */
-  @Override
-  public void teleopPeriodic() {
-  }
+    /**
+     * This function is called periodically during autonomous.
+     */
+    @Override
+    public void autonomousPeriodic() { }
 
 
-  @Override
-  public void testInit() {
-    // Cancels all running commands at the start of test mode.
-    CommandScheduler.getInstance().cancelAll();
-  }
+    @Override
+    public void teleopInit() {
+        // This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        if (autonomousCommand != null) {
+            autonomousCommand.cancel();
+        } else {
+            CommandScheduler.getInstance().cancelAll();
+        }
+    }
 
 
-  /**
-   * This function is called periodically during test mode.
-   */
-  @Override
-  public void testPeriodic() { }
+    /**
+     * This function is called periodically during operator control.
+     */
+    @Override
+    public void teleopPeriodic() {}
 
 
-  /**
-   * This function is called once when the robot is first started up.
-   */
-  @Override
-  public void simulationInit() { }
+    @Override
+    public void testInit() {
+      // Cancels all running commands at the start of test mode.
+        CommandScheduler.getInstance().cancelAll();
+    }
 
 
-  /**
-   * This function is called periodically whilst in simulation.
-   */
-  @Override
-  public void simulationPeriodic() { }
+    /**
+     * This function is called periodically during test mode.
+     */
+    @Override
+    public void testPeriodic() { }
+
+
+    /**
+     * This function is called once when the robot is first started up.
+     */
+    @Override
+    public void simulationInit() { }
+
+
+    /**
+     * This function is called periodically whilst in simulation.
+     */
+    @Override
+    public void simulationPeriodic() { }
 }

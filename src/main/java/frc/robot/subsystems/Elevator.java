@@ -143,7 +143,6 @@ public class Elevator extends SubsystemBase{
     }
 
 
-
     public void stopMotor() {
         elevatorMotors.stop();
         pid.reset();

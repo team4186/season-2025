@@ -22,7 +22,7 @@ public class SingleMotor {
     }
 
 
-    public RelativeEncoder getEncoder() {
+    public RelativeEncoder getRelativeEncoder() {
         return this.motor.getEncoder();
     }
 

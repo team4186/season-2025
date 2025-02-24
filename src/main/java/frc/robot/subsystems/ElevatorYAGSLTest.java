@@ -18,8 +18,8 @@ import frc.robot.Units;
 
 public class ElevatorYAGSLTest extends SubsystemBase {
 //    private DCMotor elevatorGearbox = DCMotor.getNEO(2);
-//    private final YagslElevatorMotorSet elevatorMotorsYagsl = Components.getInstance().elevatorMotorsYagsl; //we are using multiple motors
-//    private final RelativeEncoder encoder = elevatorMotorsYagsl.getLeadEncoder();
+//    private final YagslElevatorMotorSet elevatorMotorsYagsl = Components.getInstance().elevatorMotors; //we are using multiple motors
+//    private final RelativeEncoder encoder = elevatorMotorsYagsl.getRelativeEncoder();
 //    private final ProfiledPIDController pidController =
 //            new ProfiledPIDController(
 //                    Constants.ElevatorYAGSLConstants.ELEVATOR_P,
