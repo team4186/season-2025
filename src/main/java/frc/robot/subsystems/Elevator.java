@@ -4,13 +4,14 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import frc.robot.Units;
 
 import java.util.InputMismatchException;
 
-public class Elevator {
+public class Elevator extends SubsystemBase{
 
     // Motor, Encoder, and Limit Switches variables
     private final ElevatorMotorSet elevatorMotors;
