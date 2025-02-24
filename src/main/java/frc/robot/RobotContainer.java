@@ -13,13 +13,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.actions.AlignToTargetCommand;
+//import frc.robot.commands.actions.AlignToTargetCommand;
 import frc.robot.commands.actions.DeAlgaeCommand;
 import frc.robot.commands.actions.ElevatorCommand;
 import frc.robot.commands.actions.EndEffectorCommand;
@@ -100,6 +101,7 @@ public class RobotContainer {
           Constants.ClimberConstants.MINVOLTS
   );
 
+
   private final DeAlgae deAlgae = new DeAlgae(
           motorComponents.deAlgaeWheelMotor,
           motorComponents.deAlgaeAngleMotor,
@@ -112,9 +114,11 @@ public class RobotContainer {
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
 
 
+
   /**
    * Commands are implemented here...
    */
+
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
           visionSubsystem,
           drivebase,
@@ -124,6 +128,7 @@ public class RobotContainer {
 
 
   EndEffectorCommand endEffectorCommand = new EndEffectorCommand(endEffector);
+
 
 /**
  * Elevator commands
@@ -245,7 +250,7 @@ public class RobotContainer {
       joystick.button(6).onTrue(Commands.none());
 
       // Example Align Command Object
-      joystick.button(10).whileTrue(alignCommand);
+      //joystick.button(10).whileTrue(alignCommand);
       // AlgaeProcessor Tests
       /**
        * Extend
@@ -273,7 +278,9 @@ public class RobotContainer {
       Is interrupted when let go and automatically moves back to default position
       and stops rolling motor.
       */
+
       // joystick.button(7).whileTrue(deAlgaeCommand);
+
 
       // Elevator Tests
       /**
@@ -290,14 +297,29 @@ public class RobotContainer {
     } else {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      joystick.button(9).whileTrue(
-              drivebase.driveToPose(
-                      new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      //joystick.button(9).whileTrue(
+              //drivebase.driveToPose(
+               //       new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+      //joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
 
+// Algae Command testing
+//       joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly()); //replaced deploy with manDeploy
+//       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor_Up).repeatedly());
+//       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly());
+//       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly()); // replaced reset with manReset
+//       joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
+//       joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
+//       joystick.button(7).onFalse(Commands.runOnce(deAlgae::stop));
+//       joystick.button(8).onFalse(Commands.runOnce(deAlgae::stop));
+//       joystick.button(9).onFalse(Commands.runOnce(deAlgae::stop));
+//       joystick.button(10).onFalse(Commands.runOnce(deAlgae::stop));
+
+//       joystick.button(3).onTrue(deAlgaeCommand);
+//       joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
       joystick.trigger().whileTrue(endEffectorCommand);
+
     }
   }
 
@@ -322,4 +344,9 @@ public class RobotContainer {
 
 
   public void setMotorBrake(boolean brake) { drivebase.setMotorBrake(brake); }
+
+  public void displaySubsystemSuffleboard(){
+    SmartDashboard.putNumber("DeAlgae Angle:", deAlgae.getCurrentAngle());
+    SmartDashboard.putNumber("DeAlgae Speed:", deAlgae.getCurrent_Speed());
+  }
 }

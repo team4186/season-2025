@@ -24,6 +24,12 @@ public final class DefaultMotorConfigs {
             .smartCurrentLimit(40)
             .openLoopRampRate(Constants.ElevatorConstants.ELEVATOR_RAMP_RATE);
 
+    public final SparkMaxConfig DeAlgaeConfig = (SparkMaxConfig) new SparkMaxConfig()
+            .apply(DefaultConfig)
+            .smartCurrentLimit(50)
+            .idleMode(SparkBaseConfig.IdleMode.kBrake)
+            .inverted(true);
+
 
     private DefaultMotorConfigs(){ }
 

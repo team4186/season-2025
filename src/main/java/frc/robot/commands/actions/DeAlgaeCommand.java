@@ -15,8 +15,10 @@ public class DeAlgaeCommand extends Command {
     * */
 
     private final DeAlgae deAlgae;
-    private int timer = 0;
+    //private int timer = 0;
     private int exit_timer = 0;
+    private int button_count = 0;
+    private boolean isfinished = false;
 
     public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
@@ -37,20 +39,35 @@ public class DeAlgaeCommand extends Command {
     @Override
     public void execute() {
         // moves arm up and down while rolling possible algae until interrupted
-        if(deAlgae.deploy()){
-            if(timer < 20){
-                deAlgae.runMotor_Up();
-            }
-            else if(timer < 50){
-                deAlgae.runMotor_Down();
-            }
-            else if(deAlgae.deploy()){
-                timer = 0;
-            }
-            timer++;
+
+        if (button_count == 2 ) {
+            deAlgae.invertWheel();
+        }
+        else if (button_count == 3) {
+            deAlgae.invertWheel();
+        }
+        else if(deAlgae.reset()){
+            isfinished = true;
         }
 
+        deAlgae.deploy();
         exit_timer++;
+
+
+// TODO: floppy boy
+//        else if (button_count == 1){
+//            if(timer < 20){
+//                deAlgae.runMotor_Up();
+//            }
+//            else if(timer < 50){
+//                deAlgae.runMotor_Down();
+//            }
+//            else if(deAlgae.deploy()){
+//               timer = 0;
+//            }
+//            timer++;
+//            exit_timer++;
+//        }
     }
 
 
@@ -68,7 +85,7 @@ public class DeAlgaeCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return exit_timer >= 500;}
+    public boolean isFinished() {return exit_timer >= 500 || isfinished;}
 
 
     /**
@@ -81,7 +98,12 @@ public class DeAlgaeCommand extends Command {
     @Override
     public void end(boolean interrupted)
     {
+        button_count = 0;
+        exit_timer = 0;
         deAlgae.stop();
-        deAlgae.reset();
+    }
+
+    public void button_detect(){
+        button_count++;
     }
 }
