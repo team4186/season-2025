@@ -31,7 +31,7 @@ public class DeAlgaeCommand extends Command {
     public void initialize() {
         if(button_count == 1){
             button_count++;
-        };
+        }
     }
 
 
