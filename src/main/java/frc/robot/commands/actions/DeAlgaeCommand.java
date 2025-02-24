@@ -46,7 +46,7 @@ public class DeAlgaeCommand extends Command {
         else if (button_count == 3) {
             deAlgae.invertWheel();
         }
-        else{
+        else if(deAlgae.reset()){
             isfinished = true;
         }
 
@@ -85,7 +85,7 @@ public class DeAlgaeCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return exit_timer >= 500 || button_count > 2 || isfinished;}
+    public boolean isFinished() {return exit_timer >= 500 || isfinished;}
 
 
     /**
@@ -101,7 +101,6 @@ public class DeAlgaeCommand extends Command {
         button_count = 0;
         exit_timer = 0;
         deAlgae.stop();
-        deAlgae.reset();
     }
 
     public void button_detect(){
