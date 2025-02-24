@@ -13,19 +13,19 @@ public final class Components {
 
     private static Components instance = null;
 
-    public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeWheelMotor;
-    public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
-
-    public ElevatorMotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
-
-    public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
+//    public SingleMotor algaeProcessorMotor = new AlgaeProcessorMotor().algaeWheelMotor;
+//    public SingleMotor algaeProcessorAngleMotor = new AlgaeProcessorMotor().algaeProcessorAngleMotor;
+//
+//    public ElevatorMotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
+//
+//    public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
 
     public SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
 
-    public SingleMotor climberMotor = new ClimberMotor().climberMotor;
+//    public SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
-    public SingleMotor deAlgaeWheelMotor = new DeAlgaeMotors().wheelMotor;
-    public SingleMotor deAlgaeAngleMotor = new DeAlgaeMotors().angleMotor;
+//    public SingleMotor deAlgaeWheelMotor = new DeAlgaeMotors().wheelMotor;
+//    public SingleMotor deAlgaeAngleMotor = new DeAlgaeMotors().angleMotor;
 
 
     // private Constructor

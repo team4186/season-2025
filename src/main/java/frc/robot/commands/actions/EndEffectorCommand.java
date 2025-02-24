@@ -12,6 +12,7 @@ public class EndEffectorCommand extends Command {
 
     public EndEffectorCommand(EndEffector endEffector) {
         this.endEffector = endEffector;
+        addRequirements( this.endEffector );
     }
 
 
@@ -28,21 +29,22 @@ public class EndEffectorCommand extends Command {
      */
     @Override
     public void execute() {
-        if(button_counter % 2 == 0){
-            if( endEffector.hasGamePiece() ){
-                button_counter++;
-            }
-        }
-        else{
-            if(eject_timer < 20){
-                endEffector.eject();
-            }
-            else{
-                isFinished = true;
-                eject_timer = 0;
-                button_counter++;
-            }
-        }
+        endEffector.intake();
+//        if(button_counter % 2 == 0){
+//            if( endEffector.hasGamePiece() ){
+//                button_counter++;
+//            }
+//        }
+//        else{
+//            if(eject_timer < 20){
+//                endEffector.eject();
+//            }
+//            else{
+//                isFinished = true;
+//                eject_timer = 0;
+//                button_counter++;
+//            }
+//        }
     }
 
 
@@ -71,5 +73,7 @@ public class EndEffectorCommand extends Command {
      * @param interrupted whether the command was interrupted/canceled
      */
     @Override
-    public void end(boolean interrupted) {}
+    public void end(boolean interrupted) {
+        endEffector.stop();
+    }
 }

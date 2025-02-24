@@ -58,6 +58,8 @@ public class LimeLightRunner {
 
 
     public double getDistance() {
+        // TODO: update after limelight is mounted for accurate reading
+        double mountedAngle = 0.0;
         double angleInRadians = Math.toRadians((mountedAngle + getTagYOffset()));
         double distance = 33.75 / tan(angleInRadians); // TODO: update mountedAngle and distance offset after mounting
 

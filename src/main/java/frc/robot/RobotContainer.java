@@ -22,6 +22,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.actions.AlignToTargetCommand;
 import frc.robot.commands.actions.DeAlgaeCommand;
 import frc.robot.commands.actions.ElevatorCommand;
+import frc.robot.commands.actions.EndEffectorCommand;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
@@ -49,59 +50,61 @@ public class RobotContainer {
 
 
 
-  //TODO: Implement Components
-  //private final Climber climber = new Climber();
-//  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
+  // TODO: Implement Components
+  // private final Climber climber = new Climber();
+  // private final AlgaeProcessor algaeProcessor = new AlgaeProcessor();
 
   private final EndEffector endEffector = new EndEffector(
-          motorComponents.endEffectorMotor,
-          new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
+          motorComponents.endEffectorMotor
+          //new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
   );
 
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
-  private final Elevator elevator = new Elevator(
-          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
-          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
-          motorComponents.elevatorMotors,
-          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
-          new Encoder(
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  false,
-                  CounterBase.EncodingType.k1X),
-          new PIDController(
-                  Constants.ElevatorConstants.ELEVATOR_P,
-                  Constants.ElevatorConstants.ELEVATOR_I,
-                  Constants.ElevatorConstants.ELEVATOR_D
-//                  new TrapezoidProfile.Constraints(
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
-          ),
-          new ElevatorFeedforward(
-                  Constants.ElevatorConstants.ELEVATOR_KG,
-                  Constants.ElevatorConstants.ELEVATOR_KV,
-                  Constants.ElevatorConstants.ELEVATOR_KA)
-  );
+//  private final Elevator elevator = new Elevator(
+//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+//          motorComponents.elevatorMotors,
+//          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
+//          new Encoder(
+//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+//                  false,
+//                  CounterBase.EncodingType.k1X),
+//          new PIDController(
+//                  Constants.ElevatorConstants.ELEVATOR_P,
+//                  Constants.ElevatorConstants.ELEVATOR_I,
+//                  Constants.ElevatorConstants.ELEVATOR_D
+////                  new TrapezoidProfile.Constraints(
+////                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+////                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
+//          ),
+//          new ElevatorFeedforward(
+//                  Constants.ElevatorConstants.ELEVATOR_KG,
+//                  Constants.ElevatorConstants.ELEVATOR_KV,
+//                  Constants.ElevatorConstants.ELEVATOR_KA)
+//  );
 
-  private final Climber climber = new Climber(
-          Components.getInstance().climberMotor,
-          new DigitalInput(Constants.ClimberConstants.TFChannel),
-          new PIDController(
-                  Constants.ClimberConstants.PROPORTIONAL,
-                  Constants.ClimberConstants.INTEGRAL,
-                  Constants.ClimberConstants.DERIVATIVE),
-          Constants.ClimberConstants.TARGETANGLE,
-          Constants.ClimberConstants.MAXVOLTS,
-          Constants.ClimberConstants.MINVOLTS
-  );
 
-  private final DeAlgae deAlgae = new DeAlgae(
-          motorComponents.deAlgaeWheelMotor,
-          motorComponents.deAlgaeAngleMotor,
-          new PIDController(
-                  Constants.DeAlgaeConstants.DE_ALGAE_P,
-                  Constants.DeAlgaeConstants.DE_ALGAE_I,
-                  Constants.DeAlgaeConstants.DE_ALGAE_D));
+//  private final Climber climber = new Climber(
+//          Components.getInstance().climberMotor,
+//          new DigitalInput(Constants.ClimberConstants.TFChannel),
+//          new PIDController(
+//                  Constants.ClimberConstants.PROPORTIONAL,
+//                  Constants.ClimberConstants.INTEGRAL,
+//                  Constants.ClimberConstants.DERIVATIVE),
+//          Constants.ClimberConstants.TARGETANGLE,
+//          Constants.ClimberConstants.MAXVOLTS,
+//          Constants.ClimberConstants.MINVOLTS
+//  );
+//
+
+//  private final DeAlgae deAlgae = new DeAlgae(
+//          motorComponents.deAlgaeWheelMotor,
+//          motorComponents.deAlgaeAngleMotor,
+//          new PIDController(
+//                  Constants.DeAlgaeConstants.DE_ALGAE_P,
+//                  Constants.DeAlgaeConstants.DE_ALGAE_I,
+//                  Constants.DeAlgaeConstants.DE_ALGAE_D));
 
   // TODO: Uncomment below later.
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
@@ -117,25 +120,28 @@ public class RobotContainer {
           new Translation2d(0.0,0.0)
   );
 
+
+  EndEffectorCommand endEffectorCommand = new EndEffectorCommand(endEffector);
+
 /**
  * Elevator commands
  */
-  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
-        elevator, 
-        1);
-
-  ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator, 
-  2);
-
-  ElevatorCommand elevatorCommandL3 = new ElevatorCommand(
-          elevator, // elevatorsubsystem
-          3 // level
-          );
-
-  ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator, 
-  4);
-
-  DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
+//  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
+//        elevator,
+//        1);
+//
+//  ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator,
+//  2);
+//
+//  ElevatorCommand elevatorCommandL3 = new ElevatorCommand(
+//          elevator, // elevatorsubsystem
+//          3 // level
+//          );
+//
+//  ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator,
+//  4);
+//
+//  DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
 
 
 //  // Conditions to be met: In front of target april tag
@@ -264,7 +270,7 @@ public class RobotContainer {
       Is interrupted when let go and automatically moves back to default position
       and stops rolling motor.
       */
-      joystick.button(7).whileTrue(deAlgaeCommand);
+      // joystick.button(7).whileTrue(deAlgaeCommand);
 
       // Elevator Tests
       /**
@@ -276,6 +282,8 @@ public class RobotContainer {
       /**
        * Intake / Eject Coral
        */
+
+      joystick.trigger().whileTrue(endEffectorCommand);
 
 
     } else {
