@@ -30,7 +30,7 @@ public final class Components {
 
 
     // private Constructor
-    private Components() {}
+    private Components() { }
 
 
     public static Components getInstance(){
@@ -49,7 +49,7 @@ public final class Components {
 
         public SingleMotor algaeProcessorAngleMotor = new SingleMotor(
                 new SparkMax(14, SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().HoldingConfig,
+                DefaultMotorConfigs.getInstance().HoldingBaseConfig,
                 false);
     }
 
@@ -80,7 +80,7 @@ public final class Components {
         public final ElevatorMotorSet elevatorMotors = new ElevatorMotorSet(
                 new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().DefaultConfig,
+                DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
                 false);
     }
 
@@ -89,7 +89,7 @@ public final class Components {
         public final YagslElevatorMotorSet elevatorMotorsYagsl = new YagslElevatorMotorSet(
                 new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().YagslElevatorConfig,
+                DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
                 false);
     }
 
