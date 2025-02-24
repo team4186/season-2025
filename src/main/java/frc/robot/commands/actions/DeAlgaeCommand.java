@@ -39,10 +39,8 @@ public class DeAlgaeCommand extends Command {
     @Override
     public void execute() {
         // moves arm up and down while rolling possible algae until interrupted
-        if(button_count == 0 && deAlgae.deploy()) {
-            button_count++;
-        }
-        else if (button_count == 2 ) {
+
+        if (button_count == 2 ) {
             deAlgae.invertWheel();
         }
         else if (button_count == 3) {
@@ -51,6 +49,8 @@ public class DeAlgaeCommand extends Command {
         else{
             isfinished = true;
         }
+
+        deAlgae.deploy();
         exit_timer++;
 
 
