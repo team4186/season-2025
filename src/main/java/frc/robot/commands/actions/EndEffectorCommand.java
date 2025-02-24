@@ -1,27 +1,18 @@
 package frc.robot.commands.actions;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.DeAlgae;
-import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.EndEffector;
 
-public class DeAlgaeCommands extends Command {
-
-    //TODO: deAlgae commands config buttons later
-
-    /* Intended Usage:
-    * Run with command while being held, alternate directions for 2 seconds in alternating directions.
-    *
-    * isFinished -> N/A (NOTE: If we set timer )
-    * Interrupted -> Send reset command, stop motor, ...
-    * */
-
-    private final DeAlgae deAlgae;
-    private int timer = 0;
+public class EndEffectorCommand extends Command {
+    private final EndEffector endEffector;
     private boolean isFinished = false;
+    private static int button_counter;
+    private static int eject_timer;
 
-    public DeAlgaeCommands(DeAlgae deAlgae) {
-        this.deAlgae = deAlgae;
+
+
+    public EndEffectorCommand(EndEffector endEffector) {
+        this.endEffector = endEffector;
+        addRequirements( this.endEffector );
     }
 
 
@@ -38,25 +29,22 @@ public class DeAlgaeCommands extends Command {
      */
     @Override
     public void execute() {
-        /*TODO: first press sticks out arm
-            second press makes arm go up and down while spinning motor
-        */
-
-        if(deAlgae.deploy() && !isFinished){
-            if(timer < 20){
-                deAlgae.runMotor_Up();
-            }
-
-            else if(timer < 50){
-                deAlgae.runMotor_Down();
-            }
-            else {
-                if(deAlgae.reset()){
-                    isFinished = true;
-                }
-            }
-            timer++;
-        }
+        endEffector.eject();
+//        if(button_counter % 2 == 0){
+//            if( endEffector.hasGamePiece() ){
+//                button_counter++;
+//            }
+//        }
+//        else{
+//            if(eject_timer < 20){
+//                endEffector.eject();
+//            }
+//            else{
+//                isFinished = true;
+//                eject_timer = 0;
+//                button_counter++;
+//            }
+//        }
     }
 
 
@@ -74,10 +62,7 @@ public class DeAlgaeCommands extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished()
-    {
-        return isFinished;
-    }
+    public boolean isFinished() {return isFinished;}
 
 
     /**
@@ -88,8 +73,7 @@ public class DeAlgaeCommands extends Command {
      * @param interrupted whether the command was interrupted/canceled
      */
     @Override
-    public void end(boolean interrupted)
-    {
-        deAlgae.reset();
+    public void end(boolean interrupted) {
+        endEffector.stop();
     }
 }

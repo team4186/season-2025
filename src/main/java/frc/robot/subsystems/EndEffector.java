@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,45 +12,45 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 
 public class EndEffector extends SubsystemBase {
     private final SingleMotor endEffectorMotor;
-    //private RelativeEncoder encoder;
-    private DigitalInput luna;
+    private final DigitalInput luna;
 
 
     public EndEffector(SingleMotor endEffectorMotor, DigitalInput luna){
-        //encoder = endEffectorMotor.motor.getEncoder();
-        luna = this.luna;
+        this.luna = luna;
         this.endEffectorMotor = endEffectorMotor;
     }
 
 
-    public Command intake(){
+    // TODO: Update logic when luna is installed
+    public boolean hasGamePiece(){
+        return false;
+        // return luna.get();
+    }
+
+
+    public void intake(){
         try {
-            if (!luna.get()) {
-                endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_SPEED);
-            } else {
+            if ( hasGamePiece() ) {
                 endEffectorMotor.stop();
+                return;
             }
+
+            endEffectorMotor.accept( Constants.EndEffectorConstants.END_EFFECTOR_INTAKE_SPEED );
 
         } catch (IllegalStateException e) {
             endEffectorMotor.stop();
             String msg = "EndEffector Beambreak error: " + e;
             System.out.println(msg);
         }
-
-        return null;
     }
 
 
-    public Command eject() {
-        endEffectorMotor.accept(-Constants.EndEffectorConstants.END_EFFECTOR_SPEED);
-
-        return null;
+    public void eject() {
+        endEffectorMotor.accept( Constants.EndEffectorConstants.END_EFFECTOR_EJECT_SPEED );
     }
 
 
-    public Command stop(){
+    public void stop(){
         endEffectorMotor.stop();
-
-        return null;
     }
 }
