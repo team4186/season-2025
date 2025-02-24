@@ -10,7 +10,9 @@ public class SingleMotor {
     public final SparkMax motor;
 
 
-    public SingleMotor(SparkMax motor, SparkBaseConfig baseConfig){
+    public SingleMotor(SparkMax motor, SparkBaseConfig baseConfig, boolean inverse){
+        baseConfig.inverted(inverse);
+
         motor.configure(
                 baseConfig,
                 SparkBase.ResetMode.kResetSafeParameters,

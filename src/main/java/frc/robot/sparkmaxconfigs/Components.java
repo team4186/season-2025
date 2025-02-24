@@ -45,12 +45,14 @@ public final class Components {
         public SingleMotor algaeWheelMotor = new SingleMotor(
                 new SparkMax(Constants.AlgaeProcessorConstants.WheelCANID,
                 SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DefaultConfig);
+                DefaultMotorConfigs.getInstance().DefaultConfig,
+                false);
 
         public SingleMotor algaeProcessorAngleMotor = new SingleMotor(
                 new SparkMax(Constants.AlgaeProcessorConstants.AngleCANID,
                 SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().HoldingConfig);
+                DefaultMotorConfigs.getInstance().HoldingConfig,
+                false);
     }
 
     // TODO: Set proper CAN ID in Constants.
@@ -58,7 +60,8 @@ public final class Components {
         public SingleMotor climberMotor = new SingleMotor(
                 new SparkMax(Constants.ClimberConstants.sparkID,
                 SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DefaultConfig);
+                DefaultMotorConfigs.getInstance().DefaultConfig,
+                false);
     }
 
     // TODO: Set proper CAN ID in Constants.
@@ -66,12 +69,14 @@ public final class Components {
         public SingleMotor wheelMotor = new SingleMotor(
                 new SparkMax(Constants.DeAlgaeConstants.WheelCANID,
                 SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DefaultConfig);
+                DefaultMotorConfigs.getInstance().DefaultConfig,
+                false);
 
         public SingleMotor angleMotor = new SingleMotor(
                 new SparkMax(Constants.DeAlgaeConstants.AngleCANID,
                 SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DefaultConfig);
+                DefaultMotorConfigs.getInstance().DefaultConfig,
+                false);
     }
 
 
@@ -102,8 +107,10 @@ public final class Components {
     // TODO: change CAN IDs
     public static final class EndEffectorMotor {
         public final SingleMotor endEffectorMotor = new SingleMotor(
-                new SparkMax(Constants.EndEffectorConstants.EE_SPARKMAX_ID,
+                // new SparkMax(Constants.EndEffectorConstants.EE_SPARKMAX_ID,
+                new SparkMax(35,
                 SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DefaultConfig);
+                DefaultMotorConfigs.getInstance().DefaultConfig,
+                true);
     }
 }

@@ -29,7 +29,7 @@ public class EndEffectorCommand extends Command {
      */
     @Override
     public void execute() {
-        endEffector.intake();
+        endEffector.eject();
 //        if(button_counter % 2 == 0){
 //            if( endEffector.hasGamePiece() ){
 //                button_counter++;

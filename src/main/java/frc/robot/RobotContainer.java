@@ -284,8 +284,6 @@ public class RobotContainer {
        * Intake / Eject Coral
        */
 
-      joystick.trigger().whileTrue(endEffectorCommand);
-
 
     } else {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -295,6 +293,9 @@ public class RobotContainer {
                       new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
+
+
+      joystick.trigger().whileTrue(endEffectorCommand);
     }
   }
 
