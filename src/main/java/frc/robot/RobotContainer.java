@@ -8,6 +8,10 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -18,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.Elevator;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.actions.AlignToTargetCommand;
 import frc.robot.commands.actions.DeAlgaeCommand;
@@ -29,6 +34,7 @@ import frc.robot.subsystems.*;
 import java.io.File;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+import frc.robot.Constants;
 
 import swervelib.SwerveInputStream;
 
@@ -68,25 +74,20 @@ public class RobotContainer {
           new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
           new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
           motorComponents.elevatorMotors,
+          // TODO: Encoder accepts two channels. However, we are using CAN. Fix this later.
+          new Encoder(Constants.ElevatorConstants.ELEVATOR_ENCODER_ID, false, CounterBase.EncodingType.k1X),
           // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
-          new Encoder(
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  false,
-                  CounterBase.EncodingType.k1X),
-          new PIDController(
+          new ProfiledPIDController(
                   Constants.ElevatorConstants.ELEVATOR_P,
                   Constants.ElevatorConstants.ELEVATOR_I,
-                  Constants.ElevatorConstants.ELEVATOR_D),
-//                  new TrapezoidProfile.Constraints(
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
-//          ),
+                  Constants.ElevatorConstants.ELEVATOR_D,
+                  new TrapezoidProfile.Constraints(
+                        Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+                        Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)),
           new ElevatorFeedforward(
                   Constants.ElevatorConstants.ELEVATOR_KG,
                   Constants.ElevatorConstants.ELEVATOR_KV,
-                  Constants.ElevatorConstants.ELEVATOR_KA)
-  );
+                  Constants.ElevatorConstants.ELEVATOR_KA));
 
   private final Climber climber = new Climber(
           Components.getInstance().climberMotor,

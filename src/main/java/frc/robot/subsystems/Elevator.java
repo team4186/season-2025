@@ -5,13 +5,14 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import frc.robot.Units;
 
 import java.util.InputMismatchException;
 
-public class Elevator extends SubsystemBase{
+public class Elevator extends SubsystemBase {
 
     // Motor, Encoder, and Limit Switches variables
     private final ElevatorMotorSet elevatorMotors;
@@ -21,7 +22,7 @@ public class Elevator extends SubsystemBase{
     private final DigitalInput bottomLimitSwitch;
     private final DigitalInput topLimitSwitch;
 
-    private final PIDController pid;
+    private final ProfiledPIDController PIDF;
     private final ElevatorFeedforward elevatorFeedforward;
 
 
@@ -30,7 +31,7 @@ public class Elevator extends SubsystemBase{
             DigitalInput topLimitSwitch,
             ElevatorMotorSet elevatorMotor,
             Encoder encoder,
-            PIDController pid,
+            ProfiledPIDController PIDF,
             ElevatorFeedforward elevatorFeedforward
     ) {
         // motors
@@ -42,15 +43,16 @@ public class Elevator extends SubsystemBase{
         this.topLimitSwitch = topLimitSwitch;
 
         // control
-        this.pid = pid;
+        this.PIDF = PIDF;
         this.elevatorFeedforward = elevatorFeedforward;
 
         // TODO: set elevator to bottom threshold and zero
-        pid.reset();
+        // TODO: Figure out the reset measurement.
+        PIDF.reset();
         encoder.reset();
 
         // TODO: assign conversion of elevator distance with rotations of encoder to (SparkMaxConfig or directly to encoder???)
-        encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
+        encoder.setDistancePerPulse(Constants.ElevatorConstants.ENCODER_CONVERSION_FACTOR); // TODO: Set distance per pulse here
     }
 
 
@@ -74,20 +76,21 @@ public class Elevator extends SubsystemBase{
         double currentPos = encoder.getDistance();
         levelHeight = getLevelConstant(requestedLevel);
 
-        double speed = Units.ClampValue(pid.calculate(currentPos, levelHeight),
-                -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
-                Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
+        double profilePID = PIDF.calculate(currentPos, levelHeight);
 
-        moveUp(speed, requestedLevel);
+        double outputSignal = Units.ClampValue(elevatorFeedforward.calculateWithVelocities(encoder.getRate(), PIDF.getSetpoint().velocity) 
+        + profilePID, Constants.ElevatorConstants.ELEVATOR_VOLTAGE_LIMIT, -Constants.ElevatorConstants.ELEVATOR_VOLTAGE_LIMIT);
+
+        moveUp(outputSignal, requestedLevel);
     }
 
 
     // Integrate ElevatorFeedForward into this.
-    public void moveUp( double speed, int requestedLevel) {
-        if ( isAtLevelThreshold(requestedLevel) || topLimitSwitch.get() ) {
+    public void moveUp( double outputSignal, int requestedLevel) {
+        if (isAtLevelThreshold(requestedLevel) || topLimitSwitch.get()) {
             stopMotor();
         } else {
-            elevatorMotors.accept(speed);
+            elevatorMotors.accept(outputSignal);
         }
     }
 
@@ -114,7 +117,7 @@ public class Elevator extends SubsystemBase{
         // TODO: Need to catch not finding true/false result?
         if (bottomLimitSwitch.get() == true) {  //might have to change if bottomLimitSwitch is false when activated
             encoder.reset();
-            pid.reset();
+            PIDF.reset();
             stopMotor();
         } else {
             goToLevel(1);
@@ -138,6 +141,6 @@ public class Elevator extends SubsystemBase{
 
     public void stopMotor() {
         elevatorMotors.stop();
-        pid.reset();
+        PIDF.reset();
     }
 }

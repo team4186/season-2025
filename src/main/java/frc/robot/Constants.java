@@ -98,9 +98,11 @@ public final class Constants {
     public static final int ELEVATOR_TOP_LIMIT_ID = 0;
     public static final int ELEVATOR_ENCODER_ID = 0;
 
+    // Unsure if we will need this, maybe. However, feedforward outputs voltage.
     public static final double ELEVATOR_RAMP_RATE = 5;
     public static final double ELEVATOR_MAX_VELOCITY = 4.0;
     public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
+    public static final double ELEVATOR_VOLTAGE_LIMIT = 7.0;  // Change later, this was YAGSL default.
 
     public static final double ELEVATOR_DEFAULT = 0.0; //TODO: Update heights
     public static final double ELEVATOR_LEVEL_ONE = 0.0; // why even consider the tray? can we score with the elevator?
@@ -114,12 +116,19 @@ public final class Constants {
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
     public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
-    public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
     // TODO: Update values
     public static final double ELEVATOR_KG = 0.0;
     public static final double ELEVATOR_KA = 0.0;
     public static final double ELEVATOR_KV = 0.0;
+
+    // TODO: measure hardware
+    public static final double GEAR_RATIO = 1.0;
+    public static final double TICKS_PER_REV = 42.0;
+    public static final double ELEVATOR_DRUM_RADIUS = 1.0;
+    public static final double ELEVATOR_DRUM_CIRCUMFERENCE = 2.0 * Math.PI * ELEVATOR_DRUM_RADIUS;
+
+    public static final double ENCODER_CONVERSION_FACTOR = ELEVATOR_DRUM_CIRCUMFERENCE/(TICKS_PER_REV/GEAR_RATIO);
   }
   
 public static final class ElevatorYAGSLConstants {
