@@ -342,13 +342,4 @@ public class RobotContainer {
 
 
   public void setMotorBrake(boolean brake) { drivebase.setMotorBrake(brake); }
-
-  public void displaySubsystemSuffleboard(){
-    // Ask subsystems to publish smartdashboard information
-    deAlgae.updateSmartDashboard();
-    algaeProcessor.updateSmartDashboard();
-    elevator.updateSmartDashboard();
-    endEffector.updateSmartDashboard();
-    climber.updateSmartDashboard();
-  }
 }

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Units;
@@ -27,6 +28,13 @@ public class Climber extends SubsystemBase {
         this.targetAngle = targetAngle;
         this.MAXVOLTS = MAXVOLTS;
         this.MINVOLTS = MINVOLTS;
+    }
+
+
+    @Override
+    public void periodic(){
+        // publish smart dashboard info here
+        // SmartDashboard.putNumber("key", value);
     }
 
 

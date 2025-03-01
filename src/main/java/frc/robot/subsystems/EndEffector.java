@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -18,6 +19,13 @@ public class EndEffector extends SubsystemBase {
     public EndEffector(SingleMotor endEffectorMotor, DigitalInput luna){
         this.luna = luna;
         this.endEffectorMotor = endEffectorMotor;
+    }
+
+
+    @Override
+    public void periodic(){
+        // publish smart dashboard info here
+        // SmartDashboard.putNumber("key", value);
     }
 
 

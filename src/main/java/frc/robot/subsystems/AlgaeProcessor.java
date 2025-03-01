@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.math.controller.PIDController;
@@ -28,6 +29,14 @@ public class AlgaeProcessor extends SubsystemBase {
         this.deployPID = deployPID;
 
         this.processorPos = this.angleMotor.getRelativeEncoder();
+    }
+
+
+    @Override
+    public void periodic(){
+        // publish smart dashboard info here
+        SmartDashboard.putNumber("algae_processor_position", processorPos.getPosition());
+        SmartDashboard.putNumber("algae_processor_angle", processorPos.getVelocity());
     }
 
 
@@ -82,8 +91,5 @@ public class AlgaeProcessor extends SubsystemBase {
 
     public void resetEncoder() {
         processorPos.setPosition(0.0);
-    }
-
-    public void updateSmartDashboard() {
     }
 }

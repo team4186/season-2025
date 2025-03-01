@@ -38,6 +38,13 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
+    @Override
+    public void periodic(){
+        // publish smart dashboard info here
+        // SmartDashboard.putNumber("key", value);
+    }
+
+
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
     public void runMotor_Up(){

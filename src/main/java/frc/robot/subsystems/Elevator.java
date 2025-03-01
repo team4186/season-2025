@@ -5,6 +5,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
@@ -52,6 +53,13 @@ public class Elevator extends SubsystemBase{
 
         // TODO: assign conversion of elevator distance with rotations of encoder to (SparkMaxConfig or directly to encoder???)
         encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
+    }
+
+
+    @Override
+    public void periodic(){
+        // publish smart dashboard info here
+        // SmartDashboard.putNumber("key", value);
     }
 
 
