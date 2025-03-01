@@ -83,4 +83,7 @@ public class AlgaeProcessor extends SubsystemBase {
     public void resetEncoder() {
         processorPos.setPosition(0.0);
     }
+
+    public void updateSmartDashboard() {
+    }
 }

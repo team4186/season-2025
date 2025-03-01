@@ -344,7 +344,11 @@ public class RobotContainer {
   public void setMotorBrake(boolean brake) { drivebase.setMotorBrake(brake); }
 
   public void displaySubsystemSuffleboard(){
-    SmartDashboard.putNumber("DeAlgae Angle:", deAlgae.getCurrentAngle());
-    SmartDashboard.putNumber("DeAlgae Speed:", deAlgae.getCurrent_Speed());
+    // Ask subsystems to publish smartdashboard information
+    deAlgae.updateSmartDashboard();
+    algaeProcessor.updateSmartDashboard();
+    elevator.updateSmartDashboard();
+    endEffector.updateSmartDashboard();
+    climber.updateSmartDashboard();
   }
 }

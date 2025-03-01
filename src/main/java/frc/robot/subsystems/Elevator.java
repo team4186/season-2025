@@ -147,4 +147,7 @@ public class Elevator extends SubsystemBase{
         elevatorMotors.stop();
         pid.reset();
     }
+
+    public void updateSmartDashboard() {
+    }
 }

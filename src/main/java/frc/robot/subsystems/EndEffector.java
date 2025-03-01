@@ -53,4 +53,7 @@ public class EndEffector extends SubsystemBase {
     public void stop(){
         endEffectorMotor.stop();
     }
+
+    public void updateSmartDashboard() {
+    }
 }

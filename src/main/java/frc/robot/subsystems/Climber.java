@@ -91,4 +91,7 @@ public class Climber extends SubsystemBase {
         }
         return output;
     }
+
+    public void updateSmartDashboard() {
+    }
 }
