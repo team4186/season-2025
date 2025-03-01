@@ -41,12 +41,12 @@ public class DeAlgaeCommand extends Command {
         // moves arm up and down while rolling possible algae until interrupted
 
         if (button_count == 2 ) {
-            deAlgae.invertWheel();
+            deAlgae.run_motor();
         }
         else if (button_count == 3) {
             deAlgae.invertWheel();
         }
-        else if(deAlgae.reset()){
+        else if(button_count >= 4 && deAlgae.reset()){
             isfinished = true;
         }
 

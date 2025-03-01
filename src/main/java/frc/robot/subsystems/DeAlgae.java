@@ -168,6 +168,11 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public void invertWheel(){
-        wheelMotor.accept(-wheelMotor.motor.get());
+        wheelMotor.accept(-wheelMaxSpeed);
+    }
+
+
+    public void run_motor(){
+        wheelMotor.accept(wheelMaxSpeed);
     }
 }

@@ -82,12 +82,12 @@ public final class Constants {
 
   public static final class DeAlgaeConstants {
     public static final double DE_ALGAE_DEFAULT_ANGLE = 5.0; //TODO: find arm offset
-    public static final double DE_ALGAE_FLAT_ANGLE = 100; //TODO: find the 'distance' of 90 degrees
-    public static final double DE_ALGAE_MAX_SPEED = 0.1; // TODO: placeholder
-    public static final double DE_ALGAE_MIN_SPEED = 0.02; //TODO: placeHolder
-    public static final double DE_ALGAE_P = 0.6; //TODO: tune pid values
+    public static final double DE_ALGAE_FLAT_ANGLE = 120; //TODO: find the 'distance' of 90 degrees
+    public static final double DE_ALGAE_MAX_SPEED = 0.01; // TODO: placeholder
+    public static final double DE_ALGAE_MIN_SPEED = 0.005; //TODO: placeHolder
+    public static final double DE_ALGAE_P = 0.1; //TODO: tune pid values
     public static final double DE_ALGAE_I = 0.0;
-    public static final double DE_ALGAE_D = 0.0;
+    public static final double DE_ALGAE_D = 0.1;
     public static final double DE_ALGAE_MAX_ANGLE = 135.0; // TODO: find max arc
     public static final double DE_ALGAE_MIN_ANGLE = 105.0; // TODO: find min arc
 
