@@ -84,6 +84,7 @@ public class RobotContainer {
 //                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
 //          ),
           new ElevatorFeedforward(
+                  Constants.ElevatorConstants.ELEVATOR_KS,
                   Constants.ElevatorConstants.ELEVATOR_KG,
                   Constants.ElevatorConstants.ELEVATOR_KV,
                   Constants.ElevatorConstants.ELEVATOR_KA)

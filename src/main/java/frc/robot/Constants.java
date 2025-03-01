@@ -119,9 +119,10 @@ public final class Constants {
         public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
         // TODO: Update values
-        public static final double ELEVATOR_KG = 0.0;
-        public static final double ELEVATOR_KA = 0.0;
-        public static final double ELEVATOR_KV = 0.0;
+        public static final double ELEVATOR_KS = 0.0; // Static gain in volts
+        public static final double ELEVATOR_KG = 0.0; // Gravity gain in volts
+        public static final double ELEVATOR_KA = 0.0; // Velocity gain in V/(m/s^2)
+        public static final double ELEVATOR_KV = 0.0; // Acceleration gain in V/(m/s^2)
     }
 
 
