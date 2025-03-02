@@ -39,6 +39,19 @@ public class DeAlgae extends SubsystemBase {
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
+    public void runMotor_Up(double upper_limit){
+        current_angle = getCurrentAngle();
+        if (current_angle < upper_limit) {
+
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, upper_limit));
+            angleMotor.accept(pidOutput);
+        }
+        else {
+            angleMotor.stop();
+        }
+        wheelMotor.accept(-wheelMaxSpeed);
+    }
+
     public void runMotor_Up(){
         current_angle = getCurrentAngle();
         if (current_angle < maxAngle) {
@@ -53,7 +66,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        current_angle = Math.toDegrees(Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
         return current_angle;
     }
 
@@ -173,6 +186,6 @@ public class DeAlgae extends SubsystemBase {
 
 
     public void run_motor(){
-        wheelMotor.accept(wheelMaxSpeed);
+        wheelMotor.accept(-wheelMaxSpeed);
     }
 }

@@ -1,5 +1,7 @@
 package frc.robot.commands.actions;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.DeAlgae;
 
 public class DeAlgaeCommand extends Command {
@@ -40,19 +42,35 @@ public class DeAlgaeCommand extends Command {
     public void execute() {
         // moves arm up and down while rolling possible algae until interrupted
 
-        if (button_count == 2 ) {
-            deAlgae.run_motor();
-        }
-        else if (button_count == 3) {
-            deAlgae.invertWheel();
-        }
-        else if(button_count >= 4 && deAlgae.reset()){
-            isfinished = true;
-        }
 
-        deAlgae.deploy();
-        exit_timer++;
 
+        //TODO: working two stage deAlgae
+//        if (button_count == 1 ) {
+//            deAlgae.runMotor_Up();
+//        }
+//
+//        else if(button_count >= 2 || exit_timer >= 500) {
+//            isfinished = deAlgae.reset();
+//
+//        }
+//
+//        exit_timer++;
+
+//   TODO: these are not expected to function correctly, both were scrapped halfway through due to simplifications on how deAlgae worked
+
+// TODO: stages
+//        if (button_count == 1 ) {
+//            deAlgae.runMotor_Up(Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE);
+//        }
+//
+//        else if(button_count == 2){
+//            deAlgae.runMotor_Up(Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE);
+//        }
+//
+//        else if(button_count >= 3 || exit_timer >= 500) {
+//            isfinished = deAlgae.reset();
+//
+//        }
 
 // TODO: floppy boy
 //        else if (button_count == 1){
@@ -85,7 +103,7 @@ public class DeAlgaeCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return exit_timer >= 500 || isfinished;}
+    public boolean isFinished() {return isfinished;}
 
 
     /**
@@ -101,9 +119,14 @@ public class DeAlgaeCommand extends Command {
         button_count = 0;
         exit_timer = 0;
         deAlgae.stop();
+        isfinished = false;
     }
 
     public void button_detect(){
         button_count++;
     }
+
+//    public void return_button(){
+//        SmartDashboard.putNumber("button presses", button_count);
+//    }
 }

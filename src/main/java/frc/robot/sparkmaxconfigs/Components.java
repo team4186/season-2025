@@ -64,14 +64,14 @@ public final class Components {
 
     public static final class DeAlgaeMotors {
         public SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(10, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(11, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 false);
 
         public SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(11, SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DefaultConfig,
-                false);
+                new SparkMax(10, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DeAlgaeConfig,
+                true);
     }
 
 
@@ -99,6 +99,6 @@ public final class Components {
         public final SingleMotor endEffectorMotor = new SingleMotor(
                 new SparkMax(12, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
-                false);
+                true);
     }
 }
