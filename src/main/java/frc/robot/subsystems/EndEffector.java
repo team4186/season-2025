@@ -49,7 +49,6 @@ public class EndEffector extends SubsystemBase {
     public void intake(){
         if ( hasGamePiece() ) {
             endEffectorMotor.stop();
-
         } else {
             endEffectorMotor.setVoltage( Constants.EndEffectorConstants.END_EFFECTOR_INTAKE_VOLTAGE );
         }
@@ -57,7 +56,11 @@ public class EndEffector extends SubsystemBase {
 
 
     public void eject() {
-        endEffectorMotor.setVoltage( Constants.EndEffectorConstants.END_EFFECTOR_EJECT_VOLTAGE );
+        if ( hasGamePiece() ) {
+            endEffectorMotor.setVoltage(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_VOLTAGE);
+        } else {
+            endEffectorMotor.stop();
+        }
     }
 
 
