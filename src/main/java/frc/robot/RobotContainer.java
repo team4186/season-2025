@@ -314,7 +314,7 @@ public class RobotContainer {
        joystick.button(10).onFalse(Commands.runOnce(deAlgae::stop));
 
        joystick.button(3).onTrue(deAlgaeCommand);
-       //joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+       joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
       joystick.trigger()
               .and( joystick.button(1) )

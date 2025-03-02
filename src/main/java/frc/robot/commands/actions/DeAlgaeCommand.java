@@ -43,6 +43,9 @@ public class DeAlgaeCommand extends Command {
     public void execute() {
 
         // One stroke DeAlgae
+        if(button_count >= 2){
+            deployed = true;
+        }
 
         if(deployed || exit_timer >= 500){
             isfinished = deAlgae.reset();

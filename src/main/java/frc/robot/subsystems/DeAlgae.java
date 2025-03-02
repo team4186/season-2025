@@ -40,8 +40,8 @@ public class DeAlgae extends SubsystemBase {
 
     @Override
     public void periodic(){
-        // publish smart dashboard info here
-        // SmartDashboard.putNumber("key", value);
+        SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
+        SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
     }
 
 
@@ -213,10 +213,5 @@ public class DeAlgae extends SubsystemBase {
 
     public void run_motor(){
         wheelMotor.accept(-wheelMaxSpeed);
-    }
-
-    public void updateSmartDashboard() {
-        SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
-        SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
     }
 }
