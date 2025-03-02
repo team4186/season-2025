@@ -148,8 +148,8 @@ public final class Constants {
     public static final class EndEffectorConstants {
         public static final int END_EFFECTOR_BEAM_BREAK = 0; //TODO: placeHolder
 
-        public static final double END_EFFECTOR_EJECT_SPEED = 1.0; // TODO: change speed
-        public static final double END_EFFECTOR_INTAKE_SPEED = 0.5;
+        public static final double END_EFFECTOR_EJECT_VOLTAGE = 12.0;
+        public static final double END_EFFECTOR_INTAKE_VOLTAGE = 3.0;
     }
 
   
