@@ -102,25 +102,32 @@ public final class Constants {
         public static final double ELEVATOR_MAX_VELOCITY = 4.0;
         public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
 
-        public static final double ELEVATOR_DEFAULT = 0.0; //TODO: Update heights
+        public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
         public static final double ELEVATOR_LEVEL_ONE = 0.0; // why even consider the tray? can we score with the elevator?
         public static final double ELEVATOR_LEVEL_TWO = 0.70; //70 cm
         public static final double ELEVATOR_LEVEL_THREE = 1.18; //118 cm
         public static final double ELEVATOR_LEVEL_FOUR = 1.89; //189 cm
-        public static final double ELEVATOR_P = 0.015;
-        public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.0;
+        public static final double ELEVATOR_MAX_HEIGHT = 1.89; // TODO: Determine threshold if different from highest level
 
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
         public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
         public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
+        public static final double ELEVATOR_GEARING = 12.0; // TODO: Update with gear ratio
+        public static final double ELEVATOR_CARRIAGE_MASS = 4.0; // end effector mass, with / without
+        public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(0.0); // TODO: Update with measurement
+
         // TODO: Update values
-        public static final double ELEVATOR_KS = 0.0; // Static gain in volts
-        public static final double ELEVATOR_KG = 0.0; // Gravity gain in volts
+        public static final double ELEVATOR_P = 0.015;
+        public static final double ELEVATOR_I = 0.0;
+        public static final double ELEVATOR_D = 0.0;
+
+        public static final double ELEVATOR_KS = 2.28; // Static gain in volts
+        public static final double ELEVATOR_KG = 2.28; // Gravity gain in volts
         public static final double ELEVATOR_KA = 0.0; // Velocity gain in V/(m/s^2)
         public static final double ELEVATOR_KV = 0.0; // Acceleration gain in V/(m/s^2)
+        public static final double ELEVATOR_DEFAULT_TOLERANCE = Units.inchesToMeters(1);
     }
 
 

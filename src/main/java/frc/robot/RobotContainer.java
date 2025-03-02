@@ -61,31 +61,32 @@ public class RobotContainer {
           motorComponents.endEffectorMotor,
           new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
   );
-    //TOdo: Uncomment
+
+  //TOdo: Uncomment
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
-//  private final Elevator elevator = new Elevator(
-//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
-//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
-//          motorComponents.elevatorMotors,
-//          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
-//          new Encoder(
-//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-//                  false,
-//                  CounterBase.EncodingType.k1X),
-//          new PIDController(
-//                  Constants.ElevatorConstants.ELEVATOR_P,
-//                  Constants.ElevatorConstants.ELEVATOR_I,
-//                  Constants.ElevatorConstants.ELEVATOR_D),
-////                  new TrapezoidProfile.Constraints(
-////                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-////                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
-////          ),
-//          new ElevatorFeedforward(
-//                  Constants.ElevatorConstants.ELEVATOR_KG,
-//                  Constants.ElevatorConstants.ELEVATOR_KV,
-//                  Constants.ElevatorConstants.ELEVATOR_KA)
-//  );
+  private final Elevator elevator = new Elevator(
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+          motorComponents.elevatorMotors,
+          // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
+          new Encoder(
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  false,
+                  CounterBase.EncodingType.k1X),
+          new PIDController(
+                  Constants.ElevatorConstants.ELEVATOR_P,
+                  Constants.ElevatorConstants.ELEVATOR_I,
+                  Constants.ElevatorConstants.ELEVATOR_D),
+//                  new TrapezoidProfile.Constraints(
+//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
+//          ),
+          new ElevatorFeedforward(
+                  Constants.ElevatorConstants.ELEVATOR_KG,
+                  Constants.ElevatorConstants.ELEVATOR_KV,
+                  Constants.ElevatorConstants.ELEVATOR_KA)
+  );
 //
 //  private final Climber climber = new Climber(
 //          Components.getInstance().climberMotor,
