@@ -302,20 +302,22 @@ public class RobotContainer {
       // joystick.button(0).onTrue(Commands.none());
 
 // Algae Command testing
-       joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly()); //replaced deploy with manDeploy
-       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly());
-       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly());
-       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly()); // replaced reset with manReset
+       joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly())
+               .onFalse(Commands.runOnce(deAlgae::stop)); //replaced deploy with manDeploy
+       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
+               .onFalse(Commands.runOnce(deAlgae::stop));
+       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
+               .onFalse(Commands.runOnce(deAlgae::stop));
+       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
+               .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
        joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
        joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
-       joystick.button(7).onFalse(Commands.runOnce(deAlgae::stop));
-       joystick.button(8).onFalse(Commands.runOnce(deAlgae::stop));
-       joystick.button(9).onFalse(Commands.runOnce(deAlgae::stop));
-       joystick.button(10).onFalse(Commands.runOnce(deAlgae::stop));
 
-       joystick.button(3).onTrue(deAlgaeCommand);
-       joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+       // dealgae tests
+//       joystick.button(3).onTrue(deAlgaeCommand);
+//       joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
+      // end effector tests
       joystick.trigger()
               .and( joystick.button(2) )
               .onTrue(endEffectorLoadCommand);
