@@ -311,7 +311,7 @@ public class RobotContainer {
 //       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
 //               .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
 //       joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
-//       joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
+       joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
 
        // dealgae tests
        joystick.button(7).onTrue(deAlgaeCommand);

@@ -47,7 +47,7 @@ public class DeAlgaeCommand extends Command {
             deployed = true;
         }
 
-        if(deployed || exit_timer >= 500){
+        if(deployed || exit_timer >= 150){
             isfinished = deAlgae.reset();
         }
 
@@ -135,6 +135,7 @@ public class DeAlgaeCommand extends Command {
         exit_timer = 0;
         deAlgae.stop();
         isfinished = false;
+        deployed = false;
     }
 
     public void button_detect(){
