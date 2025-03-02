@@ -41,14 +41,15 @@ public class DeAlgaeCommand extends Command {
      */
     @Override
     public void execute() {
+
         // One stroke DeAlgae
 
-        if(!deployed) {
-            deployed = deAlgae.runMotor_Up();
+        if(deployed || exit_timer >= 500){
+            isfinished = deAlgae.reset();
         }
 
-        else{
-            isfinished = deAlgae.reset();
+        else if(deAlgae.runMotor_Up()){
+            deployed = true;
         }
 
         exit_timer ++;

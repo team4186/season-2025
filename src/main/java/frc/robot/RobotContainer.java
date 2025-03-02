@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.actions.AlignToTargetCommand;
+import frc.robot.commands.actions.DeAlgaeCommand;
 import frc.robot.commands.actions.EndEffectorEjectCommand;
 import frc.robot.commands.actions.EndEffectorLoadCommand;
 import frc.robot.hardware.LimeLightRunner;
@@ -313,7 +314,7 @@ public class RobotContainer {
        joystick.button(10).onFalse(Commands.runOnce(deAlgae::stop));
 
        joystick.button(3).onTrue(deAlgaeCommand);
-       joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+       //joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
       joystick.trigger()
               .and( joystick.button(1) )
