@@ -320,10 +320,10 @@ public class RobotContainer {
       // end effector tests
       joystick.trigger()
               .and( joystick.button(2) )
-              .onTrue(endEffectorLoadCommand);
+              .whileTrue(endEffectorLoadCommand);
       joystick.trigger()
               .and( joystick.button(3) )
-              .onTrue(endEffectorEjectCommand);
+              .whileTrue(endEffectorEjectCommand);
 
     }
   }
