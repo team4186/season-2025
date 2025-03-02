@@ -14,13 +14,15 @@ public class DeAlgae extends SubsystemBase {
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
     private final RelativeEncoder angleEncoder;
+    private final PIDController anglePid;
     private static double current_angle;
     private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle, flatAngle, wheelMaxSpeed, angleSpeed;
 
 
-    public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor){
+    public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid){
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
+        this.anglePid = anglePid;
 
         angleEncoder = angleMotor.getRelativeEncoder();
 
@@ -38,6 +40,8 @@ public class DeAlgae extends SubsystemBase {
 
     @Override
     public void periodic(){
+        // publish smart dashboard info here
+        // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
         SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
     }
@@ -49,7 +53,8 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
         if (current_angle < upper_limit) {
 
-            angleMotor.setVoltage(Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, upper_limit));
+            angleMotor.accept(pidOutput);
         }
         else {
             angleMotor.stop();
@@ -64,7 +69,8 @@ public class DeAlgae extends SubsystemBase {
 
         if (current_angle < maxAngle) {
 
-            angleMotor.accept(Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            angleMotor.accept(pidOutput);
             return false;
         }
 
@@ -78,7 +84,8 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
         if (current_angle < maxAngle) {
 
-            angleMotor.accept(Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            angleMotor.accept(pidOutput);
         }
         else {
             angleMotor.stop();
@@ -101,7 +108,8 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
         if (current_angle > minAngle){
 
-            angleMotor.accept(-1*Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
+            angleMotor.accept(pidOutput);
         }
         else {
             angleMotor.stop();
@@ -142,7 +150,8 @@ public class DeAlgae extends SubsystemBase {
 
         }
 
-        angleMotor.accept(Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+        PIDoutput = coerceIn(anglePid.calculate(current_angle, flatAngle));
+        angleMotor.accept(PIDoutput);
 
         return false;
     }
@@ -156,7 +165,9 @@ public class DeAlgae extends SubsystemBase {
             angleMotor.stop();
 
         }
-        angleMotor.accept(Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+
+        PIDoutput = coerceIn(anglePid.calculate(current_angle, flatAngle));
+        angleMotor.accept(PIDoutput);
 
     }
 
@@ -175,7 +186,8 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
 
         if(current_angle > defaultAngle) {
-            angleMotor.accept(Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+            PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+            angleMotor.accept(PIDoutput);
             return false;
         }
 
@@ -188,7 +200,8 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
 
         if(current_angle > defaultAngle) {
-            angleMotor.accept(Constants.DeAlgaeConstants.DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE);
+            PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+            angleMotor.accept(PIDoutput);
             return;
         }
 
@@ -203,4 +216,7 @@ public class DeAlgae extends SubsystemBase {
     public void run_motor(){
         wheelMotor.accept(-wheelMaxSpeed);
     }
+
+
+
 }

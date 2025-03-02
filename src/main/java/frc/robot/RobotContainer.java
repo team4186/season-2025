@@ -102,8 +102,11 @@ public class RobotContainer {
 
   private final DeAlgae deAlgae = new DeAlgae(
           motorComponents.deAlgaeWheelMotor,
-          motorComponents.deAlgaeAngleMotor);
-
+          motorComponents.deAlgaeAngleMotor,
+          new PIDController(
+                  Constants.DeAlgaeConstants.DE_ALGAE_P,
+                  Constants.DeAlgaeConstants.DE_ALGAE_I,
+                  Constants.DeAlgaeConstants.DE_ALGAE_D));
 
   // TODO: Uncomment below later.
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
@@ -302,18 +305,18 @@ public class RobotContainer {
 // Algae Command testing
 //       joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly())
 //               .onFalse(Commands.runOnce(deAlgae::stop)); //replaced deploy with manDeploy
-       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
-               .onFalse(Commands.runOnce(deAlgae::stop));
+       //joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
+       //       .onFalse(Commands.runOnce(deAlgae::stop));
 //       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
 //               .onFalse(Commands.runOnce(deAlgae::stop));
-       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
-               .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
-       joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
+       //joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
+         //      .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
+       //joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
        joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
 
        // dealgae tests
-       //joystick.button(7).onTrue(deAlgaeCommand);
-       //joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+       joystick.button(7).onTrue(deAlgaeCommand);
+       joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
       // end effector tests
       joystick.trigger()

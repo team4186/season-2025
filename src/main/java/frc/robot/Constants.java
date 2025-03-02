@@ -85,9 +85,11 @@ public final class Constants {
     public static final double DE_ALGAE_FLAT_ANGLE = 185.0; //TODO: find the 'distance' of 90 degrees
     public static final double DE_ALGAE_MAX_SPEED = 0.25; // TODO: placeholder
     public static final double DE_ALGAE_MIN_SPEED = 0.08; //TODO: placeHolder
-    public static final double DE_ALGAE_ANGLE_MOTOR_DEFAULT_VOLTAGE = 1.0;
-    public static final double DE_ALGAE_MAX_ANGLE = 90.0; // TODO: find max arc
-    public static final double DE_ALGAE_MIN_ANGLE = 60.0; // TODO: find min arc
+    public static final double DE_ALGAE_P = 0.1; //TODO: tune pid values
+    public static final double DE_ALGAE_I = 0.0;
+    public static final double DE_ALGAE_D = 0.0;
+    public static final double DE_ALGAE_MAX_ANGLE = 150.0; // TODO: find max arc
+    public static final double DE_ALGAE_MIN_ANGLE = 75.0; // TODO: find min arc
 
     public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0; // TODO: placeholder
   }
