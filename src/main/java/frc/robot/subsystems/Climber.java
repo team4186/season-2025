@@ -15,16 +15,16 @@ public class Climber extends SubsystemBase {
     private final RelativeEncoder encoder;
     // Change the digital input channel later.
     private final DigitalInput beamBreak;
-    private final PIDController DIPController;
+    private final PIDController PIDController;
     private final double targetAngle;
     private final double MAXVOLTS;
     private final double MINVOLTS;
 
-    public Climber(SingleMotor motor, DigitalInput beamBreak, PIDController DIPController, double targetAngle, double MAXVOLTS, double MINVOLTS) {
+    public Climber(SingleMotor motor, DigitalInput beamBreak, PIDController PIDController, double targetAngle, double MAXVOLTS, double MINVOLTS) {
         this.motor = motor;
         this.encoder = motor.getRelativeEncoder();
         this.beamBreak = beamBreak;
-        this.DIPController = DIPController;
+        this.PIDController = PIDController;
         this.targetAngle = targetAngle;
         this.MAXVOLTS = MAXVOLTS;
         this.MINVOLTS = MINVOLTS;
@@ -33,15 +33,15 @@ public class Climber extends SubsystemBase {
 
     @Override
     public void periodic(){
-        // publish smart dashboard info here
-        // SmartDashboard.putNumber("key", value);
+        //SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
+        //SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
     }
 
 
     //Avoid using for now, no safeties
     public void deployClimb() {
         if (getEncoderPos() < targetAngle){
-            motor.setVoltage(coerceIn(DIPController.calculate(getEncoderPos(), targetAngle)));
+            motor.setVoltage(coerceIn(PIDController.calculate(getEncoderPos(), targetAngle)));
             encoder.setPosition(0.0);
         }
     }
@@ -49,7 +49,7 @@ public class Climber extends SubsystemBase {
 
     public void stowClimb(){
         if (!beamBreak.get()) {
-            motor.setVoltage(coerceIn(DIPController.calculate(getEncoderPos(), -targetAngle)));
+            motor.setVoltage(coerceIn(PIDController.calculate(getEncoderPos(), -targetAngle)));
             encoder.setPosition(0.0);
         } else {
             motor.stop();
