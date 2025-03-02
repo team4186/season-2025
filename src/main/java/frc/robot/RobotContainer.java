@@ -7,13 +7,10 @@ package frc.robot;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -21,15 +18,12 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.actions.AlignToTargetCommand;
-import frc.robot.commands.actions.DeAlgaeCommand;
-import frc.robot.commands.actions.ElevatorCommand;
-import frc.robot.commands.actions.EndEffectorCommand;
+import frc.robot.commands.actions.EndEffectorEjectCommand;
+import frc.robot.commands.actions.EndEffectorLoadCommand;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
 import java.io.File;
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 import swervelib.SwerveInputStream;
 
@@ -125,7 +119,8 @@ public class RobotContainer {
   );
 
 
-  EndEffectorCommand endEffectorCommand = new EndEffectorCommand(endEffector);
+  EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector);
+  EndEffectorLoadCommand endEffectorLoadCommand = new EndEffectorLoadCommand(endEffector);
 
 
 /**
@@ -316,7 +311,12 @@ public class RobotContainer {
 //       joystick.button(3).onTrue(deAlgaeCommand);
 //       joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
-      joystick.trigger().whileTrue(endEffectorCommand);
+      joystick.trigger()
+              .and( joystick.button(1) )
+              .onTrue(endEffectorLoadCommand);
+      joystick.trigger()
+              .and( joystick.button(2) )
+              .onTrue(endEffectorEjectCommand);
 
     }
   }
