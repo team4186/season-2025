@@ -52,7 +52,25 @@ public class DeAlgae extends SubsystemBase {
         wheelMotor.accept(-wheelMaxSpeed);
     }
 
-    public void runMotor_Up(){
+    public boolean runMotor_Up(){
+        current_angle = getCurrentAngle();
+
+        wheelMotor.accept(-wheelMaxSpeed);
+
+        if (current_angle < maxAngle) {
+
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            angleMotor.accept(pidOutput);
+            return false;
+        }
+
+        else {
+            angleMotor.stop();
+            return true;
+        }
+    }
+
+    public void ManrunMotor_Up(){
         current_angle = getCurrentAngle();
         if (current_angle < maxAngle) {
 

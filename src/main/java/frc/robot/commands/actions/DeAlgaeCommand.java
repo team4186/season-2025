@@ -21,6 +21,7 @@ public class DeAlgaeCommand extends Command {
     private int exit_timer = 0;
     private int button_count = 0;
     private boolean isfinished = false;
+    private boolean deployed = false;
 
     public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
@@ -40,7 +41,17 @@ public class DeAlgaeCommand extends Command {
      */
     @Override
     public void execute() {
-        // moves arm up and down while rolling possible algae until interrupted
+        // One stroke DeAlgae
+
+        if(!deployed) {
+            deployed = deAlgae.runMotor_Up();
+        }
+
+        else{
+            isfinished = deAlgae.reset();
+        }
+
+        exit_timer ++;
 
 
 

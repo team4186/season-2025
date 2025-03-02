@@ -304,7 +304,7 @@ public class RobotContainer {
 
 // Algae Command testing
        joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly()); //replaced deploy with manDeploy
-       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor_Up).repeatedly());
+       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly());
        joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly());
        joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly()); // replaced reset with manReset
        joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
