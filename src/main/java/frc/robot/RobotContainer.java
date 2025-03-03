@@ -43,7 +43,7 @@ public class RobotContainer {
   // The robot's subsystems defined here...
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
-    //Todo Uncomment
+
 //   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
 //           new DigitalInput(Constants.AlgaeProcessorConstants.lunaChannel),
 //          motorComponents.algaeProcessorMotor,
@@ -62,15 +62,15 @@ public class RobotContainer {
   //TOdo: Uncomment
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
   private final Elevator elevator = new Elevator(
-//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
-//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
           motorComponents.elevatorMotors,
           // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
-//          new Encoder(
-//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-//                  false,
-//                  CounterBase.EncodingType.k1X),
+          new Encoder(
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  false,
+                  CounterBase.EncodingType.k1X),
           new ProfiledPIDController(
                   Constants.ElevatorConstants.ELEVATOR_P,
                   Constants.ElevatorConstants.ELEVATOR_I,
@@ -84,7 +84,7 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_KV,
                   Constants.ElevatorConstants.ELEVATOR_KA)
   );
-//
+
 //  private final Climber climber = new Climber(
 //          Components.getInstance().climberMotor,
 //          new DigitalInput(Constants.ClimberConstants.TFChannel),
@@ -137,10 +137,6 @@ public class RobotContainer {
 /**
  * Elevator commands
  */
-//  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
-//        elevator,
-//        1);
-
   ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator,
   2);
 
@@ -153,7 +149,6 @@ public class RobotContainer {
   4);
 
 
-
   // Conditions to be met: In front of target april tag
 //  ScoreCorralCommand scoreCorralCommand = new ScoreCorralCommand(
           // vision
@@ -162,7 +157,6 @@ public class RobotContainer {
           // end effector
           // left, right offset
           // level
-
 
 
   /**
@@ -299,29 +293,29 @@ public class RobotContainer {
 
     } else {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      //joystick.button(9).whileTrue(
+      // joystick.button(9).whileTrue(
               //drivebase.driveToPose(
                //       new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       //joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
 
-// Algae Command testing
-//       joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly())
-//               .onFalse(Commands.runOnce(deAlgae::stop)); //replaced deploy with manDeploy
-       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
-              .onFalse(Commands.runOnce(deAlgae::stop));
-       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
-               .onFalse(Commands.runOnce(deAlgae::stop));
-       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
-               .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
-       joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
-       joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
 
-//       // dealgae tests
-       joystick.button(7).onTrue(deAlgaeCommand);
-       joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
-//
+      // Algae Command testing
+//      joystick.button(7).onTrue(deAlgaeCommand);
+//      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+//      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
+//              .onFalse(Commands.runOnce(deAlgae::stop));
+//      joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
+//              .onFalse(Commands.runOnce(deAlgae::stop));
+//      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
+//              .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
+//      joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
+//      joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
+
+
+
 //      // end effector tests
 //      joystick.trigger()
 //              .and( joystick.button(2) )
