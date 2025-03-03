@@ -45,6 +45,7 @@ public class ElevatorMotorSet {
         this.lead.set(value);
     }
 
+    public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage );}
 
     public void stop(){
         this.lead.stopMotor();

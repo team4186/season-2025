@@ -20,10 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.actions.AlignToTargetCommand;
-import frc.robot.commands.actions.DeAlgaeCommand;
-import frc.robot.commands.actions.EndEffectorEjectCommand;
-import frc.robot.commands.actions.EndEffectorLoadCommand;
+import frc.robot.commands.actions.*;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
@@ -74,15 +71,15 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
                   false,
                   CounterBase.EncodingType.k1X),
-          new PIDController(
+          new ProfiledPIDController(
                   Constants.ElevatorConstants.ELEVATOR_P,
                   Constants.ElevatorConstants.ELEVATOR_I,
-                  Constants.ElevatorConstants.ELEVATOR_D),
-//                  new TrapezoidProfile.Constraints(
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
-//          ),
+                  Constants.ElevatorConstants.ELEVATOR_D,
+                  new TrapezoidProfile.Constraints(
+                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)),
           new ElevatorFeedforward(
+                  Constants.ElevatorConstants.ELEVATOR_KS,
                   Constants.ElevatorConstants.ELEVATOR_KG,
                   Constants.ElevatorConstants.ELEVATOR_KV,
                   Constants.ElevatorConstants.ELEVATOR_KA)
@@ -132,33 +129,32 @@ public class RobotContainer {
 /**
  * Elevator commands
  */
-//  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
-//        elevator,
-//        1);
-//
-//  ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator,
-//  2);
-//
-//  ElevatorCommand elevatorCommandL3 = new ElevatorCommand(
-//          elevator, // elevatorsubsystem
-//          3 // level
-//          );
-//
-//  ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator,
-//  4);
-//
-//  DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
+  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
+        elevator,
+        1);
+
+  ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator,
+  2);
+
+  ElevatorCommand elevatorCommandL3 = new ElevatorCommand(
+          elevator, // elevatorsubsystem
+          3 // level
+          );
+
+  ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator,
+  4);
 
 
-//  // Conditions to be met: In front of target april tag
+
+  // Conditions to be met: In front of target april tag
 //  ScoreCorralCommand scoreCorralCommand = new ScoreCorralCommand(
-//          // vision
-//          // swervesubsystem
-//          // elevator
-//          // end effector
-//          // left, right offset
-//          // level
-//  );
+          // vision
+          // swervesubsystem
+          // elevator
+          // end effector
+          // left, right offset
+          // level
+
 
 
   /**
@@ -312,7 +308,7 @@ public class RobotContainer {
        //joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
          //      .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
        //joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
-       joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
+       joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
 
        // dealgae tests
        joystick.button(7).onTrue(deAlgaeCommand);

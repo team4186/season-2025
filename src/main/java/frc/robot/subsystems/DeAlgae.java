@@ -42,12 +42,27 @@ public class DeAlgae extends SubsystemBase {
         // publish smart dashboard info here
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
-        SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
+        SmartDashboard.putNumber("DeAlgae Speed:", getCurrentSpeed());
     }
 
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
+
+    public boolean pid_runMotor_Up(){
+        current_angle = getCurrentAngle();
+
+        wheelMotor.accept(-wheelMaxSpeed);
+
+        double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+        angleMotor.accept(pidOutput);
+
+        if(current_angle >= maxAngle - 2 || current_angle <= maxAngle + 2){
+            return true;
+        }
+
+        return false;
+    }
     public void runMotor_Up(double upper_limit){
         current_angle = getCurrentAngle();
         if (current_angle < upper_limit) {
@@ -97,7 +112,7 @@ public class DeAlgae extends SubsystemBase {
         return current_angle;
     }
 
-    public double getCurrent_Speed(){
+    public double getCurrentSpeed(){
         angleSpeed = angleMotor.motor.get();
         return angleSpeed;
     }
@@ -118,7 +133,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
-    public void resetEnconder(){
+    public void resetEncoder(){
         angleEncoder.setPosition(0.0);
     }
 
@@ -193,7 +208,19 @@ public class DeAlgae extends SubsystemBase {
         angleMotor.stop();
         return true;
     }
+    public boolean pid_reset(){
+        double PIDoutput;
+        current_angle = getCurrentAngle();
 
+        PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+        angleMotor.accept(PIDoutput);
+
+        if(current_angle <= defaultAngle -1 || current_angle >= defaultAngle + 1){
+            return true;
+        }
+
+        return false;
+    }
     public void manReset(){
         double PIDoutput;
         current_angle = getCurrentAngle();
