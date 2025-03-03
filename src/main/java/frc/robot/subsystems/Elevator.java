@@ -37,13 +37,13 @@ public class Elevator extends SubsystemBase{
     public Elevator(
              DigitalInput bottomLimitSwitch,
              DigitalInput topLimitSwitch,
-             ElevatorMotorSet elevatorMotor,
+             ElevatorMotorSet elevatorMotors,
              Encoder encoder,
              ProfiledPIDController pid,
              ElevatorFeedforward elevatorFeedforward
     ) {
 
-        this.elevatorMotors = elevatorMotor;
+        this.elevatorMotors = elevatorMotors;
 
         // TODO: Replace relative encoder when THRU-BORE Encoder installed
         this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
@@ -69,20 +69,19 @@ public class Elevator extends SubsystemBase{
         // SysId Routine for dialing in values for our system
         routine = new SysIdRoutine(
                 new SysIdRoutine.Config(),
-                new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
-        );
+                new SysIdRoutine.Mechanism(
+                        this.elevatorMotors::setLeadVoltage,
+                        this::logMotors,
+                        this));
     }
 
 
     // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
     private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
-
-    }
-
-
-    // callback that passes requested voltage directly to your motor controllers
-    private void voltageDrive(Voltage voltage) {
-//        elevatorMotors.
+//        sysIdRoutineLog.motor("Elevator")
+//                .voltage()
+//                .linearVelocity()
+//                .linearAcceleration();
     }
 
 
@@ -131,7 +130,7 @@ public class Elevator extends SubsystemBase{
         double bottomLevel = getLevelConstant(0);
 
         double currentPos = getPositionMeters();
-        boolean isPositive =  ( levelHeight - currentPos >= 0) ;
+        boolean isPositive =  ( levelHeight - currentPos >= 0 );
 
         // stop motors if ( negative difference -> check bottom limit OR positive difference -> check top limit )
         // TODO: Switch when

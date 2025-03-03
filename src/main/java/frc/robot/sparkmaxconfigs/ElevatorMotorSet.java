@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants;
 
 
@@ -43,7 +44,9 @@ public class ElevatorMotorSet {
     }
 
 
-    public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage );}
+    public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage ); }
+
+    public void setLeadVoltage(Voltage voltage) { this.lead.setVoltage(voltage); }
 
 
     public void stop(){

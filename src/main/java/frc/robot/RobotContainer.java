@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -55,7 +54,7 @@ public class RobotContainer {
 //   );
 
   private final EndEffector endEffector = new EndEffector(
-          motorComponents.endEffectorMotor,
+          motorComponents.endEffectorSingleMotor,
           new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
   );
 
@@ -64,7 +63,7 @@ public class RobotContainer {
   private final Elevator elevator = new Elevator(
           new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
           new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
-          motorComponents.elevatorMotors,
+          motorComponents.elevatorMotorSet,
           // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
           new Encoder(
                   Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
@@ -86,7 +85,7 @@ public class RobotContainer {
   );
 
 //  private final Climber climber = new Climber(
-//          Components.getInstance().climberMotor,
+//          motorComponents.climberMotor,
 //          new DigitalInput(Constants.ClimberConstants.TFChannel),
 //          new PIDController(
 //                  Constants.ClimberConstants.PROPORTIONAL,
@@ -98,16 +97,16 @@ public class RobotContainer {
 //  );
 
   private final DeAlgae deAlgae = new DeAlgae(
-          motorComponents.deAlgaeWheelMotor,
-          motorComponents.deAlgaeAngleMotor,
+          motorComponents.deAlgaeWheelSingleMotor,
+          motorComponents.deAlgaeAngleSingleMotor,
           new PIDController(
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
                   Constants.DeAlgaeConstants.DE_ALGAE_I,
                   Constants.DeAlgaeConstants.DE_ALGAE_D));
 
   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
-          motorComponents.algaeProcessorWheelMotor,
-          motorComponents.algaeProcessorAngleMotor,
+          motorComponents.algaeProcessorWheelSingleMotor,
+          motorComponents.algaeProcessorAngleSingleMotor,
           new PIDController(
                   Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_P,
                   Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_I,
