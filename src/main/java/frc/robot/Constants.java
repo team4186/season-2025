@@ -53,13 +53,17 @@ public final class Constants {
 
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
     public static final class AlgaeProcessorConstants {
-        public static final double ALGAE_PROCESSOR_SWING_VOLTAGE = 5.0;
-        public static final double ALGAE_PROCESSOR_INTAKE_VOLTAGE = 5.0;
-        // TODO: CHANGE BEFORE TESTING
-        public static final int lunaChannel = 0;
-        public static final double ALGAEPROCESSOR_P = 0.05;
-        public static final double ALGAEPROCESSOR_I = 0.0;
-        public static final double ALGAEPROCESSOR_D = 0.0;
+        public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 0.0; //TODO: placeholder
+        public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.0; // TODO: placeholder
+        public static final double ALGAE_PROCESSOR_MIN_SPEED = 0.0; //TODO: placeHolder
+        public static final double ALGAE_PROCESSOR_P = 0.1; //TODO: tune pid values
+        public static final double ALGAE_PROCESSOR_I = 0.0;
+        public static final double ALGAE_PROCESSOR_D = 0.0;
+        public static final double ALGAE_PROCESSOR_MAX_ANGLE = 0.0; // TODO: placeholder
+        public static final double ALGAE_PROCESSOR_MIN_ANGLE = 0.0; // TODO: placeholder
+        public static final double ALGAE_PROCESSOR_DEPLOY_ANGLE = 0.0; //TODO: placeholder
+
+        public static final double ALGAE_PROCESSOR_WHEEL_MAX_SPEED = 1.0; // TODO: placeholder
     }
 
 
