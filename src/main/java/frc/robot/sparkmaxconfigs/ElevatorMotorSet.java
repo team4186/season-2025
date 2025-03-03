@@ -37,15 +37,14 @@ public class ElevatorMotorSet {
         this.lead = lead;
     }
 
+
     public RelativeEncoder getRelativeEncoder(){
         return this.lead.getEncoder();
     }
 
-    public void accept(double value) {
-        this.lead.set(value);
-    }
 
     public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage );}
+
 
     public void stop(){
         this.lead.stopMotor();
