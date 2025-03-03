@@ -1,12 +1,12 @@
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
-import frc.robot.Units;
-
+import frc.robot.UnitsUtility;
 
 public class DeAlgae extends SubsystemBase {
 
@@ -25,7 +25,7 @@ public class DeAlgae extends SubsystemBase {
 
         angleEncoder = angleMotor.getRelativeEncoder();
 
-        current_angle = Math.toDegrees(Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
         maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
         minAngle = Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE;
         maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
@@ -37,9 +37,64 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
+    @Override
+    public void periodic(){
+        // publish smart dashboard info here
+        // SmartDashboard.putNumber("key", value);
+        SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
+        SmartDashboard.putNumber("DeAlgae Speed:", getCurrentSpeed());
+    }
+
+
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
-    public void runMotor_Up(){
+
+    public boolean pid_runMotor_Up(){
+        current_angle = getCurrentAngle();
+
+        wheelMotor.accept(-wheelMaxSpeed);
+
+        double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+        angleMotor.accept(pidOutput);
+
+        if(current_angle >= maxAngle - 2 || current_angle <= maxAngle + 2){
+            return true;
+        }
+
+        return false;
+    }
+    public void runMotor_Up(double upper_limit){
+        current_angle = getCurrentAngle();
+        if (current_angle < upper_limit) {
+
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, upper_limit));
+            angleMotor.accept(pidOutput);
+        }
+        else {
+            angleMotor.stop();
+        }
+        wheelMotor.accept(-wheelMaxSpeed);
+    }
+
+    public boolean runMotor_Up(){
+        current_angle = getCurrentAngle();
+
+        wheelMotor.accept(-wheelMaxSpeed);
+
+        if (current_angle < maxAngle) {
+
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            angleMotor.accept(pidOutput);
+            return false;
+        }
+
+        else {
+            angleMotor.stop();
+            return true;
+        }
+    }
+
+    public void ManrunMotor_Up(){
         current_angle = getCurrentAngle();
         if (current_angle < maxAngle) {
 
@@ -53,11 +108,11 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        current_angle = Math.toDegrees(Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
         return current_angle;
     }
 
-    public double getCurrent_Speed(){
+    public double getCurrentSpeed(){
         angleSpeed = angleMotor.motor.get();
         return angleSpeed;
     }
@@ -78,7 +133,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
-    public void resetEnconder(){
+    public void resetEncoder(){
         angleEncoder.setPosition(0.0);
     }
 
@@ -153,7 +208,19 @@ public class DeAlgae extends SubsystemBase {
         angleMotor.stop();
         return true;
     }
+    public boolean pid_reset(){
+        double PIDoutput;
+        current_angle = getCurrentAngle();
 
+        PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+        angleMotor.accept(PIDoutput);
+
+        if(current_angle <= defaultAngle -1 || current_angle >= defaultAngle + 1){
+            return true;
+        }
+
+        return false;
+    }
     public void manReset(){
         double PIDoutput;
         current_angle = getCurrentAngle();
@@ -168,6 +235,14 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public void invertWheel(){
-        wheelMotor.accept(-wheelMotor.motor.get());
+        wheelMotor.accept(-wheelMaxSpeed);
     }
+
+
+    public void run_motor(){
+        wheelMotor.accept(-wheelMaxSpeed);
+    }
+
+
+
 }

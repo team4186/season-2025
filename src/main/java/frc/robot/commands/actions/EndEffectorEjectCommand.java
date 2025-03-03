@@ -1,16 +1,15 @@
 package frc.robot.commands.actions;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.EndEffector;
 
-public class EndEffectorCommand extends Command {
+public class EndEffectorEjectCommand extends Command {
+
     private final EndEffector endEffector;
     private boolean isFinished = false;
-    private static int button_counter;
-    private static int eject_timer;
 
 
-
-    public EndEffectorCommand(EndEffector endEffector) {
+    public EndEffectorEjectCommand(EndEffector endEffector) {
         this.endEffector = endEffector;
         addRequirements( this.endEffector );
     }
@@ -30,21 +29,10 @@ public class EndEffectorCommand extends Command {
     @Override
     public void execute() {
         endEffector.eject();
-//        if(button_counter % 2 == 0){
-//            if( endEffector.hasGamePiece() ){
-//                button_counter++;
-//            }
-//        }
-//        else{
-//            if(eject_timer < 20){
-//                endEffector.eject();
-//            }
-//            else{
-//                isFinished = true;
-//                eject_timer = 0;
-//                button_counter++;
-//            }
-//        }
+
+        if (!endEffector.hasGamePiece()){
+            isFinished = true;
+        }
     }
 
 

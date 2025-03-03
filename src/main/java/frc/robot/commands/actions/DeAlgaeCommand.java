@@ -19,6 +19,7 @@ public class DeAlgaeCommand extends Command {
     private int exit_timer = 0;
     private int button_count = 0;
     private boolean isfinished = false;
+    private boolean deployed = false;
 
     public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
@@ -38,21 +39,60 @@ public class DeAlgaeCommand extends Command {
      */
     @Override
     public void execute() {
-        // moves arm up and down while rolling possible algae until interrupted
 
-        if (button_count == 2 ) {
-            deAlgae.invertWheel();
-        }
-        else if (button_count == 3) {
-            deAlgae.invertWheel();
-        }
-        else if(deAlgae.reset()){
-            isfinished = true;
+        // One stroke DeAlgae
+        if(button_count >= 2){
+            deployed = true;
         }
 
-        deAlgae.deploy();
-        exit_timer++;
+        if(deployed || exit_timer >= 150){
+            isfinished = deAlgae.reset();
+        }
 
+//        if(deployed || exit_timer >= 150){
+//            isfinished = deAlgae.pid_reset();
+//
+//        }
+
+        else if(deAlgae.runMotor_Up()){
+            deployed = true;
+        }
+
+//        else if(deAlgae.pid_runMotor_Up()){
+//            deployed = true;
+//        }
+
+        exit_timer ++;
+
+
+
+        //TODO: working two stage deAlgae
+//        if (button_count == 1 ) {
+//            deAlgae.runMotor_Up();
+//        }
+//
+//        else if(button_count >= 2 || exit_timer >= 500) {
+//            isfinished = deAlgae.reset();
+//
+//        }
+//
+//        exit_timer++;
+
+//   TODO: these are not expected to function correctly, both were scrapped halfway through due to simplifications on how deAlgae worked
+
+// TODO: stages
+//        if (button_count == 1 ) {
+//            deAlgae.runMotor_Up(Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE);
+//        }
+//
+//        else if(button_count == 2){
+//            deAlgae.runMotor_Up(Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE);
+//        }
+//
+//        else if(button_count >= 3 || exit_timer >= 500) {
+//            isfinished = deAlgae.reset();
+//
+//        }
 
 // TODO: floppy boy
 //        else if (button_count == 1){
@@ -85,7 +125,7 @@ public class DeAlgaeCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return exit_timer >= 500 || isfinished;}
+    public boolean isFinished() {return isfinished;}
 
 
     /**
@@ -101,9 +141,15 @@ public class DeAlgaeCommand extends Command {
         button_count = 0;
         exit_timer = 0;
         deAlgae.stop();
+        isfinished = false;
+        deployed = false;
     }
 
     public void button_detect(){
         button_count++;
     }
+
+//    public void return_button(){
+//        SmartDashboard.putNumber("button presses", button_count);
+//    }
 }

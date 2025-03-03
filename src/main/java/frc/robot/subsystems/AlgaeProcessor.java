@@ -1,86 +1,119 @@
 package frc.robot.subsystems;
-
 import com.revrobotics.RelativeEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants;
-import frc.robot.Units;
-import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.sparkmaxconfigs.SingleMotor;
+import edu.wpi.first.math.controller.PIDController;
+import java.lang.Math;
+import frc.robot.UnitsUtility;
 
 public class AlgaeProcessor extends SubsystemBase {
+
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
-
-    // processorPos is the current position of the processor encoder ticks.
-    private final RelativeEncoder processorPos;
-    private final DigitalInput tfLuna;
-    private final PIDController deployPID;
-
-    private double endPos;
+    private final RelativeEncoder angleEncoder;
+    private final PIDController anglePid;
+    private static double current_angle;
+    private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle, flatAngle, wheelMaxSpeed, angleSpeed, deployAngle;
 
 
-    public AlgaeProcessor(DigitalInput tfLuna, SingleMotor wheelMotor, SingleMotor angleMotor, PIDController deployPID){
+    public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid){
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
-        this.tfLuna = tfLuna;
-        this.deployPID = deployPID;
+        this.anglePid = anglePid;
 
-        this.processorPos = this.angleMotor.getRelativeEncoder();
+        angleEncoder = angleMotor.getRelativeEncoder();
+
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        maxAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_ANGLE;
+        minAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_ANGLE;
+        maxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_SPEED;
+        minSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_SPEED;
+        defaultAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_DEFAULT_ANGLE;
+        deployAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_DEPLOY_ANGLE;
+
+        wheelMaxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_WHEEL_MAX_SPEED;
     }
 
 
-    // This will be placed on a loop in RobotContainer.
-    public void intakeAlgae() {
-        if (!algaeDetected()){
-            // Current voltage is 20, change in constants if needed.
-            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
-            // Current voltage is 10, change in constants if needed.
-            angleMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
-            endPos = getProcessorPos();
-            processorPos.setPosition(0.0);
-        } else {
-            deployPID.setSetpoint(-endPos);
-            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
-            angleMotor.accept(deployPID.calculate(getProcessorPos()));
-            processorPos.setPosition(0.0);
-        }
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("Processor Angle: ", getCurrentAngle());
+        SmartDashboard.putNumber("Processor Speed: ", getCurrentSpeed());
     }
 
 
-    public void launchAlgae() {
-        wheelMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
-    }
+    //TODO: find angle motor speed ratio
+    public boolean deploy(){
+        current_angle = getCurrentAngle();
 
+        wheelMotor.accept(-wheelMaxSpeed);
 
-    public boolean algaeDetected() {
-        if (tfLuna.get()) {
-            return true;
-        } else if (!tfLuna.get()) {
+        if (current_angle < maxAngle) {
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, deployAngle));
+            angleMotor.accept(pidOutput);
             return false;
+
         } else {
-            throw new IllegalStateException();
+            angleMotor.stop();
+            return true;
         }
     }
 
 
-    public double getProcessorPos() {
-        return Units.TicksToDegrees(processorPos.getPosition(), "NEO550");
+    public double getCurrentAngle() {
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        return current_angle;
     }
 
 
-    public void stopAngle() {
+    public double getCurrentSpeed(){
+        angleSpeed = angleMotor.motor.get();
+        return angleSpeed;
+    }
+
+
+    public void resetEncoder(){
+        angleEncoder.setPosition(0.0);
+    }
+
+
+    // used to limit the pid calculation output to be within acceptable speeds
+    private double coerceIn(double value) {
+        int sign = 1;
+        if (value < 0) {
+            sign = -1;
+        }
+
+        if ( Math.abs( value ) > maxSpeed) {
+            return maxSpeed * sign;
+        } else {
+            return Math.max( Math.abs(value), minSpeed) * sign;
+        }
+    }
+
+
+    // stops the arm and rolling motors
+    public void stop(){
+        wheelMotor.stop();
         angleMotor.stop();
     }
 
 
-    public void stopIntake() {
-        wheelMotor.stop();
-    }
+    // moves arm back to being parallel with the elevator with pid
+    // this function returns, avoid using for now in favor of manReset function below
+    public boolean reset(){
+        double PIDoutput;
+        current_angle = getCurrentAngle();
 
+        if(current_angle > defaultAngle) {
+            PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+            angleMotor.accept(PIDoutput);
+            return false;
+        }
 
-    public void resetEncoder() {
-        processorPos.setPosition(0.0);
+        angleMotor.stop();
+        return true;
     }
 }

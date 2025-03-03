@@ -20,16 +20,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.actions.AlignToTargetCommand;
-import frc.robot.commands.actions.DeAlgaeCommand;
-import frc.robot.commands.actions.ElevatorCommand;
-import frc.robot.commands.actions.EndEffectorCommand;
+import frc.robot.commands.actions.*;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
 import java.io.File;
-import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 import swervelib.SwerveInputStream;
 
@@ -49,21 +44,22 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
-   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
-           new DigitalInput(Constants.AlgaeProcessorConstants.lunaChannel),
-          motorComponents.algaeProcessorMotor,
-          motorComponents.algaeProcessorAngleMotor,
-          new PIDController(
-                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_P,
-                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_I,
-                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_D)
-   );
+//   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
+//           new DigitalInput(Constants.AlgaeProcessorConstants.lunaChannel),
+//          motorComponents.algaeProcessorMotor,
+//          motorComponents.algaeProcessorAngleMotor,
+//          new PIDController(
+//                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_P,
+//                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_I,
+//                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_D)
+//   );
 
   private final EndEffector endEffector = new EndEffector(
           motorComponents.endEffectorMotor,
           new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
   );
 
+  //TOdo: Uncomment
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
   private final Elevator elevator = new Elevator(
           new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
@@ -75,32 +71,31 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
                   false,
                   CounterBase.EncodingType.k1X),
-          new PIDController(
+          new ProfiledPIDController(
                   Constants.ElevatorConstants.ELEVATOR_P,
                   Constants.ElevatorConstants.ELEVATOR_I,
-                  Constants.ElevatorConstants.ELEVATOR_D),
-//                  new TrapezoidProfile.Constraints(
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
-//          ),
+                  Constants.ElevatorConstants.ELEVATOR_D,
+                  new TrapezoidProfile.Constraints(
+                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)),
           new ElevatorFeedforward(
+                  Constants.ElevatorConstants.ELEVATOR_KS,
                   Constants.ElevatorConstants.ELEVATOR_KG,
                   Constants.ElevatorConstants.ELEVATOR_KV,
                   Constants.ElevatorConstants.ELEVATOR_KA)
   );
 
-  private final Climber climber = new Climber(
-          Components.getInstance().climberMotor,
-          new DigitalInput(Constants.ClimberConstants.TFChannel),
-          new PIDController(
-                  Constants.ClimberConstants.PROPORTIONAL,
-                  Constants.ClimberConstants.INTEGRAL,
-                  Constants.ClimberConstants.DERIVATIVE),
-          Constants.ClimberConstants.TARGETANGLE,
-          Constants.ClimberConstants.MAXVOLTS,
-          Constants.ClimberConstants.MINVOLTS
-  );
-
+//  private final Climber climber = new Climber(
+//          Components.getInstance().climberMotor,
+//          new DigitalInput(Constants.ClimberConstants.TFChannel),
+//          new PIDController(
+//                  Constants.ClimberConstants.PROPORTIONAL,
+//                  Constants.ClimberConstants.INTEGRAL,
+//                  Constants.ClimberConstants.DERIVATIVE),
+//          Constants.ClimberConstants.TARGETANGLE,
+//          Constants.ClimberConstants.MAXVOLTS,
+//          Constants.ClimberConstants.MINVOLTS
+//  );
 
   private final DeAlgae deAlgae = new DeAlgae(
           motorComponents.deAlgaeWheelMotor,
@@ -110,15 +105,21 @@ public class RobotContainer {
                   Constants.DeAlgaeConstants.DE_ALGAE_I,
                   Constants.DeAlgaeConstants.DE_ALGAE_D));
 
+  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
+          motorComponents.algaeProcessorWheelMotor,
+          motorComponents.algaeProcessorAngleMotor,
+          new PIDController(
+                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_P,
+                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_I,
+                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_D));
+
   // TODO: Uncomment below later.
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
-
 
 
   /**
    * Commands are implemented here...
    */
-
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
           visionSubsystem,
           drivebase,
@@ -127,39 +128,35 @@ public class RobotContainer {
   );
 
 
-  EndEffectorCommand endEffectorCommand = new EndEffectorCommand(endEffector);
+  EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector);
+  EndEffectorLoadCommand endEffectorLoadCommand = new EndEffectorLoadCommand(endEffector);
+
+  DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
 
 
 /**
  * Elevator commands
  */
-//  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
-//        elevator,
-//        1);
-//
-//  ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator,
-//  2);
-//
-//  ElevatorCommand elevatorCommandL3 = new ElevatorCommand(
-//          elevator, // elevatorsubsystem
-//          3 // level
-//          );
-//
-//  ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator,
-//  4);
-//
-//  DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
+  ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator,
+  2);
+
+  ElevatorCommand elevatorCommandL3 = new ElevatorCommand(
+          elevator, // elevatorsubsystem
+          3 // level
+          );
+
+  ElevatorCommand elevatorCommandL4 = new ElevatorCommand(elevator,
+  4);
 
 
-//  // Conditions to be met: In front of target april tag
+  // Conditions to be met: In front of target april tag
 //  ScoreCorralCommand scoreCorralCommand = new ScoreCorralCommand(
-//          // vision
-//          // swervesubsystem
-//          // elevator
-//          // end effector
-//          // left, right offset
-//          // level
-//  );
+          // vision
+          // swervesubsystem
+          // elevator
+          // end effector
+          // left, right offset
+          // level
 
 
   /**
@@ -296,30 +293,41 @@ public class RobotContainer {
 
     } else {
       joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      //joystick.button(9).whileTrue(
+      // joystick.button(9).whileTrue(
               //drivebase.driveToPose(
                //       new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       //joystick.button(10).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       // joystick.button(0).onTrue(Commands.none());
 
-// Algae Command testing
-//       joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly()); //replaced deploy with manDeploy
-//       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::runMotor_Up).repeatedly());
-//       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly());
-//       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly()); // replaced reset with manReset
-//       joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
-//       joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEnconder));
-//       joystick.button(7).onFalse(Commands.runOnce(deAlgae::stop));
-//       joystick.button(8).onFalse(Commands.runOnce(deAlgae::stop));
-//       joystick.button(9).onFalse(Commands.runOnce(deAlgae::stop));
-//       joystick.button(10).onFalse(Commands.runOnce(deAlgae::stop));
 
-//       joystick.button(3).onTrue(deAlgaeCommand);
-//       joystick.button(3).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+      // Algae Command testing
+//      joystick.button(7).onTrue(deAlgaeCommand);
+//      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+//      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
+//              .onFalse(Commands.runOnce(deAlgae::stop));
+//      joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
+//              .onFalse(Commands.runOnce(deAlgae::stop));
+//      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
+//              .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
+//      joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
+//      joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
 
-      joystick.trigger().whileTrue(endEffectorCommand);
 
+
+//      // end effector tests
+//      joystick.trigger()
+//              .and( joystick.button(2) )
+//              .whileTrue(endEffectorLoadCommand);
+//      joystick.trigger()
+//              .and( joystick.button(3) )
+//              .whileTrue(endEffectorEjectCommand);
+
+      // Elevator Simple GOTO level commands for testing
+//      joystick.button(2).whileTrue( elevatorCommandL2 );
+//      joystick.button(3).whileTrue( elevatorCommandL3 );
+//      joystick.button(4).whileTrue( elevatorCommandL4 );
     }
   }
 
@@ -344,9 +352,4 @@ public class RobotContainer {
 
 
   public void setMotorBrake(boolean brake) { drivebase.setMotorBrake(brake); }
-
-  public void displaySubsystemSuffleboard(){
-    SmartDashboard.putNumber("DeAlgae Angle:", deAlgae.getCurrentAngle());
-    SmartDashboard.putNumber("DeAlgae Speed:", deAlgae.getCurrent_Speed());
-  }
 }
