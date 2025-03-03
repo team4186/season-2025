@@ -105,6 +105,14 @@ public class RobotContainer {
                   Constants.DeAlgaeConstants.DE_ALGAE_I,
                   Constants.DeAlgaeConstants.DE_ALGAE_D));
 
+  private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
+          motorComponents.algaeProcessorWheelMotor,
+          motorComponents.algaeProcessorAngleMotor,
+          new PIDController(
+                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_P,
+                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_I,
+                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_D));
+
   // TODO: Uncomment below later.
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
 

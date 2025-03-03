@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import frc.robot.Constants;
+import frc.robot.subsystems.AlgaeProcessor;
 //import frc.robot.subsystems.Climber;
 //import frc.robot.subsystems.Elevator;
 
@@ -24,6 +25,10 @@ public final class Components {
     //TODO:Uncomment LAater
 //    public final SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
+    private final AlgaeProcessorMotors algaeProcessorMotors = new AlgaeProcessorMotors();
+    public final SingleMotor algaeProcessorWheelMotor =  algaeProcessorMotors.wheelMotor;
+    public final SingleMotor algaeProcessorAngleMotor = algaeProcessorMotors.angleMotor;
+
     private final DeAlgaeMotors deAlgaeMotors = new DeAlgaeMotors();
     public final SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
     public final SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
@@ -40,18 +45,18 @@ public final class Components {
         return instance;
     }
 
-    //TODO: Uncomment, fix ID's, add to chain
-//    public static final class AlgaeProcessorMotor {
-//        public SingleMotor algaeWheelMotor = new SingleMotor(
-//                new SparkMax(13, SparkLowLevel.MotorType.kBrushless),
-//                DefaultMotorConfigs.getInstance().DefaultConfig,
-//                false);
-//
-//        public SingleMotor algaeProcessorAngleMotor = new SingleMotor(
-//                new SparkMax(14, SparkLowLevel.MotorType.kBrushless),
-//                DefaultMotorConfigs.getInstance().HoldingBaseConfig,
-//                false);
-//    }
+    //TODO: fix IDs
+    public static final class AlgaeProcessorMotors {
+        public SingleMotor wheelMotor = new SingleMotor(
+                new SparkMax(98, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DefaultConfig,
+                false);
+
+        public SingleMotor angleMotor = new SingleMotor(
+                new SparkMax(99, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DeAlgaeConfig,
+                true);
+    }
 
     //TODO: Uncomment, get ID's
 //    public static final class ClimberMotor {

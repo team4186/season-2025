@@ -8,6 +8,7 @@ import frc.robot.Units;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
+import edu.wpi.first.math.MathUtil;
 
 //TODO: check if motor requires voltage to lock, fix return statements
 public class Climber extends SubsystemBase {
@@ -17,17 +18,13 @@ public class Climber extends SubsystemBase {
     private final DigitalInput beamBreak;
     private final PIDController PIDController;
     private final double targetAngle;
-    private final double MAXVOLTS;
-    private final double MINVOLTS;
 
-    public Climber(SingleMotor motor, DigitalInput beamBreak, PIDController PIDController, double targetAngle, double MAXVOLTS, double MINVOLTS) {
+    public Climber(SingleMotor motor, DigitalInput beamBreak, PIDController PIDController, double targetAngle) {
         this.motor = motor;
         this.encoder = motor.getRelativeEncoder();
         this.beamBreak = beamBreak;
         this.PIDController = PIDController;
         this.targetAngle = targetAngle;
-        this.MAXVOLTS = MAXVOLTS;
-        this.MINVOLTS = MINVOLTS;
     }
 
 
@@ -41,7 +38,9 @@ public class Climber extends SubsystemBase {
     //Avoid using for now, no safeties
     public void deployClimb() {
         if (getEncoderPos() < targetAngle){
-            motor.setVoltage(coerceIn(PIDController.calculate(getEncoderPos(), targetAngle)));
+            motor.setVoltage(MathUtil.clamp(PIDController.calculate(getEncoderPos(), targetAngle),
+                    Constants.ClimberConstants.MINSPEED,
+                    Constants.ClimberConstants.MAXSPEED));
             encoder.setPosition(0.0);
         }
     }
@@ -49,7 +48,8 @@ public class Climber extends SubsystemBase {
 
     public void stowClimb(){
         if (!beamBreak.get()) {
-            motor.setVoltage(coerceIn(PIDController.calculate(getEncoderPos(), -targetAngle)));
+            motor.setVoltage(MathUtil.clamp(PIDController.calculate(getEncoderPos(), -targetAngle),
+                    Constants.ClimberConstants.MINSPEED, Constants.ClimberConstants.MAXSPEED));
             encoder.setPosition(0.0);
         } else {
             motor.stop();
@@ -86,18 +86,6 @@ public class Climber extends SubsystemBase {
 
     public double getEncoderPos() {
         return Units.TicksToDegrees(encoder.getPosition(), Constants.ClimberConstants.GEARRATIO);
-    }
-
-
-    public double coerceIn(double value) {
-        // Fail-safe
-        double output = 0.0;
-        if (Math.abs(value) >= MAXVOLTS) {
-            output = Math.copySign(MAXVOLTS, value);
-        } else if (Math.abs(value) <= MINVOLTS) {
-            output = Math.copySign(MINVOLTS, value);
-        }
-        return output;
     }
 
     public void updateSmartDashboard() {
