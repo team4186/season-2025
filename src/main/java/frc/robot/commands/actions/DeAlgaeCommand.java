@@ -51,9 +51,18 @@ public class DeAlgaeCommand extends Command {
             isfinished = deAlgae.reset();
         }
 
+//        if(deployed || exit_timer >= 150){
+//            isfinished = deAlgae.pid_reset();
+//
+//        }
+
         else if(deAlgae.runMotor_Up()){
             deployed = true;
         }
+
+//        else if(deAlgae.pid_runMotor_Up()){
+//            deployed = true;
+//        }
 
         exit_timer ++;
 
