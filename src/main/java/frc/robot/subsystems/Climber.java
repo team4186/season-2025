@@ -4,22 +4,26 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Units;
+import frc.robot.UnitsUtility;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
-import java.lang.Math;
 import edu.wpi.first.math.MathUtil;
 
 //TODO: check if motor requires voltage to lock, fix return statements
 public class Climber extends SubsystemBase {
     private final SingleMotor motor;
     private final RelativeEncoder encoder;
-    // Change the digital input channel later.
-    private final DigitalInput beamBreak;
+
     private final PIDController PIDController;
     private final double targetAngle;
 
-    public Climber(SingleMotor motor, DigitalInput beamBreak, PIDController PIDController, double targetAngle) {
+     private final DigitalInput beamBreak;
+
+    public Climber(
+            SingleMotor motor,
+            DigitalInput beamBreak,
+            PIDController PIDController,
+            double targetAngle){
         this.motor = motor;
         this.encoder = motor.getRelativeEncoder();
         this.beamBreak = beamBreak;
@@ -30,8 +34,10 @@ public class Climber extends SubsystemBase {
 
     @Override
     public void periodic(){
-        //SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
-        //SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
+        /* TODO:
+        SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
+        SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
+        */
     }
 
 
@@ -47,7 +53,7 @@ public class Climber extends SubsystemBase {
 
 
     public void stowClimb(){
-        if (!beamBreak.get()) {
+        if (!UnitsUtility.isBeamBroken(beamBreak, false, this.getName()) ) {
             motor.setVoltage(MathUtil.clamp(PIDController.calculate(getEncoderPos(), -targetAngle),
                     Constants.ClimberConstants.MINSPEED, Constants.ClimberConstants.MAXSPEED));
             encoder.setPosition(0.0);
@@ -59,16 +65,10 @@ public class Climber extends SubsystemBase {
 
     //engageClimb uses beam breaks, has safety and uses higher voltage than deploy
     public void engageClimb() {
-        try {
-            if (beamBreak.get()) {
-                motor.stop();
-            } else {
-                motor.setVoltage(Constants.ClimberConstants.CLIMBER_CLIMB_VOLTAGE);//only use if motor requires power while up
-            }
-        } catch (IllegalStateException e) {
+        if ( UnitsUtility.isBeamBroken(beamBreak, true, "ClimberSubsystem")) {
             motor.stop();
-            String msg = "Climber Beambreak error: " + e.toString();
-            System.out.println( msg );
+        } else {
+            motor.setVoltage(Constants.ClimberConstants.CLIMBER_CLIMB_VOLTAGE);//only use if motor requires power while up
         }
     }
 
@@ -85,9 +85,6 @@ public class Climber extends SubsystemBase {
 
 
     public double getEncoderPos() {
-        return Units.TicksToDegrees(encoder.getPosition(), Constants.ClimberConstants.GEARRATIO);
-    }
-
-    public void updateSmartDashboard() {
+        return UnitsUtility.ticksToDegrees(encoder.getPosition(), Constants.ClimberConstants.GEARRATIO);
     }
 }

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.units.measure.Voltage;
@@ -14,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
+import frc.robot.UnitsUtility;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import java.util.InputMismatchException;
 
@@ -21,115 +21,104 @@ public class Elevator extends SubsystemBase{
 
     // Motor, Encoder, and Limit Switches variables
     private final ElevatorMotorSet elevatorMotors;
-//    private final Encoder encoder;
     private final RelativeEncoder relativeEncoder;
 
-    // Make id # correct
-//    private final DigitalInput bottomLimitSwitch;
-//    private final DigitalInput topLimitSwitch;
+    // TODO: CanIds to be installed and implementation
+     private final Encoder encoder;
+     private final DigitalInput bottomLimitSwitch;
+     private final DigitalInput topLimitSwitch;
 
     private final ProfiledPIDController pid;
     private final ElevatorFeedforward elevatorFeedforward;
 
-    // private final SysIdRoutine routine;
+    private final SysIdRoutine routine;
 
 
     public Elevator(
-            ElevatorMotorSet elevatorMotor,
-            ProfiledPIDController pid,
-            ElevatorFeedforward elevatorFeedforward
+             DigitalInput bottomLimitSwitch,
+             DigitalInput topLimitSwitch,
+             ElevatorMotorSet elevatorMotor,
+             Encoder encoder,
+             ProfiledPIDController pid,
+             ElevatorFeedforward elevatorFeedforward
     ) {
-        // motors
+
         this.elevatorMotors = elevatorMotor;
+
+        // TODO: Replace relative encoder when THRU-BORE Encoder installed
         this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
         this.relativeEncoder.setPosition(0.0);
 
-
         // control
         this.pid = pid;
-        this.elevatorFeedforward = elevatorFeedforward;
-    }
-
-    public Elevator(
-            DigitalInput bottomLimitSwitch,
-            DigitalInput topLimitSwitch,
-            ElevatorMotorSet elevatorMotor,
-            Encoder encoder,
-            ProfiledPIDController pid,
-            ElevatorFeedforward elevatorFeedforward
-    ) {
-        // motors
-        this.elevatorMotors = elevatorMotor;
-//        this.encoder = encoder;
-//        this.encoder.reset();
-
-        this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
-
-        // sensors
-//        this.bottomLimitSwitch = bottomLimitSwitch;
-//        this.topLimitSwitch = topLimitSwitch;
-
-        // control
-        this.pid = pid;
+        this.pid.reset(0.0);
         this.elevatorFeedforward = elevatorFeedforward;
 
-        // TODO: set elevator to bottom threshold and zero
-        //pid.reset(0.0);
-        encoder.reset();
+        this.getSubsystem();
 
-        // TODO: assign conversion of elevator distance with rotations of encoder to (SparkMaxConfig or directly to encoder???)
-//        encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
+        // TODO: Placeholder for later CAN Installation
+        // Limit Switches
+        this.bottomLimitSwitch = bottomLimitSwitch;
+        this.topLimitSwitch = topLimitSwitch;
 
-        // converte, 1 rotation == distance for relative encoder and encoder
+        // Encoder
+        this.encoder = encoder;
+        this.encoder.reset();
+        // this.encoder.setDistancePerPulse( 0 );
 
         // SysId Routine for dialing in values for our system
-//        routine = new SysIdRoutine(
-//                new SysIdRoutine.Config(),
-//                new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
-//        );
+        routine = new SysIdRoutine(
+                new SysIdRoutine.Config(),
+                new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
+        );
     }
 
 
-//    // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
-//    private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
-//
-//    }
-//
-//
-//    // callback that passes requested voltage directly to your motor controllers
-//    private void voltageDrive(Voltage voltage) {
+    // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
+    private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
+
+    }
+
+
+    // callback that passes requested voltage directly to your motor controllers
+    private void voltageDrive(Voltage voltage) {
 //        elevatorMotors.
-//    }
-//
-//    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-//        return routine.quasistatic(direction);
-//    }
-//
-//    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-//        return routine.dynamic(direction);
-//    }
+    }
+
+
+    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+        return routine.quasistatic(direction);
+    }
+
+
+    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+        return routine.dynamic(direction);
+    }
+
 
     @Override
     public void periodic(){
         // publish smart dashboard info here
-//        SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
         SmartDashboard.putNumber("Elevator_RelativeEncoderDistance", relativeEncoder.getPosition());
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
         SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
 
-//        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
-//        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
+        /* TODO: Implement when CANIds established
+        SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
+        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
+        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
+        */
     }
 
 
-    /*
-        This is the thing we can do to find the distance the motor has traveled.
     /**
      * This is the thing we can do to find the distance the motor has traveled.
-     *
-     * To get the distance traveled from a bore encoder, you need to count the number of pulses generated by the encoder and multiply that number by the "distance per pulse" which is calculated based on the circumference of the bore and the encoder's resolution (pulses per revolution) - essentially, converting the rotational movement of the bore into a linear distance traveled.
-     *
-     *  Key steps:
+     * To get the distance traveled from a bore encoder, you need to count the number of pulses generated by the encoder
+     *  and multiply that number by the "distance per pulse" which is calculated based on the circumference of the bore
+     *  and the encoder's resolution (pulses per revolution) - essentially, converting the rotational movement of the
+     *  bore into a linear distance traveled.
+     * <p>
+     * Key steps:
      *      Measure the bore circumference: This is the distance traveled for one full rotation of the bore.
      *      Find the encoder resolution: This is the number of pulses the encoder generates per revolution.
      *      Calculate "distance per pulse": Divide the bore circumference by the encoder resolution.
@@ -137,35 +126,25 @@ public class Elevator extends SubsystemBase{
      *      Calculate distance traveled: Multiply the "distance per pulse" by the number of encoder pulses rea
      */
     public void goToLevel( int requestedLevel ) {
-        double levelHeight;
+        double levelHeight = getLevelConstant(requestedLevel);
+        double topLevel = getLevelConstant(5);
+        double bottomLevel = getLevelConstant(0);
 
-        levelHeight = getLevelConstant(requestedLevel);
+        double currentPos = getPositionMeters();
+        boolean isPositive =  ( levelHeight - currentPos >= 0) ;
 
-//        double speed = Units.ClampValue(pid.calculate(distanceToLevel, levelHeight),
-//                -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
-//                Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED);
-
-        double voltsOutput = MathUtil.clamp(
-                elevatorFeedforward.calculateWithVelocities(
-                        getVelocityMetersPerSecond(),
-                        pid.getSetpoint().velocity) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
-
-
-
-        elevatorMotors.setLeadVoltage(voltsOutput);
-//        moveToLevel(voltsOutput, levelHeight);
-    }
-
-
-    // WIP Placeholder for stopping at limit switches when moving in an up/down relative direction
-    // public void goUp(double distanceToLevel, double goalHeight) {
-    public void moveToLevel( double voltage, double levelHeight) {
-        // limit switches
-//        if ( (voltage >= 0.001 && topLimitSwitch.get()) || (voltage <= 0.001 && bottomLimitSwitch.get()) ) {
-//            elevatorMotors.stop();
-//        } else {
-//
-//        }
+        // stop motors if ( negative difference -> check bottom limit OR positive difference -> check top limit )
+        // TODO: Switch when
+        //  if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && UnitsUtility.isBeamBroken(topLimitSwitch, true, this.getName()))) {
+        if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
+            elevatorMotors.stop();
+        } else {
+            double voltsOutput = MathUtil.clamp(
+                    elevatorFeedforward.calculateWithVelocities(
+                            getVelocityMetersPerSecond(),
+                            pid.getSetpoint().velocity) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
+            elevatorMotors.setLeadVoltage(voltsOutput);
+        }
 
     }
 
@@ -183,13 +162,15 @@ public class Elevator extends SubsystemBase{
     }
 
 
-    // Check
     public boolean isAtLevelThreshold( int level ){
-        return ( getPositionMeters() >= getLevelConstant(level) ); // || topLimitSwitch.get() );
+        return MathUtil.isNear(
+                getPositionMeters(),
+                getLevelConstant( level ),
+                Constants.ElevatorConstants.ELEVATOR_DEFAULT_TOLERANCE);
     }
 
 
-    public boolean aroundHeight(double height) {
+    public boolean isAtHeight( double height ) {
         return MathUtil.isNear(
                 getPositionMeters(),
                 height,
@@ -200,13 +181,6 @@ public class Elevator extends SubsystemBase{
     // TODO: BRAINSTORM: Useful for adjusting past breakpoint? should just reset instead probably?
     public void reset() {
         goToLevel(0);
-
-        // TODO: Need to catch not finding true/false result?
-//        if (bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
-//            stopMotor();
-//            encoder.reset();
-//            // pid.reset();
-//        }
     }
 
 

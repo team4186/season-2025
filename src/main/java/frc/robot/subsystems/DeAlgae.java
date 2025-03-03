@@ -6,7 +6,7 @@ import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
-import frc.robot.Units;
+import frc.robot.UnitsUtility;
 
 public class DeAlgae extends SubsystemBase {
 
@@ -25,7 +25,7 @@ public class DeAlgae extends SubsystemBase {
 
         angleEncoder = angleMotor.getRelativeEncoder();
 
-        current_angle = Math.toDegrees(Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
         maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
         minAngle = Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE;
         maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
@@ -108,7 +108,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        current_angle = (Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
         return current_angle;
     }
 

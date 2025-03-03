@@ -6,7 +6,7 @@ import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
-import frc.robot.Units;
+import frc.robot.UnitsUtility;
 
 public class AlgaeProcessor extends SubsystemBase {
 
@@ -25,7 +25,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
         angleEncoder = angleMotor.getRelativeEncoder();
 
-        current_angle = Math.toDegrees(Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
         maxAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_ANGLE;
         minAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_ANGLE;
         maxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_SPEED;
@@ -36,6 +36,7 @@ public class AlgaeProcessor extends SubsystemBase {
         wheelMaxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_WHEEL_MAX_SPEED;
     }
 
+
     @Override
     public void periodic(){
         SmartDashboard.putNumber("Processor Angle: ", getCurrentAngle());
@@ -44,34 +45,34 @@ public class AlgaeProcessor extends SubsystemBase {
 
 
     //TODO: find angle motor speed ratio
-
     public boolean deploy(){
         current_angle = getCurrentAngle();
 
         wheelMotor.accept(-wheelMaxSpeed);
 
         if (current_angle < maxAngle) {
-
-            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, deployAngle));
             angleMotor.accept(pidOutput);
             return false;
-        }
 
-        else {
+        } else {
             angleMotor.stop();
             return true;
         }
     }
 
+
     public double getCurrentAngle() {
-        current_angle = (Units.TicksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
         return current_angle;
     }
+
 
     public double getCurrentSpeed(){
         angleSpeed = angleMotor.motor.get();
         return angleSpeed;
     }
+
 
     public void resetEncoder(){
         angleEncoder.setPosition(0.0);
@@ -92,14 +93,15 @@ public class AlgaeProcessor extends SubsystemBase {
         }
     }
 
+
     // stops the arm and rolling motors
     public void stop(){
         wheelMotor.stop();
         angleMotor.stop();
     }
 
-    // moves arm back to being parallel with the elevator with pid
 
+    // moves arm back to being parallel with the elevator with pid
     // this function returns, avoid using for now in favor of manReset function below
     public boolean reset(){
         double PIDoutput;

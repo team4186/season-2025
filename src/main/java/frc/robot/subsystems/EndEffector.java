@@ -5,17 +5,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
+import frc.robot.UnitsUtility;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 
 
 public class EndEffector extends SubsystemBase {
     private final SingleMotor endEffectorMotor;
     private final RelativeEncoder relativeEncoder;
-    private final DigitalInput luna;
+    private final DigitalInput tfLuna;
 
 
-    public EndEffector(SingleMotor endEffectorMotor, DigitalInput luna){
-        this.luna = luna;
+    public EndEffector(SingleMotor endEffectorMotor, DigitalInput tfLuna){
+        this.tfLuna = tfLuna;
         this.endEffectorMotor = endEffectorMotor;
         this.relativeEncoder = endEffectorMotor.getRelativeEncoder();
     }
@@ -31,18 +32,7 @@ public class EndEffector extends SubsystemBase {
 
     // TODO: Update logic when luna is installed
     public boolean hasGamePiece(){
-
-        try {
-            if ( luna.get() ) {
-                return true;
-            }
-        } catch (IllegalStateException e) {
-            String msg = "EndEffector Beambreak error: " + e;
-            System.out.println(msg);
-        }
-
-        // return false if not confident about item
-        return false;
+        return UnitsUtility.isBeamBroken( tfLuna, true, this.getName());
     }
 
 

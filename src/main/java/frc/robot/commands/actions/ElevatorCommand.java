@@ -66,7 +66,7 @@ public final class ElevatorCommand extends Command {
         // Moved to level completed -> reset!
         if ( taskState == Task.RESET ) {
             // if break case -> taskState = Task.STOP
-            if(elevatorSubsystem.aroundHeight(goalLevel)){
+            if(elevatorSubsystem.isAtLevelThreshold(goalLevel)){
                 taskState = Task.STOP;
             }
             elevatorSubsystem.reset();
@@ -74,8 +74,7 @@ public final class ElevatorCommand extends Command {
 
         // STOP case, Finish!
         if( taskState == Task.STOP ){
-            //todo: IDK what this is, figure out
-            isFinished = ( taskState.equals( Task.STOP ) );
+            isFinished = true;
             elevatorSubsystem.stopMotor();
         }
     }
