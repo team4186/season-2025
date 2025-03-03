@@ -98,7 +98,7 @@ public class DeAlgae extends SubsystemBase {
         return current_angle;
     }
 
-    public double getCurrent_Speed(){
+    public double getCurrentSpeed(){
         angleSpeed = angleMotor.motor.get();
         return angleSpeed;
     }
@@ -119,7 +119,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
-    public void resetEnconder(){
+    public void resetEncoder(){
         angleEncoder.setPosition(0.0);
     }
 
