@@ -18,7 +18,7 @@ public final class Components {
 //    public final SingleMotor algaeProcessorAngleMotor = algaeProcessorMotorControllers.algaeProcessorAngleMotor;
 //
     public final ElevatorMotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
-    //public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
+    // public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
 
     public final SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
     //TODO:Uncomment LAater
@@ -84,15 +84,15 @@ public final class Components {
                 DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
                 false);
     }
-
-
-    public static final class ElevatorMotorsYagsl {
-        public final YagslElevatorMotorSet elevatorMotorsYagsl = new YagslElevatorMotorSet(
-                new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
-                new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
-                false);
-    }
+//
+//
+//    public static final class ElevatorMotorsYagsl {
+//        public final YagslElevatorMotorSet elevatorMotorsYagsl = new YagslElevatorMotorSet(
+//                new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
+//                new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
+//                DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
+//                false);
+//    }
 
 
     public static final class EndEffectorMotor {
