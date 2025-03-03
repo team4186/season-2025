@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
 import frc.robot.Units;
 
-
 public class DeAlgae extends SubsystemBase {
 
     private final SingleMotor wheelMotor;
