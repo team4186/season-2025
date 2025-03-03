@@ -79,8 +79,8 @@ public final class Constants {
     public static final double GEARRATIO = 0.04;
     // Subject to change, change later after testing.
     public static final double TARGETANGLE = 110.0;
-    public static final double MAXVOLTS = 14.0;
-    public static final double MINVOLTS = 10.0;
+    public static final double MAXSPEED = 0.1;
+    public static final double MINSPEED = 0.05;
   }
 
 
