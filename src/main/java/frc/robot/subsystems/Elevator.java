@@ -21,7 +21,7 @@ public class Elevator extends SubsystemBase{
 
     // Motor, Encoder, and Limit Switches variables
     private final ElevatorMotorSet elevatorMotors;
-    private final Encoder encoder;
+//    private final Encoder encoder;
     private final RelativeEncoder relativeEncoder;
 
     // Make id # correct
@@ -34,6 +34,21 @@ public class Elevator extends SubsystemBase{
     // private final SysIdRoutine routine;
 
 
+    public Elevator(
+            ElevatorMotorSet elevatorMotor,
+            ProfiledPIDController pid,
+            ElevatorFeedforward elevatorFeedforward
+    ) {
+        // motors
+        this.elevatorMotors = elevatorMotor;
+        this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
+        this.relativeEncoder.setPosition(0.0);
+
+
+        // control
+        this.pid = pid;
+        this.elevatorFeedforward = elevatorFeedforward;
+    }
 
     public Elevator(
             DigitalInput bottomLimitSwitch,
@@ -45,8 +60,8 @@ public class Elevator extends SubsystemBase{
     ) {
         // motors
         this.elevatorMotors = elevatorMotor;
-        this.encoder = encoder;
-        this.encoder.reset();
+//        this.encoder = encoder;
+//        this.encoder.reset();
 
         this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
 
@@ -63,7 +78,7 @@ public class Elevator extends SubsystemBase{
         encoder.reset();
 
         // TODO: assign conversion of elevator distance with rotations of encoder to (SparkMaxConfig or directly to encoder???)
-        encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
+//        encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
 
         // converte, 1 rotation == distance for relative encoder and encoder
 
@@ -97,9 +112,10 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic(){
         // publish smart dashboard info here
-        SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
+//        SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
         SmartDashboard.putNumber("Elevator_RelativeEncoderDistance", relativeEncoder.getPosition());
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
+        SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
 
 //        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
 //        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
@@ -123,7 +139,6 @@ public class Elevator extends SubsystemBase{
     public void goToLevel( int requestedLevel ) {
         double levelHeight;
 
-        double currentPos = encoder.getDistance();
         levelHeight = getLevelConstant(requestedLevel);
 
 //        double speed = Units.ClampValue(pid.calculate(distanceToLevel, levelHeight),
@@ -211,6 +226,5 @@ public class Elevator extends SubsystemBase{
 
     public void stopMotor() {
         elevatorMotors.stop();
-        // pid.reset(0.0);
     }
 }

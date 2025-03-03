@@ -6,10 +6,12 @@ import frc.robot.subsystems.Elevator;
 public class ManualElevatorCommand extends Command {
     private final Elevator elevatorSubsystem;
     private final int requestedLevel;
-    // private final boolean is_finished = false;
+    private boolean is_finished;
+
     public ManualElevatorCommand(Elevator elevatorSubsystem, int requestedLevel) {
         this.elevatorSubsystem = elevatorSubsystem;
         this.requestedLevel = requestedLevel;
+        is_finished = false;
     }
 
     @Override
@@ -20,11 +22,14 @@ public class ManualElevatorCommand extends Command {
     public void execute() {
         if (requestedLevel >= 0 && requestedLevel <= 5) {
            elevatorSubsystem.goToLevel(requestedLevel);
+        } else {
+            is_finished = true;
         }
     }
+
     @Override
     public boolean isFinished() {
-        return false;
+        return is_finished;
     }
 
     @Override

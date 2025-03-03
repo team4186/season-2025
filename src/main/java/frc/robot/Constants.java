@@ -64,6 +64,8 @@ public final class Constants {
         public static final double ALGAE_PROCESSOR_DEPLOY_ANGLE = 0.0; //TODO: placeholder
 
         public static final double ALGAE_PROCESSOR_WHEEL_MAX_SPEED = 1.0; // TODO: placeholder
+        public static final double ALGAE_PROCESSOR_INTAKE_SPEED = 0.0;
+        public static final double ALGAE_PROCESSOR_SWING_SPEED = 0.0;
     }
 
 
@@ -71,7 +73,7 @@ public final class Constants {
     //Climb voltage requires much higher values than move voltage.
     public static final int CLIMBER_CLIMB_VOLTAGE = 0; //TODO: placeHolder
     public static final int CLIMBER_MOVE_VOLTAGE = 0; //TODO: placeHolder
-    public static final int TFChannel = 0;
+    public static final int TFChannel = 1;
     public static final double PROPORTIONAL = 0.05;
     public static final double INTEGRAL = 0.0;
     public static final double DERIVATIVE = 0.0;
@@ -100,9 +102,9 @@ public final class Constants {
 
 
     public static final class ElevatorConstants {
-        public static final int ELEVATOR_BOTTOM_LIMIT_ID = 0;
-        public static final int ELEVATOR_TOP_LIMIT_ID = 0;
-        public static final int ELEVATOR_ENCODER_ID = 0;
+        public static final int ELEVATOR_BOTTOM_LIMIT_ID = 1;
+        public static final int ELEVATOR_TOP_LIMIT_ID = 2;
+        public static final int ELEVATOR_ENCODER_ID = 3;
 
         public static final double ELEVATOR_RAMP_RATE = 5;
         public static final double ELEVATOR_MAX_VELOCITY = 1.0;
@@ -156,7 +158,7 @@ public final class Constants {
     }
 
     public static final class EndEffectorConstants {
-        public static final int END_EFFECTOR_BEAM_BREAK = 0; //TODO: placeHolder
+        public static final int END_EFFECTOR_BEAM_BREAK = 5; //TODO: placeHolder
 
         public static final double END_EFFECTOR_EJECT_VOLTAGE = 12.0;
         public static final double END_EFFECTOR_INTAKE_VOLTAGE = 3.0;

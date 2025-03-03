@@ -44,14 +44,14 @@ public class AlgaeProcessor extends SubsystemBase {
     public void intakeAlgae() {
         if (!algaeDetected()){
             // Current voltage is 20, change in constants if needed.
-            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_SWING_VOLTAGE);
+            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_SWING_SPEED);
             // Current voltage is 10, change in constants if needed.
-            angleMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            angleMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_SPEED);
             endPos = getProcessorPos();
             processorPos.setPosition(0.0);
         } else {
             deployPID.setSetpoint(-endPos);
-            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+            wheelMotor.setVoltage(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_SPEED);
             angleMotor.accept(deployPID.calculate(getProcessorPos()));
             processorPos.setPosition(0.0);
         }
@@ -59,7 +59,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
 
     public void launchAlgae() {
-        wheelMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_VOLTAGE);
+        wheelMotor.setVoltage(-Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_INTAKE_SPEED);
     }
 
 

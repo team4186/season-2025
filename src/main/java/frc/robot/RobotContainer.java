@@ -62,15 +62,15 @@ public class RobotContainer {
   //TOdo: Uncomment
   // Elevator( bottomLimit, topLimit, motorSet, thru_bore_encoder, pid );
   private final Elevator elevator = new Elevator(
-          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
-          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
+//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
+//          new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
           motorComponents.elevatorMotors,
           // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
-          new Encoder(
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  false,
-                  CounterBase.EncodingType.k1X),
+//          new Encoder(
+//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+//                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+//                  false,
+//                  CounterBase.EncodingType.k1X),
           new ProfiledPIDController(
                   Constants.ElevatorConstants.ELEVATOR_P,
                   Constants.ElevatorConstants.ELEVATOR_I,
@@ -129,9 +129,9 @@ public class RobotContainer {
 /**
  * Elevator commands
  */
-  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
-        elevator,
-        1);
+//  ElevatorCommand elevatorCommandL1 = new ElevatorCommand(
+//        elevator,
+//        1);
 
   ElevatorCommand elevatorCommandL2 = new ElevatorCommand(elevator,
   2);
@@ -310,18 +310,21 @@ public class RobotContainer {
        //joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
        joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
 
-       // dealgae tests
-       joystick.button(7).onTrue(deAlgaeCommand);
-       joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+//       // dealgae tests
+//       joystick.button(7).onTrue(deAlgaeCommand);
+//       joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+//
+//      // end effector tests
+//      joystick.trigger()
+//              .and( joystick.button(2) )
+//              .whileTrue(endEffectorLoadCommand);
+//      joystick.trigger()
+//              .and( joystick.button(3) )
+//              .whileTrue(endEffectorEjectCommand);
 
-      // end effector tests
-      joystick.trigger()
-              .and( joystick.button(2) )
-              .whileTrue(endEffectorLoadCommand);
-      joystick.trigger()
-              .and( joystick.button(3) )
-              .whileTrue(endEffectorEjectCommand);
-
+      joystick.button(2).whileTrue( elevatorCommandL2 );
+      joystick.button(3).whileTrue( elevatorCommandL3 );
+      joystick.button(4).whileTrue( elevatorCommandL4 );
     }
   }
 
