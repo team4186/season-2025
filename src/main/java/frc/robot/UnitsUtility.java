@@ -3,18 +3,20 @@ package frc.robot;
 // JLR - nit: Does the class have what we need already -> import edu.wpi.first.math.util.Units
 // Utility Class
 // Ziyao - I'm not sure if they have the TicksToMeters or TicksToDegrees methods.
+import edu.wpi.first.wpilibj.DigitalInput;
+
 import java.lang.Math;
-public final class Units {
+public final class UnitsUtility {
     
-    private Units() {}
+    private UnitsUtility() {}
 
 
-    public static double FeetToMeters(double feet) {
+    public static double feetToMeters(double feet) {
         return 0.3048 * feet;
     }
 
 
-    public static double TicksToMeters(double encoderTicks, double wheelDiameter, String motorType) {
+    public static double ticksToMeters(double encoderTicks, double wheelDiameter, String motorType) {
         if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
             return (encoderTicks/42.0) * (Math.PI * wheelDiameter);
         } else {
@@ -23,17 +25,17 @@ public final class Units {
     }
 
 
-	public static double TicksToMeters(double encoderTicks, double wheelDiameter, double gearRatio) {
+	public static double ticksToMeters(double encoderTicks, double wheelDiameter, double gearRatio) {
 		return (encoderTicks/(42.0 * gearRatio)) * (Math.PI * wheelDiameter);
 	}
 
 
-	public static double TicksToDegrees(double encoderTicks, double gearRatio) {
+	public static double ticksToDegrees(double encoderTicks, double gearRatio) {
 		return ( (encoderTicks/ gearRatio) * 360) % 360;
 	}
 
 
-    public static double TicksToDegrees(double encoderTicks, String motorType) {
+    public static double ticksToDegrees(double encoderTicks, String motorType) {
 		if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
             // return (encoderTicks/8.57) % 360;
             return ((encoderTicks/42.0) * 360) % 360;
@@ -43,7 +45,7 @@ public final class Units {
     }
 
 
-    public static double InchesToCentimeters(double inches) {
+    public static double inchesToCentimeters(double inches) {
         return inches * 2.54;
     }
 
@@ -74,12 +76,24 @@ public final class Units {
     }
 
 
-    public static double ClampSpeed (double value) {
+    public static double clampSpeed (double value) {
         return Math.max(-1.0, Math.min(1.0, value));
     }
 
 
-    public static double ClampValue(double value, double max, double min) {
+    public static double clampValue(double value, double max, double min) {
         return Math.max(min, Math.min(max, value));
+    }
+
+
+    /** Safe-Handling Beam Break */
+    public static boolean isBeamBroken( DigitalInput beamBreak, boolean defaultValue, String systemName ){
+        try {
+            return beamBreak.get();
+        } catch (IllegalStateException e) {
+            String msg = systemName + " Beam break error: " + e;
+            System.out.println( msg );
+            return defaultValue;
+        }
     }
 }
