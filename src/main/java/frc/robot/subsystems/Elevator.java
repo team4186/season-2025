@@ -4,14 +4,16 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
-import frc.robot.Units;
-
 import java.util.InputMismatchException;
 
 public class Elevator extends SubsystemBase{
@@ -22,11 +24,14 @@ public class Elevator extends SubsystemBase{
     private final RelativeEncoder relativeEncoder;
 
     // Make id # correct
-    private final DigitalInput bottomLimitSwitch;
-    private final DigitalInput topLimitSwitch;
+//    private final DigitalInput bottomLimitSwitch;
+//    private final DigitalInput topLimitSwitch;
 
     private final ProfiledPIDController pid;
     private final ElevatorFeedforward elevatorFeedforward;
+
+    // private final SysIdRoutine routine;
+
 
 
     public Elevator(
@@ -45,8 +50,8 @@ public class Elevator extends SubsystemBase{
         this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
 
         // sensors
-        this.bottomLimitSwitch = bottomLimitSwitch;
-        this.topLimitSwitch = topLimitSwitch;
+//        this.bottomLimitSwitch = bottomLimitSwitch;
+//        this.topLimitSwitch = topLimitSwitch;
 
         // control
         this.pid = pid;
@@ -60,8 +65,33 @@ public class Elevator extends SubsystemBase{
         encoder.setDistancePerPulse( 0 ); // TODO: Set distance per pulse here
 
         // converte, 1 rotation == distance for relative encoder and encoder
+
+        // SysId Routine for dialing in values for our system
+//        routine = new SysIdRoutine(
+//                new SysIdRoutine.Config(),
+//                new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
+//        );
     }
 
+
+//    // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
+//    private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
+//
+//    }
+//
+//
+//    // callback that passes requested voltage directly to your motor controllers
+//    private void voltageDrive(Voltage voltage) {
+//        elevatorMotors.
+//    }
+//
+//    public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+//        return routine.quasistatic(direction);
+//    }
+//
+//    public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+//        return routine.dynamic(direction);
+//    }
 
     @Override
     public void periodic(){
@@ -69,8 +99,9 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
         SmartDashboard.putNumber("Elevator_RelativeEncoderDistance", relativeEncoder.getPosition());
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
-        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
-        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
+
+//        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
+//        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
     }
 
 
@@ -89,13 +120,10 @@ public class Elevator extends SubsystemBase{
      *      Calculate distance traveled: Multiply the "distance per pulse" by the number of encoder pulses rea
      */
     public void goToLevel( int requestedLevel ) {
-        double distanceToLevel;
         double levelHeight;
 
         double currentPos = encoder.getDistance();
         levelHeight = getLevelConstant(requestedLevel);
-        distanceToLevel = levelHeight - currentPos;
-
 
 //        double speed = Units.ClampValue(pid.calculate(distanceToLevel, levelHeight),
 //                -Constants.ElevatorConstants.ELEVATOR_DEFAULT_FREE_MOVE_SPEED,
@@ -106,18 +134,22 @@ public class Elevator extends SubsystemBase{
                         getVelocityMetersPerSecond(),
                         pid.getSetpoint().velocity) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
 
-        moveToLevel(voltsOutput, levelHeight);
+
+
+        elevatorMotors.setLeadVoltage(voltsOutput);
+//        moveToLevel(voltsOutput, levelHeight);
     }
 
 
+    // WIP Placeholder for stopping at limit switches when moving in an up/down relative direction
     // public void goUp(double distanceToLevel, double goalHeight) {
     public void moveToLevel( double voltage, double levelHeight) {
         // limit switches
-        if ( (voltage >= 0.001 && topLimitSwitch.get()) || (voltage <= 0.001 && bottomLimitSwitch.get()) ) {
-            elevatorMotors.stop();
-        } else {
-
-        }
+//        if ( (voltage >= 0.001 && topLimitSwitch.get()) || (voltage <= 0.001 && bottomLimitSwitch.get()) ) {
+//            elevatorMotors.stop();
+//        } else {
+//
+//        }
 
     }
 
@@ -137,7 +169,7 @@ public class Elevator extends SubsystemBase{
 
     // Check
     public boolean isAtLevelThreshold( int level ){
-        return ( getPositionMeters() >= getLevelConstant(level) || topLimitSwitch.get() );
+        return ( getPositionMeters() >= getLevelConstant(level) ); // || topLimitSwitch.get() );
     }
 
 
@@ -154,11 +186,11 @@ public class Elevator extends SubsystemBase{
         goToLevel(0);
 
         // TODO: Need to catch not finding true/false result?
-        if (bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
-            stopMotor();
-            encoder.reset();
-            // pid.reset();
-        }
+//        if (bottomLimitSwitch.get()) {  //might have to change if bottomLimitSwitch is false when activated
+//            stopMotor();
+//            encoder.reset();
+//            // pid.reset();
+//        }
     }
 
 

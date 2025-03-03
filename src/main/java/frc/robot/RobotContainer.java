@@ -74,15 +74,15 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
                   false,
                   CounterBase.EncodingType.k1X),
-          new PIDController(
+          new ProfiledPIDController(
                   Constants.ElevatorConstants.ELEVATOR_P,
                   Constants.ElevatorConstants.ELEVATOR_I,
-                  Constants.ElevatorConstants.ELEVATOR_D),
-//                  new TrapezoidProfile.Constraints(
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-//                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)
-//          ),
+                  Constants.ElevatorConstants.ELEVATOR_D,
+                  new TrapezoidProfile.Constraints(
+                          Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY,
+                          Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION)),
           new ElevatorFeedforward(
+                  Constants.ElevatorConstants.ELEVATOR_KS,
                   Constants.ElevatorConstants.ELEVATOR_KG,
                   Constants.ElevatorConstants.ELEVATOR_KV,
                   Constants.ElevatorConstants.ELEVATOR_KA)
