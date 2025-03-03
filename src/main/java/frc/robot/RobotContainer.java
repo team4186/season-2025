@@ -309,18 +309,18 @@ public class RobotContainer {
 // Algae Command testing
 //       joystick.button(7).whileTrue(Commands.runOnce(deAlgae::manDeploy).repeatedly())
 //               .onFalse(Commands.runOnce(deAlgae::stop)); //replaced deploy with manDeploy
-       //joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
-       //       .onFalse(Commands.runOnce(deAlgae::stop));
-//       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
-//               .onFalse(Commands.runOnce(deAlgae::stop));
-       //joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
-         //      .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
-       //joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
+       joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
+              .onFalse(Commands.runOnce(deAlgae::stop));
+       joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
+               .onFalse(Commands.runOnce(deAlgae::stop));
+       joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
+               .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
+       joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
        joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
 
 //       // dealgae tests
-//       joystick.button(7).onTrue(deAlgaeCommand);
-//       joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+       joystick.button(7).onTrue(deAlgaeCommand);
+       joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 //
 //      // end effector tests
 //      joystick.trigger()
@@ -330,9 +330,10 @@ public class RobotContainer {
 //              .and( joystick.button(3) )
 //              .whileTrue(endEffectorEjectCommand);
 
-      joystick.button(2).whileTrue( elevatorCommandL2 );
-      joystick.button(3).whileTrue( elevatorCommandL3 );
-      joystick.button(4).whileTrue( elevatorCommandL4 );
+      // Elevator Simple GOTO level commands for testing
+//      joystick.button(2).whileTrue( elevatorCommandL2 );
+//      joystick.button(3).whileTrue( elevatorCommandL3 );
+//      joystick.button(4).whileTrue( elevatorCommandL4 );
     }
   }
 
