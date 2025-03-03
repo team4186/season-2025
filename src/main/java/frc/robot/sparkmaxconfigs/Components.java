@@ -13,17 +13,12 @@ import frc.robot.subsystems.AlgaeProcessor;
 public final class Components {
 
     private static Components instance = null;
-    //TODO: Uncomment Later
-//    private final AlgaeProcessorMotor algaeProcessorMotorControllers = new AlgaeProcessorMotor();
-//    public final SingleMotor algaeProcessorMotor = algaeProcessorMotorControllers.algaeWheelMotor;
-//    public final SingleMotor algaeProcessorAngleMotor = algaeProcessorMotorControllers.algaeProcessorAngleMotor;
-//
+
     public final ElevatorMotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
-    // public YagslElevatorMotorSet elevatorMotorsYagsl = new ElevatorMotorsYagsl().elevatorMotorsYagsl;
 
     public final SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
-    //TODO:Uncomment LAater
-//    public final SingleMotor climberMotor = new ClimberMotor().climberMotor;
+
+    public final SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
     private final AlgaeProcessorMotors algaeProcessorMotors = new AlgaeProcessorMotors();
     public final SingleMotor algaeProcessorWheelMotor =  algaeProcessorMotors.wheelMotor;
@@ -45,7 +40,7 @@ public final class Components {
         return instance;
     }
 
-    //TODO: fix IDs
+
     public static final class AlgaeProcessorMotors {
         public SingleMotor wheelMotor = new SingleMotor(
                 new SparkMax(98, SparkLowLevel.MotorType.kBrushless),
@@ -54,17 +49,17 @@ public final class Components {
 
         public SingleMotor angleMotor = new SingleMotor(
                 new SparkMax(99, SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DeAlgaeConfig,
+                DefaultMotorConfigs.getInstance().DefaultConfig,
                 true);
     }
 
-    //TODO: Uncomment, get ID's
-//    public static final class ClimberMotor {
-//        public SingleMotor climberMotor = new SingleMotor(
-//                new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
-//                DefaultMotorConfigs.getInstance().DefaultConfig,
-//                false);
-//    }
+
+    public static final class ClimberMotor {
+        public SingleMotor climberMotor = new SingleMotor(
+                new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
+                DefaultMotorConfigs.getInstance().DefaultConfig,
+                false);
+    }
 
 
     public static final class DeAlgaeMotors {
@@ -75,29 +70,9 @@ public final class Components {
 
         public SingleMotor angleMotor = new SingleMotor(
                 new SparkMax(10, SparkLowLevel.MotorType.kBrushless),
-                DefaultMotorConfigs.getInstance().DeAlgaeConfig,
+                DefaultMotorConfigs.getInstance().DefaultConfig,
                 true);
     }
-
-
-    //TODO: Set proper CAN ID.
-    //TODO: Uncomment, get ID's
-    public static final class ElevatorMotors {
-        public final ElevatorMotorSet elevatorMotors = new ElevatorMotorSet(
-                new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
-                new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
-                DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
-                false);
-    }
-//
-//
-//    public static final class ElevatorMotorsYagsl {
-//        public final YagslElevatorMotorSet elevatorMotorsYagsl = new YagslElevatorMotorSet(
-//                new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
-//                new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
-//                DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
-//                false);
-//    }
 
 
     public static final class EndEffectorMotor {
@@ -105,5 +80,14 @@ public final class Components {
                 new SparkMax(12, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 true);
+    }
+
+
+    public static final class ElevatorMotors {
+        public final ElevatorMotorSet elevatorMotors = new ElevatorMotorSet(
+                new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
+                new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
+                DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
+                false);
     }
 }
