@@ -223,8 +223,8 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle <= defaultAngle -1 || current_angle >= defaultAngle + 1
-                || isBeamBroken(hardStop, false, "pyhsical_limit Switch")){
+        if(current_angle >= defaultAngle -1 || current_angle <= defaultAngle + 1
+                || isBeamBroken(hardStop, false, "physical_limit Switch")){
             stop();
             resetEncoder();
             return true;
