@@ -226,6 +226,7 @@ public class DeAlgae extends SubsystemBase {
         if(current_angle <= defaultAngle -1 || current_angle >= defaultAngle + 1
                 || isBeamBroken(hardStop, false, "pyhsical_limit Switch")){
             angleMotor.stop();
+            resetEncoder();
             return true;
         }
 
