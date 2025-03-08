@@ -63,6 +63,14 @@ public class DeAlgae extends SubsystemBase {
 
         return false;
     }
+    public void Manpid_runMotor_Up(){
+        current_angle = getCurrentAngle();
+
+        wheelMotor.accept(-wheelMaxSpeed);
+
+        double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+        angleMotor.accept(pidOutput);
+    }
     public void runMotor_Up(double upper_limit){
         current_angle = getCurrentAngle();
         if (current_angle < upper_limit) {
@@ -170,6 +178,7 @@ public class DeAlgae extends SubsystemBase {
         return false;
     }
 
+
     //moves arm to be between two possible algae locations, estimated to be perpendicular to the elevator
     public void manDeploy() {
         double PIDoutput;
@@ -191,7 +200,6 @@ public class DeAlgae extends SubsystemBase {
         angleMotor.stop();
     }
 
-
     // moves arm back to being parallel with the elevator with pid
 
     // this function returns, avoid using for now in favor of manReset function below
@@ -208,6 +216,7 @@ public class DeAlgae extends SubsystemBase {
         angleMotor.stop();
         return true;
     }
+
     public boolean pid_reset(){
         double PIDoutput;
         current_angle = getCurrentAngle();
@@ -221,6 +230,15 @@ public class DeAlgae extends SubsystemBase {
 
         return false;
     }
+
+    public void Manpid_reset(){
+        double PIDoutput;
+        current_angle = getCurrentAngle();
+
+        PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+        angleMotor.accept(PIDoutput);
+    }
+
     public void manReset(){
         double PIDoutput;
         current_angle = getCurrentAngle();

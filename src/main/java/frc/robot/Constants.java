@@ -89,7 +89,7 @@ public final class Constants {
   public static final class DeAlgaeConstants {
     public static final double DE_ALGAE_DEFAULT_ANGLE = 15.0; //TODO: find arm offset
     public static final double DE_ALGAE_FLAT_ANGLE = 185.0; //TODO: find the 'distance' of 90 degrees
-    public static final double DE_ALGAE_MAX_SPEED = 0.25; // TODO: placeholder
+    public static final double DE_ALGAE_MAX_SPEED = 0.10; // TODO: placeholder
     public static final double DE_ALGAE_MIN_SPEED = 0.08; //TODO: placeHolder
     public static final double DE_ALGAE_P = 0.1; //TODO: tune pid values
     public static final double DE_ALGAE_I = 0.0;

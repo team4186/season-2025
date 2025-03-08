@@ -301,17 +301,17 @@ public class RobotContainer {
       // joystick.button(0).onTrue(Commands.none());
 
 
-      // Algae Command testing
-//      joystick.button(7).onTrue(deAlgaeCommand);
-//      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
-//      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::ManrunMotor_Up).repeatedly())
-//              .onFalse(Commands.runOnce(deAlgae::stop));
-//      joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
-//              .onFalse(Commands.runOnce(deAlgae::stop));
-//      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::manReset).repeatedly())
-//              .onFalse(Commands.runOnce(deAlgae::stop)); // replaced reset with manReset
-//      joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
-//      joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
+//       Algae Command testing
+      joystick.button(7).onTrue(deAlgaeCommand);
+      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::Manpid_runMotor_Up).repeatedly())
+              .onFalse(Commands.runOnce(deAlgae::stop));
+      joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
+              .onFalse(Commands.runOnce(deAlgae::stop));
+      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::Manpid_reset).repeatedly())
+              .onFalse(Commands.runOnce(deAlgae::stop));
+      joystick.button(11).whileTrue(Commands.runOnce(deAlgae::stop).repeatedly());
+      joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
 
 
 
