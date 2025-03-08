@@ -102,7 +102,10 @@ public class RobotContainer {
           new PIDController(
                   Constants.DeAlgaeConstants.DE_ALGAE_P,
                   Constants.DeAlgaeConstants.DE_ALGAE_I,
-                  Constants.DeAlgaeConstants.DE_ALGAE_D));
+                  Constants.DeAlgaeConstants.DE_ALGAE_D),
+          new DigitalInput(Constants.DeAlgaeConstants.DE_ALGAE_LSChannel)
+
+  );
 
   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
           motorComponents.algaeProcessorWheelSingleMotor,
