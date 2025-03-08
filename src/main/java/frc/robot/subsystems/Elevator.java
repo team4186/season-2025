@@ -133,9 +133,10 @@ public class Elevator extends SubsystemBase{
         boolean isPositive =  ( levelHeight - currentPos >= 0 );
 
         // stop motors if ( negative difference -> check bottom limit OR positive difference -> check top limit )
-        // TODO: Switch when
-        //  if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && UnitsUtility.isBeamBroken(topLimitSwitch, true, this.getName()))) {
-        if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
+
+
+        //if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
+        if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && UnitsUtility.isBeamBroken(topLimitSwitch, true, this.getName()))) {
             elevatorMotors.stop();
         } else {
             double voltsOutput = MathUtil.clamp(
@@ -195,7 +196,13 @@ public class Elevator extends SubsystemBase{
         return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
                 * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING);
     }
+    public boolean isAtTop() {
+        return topLimitSwitch.get();
+    }
 
+    public boolean isAtBottom() {
+        return bottomLimitSwitch.get();
+    }
 
     public void stopMotor() {
         elevatorMotors.stop();
