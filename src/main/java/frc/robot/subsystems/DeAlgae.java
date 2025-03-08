@@ -225,7 +225,7 @@ public class DeAlgae extends SubsystemBase {
 
         if(current_angle <= defaultAngle -1 || current_angle >= defaultAngle + 1
                 || isBeamBroken(hardStop, false, "pyhsical_limit Switch")){
-            angleMotor.stop();
+            stop();
             resetEncoder();
             return true;
         }
@@ -239,8 +239,15 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
-        angleMotor.accept(PIDoutput);
+        if(!isBeamBroken(hardStop, false, "physical-limitSwitch")) {
+            PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+            angleMotor.accept(PIDoutput);
+        }
+        else{
+            stop();
+            resetEncoder();
+        }
+
     }
 
     public void manReset(){
