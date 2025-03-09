@@ -12,7 +12,7 @@ import static frc.robot.UnitsUtility.isBeamBroken;
 
 public class Climber extends SubsystemBase {
 
-    private final DigitalInput hardStop;
+    private final DigitalInput limitSwitch;
     private final SingleMotor climberSingleMotor;
     private final RelativeEncoder angleEncoder;
     private final PIDController anglePid;
@@ -23,7 +23,7 @@ public class Climber extends SubsystemBase {
     public Climber(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput hardStop){
         this.climberSingleMotor = wheelMotor;
         this.anglePid = anglePid;
-        this.hardStop = hardStop;
+        this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
