@@ -14,11 +14,13 @@ public final class Components {
 
     public final SingleMotor endEffectorSingleMotor = new EndEffectorMotor().endEffectorMotor;
 
-    public final SingleMotor climberMotor = new ClimberMotor().climberMotor;
 
     private final AlgaeProcessorMotors algaeProcessorMotors = new AlgaeProcessorMotors();
     public final SingleMotor algaeProcessorWheelSingleMotor =  algaeProcessorMotors.wheelMotor;
     public final SingleMotor algaeProcessorAngleSingleMotor = algaeProcessorMotors.angleMotor;
+
+    private final ClimberMotor climberMotors = new ClimberMotor();
+    public final SingleMotor climberSingleMotor =  climberMotors.climbMotor;
 
     private final DeAlgaeMotors deAlgaeMotors = new DeAlgaeMotors();
     public final SingleMotor deAlgaeWheelSingleMotor = deAlgaeMotors.wheelMotor;
@@ -51,8 +53,8 @@ public final class Components {
 
 
     private static final class ClimberMotor {
-        private final SingleMotor climberMotor = new SingleMotor(
-                new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
+        private final SingleMotor climbMotor = new SingleMotor(
+                new SparkMax(100, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 false);
     }

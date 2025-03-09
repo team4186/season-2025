@@ -84,17 +84,6 @@ public class RobotContainer {
                   Constants.ElevatorConstants.ELEVATOR_KA)
   );
 
-//  private final Climber climber = new Climber(
-//          motorComponents.climberMotor,
-//          new DigitalInput(Constants.ClimberConstants.TFChannel),
-//          new PIDController(
-//                  Constants.ClimberConstants.PROPORTIONAL,
-//                  Constants.ClimberConstants.INTEGRAL,
-//                  Constants.ClimberConstants.DERIVATIVE),
-//          Constants.ClimberConstants.TARGETANGLE,
-//          Constants.ClimberConstants.MAXVOLTS,
-//          Constants.ClimberConstants.MINVOLTS
-//  );
 
   private final DeAlgae deAlgae = new DeAlgae(
           motorComponents.deAlgaeWheelSingleMotor,
@@ -113,7 +102,18 @@ public class RobotContainer {
           new PIDController(
                   Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_P,
                   Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_I,
-                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_D));
+                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_D),
+          new DigitalInput(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_LSChannel)
+          );
+
+  private final Climber climber = new Climber(
+          motorComponents.climberSingleMotor,
+          new PIDController(
+                  Constants.ClimberConstants.CLIMBER_P,
+                  Constants.ClimberConstants.CLIMBER_I,
+                  Constants.ClimberConstants.CLIMBER_D),
+          new DigitalInput(Constants.ClimberConstants.CLIMBER_LSChannel)
+          );
 
   // TODO: Uncomment below later.
   private final LimeLightRunner visionSubsystem = new LimeLightRunner();
