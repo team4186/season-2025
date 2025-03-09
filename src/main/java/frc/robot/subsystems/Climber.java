@@ -42,11 +42,11 @@ public class Climber extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("Climber Angle:", getCurrentAngle());
         SmartDashboard.putNumber("Climber Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("Climber limitSwitch", getBeamBrake());
+        SmartDashboard.putBoolean("Climber limitSwitch", getBeamBreak());
 
     }
 
-    private boolean getBeamBrake(){
+    private boolean getBeamBreak(){
         return !UnitsUtility.isBeamBroken(limitSwitch,false,"Climber limit switch");
     }
 
@@ -75,7 +75,7 @@ public class Climber extends SubsystemBase {
     // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
     public void runMotor_Down(){
         current_angle = getCurrentAngle();
-        if (getBeamBrake()) {
+        if (getBeamBreak()) {
             climberSingleMotor.stop();
         } else {
             double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));

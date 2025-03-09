@@ -14,7 +14,7 @@ import frc.robot.UnitsUtility;
 
 public class DeAlgae extends SubsystemBase {
 
-    private final DigitalInput hardStop;
+    private final DigitalInput limitSwitch;
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
     private final RelativeEncoder angleEncoder;
@@ -23,11 +23,11 @@ public class DeAlgae extends SubsystemBase {
     private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle, flatAngle, wheelMaxSpeed, angleSpeed;
 
 
-    public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput hardStop){
+    public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch){
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
         this.anglePid = anglePid;
-        this.hardStop = hardStop;
+        this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
@@ -53,7 +53,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
     private boolean getBeamBreak(){
-        return !UnitsUtility.isBeamBroken(hardStop,false,"DeAlgae limit switch");
+        return !UnitsUtility.isBeamBroken(limitSwitch,false,"DeAlgae limit switch");
     }
 
     //TODO: find angle motor speed ratio

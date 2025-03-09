@@ -15,7 +15,7 @@ import static frc.robot.UnitsUtility.isBeamBroken;
 
 public class AlgaeProcessor extends SubsystemBase {
 
-    private final DigitalInput hardStop;
+    private final DigitalInput limitSwitch;
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
     private final RelativeEncoder angleEncoder;
@@ -25,11 +25,11 @@ public class AlgaeProcessor extends SubsystemBase {
                              wheelIntakeSpeed, wheelOutputSpeed, angleSpeed;
 
 
-    public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput hardStop){
+    public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch){
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
         this.anglePid = anglePid;
-        this.hardStop = hardStop;
+        this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
@@ -50,11 +50,11 @@ public class AlgaeProcessor extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("AlgaeProcessor Angle:", getCurrentAngle());
         SmartDashboard.putNumber("AlgaeProcessor Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", !UnitsUtility.isBeamBroken(hardStop,false,"Algae processor limit switch"));
+        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", !UnitsUtility.isBeamBroken(limitSwitch,false,"Algae processor limit switch"));
     }
 
-    private boolean getBeamBrake(){
-        return !UnitsUtility.isBeamBroken(hardStop,false,"Processor limit switch");
+    private boolean getBeamBreak(){
+        return !UnitsUtility.isBeamBroken(limitSwitch,false,"Processor limit switch");
     }
 
 
@@ -63,7 +63,7 @@ public class AlgaeProcessor extends SubsystemBase {
     public void runMotor_Up(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
-        if(!getBeamBrake()) {
+        if(!getBeamBreak()) {
             double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
             angleMotor.accept(pidOutput);
         }
