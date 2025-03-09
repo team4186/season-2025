@@ -336,9 +336,10 @@ public class RobotContainer {
             .onFalse(Commands.runOnce(algaeProcessor::stop));
 
   // Climber testing
-    joystick
-
-
+//    joystick.button(5).whileTrue(Commands.runOnce(climber::runMotor_Up).repeatedly())
+//            .onFalse(Commands.runOnce(climber::stop));
+//    joystick.button(6).whileTrue(Commands.runOnce(climber::runMotor_Down).repeatedly())
+//            .onFalse(Commands.runOnce(climber::stop));
   }
 
 
