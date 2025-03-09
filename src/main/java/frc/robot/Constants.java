@@ -88,7 +88,7 @@ public final class Constants {
 
 
   public static final class DeAlgaeConstants {
-    public static final double DE_ALGAE_DEFAULT_ANGLE = 15.0;
+    public static final double DE_ALGAE_DEFAULT_ANGLE = 45.0;
     public static final double DE_ALGAE_FLAT_ANGLE = 135;
     public static final double DE_ALGAE_MAX_SPEED = 0.10;
     public static final double DE_ALGAE_MIN_SPEED = 0.05;

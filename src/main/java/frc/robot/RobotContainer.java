@@ -43,16 +43,6 @@ public class RobotContainer {
   private final SwerveSubsystem drivebase  = new SwerveSubsystem(
           new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
-//   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
-//           new DigitalInput(Constants.AlgaeProcessorConstants.lunaChannel),
-//          motorComponents.algaeProcessorMotor,
-//          motorComponents.algaeProcessorAngleMotor,
-//          new PIDController(
-//                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_P,
-//                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_I,
-//                  Constants.AlgaeProcessorConstants.ALGAEPROCESSOR_D)
-//   );
-
   private final EndEffector endEffector = new EndEffector(
           motorComponents.endEffectorSingleMotor,
           new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
@@ -332,6 +322,14 @@ public class RobotContainer {
 //      joystick.button(3).whileTrue( elevatorCommandL3 );
 //      joystick.button(4).whileTrue( elevatorCommandL4 );
     }
+
+    // AlgaeProcessor testing
+    joystick.button(5).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Up).repeatedly())
+            .onFalse(Commands.runOnce(algaeProcessor::stop));
+    joystick.button(6).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Down).repeatedly())
+            .onFalse(Commands.runOnce(algaeProcessor::stop));
+    joystick.button(7).whileTrue(Commands.runOnce(algaeProcessor::eject).repeatedly())
+            .onFalse(Commands.runOnce(algaeProcessor::stop));
   }
 
 

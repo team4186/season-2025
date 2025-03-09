@@ -130,17 +130,13 @@ public class AlgaeProcessor extends SubsystemBase {
     }
 
 
-    public void invertWheel(){
-        wheelMotor.accept(-getCurrentSpeed());
-    }
-
-
-    public void run_motor(){
-        wheelMotor.accept(-wheelMaxSpeed);
-    }
-
     public void intake(){
-        wheelMotor.accept();
+        if () {
+
+        }
     }
 
+    public void eject(){
+        wheelMotor.accept(wheelOutputSpeed);
+    }
 }
