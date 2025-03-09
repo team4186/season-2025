@@ -41,12 +41,12 @@ public final class Components {
 
     private static final class AlgaeProcessorMotors {
         private final SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(98, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(13, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 false);
 
         private final SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(99, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(14, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 true);
     }
@@ -54,7 +54,7 @@ public final class Components {
 
     private static final class ClimberMotor {
         private final SingleMotor climbMotor = new SingleMotor(
-                new SparkMax(100, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 false);
     }
@@ -62,12 +62,12 @@ public final class Components {
 
     private static final class DeAlgaeMotors {
         private final SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(11, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(10, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 false);
 
         private final SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(10, SparkLowLevel.MotorType.kBrushless),
+                new SparkMax(11, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 true);
     }

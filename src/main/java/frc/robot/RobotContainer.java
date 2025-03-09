@@ -56,8 +56,8 @@ public class RobotContainer {
           motorComponents.elevatorMotorSet,
           // Defaults to 4X decoding and non-inverted (4x expected to cause jitters!)
           new Encoder(
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
-                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID,
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID_A,
+                  Constants.ElevatorConstants.ELEVATOR_ENCODER_ID_B,
                   false,
                   CounterBase.EncodingType.k1X),
           new ProfiledPIDController(
