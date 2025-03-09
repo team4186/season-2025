@@ -47,6 +47,7 @@ public class AlgaeProcessor extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("AlgaeProcessor Angle:", getCurrentAngle());
         SmartDashboard.putNumber("AlgaeProcessor Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", UnitsUtility.isBeamBroken(hardStop,false,"Algae processor limit switch"));
     }
 
 
@@ -55,10 +56,13 @@ public class AlgaeProcessor extends SubsystemBase {
     public void runMotor_Up(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
-        wheelMotor.accept(-wheelIntakeSpeed);
-
-        double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
-        angleMotor.accept(pidOutput);
+        if(!UnitsUtility.isBeamBroken(hardStop,false, "Processor limit switch")) {
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            angleMotor.accept(pidOutput);
+        }
+        else{
+            stop();
+        }
     }
 
     public void runMotor_Down(){

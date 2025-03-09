@@ -45,6 +45,7 @@ public class DeAlgae extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
         SmartDashboard.putNumber("DeAlgae Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("DeAlgae limitSwitch", UnitsUtility.isBeamBroken(hardStop,false,"DeAlgae limit switch"));
     }
 
 

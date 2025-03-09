@@ -65,7 +65,7 @@ public final class Constants {
         public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.25;
         public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 1.0;
 
-        public static final int ALGAE_PROCESSOR_LSChannel = 123; // TODO: placeholder
+        public static final int ALGAE_PROCESSOR_LSChannel = 0; //
     }
 
 
@@ -78,7 +78,7 @@ public final class Constants {
       public static final double CLIMBER_D = 0.0;
       public static final double CLIMBER_MAX_ANGLE = 150.0;
 
-      public static final int CLIMBER_LSChannel = 123; // TODO: placeholder
+      public static final int CLIMBER_LSChannel = 8; //
   }
 
 
@@ -95,14 +95,15 @@ public final class Constants {
 
     public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0;
 
-    public static final int DE_ALGAE_LSChannel = 123; // TODO: placeholder
+    public static final int DE_ALGAE_LSChannel = 9; //
     }
 
 
     public static final class ElevatorConstants {
-        public static final int ELEVATOR_BOTTOM_LIMIT_ID = 1;
-        public static final int ELEVATOR_TOP_LIMIT_ID = 2;
-        public static final int ELEVATOR_ENCODER_ID = 3;
+        public static final int ELEVATOR_BOTTOM_LIMIT_ID = 7;
+        public static final int ELEVATOR_TOP_LIMIT_ID = 6;
+        public static final int ELEVATOR_ENCODER_ID_A = 5;
+        public static final int ELEVATOR_ENCODER_ID_B = 4;
 
         public static final double ELEVATOR_RAMP_RATE = 5;
         public static final double ELEVATOR_MAX_VELOCITY = 1.0;

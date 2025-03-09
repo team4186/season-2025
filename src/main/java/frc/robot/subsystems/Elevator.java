@@ -75,7 +75,6 @@ public class Elevator extends SubsystemBase{
                         this));
     }
 
-
     // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
     private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
 //        sysIdRoutineLog.motor("Elevator")
@@ -101,6 +100,9 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Elevator_RelativeEncoderDistance", relativeEncoder.getPosition());
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
         SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
+
+        SmartDashboard.putBoolean("elevator bottom LimitSwitch", UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"elevator bottom switch"));
+        SmartDashboard.putBoolean("elevator top LimitSwitch", UnitsUtility.isBeamBroken(topLimitSwitch,false,"elevator top switch"));
 
         /* TODO: Implement when CANIds established
         SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());

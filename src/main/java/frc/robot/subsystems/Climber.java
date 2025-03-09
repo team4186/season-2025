@@ -39,6 +39,8 @@ public class Climber extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("Climber Angle:", getCurrentAngle());
         SmartDashboard.putNumber("Climber Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("Climber limitSwitch", UnitsUtility.isBeamBroken(limitSwitch,false,"Climber limit switch"));
+
     }
 
 
