@@ -129,13 +129,6 @@ public class AlgaeProcessor extends SubsystemBase {
         return true;
     }
 
-
-    public void intake(){
-        if () {
-
-        }
-    }
-
     public void eject(){
         wheelMotor.accept(wheelOutputSpeed);
     }

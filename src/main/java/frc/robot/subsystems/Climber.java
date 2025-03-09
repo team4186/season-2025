@@ -263,14 +263,6 @@ public class Climber extends SubsystemBase {
     }
 
     public void invertWheel(){
-        wheelMotor.accept(-getCurrentSpeed());
+        climberSingleMotor.accept(-getCurrentSpeed());
     }
-
-
-    public void run_motor(){
-        wheelMotor.accept(-wheelMaxSpeed);
-    }
-
-
-
 }

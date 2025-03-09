@@ -14,14 +14,14 @@ public class AlgaeProcessorCommand extends Command {
      * Interrupted -> Send reset command, stop motor, reset arm ...
      * */
 
-    private final algaeProcessor algaeProcessor;
+    private final AlgaeProcessor algaeProcessor;
     //private int timer = 0;
     private int exit_timer = 0;
     private int button_count = 0;
     private boolean isfinished = false;
     private boolean deployed = false;
 
-    public AlgaeProcessorCommand(DeAlgae deAlgae) {
+    public AlgaeProcessorCommand(AlgaeProcessor algaeProcessor) {
         this.algaeProcessor = algaeProcessor;
     }
 
@@ -39,6 +39,7 @@ public class AlgaeProcessorCommand extends Command {
      */
     @Override
     public void execute() {
+
 
     }
 
@@ -80,4 +81,5 @@ public class AlgaeProcessorCommand extends Command {
     public void button_detect(){
         button_count++;
     }
+
 }
