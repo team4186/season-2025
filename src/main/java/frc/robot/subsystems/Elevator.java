@@ -101,14 +101,22 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
         SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
 
-        SmartDashboard.putBoolean("elevator bottom LimitSwitch", UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"elevator bottom switch"));
-        SmartDashboard.putBoolean("elevator top LimitSwitch", UnitsUtility.isBeamBroken(topLimitSwitch,false,"elevator top switch"));
+        SmartDashboard.putBoolean("elevator bottom LimitSwitch", getBottomBeamBrake());
+        SmartDashboard.putBoolean("elevator top LimitSwitch", getTopBeamBrake());
 
         /* TODO: Implement when CANIds established
         SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
         SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
         */
+    }
+
+    private boolean getTopBeamBrake(){
+        return UnitsUtility.isBeamBroken(topLimitSwitch,false,"Elevator bottom switch");
+    }
+
+    private boolean getBottomBeamBrake(){
+        return !UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"DeAlgae limit switch");
     }
 
 
@@ -138,7 +146,7 @@ public class Elevator extends SubsystemBase{
 
 
         //if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
-        if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && UnitsUtility.isBeamBroken(topLimitSwitch, true, this.getName()))) {
+        if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && getTopBeamBrake())) {
             elevatorMotors.stop();
         } else {
             double voltsOutput = MathUtil.clamp(

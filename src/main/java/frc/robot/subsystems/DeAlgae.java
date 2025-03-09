@@ -45,9 +45,12 @@ public class DeAlgae extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
         SmartDashboard.putNumber("DeAlgae Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("DeAlgae limitSwitch", UnitsUtility.isBeamBroken(hardStop,false,"DeAlgae limit switch"));
+        SmartDashboard.putBoolean("DeAlgae limitSwitch", getBeamBrake());
     }
 
+    private boolean getBeamBrake(){
+        return !UnitsUtility.isBeamBroken(hardStop,false,"DeAlgae limit switch");
+    }
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
@@ -224,7 +227,7 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
 
         if(current_angle >= defaultAngle -1 || current_angle <= defaultAngle + 1
-                || UnitsUtility.isBeamBroken(hardStop, false, "physical_limit Switch")){
+                || getBeamBrake()){
             stop();
             resetEncoder();
             return true;
@@ -239,7 +242,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(!UnitsUtility.isBeamBroken(hardStop, false, "physical-limitSwitch")) {
+        if(!getBeamBrake()) {
             PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
             angleMotor.accept(PIDoutput);
         }
@@ -254,7 +257,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle > defaultAngle || !UnitsUtility.isBeamBroken(hardStop ,false,"Physical_LimitSwitch")) {
+        if(current_angle > defaultAngle || !getBeamBrake()) {
             PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
             angleMotor.accept(PIDoutput);
             return;

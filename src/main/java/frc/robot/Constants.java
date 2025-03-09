@@ -157,7 +157,7 @@ public final class Constants {
 //    }
 
     public static final class EndEffectorConstants {
-        public static final int END_EFFECTOR_BEAM_BREAK = 5; //TODO: placeHolder
+        public static final int END_EFFECTOR_BEAM_BREAK = 12; //TODO: placeHolder
 
         public static final double END_EFFECTOR_EJECT_SPEED = 1.0;
 

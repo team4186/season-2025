@@ -47,7 +47,7 @@ public class AlgaeProcessor extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("AlgaeProcessor Angle:", getCurrentAngle());
         SmartDashboard.putNumber("AlgaeProcessor Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", UnitsUtility.isBeamBroken(hardStop,false,"Algae processor limit switch"));
+        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", !UnitsUtility.isBeamBroken(hardStop,false,"Algae processor limit switch"));
     }
 
 
