@@ -30,7 +30,7 @@ public class DeAlgae extends SubsystemBase {
         this.hardStop = hardStop;
 
         angleEncoder = angleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
         minAngle = Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE;
         maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
@@ -48,10 +48,11 @@ public class DeAlgae extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
         SmartDashboard.putNumber("DeAlgae Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("DeAlgae limitSwitch", getBeamBrake());
+        SmartDashboard.putBoolean("DeAlgae limitSwitch", getBeamBreak());
+        SmartDashboard.putNumber("DeAlgae Raw Encoder Output", angleEncoder.getPosition());
     }
 
-    private boolean getBeamBrake(){
+    private boolean getBeamBreak(){
         return !UnitsUtility.isBeamBroken(hardStop,false,"DeAlgae limit switch");
     }
 
@@ -124,7 +125,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         return current_angle;
     }
 
@@ -230,7 +231,7 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
 
         if(current_angle >= defaultAngle -1 || current_angle <= defaultAngle + 1
-                || getBeamBrake()){
+                || getBeamBreak()){
             stop();
             resetEncoder();
             return true;
@@ -245,7 +246,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(!getBeamBrake()) {
+        if(!getBeamBreak()) {
             PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
             angleMotor.accept(PIDoutput);
         }
@@ -260,7 +261,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle > defaultAngle || !getBeamBrake()) {
+        if(current_angle > defaultAngle || !getBeamBreak()) {
             PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
             angleMotor.accept(PIDoutput);
             return;

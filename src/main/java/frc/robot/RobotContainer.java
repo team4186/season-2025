@@ -288,7 +288,7 @@ public class RobotContainer {
 
 
     } else {
-      joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
       // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       // joystick.button(9).whileTrue(
@@ -298,7 +298,7 @@ public class RobotContainer {
       // joystick.button(0).onTrue(Commands.none());
 
 
-//       Algae Command testing
+//       deAlgae Command testing
 //      joystick.button(7).onTrue(deAlgaeCommand);
 //      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 

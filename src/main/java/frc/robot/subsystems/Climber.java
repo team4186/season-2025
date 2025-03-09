@@ -28,7 +28,7 @@ public class Climber extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         angleEncoder = climberSingleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         maxAngle = Constants.ClimberConstants.CLIMBER_MAX_ANGLE;
         maxSpeed = Constants.ClimberConstants.CLIMBER_MAX_SPEED;
         minSpeed = Constants.ClimberConstants.CLIMBER_MIN_SPEED;
@@ -62,7 +62,7 @@ public class Climber extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         return current_angle;
     }
 
