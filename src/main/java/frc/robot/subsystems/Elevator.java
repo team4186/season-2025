@@ -104,11 +104,15 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putBoolean("elevator bottom LimitSwitch", getBottomBeamBrake());
         SmartDashboard.putBoolean("elevator top LimitSwitch", getTopBeamBrake());
 
-        /* TODO: Implement when CANIds established
         SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
+        SmartDashboard.putNumber("Elevator_EncoderDistancePerPulse", encoder.getDistancePerPulse());
+
         SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
-        */
+
+        if ( !SmartDashboard.getBoolean("Elevator_TopLimitSwitch", false) ){
+            SmartDashboard.putNumber("Elevator_Encoder_TopLimitSwitchDistance", encoder.getDistance());
+        }
     }
 
     private boolean getTopBeamBrake(){
@@ -206,6 +210,7 @@ public class Elevator extends SubsystemBase{
         return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
                 * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING);
     }
+    
     public boolean isAtTop() {
         return topLimitSwitch.get();
     }
