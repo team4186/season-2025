@@ -50,13 +50,17 @@ public class AlgaeProcessor extends SubsystemBase {
         SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", !UnitsUtility.isBeamBroken(hardStop,false,"Algae processor limit switch"));
     }
 
+    private boolean getBeamBrake(){
+        return !UnitsUtility.isBeamBroken(hardStop,false,"Processor limit switch");
+    }
+
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
     public void runMotor_Up(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
-        if(!UnitsUtility.isBeamBroken(hardStop,false, "Processor limit switch")) {
+        if(!getBeamBrake()) {
             double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
             angleMotor.accept(pidOutput);
         }
