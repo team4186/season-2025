@@ -125,6 +125,10 @@ public class RobotContainer {
 
   DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
 
+  AlgaeProcessorCommand algaeProcessorCommand = new AlgaeProcessorCommand(algaeProcessor);
+
+  ClimberCommand climberCommand = new ClimberCommand(climber);
+
 
 /**
  * Elevator commands
@@ -330,6 +334,11 @@ public class RobotContainer {
             .onFalse(Commands.runOnce(algaeProcessor::stop));
     joystick.button(7).whileTrue(Commands.runOnce(algaeProcessor::eject).repeatedly())
             .onFalse(Commands.runOnce(algaeProcessor::stop));
+
+  // Climber testing
+    joystick
+
+
   }
 
 

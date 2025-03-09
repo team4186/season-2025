@@ -54,7 +54,6 @@ public final class Constants {
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
     public static final class AlgaeProcessorConstants {
         public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 15.0;
-        public static final double ALGAE_PROCESSOR_FLAT_ANGLE = 185.0;
         public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.10;
         public static final double ALGAE_PROCESSOR_MIN_SPEED = 0.08;
         public static final double ALGAE_PROCESSOR_P = 0.1;
@@ -72,16 +71,12 @@ public final class Constants {
 
   public static final class ClimberConstants {
       public static final double CLIMBER_DEFAULT_ANGLE = 15.0;
-      public static final double CLIMBER_FLAT_ANGLE = 185.0;
       public static final double CLIMBER_MAX_SPEED = 0.10;
       public static final double CLIMBER_MIN_SPEED = 0.08;
       public static final double CLIMBER_P = 0.1;
       public static final double CLIMBER_I = 0.0;
       public static final double CLIMBER_D = 0.0;
       public static final double CLIMBER_MAX_ANGLE = 150.0;
-      public static final double CLIMBER_MIN_ANGLE = 75.0;
-
-      public static final double CLIMBER_WHEEL_MAX_SPEED = 1.0;
 
       public static final int CLIMBER_LSChannel = 123; // TODO: placeholder
   }
@@ -141,24 +136,24 @@ public final class Constants {
     }
 
 
-    public static final class ElevatorYAGSLConstants {
-
-        public static final double ELEVATOR_P = 5;
-        public static final double ELEVATOR_I = 0;
-        public static final double ELEVATOR_D = 0;
-        public static final double ELEVATOR_MAX_VELOCITY = 4.0;
-        public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
-        public static final double ELEVATOR_S = 5; //voltage to overcome static friction
-        public static final double ELEVATOR_G = 0; //voltage to overcome gravity
-        public static final double ELEVATOR_V = 0; //velocity
-        public static final double ELEVATOR_A = 0; //acceleration
-        public static final double ELEVATOR_RAMP_RATE = 5;
-        public static final double ELEVATOR_GEARING = 0;
-        public static final double ELEVATOR_CARRIAGE_MASS = 0;
-        public static final double ELEVATOR_DRUM_RADIUS = 0;
-        public static final double ELEVATOR_MIN_HEIGHT_METERS = 5;
-        public static final double ELEVATOR_MAX_HEIGHT_METERS = 0;
-    }
+//    public static final class ElevatorYAGSLConstants {
+//
+//        public static final double ELEVATOR_P = 5;
+//        public static final double ELEVATOR_I = 0;
+//        public static final double ELEVATOR_D = 0;
+//        public static final double ELEVATOR_MAX_VELOCITY = 4.0;
+//        public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
+//        public static final double ELEVATOR_S = 5; //voltage to overcome static friction
+//        public static final double ELEVATOR_G = 0; //voltage to overcome gravity
+//        public static final double ELEVATOR_V = 0; //velocity
+//        public static final double ELEVATOR_A = 0; //acceleration
+//        public static final double ELEVATOR_RAMP_RATE = 5;
+//        public static final double ELEVATOR_GEARING = 0;
+//        public static final double ELEVATOR_CARRIAGE_MASS = 0;
+//        public static final double ELEVATOR_DRUM_RADIUS = 0;
+//        public static final double ELEVATOR_MIN_HEIGHT_METERS = 5;
+//        public static final double ELEVATOR_MAX_HEIGHT_METERS = 0;
+//    }
 
     public static final class EndEffectorConstants {
         public static final int END_EFFECTOR_BEAM_BREAK = 5; //TODO: placeHolder

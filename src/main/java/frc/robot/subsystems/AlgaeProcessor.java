@@ -19,7 +19,7 @@ public class AlgaeProcessor extends SubsystemBase {
     private final PIDController anglePid;
     private static double current_angle;
     private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle,
-                            flatAngle, wheelIntakeSpeed, wheelOutputSpeed, angleSpeed;
+                             wheelIntakeSpeed, wheelOutputSpeed, angleSpeed;
 
 
     public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput hardStop){
@@ -35,7 +35,6 @@ public class AlgaeProcessor extends SubsystemBase {
         maxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_SPEED;
         minSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_SPEED;
         defaultAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_DEFAULT_ANGLE;
-        flatAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_FLAT_ANGLE;
 
         wheelIntakeSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED;
         wheelOutputSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED;

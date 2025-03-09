@@ -8,7 +8,6 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
 import frc.robot.UnitsUtility;
-import static frc.robot.UnitsUtility.isBeamBroken;
 
 public class DeAlgae extends SubsystemBase {
 
@@ -224,7 +223,7 @@ public class DeAlgae extends SubsystemBase {
         current_angle = getCurrentAngle();
 
         if(current_angle >= defaultAngle -1 || current_angle <= defaultAngle + 1
-                || isBeamBroken(hardStop, false, "physical_limit Switch")){
+                || UnitsUtility.isBeamBroken(hardStop, false, "physical_limit Switch")){
             stop();
             resetEncoder();
             return true;
@@ -239,7 +238,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(!isBeamBroken(hardStop, false, "physical-limitSwitch")) {
+        if(!UnitsUtility.isBeamBroken(hardStop, false, "physical-limitSwitch")) {
             PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
             angleMotor.accept(PIDoutput);
         }
@@ -254,7 +253,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle > defaultAngle || !isBeamBroken(hardStop ,false,"Physical_LimitSwitch")) {
+        if(current_angle > defaultAngle || !UnitsUtility.isBeamBroken(hardStop ,false,"Physical_LimitSwitch")) {
             PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
             angleMotor.accept(PIDoutput);
             return;

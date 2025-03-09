@@ -1,6 +1,6 @@
 package frc.robot.commands.actions;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.DeAlgae;
+import frc.robot.subsystems.AlgaeProcessor;
 
 public class AlgaeProcessorCommand extends Command {
 
