@@ -71,7 +71,6 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      public static final double CLIMBER_DEFAULT_ANGLE = 15.0;
       public static final double CLIMBER_MAX_SPEED = 0.10;
       public static final double CLIMBER_MIN_SPEED = 0.08;
       public static final double CLIMBER_P = 0.1;

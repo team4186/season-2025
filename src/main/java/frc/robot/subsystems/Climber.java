@@ -19,7 +19,7 @@ public class Climber extends SubsystemBase {
     private final RelativeEncoder angleEncoder;
     private final PIDController anglePid;
     private static double current_angle;
-    private static double maxAngle, maxSpeed, minSpeed, defaultAngle;
+    private static double maxAngle, maxSpeed, minSpeed;
 
 
     public Climber(SingleMotor climberSingleMotor, PIDController anglePid, DigitalInput limitSwitch){
@@ -28,11 +28,10 @@ public class Climber extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         angleEncoder = climberSingleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
-        maxAngle = Constants.ClimberConstants.CLIMBER_MAX_ANGLE;
-        maxSpeed = Constants.ClimberConstants.CLIMBER_MAX_SPEED;
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
         minSpeed = Constants.ClimberConstants.CLIMBER_MIN_SPEED;
-        defaultAngle = Constants.ClimberConstants.CLIMBER_DEFAULT_ANGLE;
+        maxSpeed = Constants.ClimberConstants.CLIMBER_MAX_SPEED;
+        maxAngle = Constants.ClimberConstants.CLIMBER_MAX_ANGLE;
     }
 
 
@@ -55,11 +54,17 @@ public class Climber extends SubsystemBase {
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
 
     public void runMotor_Up(){
-        current_angle = getCurrentAngle();
-        double pidOutput = coerceIn(anglePid.calculate(current_angle,defaultAngle));
 
-        climberSingleMotor.accept(pidOutput);
+        if(!getBeamBreak()) {
+            current_angle = getCurrentAngle();
+            double pidOutput = coerceIn(anglePid.calculate(current_angle,maxAngle));
+            climberSingleMotor.accept(pidOutput);
+        }
+        else{
+            stop();
+        }
     }
+
 
     public double getCurrentAngle() {
         current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
@@ -69,23 +74,6 @@ public class Climber extends SubsystemBase {
     public double getCurrentSpeed(){
         double angleSpeed = climberSingleMotor.motor.get();
         return angleSpeed;
-    }
-
-
-    // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
-    public void runMotor_Down(){
-        current_angle = getCurrentAngle();
-        if (getBeamBreak()) {
-            climberSingleMotor.stop();
-        } else {
-            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
-            climberSingleMotor.accept(pidOutput);
-        }
-    }
-
-
-    public void resetEncoder(){
-        angleEncoder.setPosition(0.0);
     }
 
 
@@ -108,15 +96,6 @@ public class Climber extends SubsystemBase {
         climberSingleMotor.stop();
     }
 
-    // moves arm back to being parallel with the elevator with pid
-
-    // this function returns, avoid using for now in favor of manReset function below
-    public void reset(){
-    }
-
-    public void invertWheel(){
-        climberSingleMotor.accept(-getCurrentSpeed());
-    }
 
     public void coast(){
         SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
