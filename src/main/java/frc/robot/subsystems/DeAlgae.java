@@ -66,11 +66,7 @@ public class DeAlgae extends SubsystemBase {
         double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
         angleMotor.accept(pidOutput);
 
-        if(current_angle >= maxAngle - 2 || current_angle <= maxAngle + 2){
-            return true;
-        }
-
-        return false;
+        return current_angle >= maxAngle - 2 || current_angle <= maxAngle + 2;
     }
     public void Manpid_runMotor_Up(){
         current_angle = getCurrentAngle();
@@ -134,21 +130,6 @@ public class DeAlgae extends SubsystemBase {
         return angleSpeed;
     }
 
-    // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
-    public void runMotor_Down(){
-        current_angle = getCurrentAngle();
-        if (current_angle > minAngle){
-
-            double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
-            angleMotor.accept(pidOutput);
-        }
-        else {
-            angleMotor.stop();
-        }
-
-        wheelMotor.accept(wheelMaxSpeed);
-    }
-
 
     public void resetEncoder(){
         angleEncoder.setPosition(0.0);
@@ -169,39 +150,6 @@ public class DeAlgae extends SubsystemBase {
         }
     }
 
-
-    //moves arm to be between two possible algae locations, estimated to be perpendicular to the elevator
-    public boolean deploy() {
-        double PIDoutput;
-        current_angle = getCurrentAngle();
-
-        if (current_angle >= flatAngle - 10.0 && current_angle <= flatAngle + 5.0) {
-            angleMotor.stop();
-            return true;
-
-        }
-
-        PIDoutput = coerceIn(anglePid.calculate(current_angle, flatAngle));
-        angleMotor.accept(PIDoutput);
-
-        return false;
-    }
-
-
-    //moves arm to be between two possible algae locations, estimated to be perpendicular to the elevator
-    public void manDeploy() {
-        double PIDoutput;
-        current_angle = getCurrentAngle();
-
-        if (current_angle >= flatAngle - 2.0 && current_angle <= flatAngle + 2.0) {
-            angleMotor.stop();
-
-        }
-
-        PIDoutput = coerceIn(anglePid.calculate(current_angle, flatAngle));
-        angleMotor.accept(PIDoutput);
-
-    }
 
     // stops the arm and rolling motors
     public void stop(){
@@ -271,14 +219,6 @@ public class DeAlgae extends SubsystemBase {
         resetEncoder();
     }
 
-    public void invertWheel(){
-        wheelMotor.accept(-getCurrentSpeed());
-    }
-
-
-    public void run_motor(){
-        wheelMotor.accept(-wheelMaxSpeed);
-    }
 
     public void coast(){
         SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);

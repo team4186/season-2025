@@ -301,10 +301,7 @@ public class RobotContainer {
 //       deAlgae Command testing
 //      joystick.button(7).onTrue(deAlgaeCommand);
 //      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
-
 //      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::Manpid_runMotor_Up).repeatedly())
-//              .onFalse(Commands.runOnce(deAlgae::stop));
-//      joystick.button(9).whileTrue(Commands.runOnce(deAlgae::runMotor_Down).repeatedly())
 //              .onFalse(Commands.runOnce(deAlgae::stop));
 //      joystick.button(10).whileTrue(Commands.runOnce(deAlgae::Manpid_reset).repeatedly())
 //              .onFalse(Commands.runOnce(deAlgae::stop));
@@ -345,7 +342,6 @@ public class RobotContainer {
 //            .onFalse(Commands.runOnce(climber::stop));
 //    joystick.button(6).whileTrue(Commands.runOnce(climber::runMotor_Down).repeatedly())
 //            .onFalse(Commands.runOnce(climber::stop));
-    joystick.button(12).onTrue(Commands.runOnce(climber::resetEncoder));
     joystick.button(5).whileTrue(Commands.runOnce(climber::coast)).
             onFalse(Commands.runOnce(climber::brake));
   }
