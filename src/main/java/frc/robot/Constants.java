@@ -169,6 +169,9 @@ public final class Constants {
         // Update to 2025
         public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
         // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
-        public final double MAXIMUM_AMBIGUITY = 0.25;
+        public static final double MAXIMUM_AMBIGUITY = 0.25;
+        public static final double ANGLE_P = 0.05;
+        public static final double ANGLE_I = 0.0;
+        public static final double ANGLE_D = 0.0;
     }
 }
