@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,7 +15,7 @@ import static frc.robot.UnitsUtility.isBeamBroken;
 
 public class AlgaeProcessor extends SubsystemBase {
 
-    private final DigitalInput hardStop;
+    private final DigitalInput limitSwitch;
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
     private final RelativeEncoder angleEncoder;
@@ -22,14 +25,14 @@ public class AlgaeProcessor extends SubsystemBase {
                              wheelIntakeSpeed, wheelOutputSpeed, angleSpeed;
 
 
-    public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput hardStop){
+    public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch){
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
         this.anglePid = anglePid;
-        this.hardStop = hardStop;
+        this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
         maxAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_ANGLE;
         minAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_ANGLE;
         maxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_SPEED;
@@ -47,11 +50,17 @@ public class AlgaeProcessor extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("AlgaeProcessor Angle:", getCurrentAngle());
         SmartDashboard.putNumber("AlgaeProcessor Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", !UnitsUtility.isBeamBroken(hardStop,false,"Algae processor limit switch"));
+        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", !UnitsUtility.isBeamBroken(limitSwitch,false,"Algae processor limit switch"));
     }
 
-    private boolean getBeamBrake(){
-        return !UnitsUtility.isBeamBroken(hardStop,false,"Processor limit switch");
+    private boolean getBeamBreak(){
+        return !UnitsUtility.isBeamBroken(limitSwitch,false,"Processor limit switch");
+    }
+
+    private void beamBreakReset(){
+        if (!UnitsUtility.isBeamBroken(limitSwitch,false,"Processor limit switch")) {
+            angleEncoder.setPosition(0.0);
+        }
     }
 
 
@@ -60,7 +69,7 @@ public class AlgaeProcessor extends SubsystemBase {
     public void runMotor_Up(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
-        if(!getBeamBrake()) {
+        if(!getBeamBreak()) {
             double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
             angleMotor.accept(pidOutput);
         }
@@ -80,7 +89,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
         return current_angle;
     }
 
@@ -139,4 +148,15 @@ public class AlgaeProcessor extends SubsystemBase {
     public void eject(){
         wheelMotor.accept(wheelOutputSpeed);
     }
+
+    public void coast(){
+        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
+        angleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    }
+
+    public void brake(){
+        SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);
+        angleMotor.motor.configure(brakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    }
 }
+

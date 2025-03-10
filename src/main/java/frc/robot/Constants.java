@@ -61,6 +61,7 @@ public final class Constants {
         public static final double ALGAE_PROCESSOR_D = 0.0;
         public static final double ALGAE_PROCESSOR_MAX_ANGLE = 150.0;
         public static final double ALGAE_PROCESSOR_MIN_ANGLE = 75.0;
+        public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 90;
 
         public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.25;
         public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 1.0;
@@ -70,13 +71,13 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      public static final double CLIMBER_DEFAULT_ANGLE = 15.0;
       public static final double CLIMBER_MAX_SPEED = 0.10;
       public static final double CLIMBER_MIN_SPEED = 0.08;
       public static final double CLIMBER_P = 0.1;
       public static final double CLIMBER_I = 0.0;
       public static final double CLIMBER_D = 0.0;
       public static final double CLIMBER_MAX_ANGLE = 150.0;
+      public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
 
       public static final int CLIMBER_LSChannel = 8; //
   }
@@ -92,6 +93,7 @@ public final class Constants {
     public static final double DE_ALGAE_D = 0.0;
     public static final double DE_ALGAE_MAX_ANGLE = 135.0;
     public static final double DE_ALGAE_MIN_ANGLE = 75.0;
+    public static final double DE_ALGAE_GEARBOX_RATIO = 54.8;
 
     public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0;
 
