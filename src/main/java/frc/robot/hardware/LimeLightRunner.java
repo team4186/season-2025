@@ -4,19 +4,19 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.units.Unit;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static java.lang.Math.tan;
 
-public class LimeLightRunner {
+public class LimeLightRunner extends SubsystemBase{
 
     private final NetworkTable tableTag;
-
     public LimeLightRunner() {
         tableTag = NetworkTableInstance.getDefault().getTable("limelight-tag");
     }
 
-
+    @Override
     public void periodic() {
         SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag());
         SmartDashboard.putNumber("X Offset", getTagXOffset());
@@ -60,7 +60,7 @@ public class LimeLightRunner {
 
     public double getDistance() {
         // TODO: update after limelight is mounted for accurate reading
-        double mountedAngle = 0.0;
+        double mountedAngle = 12.5;
         double angleInRadians = Math.toRadians((mountedAngle + getTagYOffset()));
         double distance = 33.75 / tan(angleInRadians); // TODO: update mountedAngle and distance offset after mounting
 
