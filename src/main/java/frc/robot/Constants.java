@@ -115,7 +115,11 @@ public final class Constants {
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
         public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
-        public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
+        //TODO: Change the two below, they are placeholders.
+        public static final double BORE_ENCODER_RADIUS = 1.0;
+        public static final double ELEVATOR_GEAR_RATIO = 0.25;
+        public static final double ELEVATOR_SHAFT_CIRCUMFERNCE = 2 * Math.PI * ELEVATOR_GEAR_RATIO;
+        public static final double ENCODER_CONVERSION_FACTOR = ELEVATOR_SHAFT_CIRCUMFERNCE/(42.0/ELEVATOR_GEAR_RATIO); // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
         public static final double ELEVATOR_GEARING = 12.0; // TODO: Update with gear ratio
         public static final double ELEVATOR_CARRIAGE_MASS = 4.0; // end effector mass, with / without
