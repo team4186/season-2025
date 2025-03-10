@@ -7,9 +7,13 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
+import edu.wpi.first.units.measure.MutDistance;
+import edu.wpi.first.units.measure.MutLinearVelocity;
+import edu.wpi.first.units.measure.MutVoltage;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,6 +23,8 @@ import frc.robot.Constants;
 import frc.robot.UnitsUtility;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import java.util.InputMismatchException;
+
+import static edu.wpi.first.units.Units.*;
 
 public class Elevator extends SubsystemBase{
 
@@ -36,6 +42,13 @@ public class Elevator extends SubsystemBase{
 
     private final SysIdRoutine routine;
 
+
+    // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+    private final MutVoltage m_appliedVoltage = Volts.mutable(0);
+    // Mutable holder for unit-safe linear distance values, persisted to avoid reallocation.
+    private final MutDistance m_distance = Meters.mutable(0);
+    // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
+    private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
 
     public Elevator(
              DigitalInput bottomLimitSwitch,
@@ -67,7 +80,7 @@ public class Elevator extends SubsystemBase{
         // Encoder
         this.encoder = encoder;
         this.encoder.reset();
-        // this.encoder.setDistancePerPulse( 0 );
+        this.encoder.setDistancePerPulse( 1.0/2048.0 );
 
         // SysId Routine for dialing in values for our system
         routine = new SysIdRoutine(
@@ -80,10 +93,15 @@ public class Elevator extends SubsystemBase{
 
     // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
     private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
-//        sysIdRoutineLog.motor("Elevator")
-//                .voltage()
-//                .linearVelocity()
-//                .linearAcceleration();
+        sysIdRoutineLog.motor("Elevator")
+                .voltage(
+                        m_appliedVoltage.mut_replace(
+                                this.elevatorMotors.getLead().get()  * RobotController.getBatteryVoltage(), Volts)
+                )
+                .linearPosition(
+                        m_distance.mut_replace(getPositionMeters(), Meters))
+                .linearVelocity(
+                        m_velocity.mut_replace(getVelocityMetersPerSecond(), MetersPerSecond));
     }
 
 
@@ -104,9 +122,6 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
         SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
 
-        SmartDashboard.putBoolean("elevator bottom LimitSwitch", getBottomBeamBrake());
-        SmartDashboard.putBoolean("elevator top LimitSwitch", getTopBeamBrake());
-
         SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
         SmartDashboard.putNumber("Elevator_EncoderDistancePerPulse", encoder.getDistancePerPulse());
 
@@ -118,12 +133,12 @@ public class Elevator extends SubsystemBase{
         }
     }
 
-    private boolean getTopBeamBrake(){
+    private boolean getTopBeamBreak(){
         return UnitsUtility.isBeamBroken(topLimitSwitch,false,"Elevator bottom switch");
     }
 
-    private boolean getBottomBeamBrake(){
-        return !UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"DeAlgae limit switch");
+    private boolean getBottomBeamBreak(){
+        return UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"DeAlgae limit switch");
     }
 
 
@@ -153,7 +168,7 @@ public class Elevator extends SubsystemBase{
 
 
         //if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
-        if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && getTopBeamBrake())) {
+        if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && getTopBeamBreak())) {
             elevatorMotors.stop();
         } else {
             double voltsOutput = MathUtil.clamp(
@@ -205,13 +220,13 @@ public class Elevator extends SubsystemBase{
     public double getPositionMeters() {
         return relativeEncoder.getPosition() *
                 (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING);
+                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
     }
 
 
     public double getVelocityMetersPerSecond() {
         return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING);
+                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
     }
     
     public boolean isAtTop() {

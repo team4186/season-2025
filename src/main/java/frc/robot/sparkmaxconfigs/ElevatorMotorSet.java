@@ -43,6 +43,9 @@ public class ElevatorMotorSet {
         return this.lead.getEncoder();
     }
 
+    public SparkMax getLead(){
+        return this.lead;
+    }
 
     public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage ); }
 

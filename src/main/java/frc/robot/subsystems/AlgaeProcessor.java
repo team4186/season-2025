@@ -57,12 +57,6 @@ public class AlgaeProcessor extends SubsystemBase {
         return !UnitsUtility.isBeamBroken(limitSwitch,false,"Processor limit switch");
     }
 
-    private void beamBreakReset(){
-        if (!UnitsUtility.isBeamBroken(limitSwitch,false,"Processor limit switch")) {
-            angleEncoder.setPosition(0.0);
-        }
-    }
-
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
@@ -75,6 +69,7 @@ public class AlgaeProcessor extends SubsystemBase {
         }
         else{
             stop();
+            resetEncoder();
         }
     }
 
