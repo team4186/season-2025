@@ -71,12 +71,10 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      public static final double CLIMBER_MAX_SPEED = 0.10;
-      public static final double CLIMBER_MIN_SPEED = 0.08;
+      public static final double CLIMBER_SPEED = 0.05;
       public static final double CLIMBER_P = 0.1;
       public static final double CLIMBER_I = 0.0;
       public static final double CLIMBER_D = 0.0;
-      public static final double CLIMBER_MAX_ANGLE = 150.0;
       public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
 
       public static final int CLIMBER_LSChannel = 8; //

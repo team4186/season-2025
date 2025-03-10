@@ -19,7 +19,7 @@ public class Climber extends SubsystemBase {
     private final RelativeEncoder angleEncoder;
     private final PIDController anglePid;
     private static double current_angle;
-    private static double maxAngle, maxSpeed, minSpeed;
+    private static double speed;
 
 
     public Climber(SingleMotor climberSingleMotor, PIDController anglePid, DigitalInput limitSwitch){
@@ -29,9 +29,7 @@ public class Climber extends SubsystemBase {
 
         angleEncoder = climberSingleMotor.getRelativeEncoder();
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
-        minSpeed = Constants.ClimberConstants.CLIMBER_MIN_SPEED;
-        maxSpeed = Constants.ClimberConstants.CLIMBER_MAX_SPEED;
-        maxAngle = Constants.ClimberConstants.CLIMBER_MAX_ANGLE;
+        speed = Constants.ClimberConstants.CLIMBER_SPEED;
     }
 
 
@@ -56,9 +54,7 @@ public class Climber extends SubsystemBase {
     public void runMotor_Up(){
 
         if(!getBeamBreak()) {
-            current_angle = getCurrentAngle();
-            double pidOutput = coerceIn(anglePid.calculate(current_angle,maxAngle));
-            climberSingleMotor.accept(pidOutput);
+            climberSingleMotor.accept(speed);
         }
         else{
             stop();
@@ -76,20 +72,6 @@ public class Climber extends SubsystemBase {
         return angleSpeed;
     }
 
-
-    // used to limit the pid calculation output to be within acceptable speeds
-    private double coerceIn(double value) {
-        int sign = 1;
-        if (value < 0) {
-            sign = -1;
-        }
-
-        if ( Math.abs( value ) > maxSpeed) {
-            return maxSpeed * sign;
-        } else {
-            return Math.max( Math.abs(value), minSpeed) * sign;
-        }
-    }
 
     // stops the arm and rolling motors
     public void stop(){
