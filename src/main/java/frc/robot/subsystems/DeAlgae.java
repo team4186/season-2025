@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -10,29 +14,27 @@ import frc.robot.UnitsUtility;
 
 public class DeAlgae extends SubsystemBase {
 
+    private final DigitalInput limitSwitch;
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
     private final RelativeEncoder angleEncoder;
     private final PIDController anglePid;
     private static double current_angle;
-    private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle, flatAngle, wheelMaxSpeed, angleSpeed;
+    private static double maxAngle, maxSpeed, minSpeed, defaultAngle, wheelMaxSpeed, angleSpeed;
 
 
-    public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid){
+    public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch){
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
         this.anglePid = anglePid;
+        this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
-
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
-        minAngle = Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE;
         maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
         minSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED;
         defaultAngle = Constants.DeAlgaeConstants.DE_ALGAE_DEFAULT_ANGLE;
-        flatAngle = Constants.DeAlgaeConstants.DE_ALGAE_FLAT_ANGLE;
-
         wheelMaxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_WHEEL_MAX_SPEED;
     }
 
@@ -43,12 +45,16 @@ public class DeAlgae extends SubsystemBase {
         // SmartDashboard.putNumber("key", value);
         SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
         SmartDashboard.putNumber("DeAlgae Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("DeAlgae limitSwitch", getBeamBreak());
+        SmartDashboard.putNumber("DeAlgae Raw Encoder Output", angleEncoder.getPosition());
     }
 
+    private boolean getBeamBreak(){
+        return !UnitsUtility.isBeamBroken(limitSwitch,false,"DeAlgae limit switch");
+    }
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
-
     public boolean pid_runMotor_Up(){
         current_angle = getCurrentAngle();
 
@@ -57,11 +63,15 @@ public class DeAlgae extends SubsystemBase {
         double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
         angleMotor.accept(pidOutput);
 
-        if(current_angle >= maxAngle - 2 || current_angle <= maxAngle + 2){
-            return true;
-        }
+        return current_angle >= maxAngle - 2 || current_angle <= maxAngle + 2;
+    }
+    public void Manpid_runMotor_Up(){
+        current_angle = getCurrentAngle();
 
-        return false;
+        wheelMotor.accept(-wheelMaxSpeed);
+
+        double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+        angleMotor.accept(pidOutput);
     }
     public void runMotor_Up(double upper_limit){
         current_angle = getCurrentAngle();
@@ -108,28 +118,13 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         return current_angle;
     }
 
     public double getCurrentSpeed(){
         angleSpeed = angleMotor.motor.get();
         return angleSpeed;
-    }
-
-    // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
-    public void runMotor_Down(){
-        current_angle = getCurrentAngle();
-        if (current_angle > minAngle){
-
-            double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
-            angleMotor.accept(pidOutput);
-        }
-        else {
-            angleMotor.stop();
-        }
-
-        wheelMotor.accept(wheelMaxSpeed);
     }
 
 
@@ -153,44 +148,11 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
-    //moves arm to be between two possible algae locations, estimated to be perpendicular to the elevator
-    public boolean deploy() {
-        double PIDoutput;
-        current_angle = getCurrentAngle();
-
-        if (current_angle >= flatAngle - 10.0 && current_angle <= flatAngle + 5.0) {
-            angleMotor.stop();
-            return true;
-
-        }
-
-        PIDoutput = coerceIn(anglePid.calculate(current_angle, flatAngle));
-        angleMotor.accept(PIDoutput);
-
-        return false;
-    }
-
-    //moves arm to be between two possible algae locations, estimated to be perpendicular to the elevator
-    public void manDeploy() {
-        double PIDoutput;
-        current_angle = getCurrentAngle();
-
-        if (current_angle >= flatAngle - 2.0 && current_angle <= flatAngle + 2.0) {
-            angleMotor.stop();
-
-        }
-
-        PIDoutput = coerceIn(anglePid.calculate(current_angle, flatAngle));
-        angleMotor.accept(PIDoutput);
-
-    }
-
     // stops the arm and rolling motors
     public void stop(){
         wheelMotor.stop();
         angleMotor.stop();
     }
-
 
     // moves arm back to being parallel with the elevator with pid
 
@@ -208,41 +170,61 @@ public class DeAlgae extends SubsystemBase {
         angleMotor.stop();
         return true;
     }
+
     public boolean pid_reset(){
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
-        angleMotor.accept(PIDoutput);
-
-        if(current_angle <= defaultAngle -1 || current_angle >= defaultAngle + 1){
+        if(current_angle >= defaultAngle -1 || current_angle <= defaultAngle + 1
+                || getBeamBreak()){
+            stop();
+            resetEncoder();
             return true;
         }
 
+        PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+        angleMotor.accept(PIDoutput);
         return false;
     }
+
+    public void Manpid_reset(){
+        double PIDoutput;
+        current_angle = getCurrentAngle();
+
+        if(!getBeamBreak()) {
+            PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
+            angleMotor.accept(PIDoutput);
+        }
+        else{
+            stop();
+            resetEncoder();
+        }
+
+    }
+
     public void manReset(){
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle > defaultAngle) {
+        if(current_angle > defaultAngle || !getBeamBreak()) {
             PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
             angleMotor.accept(PIDoutput);
             return;
         }
 
         angleMotor.stop();
-    }
-
-    public void invertWheel(){
-        wheelMotor.accept(-wheelMaxSpeed);
+        resetEncoder();
     }
 
 
-    public void run_motor(){
-        wheelMotor.accept(-wheelMaxSpeed);
+    public void coast(){
+        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
+        angleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     }
 
-
+    public void brake(){
+        SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);
+        angleMotor.motor.configure(brakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    }
 
 }

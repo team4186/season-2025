@@ -40,14 +40,14 @@ public class EndEffector extends SubsystemBase {
         if ( hasGamePiece() ) {
             endEffectorMotor.stop();
         } else {
-            endEffectorMotor.setVoltage( Constants.EndEffectorConstants.END_EFFECTOR_INTAKE_VOLTAGE );
+            endEffectorMotor.accept( Constants.EndEffectorConstants.END_EFFECTOR_INTAKE_SPEED );
         }
     }
 
 
     public void eject() {
         if ( hasGamePiece() ) {
-            endEffectorMotor.setVoltage(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_VOLTAGE);
+            endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_SPEED);
         } else {
             endEffectorMotor.stop();
         }
@@ -59,7 +59,7 @@ public class EndEffector extends SubsystemBase {
     }
 
 
-    public void testSpeeds(double voltage){
-        endEffectorMotor.setVoltage(voltage);
+    public void testSpeeds(double speed){
+        endEffectorMotor.accept(speed);
     }
 }

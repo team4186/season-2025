@@ -53,58 +53,53 @@ public final class Constants {
 
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
     public static final class AlgaeProcessorConstants {
-        public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 0.0; //TODO: placeholder
-        public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.0; // TODO: placeholder
-        public static final double ALGAE_PROCESSOR_MIN_SPEED = 0.0; //TODO: placeHolder
-        public static final double ALGAE_PROCESSOR_P = 0.1; //TODO: tune pid values
+        public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 15.0;
+        public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.10;
+        public static final double ALGAE_PROCESSOR_MIN_SPEED = 0.08;
+        public static final double ALGAE_PROCESSOR_P = 0.1;
         public static final double ALGAE_PROCESSOR_I = 0.0;
         public static final double ALGAE_PROCESSOR_D = 0.0;
-        public static final double ALGAE_PROCESSOR_MAX_ANGLE = 0.0; // TODO: placeholder
-        public static final double ALGAE_PROCESSOR_MIN_ANGLE = 0.0; // TODO: placeholder
-        public static final double ALGAE_PROCESSOR_DEPLOY_ANGLE = 0.0; //TODO: placeholder
+        public static final double ALGAE_PROCESSOR_MAX_ANGLE = 150.0;
+        public static final double ALGAE_PROCESSOR_MIN_ANGLE = 75.0;
+        public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 90;
 
-        public static final double ALGAE_PROCESSOR_WHEEL_MAX_SPEED = 1.0; // TODO: placeholder
-        public static final double ALGAE_PROCESSOR_INTAKE_SPEED = 0.0;
-        public static final double ALGAE_PROCESSOR_SWING_SPEED = 0.0;
+        public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.25;
+        public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 1.0;
+
+        public static final int ALGAE_PROCESSOR_LSChannel = 0; //
     }
 
 
   public static final class ClimberConstants {
-    //Climb voltage requires much higher values than move voltage.
-    public static final int CLIMBER_CLIMB_VOLTAGE = 0; //TODO: placeHolder
-    public static final int CLIMBER_MOVE_VOLTAGE = 0; //TODO: placeHolder
-    public static final int TFChannel = 1;
-    public static final double PROPORTIONAL = 0.05;
-    public static final double INTEGRAL = 0.0;
-    public static final double DERIVATIVE = 0.0;
-    // Subject to change, ask Chris later. 25:1 but it isn't linear.
-    public static final double GEARRATIO = 0.04;
-    // Subject to change, change later after testing.
-    public static final double TARGETANGLE = 110.0;
-    public static final double MAXSPEED = 0.1;
-    public static final double MINSPEED = 0.05;
+      public static final double CLIMBER_SPEED = 0.05;
+      public static final double CLIMBER_P = 0.1;
+      public static final double CLIMBER_I = 0.0;
+      public static final double CLIMBER_D = 0.0;
+      public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
+
+      public static final int CLIMBER_LSChannel = 8; //
   }
 
 
   public static final class DeAlgaeConstants {
-    public static final double DE_ALGAE_DEFAULT_ANGLE = 15.0; //TODO: find arm offset
-    public static final double DE_ALGAE_FLAT_ANGLE = 185.0; //TODO: find the 'distance' of 90 degrees
-    public static final double DE_ALGAE_MAX_SPEED = 0.25; // TODO: placeholder
-    public static final double DE_ALGAE_MIN_SPEED = 0.08; //TODO: placeHolder
-    public static final double DE_ALGAE_P = 0.1; //TODO: tune pid values
+    public static final double DE_ALGAE_DEFAULT_ANGLE = 45.0;
+    public static final double DE_ALGAE_MAX_SPEED = 0.10;
+    public static final double DE_ALGAE_MIN_SPEED = 0.05;
+    public static final double DE_ALGAE_P = 0.05;
     public static final double DE_ALGAE_I = 0.0;
     public static final double DE_ALGAE_D = 0.0;
-    public static final double DE_ALGAE_MAX_ANGLE = 150.0; // TODO: find max arc
-    public static final double DE_ALGAE_MIN_ANGLE = 75.0; // TODO: find min arc
-
-    public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0; // TODO: placeholder
-  }
+    public static final double DE_ALGAE_MAX_ANGLE = 135.0;
+    public static final double DE_ALGAE_GEARBOX_RATIO = 54.8;
+    public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0;
+    public static final int DE_ALGAE_LSChannel = 9; //
+    }
 
 
     public static final class ElevatorConstants {
-        public static final int ELEVATOR_BOTTOM_LIMIT_ID = 1;
-        public static final int ELEVATOR_TOP_LIMIT_ID = 2;
-        public static final int ELEVATOR_ENCODER_ID = 3;
+        public static final int ELEVATOR_BOTTOM_LIMIT_ID = 7;
+        public static final int ELEVATOR_TOP_LIMIT_ID = 6;
+        public static final int ELEVATOR_ENCODER_ID_A = 5;
+        public static final int ELEVATOR_ENCODER_ID_B = 4;
 
         public static final double ELEVATOR_RAMP_RATE = 5;
         public static final double ELEVATOR_MAX_VELOCITY = 1.0;
@@ -138,30 +133,31 @@ public final class Constants {
     }
 
 
-    public static final class ElevatorYAGSLConstants {
-
-        public static final double ELEVATOR_P = 5;
-        public static final double ELEVATOR_I = 0;
-        public static final double ELEVATOR_D = 0;
-        public static final double ELEVATOR_MAX_VELOCITY = 4.0;
-        public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
-        public static final double ELEVATOR_S = 5; //voltage to overcome static friction
-        public static final double ELEVATOR_G = 0; //voltage to overcome gravity
-        public static final double ELEVATOR_V = 0; //velocity
-        public static final double ELEVATOR_A = 0; //acceleration
-        public static final double ELEVATOR_RAMP_RATE = 5;
-        public static final double ELEVATOR_GEARING = 0;
-        public static final double ELEVATOR_CARRIAGE_MASS = 0;
-        public static final double ELEVATOR_DRUM_RADIUS = 0;
-        public static final double ELEVATOR_MIN_HEIGHT_METERS = 5;
-        public static final double ELEVATOR_MAX_HEIGHT_METERS = 0;
-    }
+//    public static final class ElevatorYAGSLConstants {
+//
+//        public static final double ELEVATOR_P = 5;
+//        public static final double ELEVATOR_I = 0;
+//        public static final double ELEVATOR_D = 0;
+//        public static final double ELEVATOR_MAX_VELOCITY = 4.0;
+//        public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
+//        public static final double ELEVATOR_S = 5; //voltage to overcome static friction
+//        public static final double ELEVATOR_G = 0; //voltage to overcome gravity
+//        public static final double ELEVATOR_V = 0; //velocity
+//        public static final double ELEVATOR_A = 0; //acceleration
+//        public static final double ELEVATOR_RAMP_RATE = 5;
+//        public static final double ELEVATOR_GEARING = 0;
+//        public static final double ELEVATOR_CARRIAGE_MASS = 0;
+//        public static final double ELEVATOR_DRUM_RADIUS = 0;
+//        public static final double ELEVATOR_MIN_HEIGHT_METERS = 5;
+//        public static final double ELEVATOR_MAX_HEIGHT_METERS = 0;
+//    }
 
     public static final class EndEffectorConstants {
-        public static final int END_EFFECTOR_BEAM_BREAK = 5; //TODO: placeHolder
+        public static final int END_EFFECTOR_BEAM_BREAK = 12; //TODO: placeHolder
 
-        public static final double END_EFFECTOR_EJECT_VOLTAGE = 12.0;
-        public static final double END_EFFECTOR_INTAKE_VOLTAGE = 3.0;
+        public static final double END_EFFECTOR_EJECT_SPEED = 1.0;
+
+        public static final double END_EFFECTOR_INTAKE_SPEED = 0.25;
     }
 
   

@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
@@ -37,13 +40,13 @@ public class Elevator extends SubsystemBase{
     public Elevator(
              DigitalInput bottomLimitSwitch,
              DigitalInput topLimitSwitch,
-             ElevatorMotorSet elevatorMotor,
+             ElevatorMotorSet elevatorMotors,
              Encoder encoder,
              ProfiledPIDController pid,
              ElevatorFeedforward elevatorFeedforward
     ) {
 
-        this.elevatorMotors = elevatorMotor;
+        this.elevatorMotors = elevatorMotors;
 
         // TODO: Replace relative encoder when THRU-BORE Encoder installed
         this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
@@ -69,20 +72,18 @@ public class Elevator extends SubsystemBase{
         // SysId Routine for dialing in values for our system
         routine = new SysIdRoutine(
                 new SysIdRoutine.Config(),
-                new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
-        );
+                new SysIdRoutine.Mechanism(
+                        this.elevatorMotors::setLeadVoltage,
+                        this::logMotors,
+                        this));
     }
-
 
     // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
     private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
-
-    }
-
-
-    // callback that passes requested voltage directly to your motor controllers
-    private void voltageDrive(Voltage voltage) {
-//        elevatorMotors.
+//        sysIdRoutineLog.motor("Elevator")
+//                .voltage()
+//                .linearVelocity()
+//                .linearAcceleration();
     }
 
 
@@ -103,11 +104,26 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
         SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
 
-        /* TODO: Implement when CANIds established
+        SmartDashboard.putBoolean("elevator bottom LimitSwitch", getBottomBeamBrake());
+        SmartDashboard.putBoolean("elevator top LimitSwitch", getTopBeamBrake());
+
         SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
+        SmartDashboard.putNumber("Elevator_EncoderDistancePerPulse", encoder.getDistancePerPulse());
+
         SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
-        */
+
+        if ( !SmartDashboard.getBoolean("Elevator_TopLimitSwitch", false) ){
+            SmartDashboard.putNumber("Elevator_Encoder_TopLimitSwitchDistance", encoder.getDistance());
+        }
+    }
+
+    private boolean getTopBeamBrake(){
+        return UnitsUtility.isBeamBroken(topLimitSwitch,false,"Elevator bottom switch");
+    }
+
+    private boolean getBottomBeamBrake(){
+        return !UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"DeAlgae limit switch");
     }
 
 
@@ -131,12 +147,13 @@ public class Elevator extends SubsystemBase{
         double bottomLevel = getLevelConstant(0);
 
         double currentPos = getPositionMeters();
-        boolean isPositive =  ( levelHeight - currentPos >= 0) ;
+        boolean isPositive =  ( levelHeight - currentPos >= 0 );
 
         // stop motors if ( negative difference -> check bottom limit OR positive difference -> check top limit )
-        // TODO: Switch when
-        //  if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && UnitsUtility.isBeamBroken(topLimitSwitch, true, this.getName()))) {
-        if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
+
+
+        //if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
+        if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && getTopBeamBrake())) {
             elevatorMotors.stop();
         } else {
             double voltsOutput = MathUtil.clamp(
@@ -196,9 +213,29 @@ public class Elevator extends SubsystemBase{
         return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
                 * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING);
     }
+    
+    public boolean isAtTop() {
+        return topLimitSwitch.get();
+    }
 
+    public boolean isAtBottom() {
+        return bottomLimitSwitch.get();
+    }
 
     public void stopMotor() {
         elevatorMotors.stop();
     }
+//Todo: Low Priority: figure out coast and brake states for motor set
+
+//    public void coast(){
+//        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
+//        elevatorMotors.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+//
+//    }
+//
+//    public void brake(){
+//        SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);
+//        elevatorMotors.motor.configure(brakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+//    }
+
 }
