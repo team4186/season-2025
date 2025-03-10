@@ -5,20 +5,26 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.hardware.LimeLightRunner;
-
+import edu.wpi.first.math.controller.PIDController;
 
 
 public class AlignToTargetCommand extends Command {
     private final LimeLightRunner visionSubsystem;
     private final SwerveSubsystem swerveSubsystem;
-    // Probably configurable in limelight app thing with GUI.
-    private final Translation2d limelightOffset;
-    private boolean isFinished = false;
+    private boolean isFinished;
+    private double xOffset;
+    private double distanceOffset;
+    private PIDController turnPID;
+    // Distance the drive train needs to stop from the wall.
+    private double bufferDist;
 
-    public AlignToTargetCommand(LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, Translation2d limelightOffset) {
+    public AlignToTargetCommand(LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, PIDController turnPID, double bufferDist) {
         this.visionSubsystem = visionSubsystem;
         this.swerveSubsystem = swerveSubsystem;
-        this.limelightOffset = limelightOffset;
+        this.xOffset = visionSubsystem.getTagXOffset();
+        this.distanceOffset = visionSubsystem.getDistance();
+        this.turnPID = turnPID;
+        this.bufferDist = bufferDist;
         addRequirements(this.swerveSubsystem);
     }
 
@@ -29,15 +35,18 @@ public class AlignToTargetCommand extends Command {
 
     @Override
     public void execute() {
+        // Add in if statement to check if both distance sensors are true. If not then it is unaligned.
+            Translation2d driveVec = new Translation2d(xOffset, distanceOffset - bufferDist);
+            swerveSubsystem.drive(driveVec, turnPID.calculate(xOffset, 0.0), true);
 
+        // Gonna assume that the drive train locks by default with no input.
     }
 
     public boolean isFinished() {
-        return true;
+        return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-
     }
 }
