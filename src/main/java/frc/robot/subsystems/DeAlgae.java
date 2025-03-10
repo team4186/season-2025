@@ -20,7 +20,7 @@ public class DeAlgae extends SubsystemBase {
     private final RelativeEncoder angleEncoder;
     private final PIDController anglePid;
     private static double current_angle;
-    private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle, flatAngle, wheelMaxSpeed, angleSpeed;
+    private static double maxAngle, maxSpeed, minSpeed, defaultAngle, wheelMaxSpeed, angleSpeed;
 
 
     public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch){
@@ -32,12 +32,9 @@ public class DeAlgae extends SubsystemBase {
         angleEncoder = angleMotor.getRelativeEncoder();
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
-        minAngle = Constants.DeAlgaeConstants.DE_ALGAE_MIN_ANGLE;
         maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
         minSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED;
         defaultAngle = Constants.DeAlgaeConstants.DE_ALGAE_DEFAULT_ANGLE;
-        flatAngle = Constants.DeAlgaeConstants.DE_ALGAE_FLAT_ANGLE;
-
         wheelMaxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_WHEEL_MAX_SPEED;
     }
 
