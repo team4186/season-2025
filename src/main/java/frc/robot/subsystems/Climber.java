@@ -18,7 +18,9 @@ public class Climber extends SubsystemBase {
     private final SingleMotor climberSingleMotor;
     private final RelativeEncoder angleEncoder;
     private static double current_angle;
-    private static double speed;
+    private static double deployVoltage;
+    private static double voltage;
+    private static double deployAngle;
 
 
     public Climber(SingleMotor climberSingleMotor, DigitalInput limitSwitch){
@@ -27,7 +29,10 @@ public class Climber extends SubsystemBase {
 
         angleEncoder = climberSingleMotor.getRelativeEncoder();
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
-        speed = Constants.ClimberConstants.CLIMBER_SPEED;
+        deployVoltage = Constants.ClimberConstants.CLIMBER_DEPLOY_VOLTAGE;
+        voltage = Constants.ClimberConstants.CLIMBER_VOLTAGE;
+        deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
+        
     }
 
 
@@ -46,19 +51,41 @@ public class Climber extends SubsystemBase {
     }
 
 
-    //TODO: find angle motor speed ratio
+    //TODO: find angle motor voltage ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
 
-    public void runMotor_Up(){
+    public void deploy(){
 
-        if(!getBeamBreak()) {
-            climberSingleMotor.accept(speed);
+        if(getCurrentAngle() <= deployAngle) {
+            climberSingleMotor.setVoltage(deployVoltage);
         }
         else{
-            stop();
+            climberSingleMotor.stop();
         }
     }
 
+    public boolean stow(){
+
+        if(!getBeamBreak()) {
+            climberSingleMotor.setVoltage(-deployVoltage);
+            return false;
+        }
+        else{
+            climberSingleMotor.stop();
+            return true;
+        }
+    }
+
+    public void pull(){
+
+        if(!getBeamBreak()) {
+            climberSingleMotor.setVoltage(voltage);
+        }
+        else{
+            climberSingleMotor.stop();
+        }
+    }
+    
 
     public double getCurrentAngle() {
         current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
@@ -74,16 +101,5 @@ public class Climber extends SubsystemBase {
     // stops the arm and rolling motors
     public void stop(){
         climberSingleMotor.stop();
-    }
-
-
-    public void coast(){
-        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
-        climberSingleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    }
-
-    public void brake(){
-        SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);
-        climberSingleMotor.motor.configure(brakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     }
 }

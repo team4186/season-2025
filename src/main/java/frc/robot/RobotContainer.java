@@ -367,6 +367,8 @@ public class RobotContainer {
 //            .onFalse(Commands.runOnce(climber::stop));
 //    joystick.button(5).whileTrue(Commands.runOnce(climber::coast)).
 //            onFalse(Commands.runOnce(climber::brake));
+//    joystick.button(8).onTrue(climberCommand);
+//    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
   }
 
 
