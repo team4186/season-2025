@@ -44,7 +44,16 @@ public class AlignToTargetCommand extends Command {
     }
 
     public boolean isFinished() {
-        return false;
+        return closeEnough(visionSubsystem.getXOffset) && closeEnough(visionSubsystem.getThetaOffset) && closeEnough(visionSubsystem.getZOffset);
+    }
+
+    // The numbers are arbituary, it can be changed later.
+    public boolean closeEnough(double input) {
+        if (input >= -0.2 && input <= 0.2) {
+            return true;
+        } else {
+            return false
+        }
     }
 
     @Override

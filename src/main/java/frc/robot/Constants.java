@@ -173,5 +173,13 @@ public final class Constants {
         public static final double ANGLE_P = 0.05;
         public static final double ANGLE_I = 0.0;
         public static final double ANGLE_D = 0.0;
+        public static final double STRAFE_P = 0.05;
+        public static final double STRAFE_I = 0.0;
+        public static final double STRAFE_D = 0.0;
+        public static final double DISTANCE_P = 0.05;
+        public static final double DISTANCE_I = 0.0;
+        public static final double DISTANCE_D = 0.0;
+        // Change this (it is in foot)
+        public static final double BUFFERDIST = 1.0'
     }
 }
