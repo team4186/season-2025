@@ -5,15 +5,10 @@ import frc.robot.subsystems.Climber;
 public class ClimberCommand extends Command {
 
     /* Intended Usage:
-     *
-     * */
+     * deploy w/ minimum voltage
+     * on button press force motor back till limit switch enable    * */
 
     private final Climber climber;
-    //private int timer = 0;
-    private int exit_timer = 0;
-    private int button_count = 0;
-    private boolean isfinished = false;
-    private boolean deployed = false;
 
     public ClimberCommand(Climber climber) {
         this.climber = climber;
@@ -40,17 +35,9 @@ public class ClimberCommand extends Command {
 
 
     @Override
-    public boolean isFinished() {return isfinished;}
-
-
-    @Override
     public void end(boolean interrupted)
     {
-        button_count = 0;
-        exit_timer = 0;
         climber.stop();
-        isfinished = false;
-        deployed = false;
     }
 
 }

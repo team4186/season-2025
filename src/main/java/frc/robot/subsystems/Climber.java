@@ -17,14 +17,12 @@ public class Climber extends SubsystemBase {
     private final DigitalInput limitSwitch;
     private final SingleMotor climberSingleMotor;
     private final RelativeEncoder angleEncoder;
-    private final PIDController anglePid;
     private static double current_angle;
     private static double speed;
 
 
-    public Climber(SingleMotor climberSingleMotor, PIDController anglePid, DigitalInput limitSwitch){
+    public Climber(SingleMotor climberSingleMotor, DigitalInput limitSwitch){
         this.climberSingleMotor = climberSingleMotor;
-        this.anglePid = anglePid;
         this.limitSwitch = limitSwitch;
 
         angleEncoder = climberSingleMotor.getRelativeEncoder();

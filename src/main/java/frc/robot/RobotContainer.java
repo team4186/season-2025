@@ -99,10 +99,6 @@ public class RobotContainer {
 
   private final Climber climber = new Climber(
           motorComponents.climberSingleMotor,
-          new PIDController(
-                  Constants.ClimberConstants.CLIMBER_P,
-                  Constants.ClimberConstants.CLIMBER_I,
-                  Constants.ClimberConstants.CLIMBER_D),
           new DigitalInput(Constants.ClimberConstants.CLIMBER_LSChannel)
           );
 
