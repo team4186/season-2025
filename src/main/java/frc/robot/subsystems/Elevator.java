@@ -122,13 +122,13 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
         SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
 
-        SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
-        SmartDashboard.putNumber("Elevator_EncoderDistancePerPulse", encoder.getDistancePerPulse());
+        SmartDashboard.putNumber("Elevator_Encoder_Distance", encoder.getDistance());
+        SmartDashboard.putNumber("Elevator_Encoder_DistancePerPulse", encoder.getDistancePerPulse());
 
-        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
-        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
 
-        if ( !SmartDashboard.getBoolean("Elevator_TopLimitSwitch", false) ){
+        if ( !SmartDashboard.getBoolean("Elevator_LimitSwitch_Top", false) ){
             SmartDashboard.putNumber("Elevator_Encoder_TopLimitSwitchDistance", encoder.getDistance());
         }
     }
@@ -228,19 +228,16 @@ public class Elevator extends SubsystemBase{
     }
 
     public void stopMotor() {
-        elevatorMotors.stop();
+
+        double voltsOutput = MathUtil.clamp(
+                elevatorFeedforward.calculateWithVelocities(
+                        getVelocityMetersPerSecond(),
+                        0.0), -7, 7);
+        elevatorMotors.setLeadVoltage(voltsOutput);
     }
-//Todo: Low Priority: figure out coast and brake states for motor set
 
-//    public void coast(){
-//        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
-//        elevatorMotors.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-//
-//    }
-//
-//    public void brake(){
-//        SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);
-//        elevatorMotors.motor.configure(brakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-//    }
-
+    public Command slowToStop(){
+        return this.run( this::stopMotor ).until(
+                () -> relativeEncoder.getVelocity() >= -0.1 && relativeEncoder.getVelocity() <= 0.1);
+    }
 }

@@ -318,23 +318,15 @@ public class RobotContainer {
 
         // TESTING FOR FF ELEVATOR SysIdRoutine
 //        joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward))
-//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
+//                .onFalse( elevator.slowToStop() );
 //        joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse))
-//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
+//                .onFalse( elevator.slowToStop() );
 //
 //        joystick.button(6).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward))
-//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
+//                .onFalse( elevator.slowToStop() );
 //        joystick.button(4).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse))
-//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
+//                .onFalse( elevator.slowToStop() );
 
-//      m_driverController
-//              .x()
-//              .and(m_driverController.leftBumper())
-//              .whileTrue(m_shooter.sysIdDynamic(SysIdRoutine.Direction.kForward));
-//      m_driverController
-//              .y()
-//              .and(m_driverController.leftBumper())
-//              .whileTrue(m_shooter.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
 
 //      // end effector tests

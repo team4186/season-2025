@@ -130,9 +130,9 @@ public final class Constants {
         public static final double ELEVATOR_D = 0.0;
 
         public static final double ELEVATOR_KS = 0.00; // Static gain in volts
-        public static final double ELEVATOR_KG = 2.28; // Gravity gain in volts
-        public static final double ELEVATOR_KA = 0.41; // Velocity gain in V/(m/s)
-        public static final double ELEVATOR_KV = 3.07; // Acceleration gain in V/(m/s^2)
+        public static final double ELEVATOR_KG = 1.75; // Gravity gain in volts
+        public static final double ELEVATOR_KA = 1.0; // Velocity gain in V/(m/s)
+        public static final double ELEVATOR_KV = 4.0; // Acceleration gain in V/(m/s^2)
         public static final double ELEVATOR_DEFAULT_TOLERANCE = Units.inchesToMeters(1);
     }
 
