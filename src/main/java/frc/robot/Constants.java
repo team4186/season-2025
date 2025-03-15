@@ -71,12 +71,10 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      public static final double CLIMBER_MAX_SPEED = 0.10;
-      public static final double CLIMBER_MIN_SPEED = 0.08;
+      public static final double CLIMBER_SPEED = 0.05;
       public static final double CLIMBER_P = 0.1;
       public static final double CLIMBER_I = 0.0;
       public static final double CLIMBER_D = 0.0;
-      public static final double CLIMBER_MAX_ANGLE = 150.0;
       public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
 
       public static final int CLIMBER_LSChannel = 8; //
@@ -85,18 +83,14 @@ public final class Constants {
 
   public static final class DeAlgaeConstants {
     public static final double DE_ALGAE_DEFAULT_ANGLE = 45.0;
-    public static final double DE_ALGAE_FLAT_ANGLE = 135;
     public static final double DE_ALGAE_MAX_SPEED = 0.10;
     public static final double DE_ALGAE_MIN_SPEED = 0.05;
     public static final double DE_ALGAE_P = 0.05;
     public static final double DE_ALGAE_I = 0.0;
     public static final double DE_ALGAE_D = 0.0;
     public static final double DE_ALGAE_MAX_ANGLE = 135.0;
-    public static final double DE_ALGAE_MIN_ANGLE = 75.0;
     public static final double DE_ALGAE_GEARBOX_RATIO = 54.8;
-
     public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0;
-
     public static final int DE_ALGAE_LSChannel = 9; //
     }
 
@@ -121,7 +115,11 @@ public final class Constants {
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
         public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
-        public static final double ENCODER_CONVERSION_FACTOR = 2.0; // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
+        //TODO: Change the two below, they are placeholders.
+        public static final double BORE_ENCODER_RADIUS = 1.0;
+        public static final double ELEVATOR_GEAR_RATIO = 0.25;
+        public static final double ELEVATOR_SHAFT_CIRCUMFERNCE = 2 * Math.PI * ELEVATOR_GEAR_RATIO;
+        public static final double ENCODER_CONVERSION_FACTOR = ELEVATOR_SHAFT_CIRCUMFERNCE/(42.0/ELEVATOR_GEAR_RATIO); // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
 
         public static final double ELEVATOR_GEARING = 12.0; // TODO: Update with gear ratio
         public static final double ELEVATOR_CARRIAGE_MASS = 4.0; // end effector mass, with / without
@@ -171,6 +169,9 @@ public final class Constants {
         // Update to 2025
         public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
         // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
-        public final double MAXIMUM_AMBIGUITY = 0.25;
+        public static final double MAXIMUM_AMBIGUITY = 0.25;
+        public static final double ANGLE_P = 0.05;
+        public static final double ANGLE_I = 0.0;
+        public static final double ANGLE_D = 0.0;
     }
 }
