@@ -21,10 +21,10 @@ public class LimeLightRunner extends SubsystemBase{
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag());
-        SmartDashboard.putNumber("X Offset", getTagXOffset());
-        SmartDashboard.putNumber("Y Offset", getTagYOffset());
+        SmartDashboard.putNumber("Horizontal Offset", getXOffset());
+        SmartDashboard.putNumber("Distance away", getZOffset());
+        SmartDashboard.putNumber("Angle", getThetaOffset());
         SmartDashboard.putNumber("% of Image", getTagArea());
-        SmartDashboard.putNumber("Distance", Units.metersToInches(getDistance()));
         setLight(hasTargetTag());
     }
 
