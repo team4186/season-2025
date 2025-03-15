@@ -312,11 +312,18 @@ public class RobotContainer {
 //      joystick.button(12).onTrue(Commands.runOnce(deAlgae::resetEncoder));
 //      joystick.button(3).whileTrue(Commands.runOnce(deAlgae::coast)).
 //              onFalse(Commands.runOnce(deAlgae::brake));
-        joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-        joystick.button(4).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 
-        joystick.button(5).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-        joystick.button(6).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+        // TESTING FOR FF ELEVATOR SysIdRoutine
+//        joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward))
+//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
+//        joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse))
+//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
+//
+//        joystick.button(6).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward))
+//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
+//        joystick.button(4).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse))
+//                .onFalse( ( Commands.runOnce( elevator::stopMotor ).repeatedly()));
 
 //      m_driverController
 //              .x()
