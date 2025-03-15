@@ -75,7 +75,8 @@ public final class Constants {
       // climber deploy should be far less than climber voltage, only to move on its own and not with robot weight
       public static final double CLIMBER_DEPLOY_VOLTAGE = 0.02;
       public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
-      public static final double CLIMBER_DEPLOY_ANGLE = 70; //TODO: placeholder
+      public static final double CLIMBER_DEPLOY_ANGLE = 70; //TODO: placeholder, relative to limit switch
+      public static final double CLIMBER_RESET_ANGLE = 20; //TODO: placeholder, relative to limit switch
 
       public static final int CLIMBER_LSChannel = 8; //
   }

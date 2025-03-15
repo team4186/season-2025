@@ -10,10 +10,8 @@ public class ClimberCommand extends Command {
 
     private final Climber climber;
 
-    private int exit_timer = 0;
     private int button_count = 0;
     private boolean isfinished = false;
-    private int ejectTimer = 0;
 
     public ClimberCommand(Climber climber) {
         this.climber = climber;
@@ -33,18 +31,13 @@ public class ClimberCommand extends Command {
      */
     @Override
     public void execute() {
-        if(ejectTimer >= 30 || exit_timer >= 150){
-            climber.stop();
-            isfinished = climber.stow();
-        }
-
         if(button_count == 1){
             climber.deploy();
-            exit_timer++;
         }
         else if(button_count == 2){
-            climber.pull();
+            isfinished = climber.pull();
         }
+
     }
 
     public boolean isFinished() {return isfinished;}
@@ -53,10 +46,8 @@ public class ClimberCommand extends Command {
     public void end(boolean interrupted)
     {
         button_count = 0;
-        exit_timer = 0;
         climber.stop();
         isfinished = false;
-        ejectTimer = 0;
     }
 
     public void button_detect(){

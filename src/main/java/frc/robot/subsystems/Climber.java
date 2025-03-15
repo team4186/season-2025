@@ -21,7 +21,7 @@ public class Climber extends SubsystemBase {
     private static double deployVoltage;
     private static double voltage;
     private static double deployAngle;
-
+    private static double resetAngle;
 
     public Climber(SingleMotor climberSingleMotor, DigitalInput limitSwitch){
         this.climberSingleMotor = climberSingleMotor;
@@ -32,6 +32,7 @@ public class Climber extends SubsystemBase {
         deployVoltage = Constants.ClimberConstants.CLIMBER_DEPLOY_VOLTAGE;
         voltage = Constants.ClimberConstants.CLIMBER_VOLTAGE;
         deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
+        resetAngle = Constants.ClimberConstants.CLIMBER_RESET_ANGLE;
         
     }
 
@@ -57,6 +58,7 @@ public class Climber extends SubsystemBase {
     public void deploy(){
 
         if(getCurrentAngle() <= deployAngle) {
+            //Todo: Make sure (+/-) and direction is correct
             climberSingleMotor.setVoltage(deployVoltage);
         }
         else{
@@ -64,25 +66,31 @@ public class Climber extends SubsystemBase {
         }
     }
 
-    public boolean stow(){
+//    public boolean reset(){
+//        if(Math.abs(getCurrentAngle()-resetAngle)<=10){
+//            climberSingleMotor.stop();
+//            return true;
+//        } else if(getCurrentAngle()<=resetAngle){
+//            climberSingleMotor.setVoltage(deployVoltage);
+//            return false;
+//        } else if(getCurrentAngle()>=resetAngle){
+//            climberSingleMotor.setVoltage(-deployVoltage);
+//            return false;
+//        } else {
+//            climberSingleMotor.stop();
+//            return false;
+//        }
+//    }
+
+    public boolean pull(){
 
         if(!getBeamBreak()) {
-            climberSingleMotor.setVoltage(-deployVoltage);
+            climberSingleMotor.setVoltage(-voltage);
             return false;
         }
         else{
             climberSingleMotor.stop();
             return true;
-        }
-    }
-
-    public void pull(){
-
-        if(!getBeamBreak()) {
-            climberSingleMotor.setVoltage(voltage);
-        }
-        else{
-            climberSingleMotor.stop();
         }
     }
     
