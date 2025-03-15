@@ -361,6 +361,8 @@ public class RobotContainer {
 //    joystick.button(12).onTrue(Commands.runOnce(algaeProcessor::resetEncoder));
 //    joystick.button(4).whileTrue(Commands.runOnce(algaeProcessor::coast)).
 //            onFalse(Commands.runOnce(algaeProcessor::brake));
+//    joystick.button(8).onTrue(algaeProcessorCommand);
+//    joystick.button(8).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
   // Climber testing
 //    joystick.button(5).whileTrue(Commands.runOnce(climber::runMotor_Up).repeatedly())
