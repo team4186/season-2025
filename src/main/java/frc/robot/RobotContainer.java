@@ -110,12 +110,18 @@ public class RobotContainer {
    * Commands are implemented here...
    */
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          new LimeLightRunner(),
-          drivebase,
-          new PIDController(Constants.VisionConstants.ANGLE_P,
-                  Constants.VisionConstants.ANGLE_I,
-                  Constants.VisionConstants.ANGLE_D),
-          3.0
+        visionSubsystem,
+        drivebase,
+        new PIDController(Constants.VisionConstants.ANGLE_P,
+                        Constants.VisionConstants.ANGLE_I,
+                        Constants.VisionConstants.ANGLE_D),
+        new PIDController(Constants.VisionConstants.STRAFE_P,
+                        Constants.VisionConstants.STRAFE_I,
+                        Conditions.VisionConstants.STRAFE_D),
+        new PIDController(Constants.VisionConstants.DISTANCE_P,
+                        Constants.VisionConstants.DISTANCE_I,
+                        Constants.VisionConstants.DISTANCE_D),
+        Constants.VisionConstants.BUFFERDIST
   );
 
 
@@ -369,6 +375,9 @@ public class RobotContainer {
 //            onFalse(Commands.runOnce(climber::brake));
 //    joystick.button(8).onTrue(climberCommand);
 //    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
+  
+  // AlignToTarget testing
+      // joystick.button(6).whileTrue(Commands.runOnce(AlignToTarget).repeatedly());
   }
 
 

@@ -15,10 +15,13 @@ public class AlgaeProcessorCommand extends Command {
      * */
 
     private final AlgaeProcessor algaeProcessor;
-    private int exit_timer = 0;
     private int button_count = 0;
     private boolean isfinished = false;
     private int ejectTimer = 0;
+    private boolean ready = false;
+    private int deployTimer = 0;
+    private boolean deployed = false;
+
 
     public AlgaeProcessorCommand(AlgaeProcessor algaeProcessor) {
         this.algaeProcessor = algaeProcessor;
@@ -37,24 +40,30 @@ public class AlgaeProcessorCommand extends Command {
      * until {@link #isFinished()}) returns true.)
      */
 
-    // first press arm moves down and motor intakes, second press brings arm back up, third press ejects.
+    // first press arm moves down and motor intakes, timer determines when to bring arm back, second press ejects.
     @Override
     public void execute() {
-        if(ejectTimer >= 30 || exit_timer >= 150){
+        if(ejectTimer >= 30){
             algaeProcessor.wheelStop();
             isfinished = algaeProcessor.reset();
         }
 
         if(button_count == 1){
-            algaeProcessor.runMotor_Down();
-            algaeProcessor.intake();
-            exit_timer++;
+            if(deployTimer <= 100 && !deployed){
+                deployed = algaeProcessor.cmd_runMotor_Down();
+                algaeProcessor.intake();
+                deployTimer++;
+            }
+
+            else {
+                if(!ready){
+                    ready = algaeProcessor.cmd_runMotor_Up();
+                }
+                algaeProcessor.wheelStop();
+            }
         }
-        else if(button_count == 2){
-            algaeProcessor.runMotor_Up();
-            algaeProcessor.wheelStop();
-        }
-        else{
+
+        else if(button_count > 1 && ready){
             algaeProcessor.eject();
             ejectTimer++;
         }
@@ -89,10 +98,12 @@ public class AlgaeProcessorCommand extends Command {
     public void end(boolean interrupted)
     {
         button_count = 0;
-        exit_timer = 0;
         algaeProcessor.stop();
         isfinished = false;
         ejectTimer = 0;
+        ready = false;
+        deployed = false;
+        deployTimer = 0;
     }
 
     public void button_detect(){

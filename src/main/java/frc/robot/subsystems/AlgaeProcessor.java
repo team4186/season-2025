@@ -73,6 +73,22 @@ public class AlgaeProcessor extends SubsystemBase {
         }
     }
 
+
+    public boolean cmd_runMotor_Up(){
+        current_angle = getCurrentAngle();
+        //Todo: Check Inverse, update constants
+        if(!getBeamBreak()) {
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            angleMotor.accept(pidOutput);
+            return false;
+        }
+
+        stop();
+        resetEncoder();
+        return true;
+    }
+
+
     public void runMotor_Down(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
@@ -80,6 +96,17 @@ public class AlgaeProcessor extends SubsystemBase {
 
         double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
         angleMotor.accept(pidOutput);
+    }
+
+    public boolean cmd_runMotor_Down(){
+        current_angle = getCurrentAngle();
+        //Todo: Check Inverse, update constants
+        wheelMotor.accept(-wheelIntakeSpeed);
+
+        double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
+        angleMotor.accept(pidOutput);
+
+        return current_angle >= minAngle - 2 && current_angle <= minAngle + 2;
     }
 
 
