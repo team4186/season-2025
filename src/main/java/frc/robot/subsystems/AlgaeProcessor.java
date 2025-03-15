@@ -123,6 +123,9 @@ public class AlgaeProcessor extends SubsystemBase {
         angleMotor.stop();
     }
 
+    public void wheelStop(){
+        wheelMotor.stop();
+    }
     // moves arm back to being parallel with the elevator with pid
 
     // this function returns, avoid using for now in favor of manReset function below
@@ -142,6 +145,10 @@ public class AlgaeProcessor extends SubsystemBase {
 
     public void eject(){
         wheelMotor.accept(wheelOutputSpeed);
+    }
+
+    public void intake(){
+        wheelMotor.accept(-wheelIntakeSpeed);
     }
 
     public void coast(){

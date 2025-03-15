@@ -15,11 +15,10 @@ public class AlgaeProcessorCommand extends Command {
      * */
 
     private final AlgaeProcessor algaeProcessor;
-    //private int timer = 0;
     private int exit_timer = 0;
     private int button_count = 0;
     private boolean isfinished = false;
-    private boolean deployed = false;
+    private int ejectTimer = 0;
 
     public AlgaeProcessorCommand(AlgaeProcessor algaeProcessor) {
         this.algaeProcessor = algaeProcessor;
@@ -37,10 +36,28 @@ public class AlgaeProcessorCommand extends Command {
      * The main body of a command.  Called repeatedly while the command is scheduled. (That is, it is called repeatedly
      * until {@link #isFinished()}) returns true.)
      */
+
+    // first press arm moves down and motor intakes, second press brings arm back up, third press ejects.
     @Override
     public void execute() {
+        if(ejectTimer >= 30 || exit_timer >= 150){
+            algaeProcessor.wheelStop();
+            isfinished = algaeProcessor.reset();
+        }
 
-
+        if(button_count == 1){
+            algaeProcessor.runMotor_Down();
+            algaeProcessor.intake();
+            exit_timer++;
+        }
+        else if(button_count == 2){
+            algaeProcessor.runMotor_Up();
+            algaeProcessor.wheelStop();
+        }
+        else{
+            algaeProcessor.eject();
+            ejectTimer++;
+        }
     }
 
 
@@ -75,7 +92,7 @@ public class AlgaeProcessorCommand extends Command {
         exit_timer = 0;
         algaeProcessor.stop();
         isfinished = false;
-        deployed = false;
+        ejectTimer = 0;
     }
 
     public void button_detect(){
