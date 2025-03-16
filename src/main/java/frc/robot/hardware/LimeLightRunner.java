@@ -12,17 +12,19 @@ import static java.lang.Math.tan;
 public class LimeLightRunner extends SubsystemBase{
 
     private final NetworkTable tableTag;
+    private final double[] camPose;
     public LimeLightRunner() {
-        tableTag = NetworkTableInstance.getDefault().getTable("limelight-tag");
+        this.tableTag = NetworkTableInstance.getDefault().getTable("limelight-tag");
+        this.camPose = tableTag.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
     }
 
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag());
-        SmartDashboard.putNumber("X Offset", getTagXOffset());
-        SmartDashboard.putNumber("Y Offset", getTagYOffset());
+        SmartDashboard.putNumber("Horizontal Offset", getXOffset());
+        SmartDashboard.putNumber("Distance away", getZOffset());
+        SmartDashboard.putNumber("Angle", getThetaOffset());
         SmartDashboard.putNumber("% of Image", getTagArea());
-        SmartDashboard.putNumber("Distance", Units.metersToInches(getDistance()));
         setLight(hasTargetTag());
     }
 
@@ -69,5 +71,20 @@ public class LimeLightRunner extends SubsystemBase{
         }
 
         return Double.NaN;
+    }
+
+    public double getXOffset() {
+        // tx
+        return this.camPose[0];
+    }
+
+    public double getZOffset() {
+        // ty
+        return this.camPose[2];
+    } 
+
+    public double getThetaOffset() {
+        // yaw
+        return this.camPose[4];
     }
 }

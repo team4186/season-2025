@@ -53,14 +53,9 @@ public final class Constants {
 
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
     public static final class AlgaeProcessorConstants {
-        public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 15.0;
+        public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 5;
         public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.10;
-        public static final double ALGAE_PROCESSOR_MIN_SPEED = 0.08;
-        public static final double ALGAE_PROCESSOR_P = 0.1;
-        public static final double ALGAE_PROCESSOR_I = 0.0;
-        public static final double ALGAE_PROCESSOR_D = 0.0;
-        public static final double ALGAE_PROCESSOR_MAX_ANGLE = 150.0;
-        public static final double ALGAE_PROCESSOR_MIN_ANGLE = 75.0;
+        public static final double ALGAE_PROCESSOR_MAX_ANGLE = 50.0;
         public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 90;
 
         public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.25;
@@ -71,18 +66,16 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      public static final double CLIMBER_SPEED = 0.05;
-      public static final double CLIMBER_P = 0.1;
-      public static final double CLIMBER_I = 0.0;
-      public static final double CLIMBER_D = 0.0;
+      public static final double CLIMBER_SPEED = 0.2;
       public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
+      public static final double CLIMBER_DEPLOY_ANGLE = 140; //TODO: placeholder, relative to limit switch
 
       public static final int CLIMBER_LSChannel = 8; //
   }
 
 
   public static final class DeAlgaeConstants {
-    public static final double DE_ALGAE_DEFAULT_ANGLE = 45.0;
+    public static final double DE_ALGAE_DEFAULT_ANGLE = 5.0;
     public static final double DE_ALGAE_MAX_SPEED = 0.10;
     public static final double DE_ALGAE_MIN_SPEED = 0.05;
     public static final double DE_ALGAE_P = 0.05;
@@ -106,13 +99,19 @@ public final class Constants {
         public static final double ELEVATOR_MAX_ACCELERATION = 3.0;
 
         public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
-        public static final double ELEVATOR_LEVEL_ONE = 0.5; // why even consider the tray? can we score with the elevator?
-        public static final double ELEVATOR_LEVEL_TWO = 0.70; //70 cm
-        public static final double ELEVATOR_LEVEL_THREE = 1.18; //118 cm
-        public static final double ELEVATOR_LEVEL_FOUR = 1.89; //189 cm
-        public static final double ELEVATOR_MAX_HEIGHT = 1.89; // TODO: Determine threshold if different from highest level
+        public static final double ELEVATOR_LEVEL_ONE = 0.197; // why even consider the tray? can we score with the elevator?
+        public static final double ELEVATOR_LEVEL_TWO = 0.369; //70 cm
+        public static final double ELEVATOR_LEVEL_THREE = 0.8; //118 cm
+        public static final double ELEVATOR_LEVEL_FOUR = 1.4; //189 cm
+        public static final double ELEVATOR_MAX_HEIGHT = 1.4198; // TODO: Determine threshold if different from highest level
+        // 131.2,
+        // 0.000302
+        // 0.171433
+        // 0.577076
+        // 1.3243
 
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
+
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
         public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
         //TODO: Change the two below, they are placeholders.
@@ -125,14 +124,14 @@ public final class Constants {
         public static final double ELEVATOR_CARRIAGE_MASS = 4.0; // end effector mass, with / without
         public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(1.0);
         // TODO: Update values
-        public static final double ELEVATOR_P = 2.0;
-        public static final double ELEVATOR_I = 0.0;
+        public static final double ELEVATOR_P = 2.5;
+        public static final double ELEVATOR_I = 0.1;
         public static final double ELEVATOR_D = 0.0;
 
         public static final double ELEVATOR_KS = 0.00; // Static gain in volts
-        public static final double ELEVATOR_KG = 2.28; // Gravity gain in volts
-        public static final double ELEVATOR_KA = 0.41; // Velocity gain in V/(m/s)
-        public static final double ELEVATOR_KV = 3.07; // Acceleration gain in V/(m/s^2)
+        public static final double ELEVATOR_KG = 1.75; // Gravity gain in volts
+        public static final double ELEVATOR_KA = 1.0; // Velocity gain in V/(m/s)
+        public static final double ELEVATOR_KV = 4.0; // Acceleration gain in V/(m/s^2)
         public static final double ELEVATOR_DEFAULT_TOLERANCE = Units.inchesToMeters(1);
     }
 
@@ -157,11 +156,11 @@ public final class Constants {
 //    }
 
     public static final class EndEffectorConstants {
-        public static final int END_EFFECTOR_BEAM_BREAK = 12; //TODO: placeHolder
+        public static final int END_EFFECTOR_BEAM_BREAK = 3;
 
-        public static final double END_EFFECTOR_EJECT_SPEED = 1.0;
+        public static final double END_EFFECTOR_EJECT_SPEED = 0.4;
 
-        public static final double END_EFFECTOR_INTAKE_SPEED = 0.25;
+        public static final double END_EFFECTOR_INTAKE_SPEED = 0.5;
     }
 
 
@@ -173,5 +172,13 @@ public final class Constants {
         public static final double ANGLE_P = 0.05;
         public static final double ANGLE_I = 0.0;
         public static final double ANGLE_D = 0.0;
+        public static final double STRAFE_P = 0.05;
+        public static final double STRAFE_I = 0.0;
+        public static final double STRAFE_D = 0.0;
+        public static final double DISTANCE_P = 0.05;
+        public static final double DISTANCE_I = 0.0;
+        public static final double DISTANCE_D = 0.0;
+        // Change this (it is in foot)
+        public static final double BUFFER_DIST = 1.0;
     }
 }

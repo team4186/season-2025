@@ -77,10 +77,11 @@ public class Elevator extends SubsystemBase{
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
 
-        // Encoder
+        // Encoder 8800.000000
+
         this.encoder = encoder;
-        this.encoder.reset();
-        this.encoder.setDistancePerPulse( 1.0/2048.0 );
+        // this.encoder.reset();
+        this.encoder.setDistancePerPulse( 1.06938/6626.506 );
 
         // SysId Routine for dialing in values for our system
         routine = new SysIdRoutine(
@@ -118,19 +119,15 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic(){
         // publish smart dashboard info here
-        SmartDashboard.putNumber("Elevator_RelativeEncoderDistance", relativeEncoder.getPosition());
-        SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
-        SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
+        SmartDashboard.putNumber("Elevator_RelativeEncoder_Distance", relativeEncoder.getPosition());
+        SmartDashboard.putNumber("Elevator_TranslatedDistance_Calculated", getPositionMeters());
+        SmartDashboard.putNumber("Elevator_Velocity_Calculated", getVelocityMetersPerSecond());
 
-        SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
-        SmartDashboard.putNumber("Elevator_EncoderDistancePerPulse", encoder.getDistancePerPulse());
+        SmartDashboard.putNumber("Elevator_BoreEncoder_Distance", encoder.getDistance());
+        SmartDashboard.putNumber("Elevator_BoreEncoder_DistancePerPulse", encoder.getDistancePerPulse());
 
-        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
-        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
-
-        if ( !SmartDashboard.getBoolean("Elevator_TopLimitSwitch", false) ){
-            SmartDashboard.putNumber("Elevator_Encoder_TopLimitSwitchDistance", encoder.getDistance());
-        }
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
     }
 
     private boolean getTopBeamBreak(){
@@ -151,6 +148,8 @@ public class Elevator extends SubsystemBase{
         double topLevel = getLevelConstant(5);
         double bottomLevel = getLevelConstant(0);
 
+        double diff = levelHeight - getPositionMeters();
+
         double currentPos = getPositionMeters();
         boolean isPositive =  ( levelHeight - currentPos >= 0 );
 
@@ -169,6 +168,9 @@ public class Elevator extends SubsystemBase{
         }
 
     }
+
+//    public boolean isAtZero() {
+//        return UnitsUtility.isBeamBroken(bottomLimitSwitch,)    }
 
 
     public double getLevelConstant( int level ){
@@ -208,15 +210,17 @@ public class Elevator extends SubsystemBase{
 
     // TODO: BEFORE TESTING Replace with setting in configs
     public double getPositionMeters() {
-        return relativeEncoder.getPosition() *
-                (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+//        return relativeEncoder.getPosition() *
+//                (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
+//                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+        return encoder.getDistance();
     }
 
 
     public double getVelocityMetersPerSecond() {
-        return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+//        return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
+//                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+        return encoder.getRate();
     }
     
     public boolean isAtTop() {
@@ -228,19 +232,27 @@ public class Elevator extends SubsystemBase{
     }
 
     public void stopMotor() {
+
+//        int direction = 1;
+//        double velocity = getVelocityMetersPerSecond();
+//
+//
+////        double voltsOutput = MathUtil.clamp(
+////                elevatorFeedforward.calculateWithVelocities(
+////                        getVelocityMetersPerSecond(),
+////                        0.0), -7, 7);
+//        double voltsOutput = 7;
+//
+//        if ( velocity >= 0.1 ) {
+//            direction = -1;
+//        }
+//
+//        elevatorMotors.setLeadVoltage( voltsOutput * direction);
         elevatorMotors.stop();
     }
-//Todo: Low Priority: figure out coast and brake states for motor set
 
-//    public void coast(){
-//        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
-//        elevatorMotors.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-//
-//    }
-//
-//    public void brake(){
-//        SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);
-//        elevatorMotors.motor.configure(brakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-//    }
-
+    public Command slowToStop(){
+        return this.run( this::stopMotor );
+                //.until(() -> encoder.getRate() >= -0.05 && relativeEncoder.getVelocity() <= 0.05);
+    }
 }

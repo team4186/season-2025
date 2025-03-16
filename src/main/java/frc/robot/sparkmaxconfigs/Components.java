@@ -48,7 +48,7 @@ public final class Components {
         private final SingleMotor angleMotor = new SingleMotor(
                 new SparkMax(14, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
-                true);
+                false);
     }
 
 
@@ -56,7 +56,7 @@ public final class Components {
         private final SingleMotor climbMotor = new SingleMotor(
                 new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
-                false);
+                true);
     }
 
 
