@@ -117,7 +117,7 @@ public class RobotContainer {
                         Constants.VisionConstants.ANGLE_D),
         new PIDController(Constants.VisionConstants.STRAFE_P,
                         Constants.VisionConstants.STRAFE_I,
-                        Conditions.VisionConstants.STRAFE_D),
+                        Constants.VisionConstants.STRAFE_D),
         new PIDController(Constants.VisionConstants.DISTANCE_P,
                         Constants.VisionConstants.DISTANCE_I,
                         Constants.VisionConstants.DISTANCE_D),
