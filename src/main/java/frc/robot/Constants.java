@@ -71,11 +71,12 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      public static final double CLIMBER_SPEED = 0.05;
-      public static final double CLIMBER_P = 0.1;
-      public static final double CLIMBER_I = 0.0;
-      public static final double CLIMBER_D = 0.0;
+      public static final double CLIMBER_VOLTAGE = 0.05;
+      // climber deploy should be far less than climber voltage, only to move on its own and not with robot weight
+      public static final double CLIMBER_DEPLOY_VOLTAGE = 0.02;
       public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
+      public static final double CLIMBER_DEPLOY_ANGLE = 70; //TODO: placeholder, relative to limit switch
+      public static final double CLIMBER_RESET_ANGLE = 20; //TODO: placeholder, relative to limit switch
 
       public static final int CLIMBER_LSChannel = 8; //
   }
@@ -173,5 +174,13 @@ public final class Constants {
         public static final double ANGLE_P = 0.05;
         public static final double ANGLE_I = 0.0;
         public static final double ANGLE_D = 0.0;
+        public static final double STRAFE_P = 0.05;
+        public static final double STRAFE_I = 0.0;
+        public static final double STRAFE_D = 0.0;
+        public static final double DISTANCE_P = 0.05;
+        public static final double DISTANCE_I = 0.0;
+        public static final double DISTANCE_D = 0.0;
+        // Change this (it is in foot)
+        public static final double BUFFERDIST = 1.0'
     }
 }

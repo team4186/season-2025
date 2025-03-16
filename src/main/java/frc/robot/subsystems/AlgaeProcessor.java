@@ -73,6 +73,22 @@ public class AlgaeProcessor extends SubsystemBase {
         }
     }
 
+
+    public boolean cmd_runMotor_Up(){
+        current_angle = getCurrentAngle();
+        //Todo: Check Inverse, update constants
+        if(!getBeamBreak()) {
+            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
+            angleMotor.accept(pidOutput);
+            return false;
+        }
+
+        stop();
+        resetEncoder();
+        return true;
+    }
+
+
     public void runMotor_Down(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
@@ -80,6 +96,17 @@ public class AlgaeProcessor extends SubsystemBase {
 
         double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
         angleMotor.accept(pidOutput);
+    }
+
+    public boolean cmd_runMotor_Down(){
+        current_angle = getCurrentAngle();
+        //Todo: Check Inverse, update constants
+        wheelMotor.accept(-wheelIntakeSpeed);
+
+        double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
+        angleMotor.accept(pidOutput);
+
+        return current_angle >= minAngle - 2 && current_angle <= minAngle + 2;
     }
 
 
@@ -123,6 +150,9 @@ public class AlgaeProcessor extends SubsystemBase {
         angleMotor.stop();
     }
 
+    public void wheelStop(){
+        wheelMotor.stop();
+    }
     // moves arm back to being parallel with the elevator with pid
 
     // this function returns, avoid using for now in favor of manReset function below
@@ -142,6 +172,10 @@ public class AlgaeProcessor extends SubsystemBase {
 
     public void eject(){
         wheelMotor.accept(wheelOutputSpeed);
+    }
+
+    public void intake(){
+        wheelMotor.accept(-wheelIntakeSpeed);
     }
 
     public void coast(){

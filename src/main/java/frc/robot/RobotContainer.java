@@ -99,10 +99,6 @@ public class RobotContainer {
 
   private final Climber climber = new Climber(
           motorComponents.climberSingleMotor,
-          new PIDController(
-                  Constants.ClimberConstants.CLIMBER_P,
-                  Constants.ClimberConstants.CLIMBER_I,
-                  Constants.ClimberConstants.CLIMBER_D),
           new DigitalInput(Constants.ClimberConstants.CLIMBER_LSChannel)
           );
 
@@ -114,12 +110,18 @@ public class RobotContainer {
    * Commands are implemented here...
    */
   AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          new LimeLightRunner(),
-          drivebase,
-          new PIDController(Constants.VisionConstants.ANGLE_P,
-                  Constants.VisionConstants.ANGLE_I,
-                  Constants.VisionConstants.ANGLE_D),
-          3.0
+        visionSubsystem,
+        drivebase,
+        new PIDController(Constants.VisionConstants.ANGLE_P,
+                        Constants.VisionConstants.ANGLE_I,
+                        Constants.VisionConstants.ANGLE_D),
+        new PIDController(Constants.VisionConstants.STRAFE_P,
+                        Constants.VisionConstants.STRAFE_I,
+                        Conditions.VisionConstants.STRAFE_D),
+        new PIDController(Constants.VisionConstants.DISTANCE_P,
+                        Constants.VisionConstants.DISTANCE_I,
+                        Constants.VisionConstants.DISTANCE_D),
+        Constants.VisionConstants.BUFFERDIST
   );
 
 
@@ -353,6 +355,8 @@ public class RobotContainer {
 //    joystick.button(12).onTrue(Commands.runOnce(algaeProcessor::resetEncoder));
 //    joystick.button(4).whileTrue(Commands.runOnce(algaeProcessor::coast)).
 //            onFalse(Commands.runOnce(algaeProcessor::brake));
+//    joystick.button(8).onTrue(algaeProcessorCommand);
+//    joystick.button(8).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
   // Climber testing
 //    joystick.button(5).whileTrue(Commands.runOnce(climber::runMotor_Up).repeatedly())
@@ -361,6 +365,11 @@ public class RobotContainer {
 //            .onFalse(Commands.runOnce(climber::stop));
 //    joystick.button(5).whileTrue(Commands.runOnce(climber::coast)).
 //            onFalse(Commands.runOnce(climber::brake));
+//    joystick.button(8).onTrue(climberCommand);
+//    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
+  
+  // AlignToTarget testing
+      // joystick.button(6).whileTrue(Commands.runOnce(AlignToTarget).repeatedly());
   }
 
 
