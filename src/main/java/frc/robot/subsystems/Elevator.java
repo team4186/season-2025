@@ -81,7 +81,7 @@ public class Elevator extends SubsystemBase{
 
         this.encoder = encoder;
         // this.encoder.reset();
-        this.encoder.setDistancePerPulse( 1.0/6626.506 );
+        this.encoder.setDistancePerPulse( 1.06938/6626.506 );
 
         // SysId Routine for dialing in values for our system
         routine = new SysIdRoutine(
@@ -205,15 +205,17 @@ public class Elevator extends SubsystemBase{
 
     // TODO: BEFORE TESTING Replace with setting in configs
     public double getPositionMeters() {
-        return relativeEncoder.getPosition() *
-                (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+//        return relativeEncoder.getPosition() *
+//                (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
+//                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+        return encoder.getDistance();
     }
 
 
     public double getVelocityMetersPerSecond() {
-        return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+//        return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
+//                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+        return encoder.getRate();
     }
     
     public boolean isAtTop() {
