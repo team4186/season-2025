@@ -30,7 +30,7 @@ public class AlgaeProcessor extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
         maxAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_ANGLE;
         maxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_SPEED;
         defaultAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_DEFAULT_ANGLE;
@@ -126,7 +126,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
         return current_angle;
     }
 

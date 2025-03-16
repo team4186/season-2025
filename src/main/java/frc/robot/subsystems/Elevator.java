@@ -148,6 +148,8 @@ public class Elevator extends SubsystemBase{
         double topLevel = getLevelConstant(5);
         double bottomLevel = getLevelConstant(0);
 
+        double diff = levelHeight - getPositionMeters();
+
         double currentPos = getPositionMeters();
         boolean isPositive =  ( levelHeight - currentPos >= 0 );
 
@@ -166,6 +168,9 @@ public class Elevator extends SubsystemBase{
         }
 
     }
+
+//    public boolean isAtZero() {
+//        return UnitsUtility.isBeamBroken(bottomLimitSwitch,)    }
 
 
     public double getLevelConstant( int level ){
@@ -228,15 +233,26 @@ public class Elevator extends SubsystemBase{
 
     public void stopMotor() {
 
-        double voltsOutput = MathUtil.clamp(
-                elevatorFeedforward.calculateWithVelocities(
-                        getVelocityMetersPerSecond(),
-                        0.0), -7, 7);
-        elevatorMotors.setLeadVoltage(voltsOutput);
+//        int direction = 1;
+//        double velocity = getVelocityMetersPerSecond();
+//
+//
+////        double voltsOutput = MathUtil.clamp(
+////                elevatorFeedforward.calculateWithVelocities(
+////                        getVelocityMetersPerSecond(),
+////                        0.0), -7, 7);
+//        double voltsOutput = 7;
+//
+//        if ( velocity >= 0.1 ) {
+//            direction = -1;
+//        }
+//
+//        elevatorMotors.setLeadVoltage( voltsOutput * direction);
+        elevatorMotors.stop();
     }
 
     public Command slowToStop(){
-        return this.run( this::stopMotor ).until(
-                () -> relativeEncoder.getVelocity() >= -0.1 && relativeEncoder.getVelocity() <= 0.1);
+        return this.run( this::stopMotor );
+                //.until(() -> encoder.getRate() >= -0.05 && relativeEncoder.getVelocity() <= 0.05);
     }
 }

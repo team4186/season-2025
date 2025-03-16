@@ -30,10 +30,15 @@ public final class UnitsUtility {
 	}
 
 
-	public static double ticksToDegrees(double pos, int encoderTicks, double gearRatio) {
-		// return ( (pos / (encoderTicks * gearRatio)) * 360) % 360;
+//	public static double ticksToDegrees(double pos, int encoderTicks, double gearRatio) {
+//		// return ( (pos / (encoderTicks * gearRatio)) * 360) % 360;
+//        return ( (encoderTicks/ gearRatio) * 360) % 360;
+//	}
+
+    public static double ticksToDegrees(double encoderTicks, double gearRatio) {
+        // return ( (pos / (encoderTicks * gearRatio)) * 360) % 360;
         return ( (encoderTicks/ gearRatio) * 360) % 360;
-	}
+    }
 
 
 //    public static double ticksToDegrees(double encoderTicks, String motorType) {

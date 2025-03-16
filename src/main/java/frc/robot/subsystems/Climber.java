@@ -26,7 +26,7 @@ public class Climber extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         climbEncoder = climberSingleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(climbEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(climbEncoder.getPosition(),Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
         speed = Constants.ClimberConstants.CLIMBER_SPEED;
         
@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
     public void periodic(){
         // publish smart dashboard info here
         // SmartDashboard.putNumber("key", value);
-        SmartDashboard.putNumber("Climber_RelativeEncoder_Raw", angleEncoder.getPosition());
+        SmartDashboard.putNumber("Climber_RelativeEncoder_Raw", getCurrentAngle());
         SmartDashboard.putNumber("Climber_Angle:", getCurrentAngle());
         SmartDashboard.putNumber("Climber_Speed:", getCurrentSpeed());
         SmartDashboard.putBoolean("Climber_LimitSwitch", getBeamBreak());

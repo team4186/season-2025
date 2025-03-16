@@ -30,7 +30,7 @@ public class DeAlgae extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
         maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
         minSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED;
