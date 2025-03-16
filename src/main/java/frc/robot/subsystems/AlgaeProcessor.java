@@ -32,7 +32,7 @@ public class AlgaeProcessor extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
         maxAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_ANGLE;
         minAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_ANGLE;
         maxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_SPEED;
@@ -48,9 +48,10 @@ public class AlgaeProcessor extends SubsystemBase {
     public void periodic(){
         // publish smart dashboard info here
         // SmartDashboard.putNumber("key", value);
-        SmartDashboard.putNumber("AlgaeProcessor Angle:", getCurrentAngle());
-        SmartDashboard.putNumber("AlgaeProcessor Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("AlgaeProcessor limitSwitch", !UnitsUtility.isBeamBroken(limitSwitch,false,"Algae processor limit switch"));
+        SmartDashboard.putNumber("Algae_Processor_Relative_Encoder_Raw", angleEncoder.getPosition());
+        SmartDashboard.putNumber("Algae_Processor_Angle:", getCurrentAngle());
+        SmartDashboard.putNumber("Algae_Processor_Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("Algae_Processor_limitSwitch", !UnitsUtility.isBeamBroken(limitSwitch,false,"Algae processor limit switch"));
     }
 
     private boolean getBeamBreak(){
@@ -111,7 +112,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
         return current_angle;
     }
 

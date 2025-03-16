@@ -112,8 +112,14 @@ public final class Constants {
         public static final double ELEVATOR_LEVEL_THREE = 1.18; //118 cm
         public static final double ELEVATOR_LEVEL_FOUR = 1.89; //189 cm
         public static final double ELEVATOR_MAX_HEIGHT = 1.89; // TODO: Determine threshold if different from highest level
+        // 131.2,
+        // 0.000302
+        // 0.171433
+        // 0.577076
+        // 1.3243
 
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
+
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
         public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
         //TODO: Change the two below, they are placeholders.

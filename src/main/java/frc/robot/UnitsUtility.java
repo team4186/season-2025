@@ -16,33 +16,34 @@ public final class UnitsUtility {
     }
 
 
-    public static double ticksToMeters(double encoderTicks, double wheelDiameter, String motorType) {
+    public static double ticksToMeters(double pos, double wheelDiameter, String motorType) {
         if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
-            return (encoderTicks/42.0) * (Math.PI * wheelDiameter);
+            return (pos/42.0) * (Math.PI * wheelDiameter);
         } else {
           throw new IllegalArgumentException();
         }
     }
 
 
-	public static double ticksToMeters(double encoderTicks, double wheelDiameter, double gearRatio) {
-		return (encoderTicks/(42.0 * gearRatio)) * (Math.PI * wheelDiameter);
+	public static double ticksToMeters(double pos, double wheelDiameter, double gearRatio) {
+		return ( pos / (42.0 * gearRatio)) * (Math.PI * wheelDiameter);
 	}
 
 
-	public static double ticksToDegrees(double encoderTicks, double gearRatio) {
-		return ( (encoderTicks/ gearRatio) * 360) % 360;
+	public static double ticksToDegrees(double pos, int encoderTicks, double gearRatio) {
+		// return ( (pos / (encoderTicks * gearRatio)) * 360) % 360;
+        return ( (encoderTicks/ gearRatio) * 360) % 360;
 	}
 
 
-    public static double ticksToDegrees(double encoderTicks, String motorType) {
-		if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
-            // return (encoderTicks/8.57) % 360;
-            return (((encoderTicks/42.0) * 360) % 360);
-        } else {
-            throw new IllegalArgumentException();
-        }
-    }
+//    public static double ticksToDegrees(double encoderTicks, String motorType) {
+//		if (motorType == "NEO550" || motorType == "NEOVORTEX" || motorType == "NEO") {
+//            // return (encoderTicks/8.57) % 360;
+//            return (((encoderTicks/42.0) * 360) % 360);
+//        } else {
+//            throw new IllegalArgumentException();
+//        }
+//    }
 
 
     public static double inchesToCentimeters(double inches) {

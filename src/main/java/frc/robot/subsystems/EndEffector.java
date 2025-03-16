@@ -25,8 +25,9 @@ public class EndEffector extends SubsystemBase {
     @Override
     public void periodic(){
         // publish smart dashboard info here
-        SmartDashboard.putBoolean("hasGamePiece", hasGamePiece());
-        SmartDashboard.putNumber("EndEffectorVoltage", relativeEncoder.getVelocity());
+        SmartDashboard.putBoolean("EndEffector_hasGamePiece", hasGamePiece());
+        SmartDashboard.putNumber("EndEffector_RelativeEncoder_Raw", relativeEncoder.getPosition());
+        SmartDashboard.putNumber("EndEffector_Velocity", relativeEncoder.getVelocity());
     }
 
 

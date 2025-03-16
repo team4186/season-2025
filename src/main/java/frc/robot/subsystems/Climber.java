@@ -28,7 +28,7 @@ public class Climber extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         angleEncoder = climberSingleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(),42, Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         deployVoltage = Constants.ClimberConstants.CLIMBER_DEPLOY_VOLTAGE;
         voltage = Constants.ClimberConstants.CLIMBER_VOLTAGE;
         deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
@@ -41,9 +41,10 @@ public class Climber extends SubsystemBase {
     public void periodic(){
         // publish smart dashboard info here
         // SmartDashboard.putNumber("key", value);
-        SmartDashboard.putNumber("Climber Angle:", getCurrentAngle());
-        SmartDashboard.putNumber("Climber Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("Climber limitSwitch", getBeamBreak());
+        SmartDashboard.putNumber("Climber_RelativeEncoder_Raw", angleEncoder.getPosition());
+        SmartDashboard.putNumber("Climber_Angle:", getCurrentAngle());
+        SmartDashboard.putNumber("Climber_Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("Climber_LimitSwitch", getBeamBreak());
 
     }
 
@@ -96,7 +97,7 @@ public class Climber extends SubsystemBase {
     
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         return current_angle;
     }
 

@@ -30,7 +30,7 @@ public class DeAlgae extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         maxAngle = Constants.DeAlgaeConstants.DE_ALGAE_MAX_ANGLE;
         maxSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MAX_SPEED;
         minSpeed = Constants.DeAlgaeConstants.DE_ALGAE_MIN_SPEED;
@@ -43,10 +43,10 @@ public class DeAlgae extends SubsystemBase {
     public void periodic(){
         // publish smart dashboard info here
         // SmartDashboard.putNumber("key", value);
-        SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
-        SmartDashboard.putNumber("DeAlgae Speed:", getCurrentSpeed());
-        SmartDashboard.putBoolean("DeAlgae limitSwitch", getBeamBreak());
-        SmartDashboard.putNumber("DeAlgae Raw Encoder Output", angleEncoder.getPosition());
+        SmartDashboard.putNumber("DeAlgae_Angle:", getCurrentAngle());
+        SmartDashboard.putNumber("DeAlgae_Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("DeAlgae_LimitSwitch", getBeamBreak());
+        SmartDashboard.putNumber("DeAlgae_RelativeEncoder_Raw", angleEncoder.getPosition());
     }
 
     private boolean getBeamBreak(){
@@ -118,7 +118,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
+        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
         return current_angle;
     }
 

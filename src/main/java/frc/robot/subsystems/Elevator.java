@@ -77,10 +77,11 @@ public class Elevator extends SubsystemBase{
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
 
-        // Encoder
+        // Encoder 8800.000000
+
         this.encoder = encoder;
-        this.encoder.reset();
-        this.encoder.setDistancePerPulse( 1.0/2048.0 );
+        // this.encoder.reset();
+        this.encoder.setDistancePerPulse( 1.0/6626.506 );
 
         // SysId Routine for dialing in values for our system
         routine = new SysIdRoutine(
@@ -118,19 +119,15 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic(){
         // publish smart dashboard info here
-        SmartDashboard.putNumber("Elevator_RelativeEncoderDistance", relativeEncoder.getPosition());
-        SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
-        SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
+        SmartDashboard.putNumber("Elevator_RelativeEncoder_Distance", relativeEncoder.getPosition());
+        SmartDashboard.putNumber("Elevator_TranslatedDistance_Calculated", getPositionMeters());
+        SmartDashboard.putNumber("Elevator_Velocity_Calculated", getVelocityMetersPerSecond());
 
-        SmartDashboard.putNumber("Elevator_Encoder_Distance", encoder.getDistance());
-        SmartDashboard.putNumber("Elevator_Encoder_DistancePerPulse", encoder.getDistancePerPulse());
+        SmartDashboard.putNumber("Elevator_BoreEncoder_Distance", encoder.getDistance());
+        SmartDashboard.putNumber("Elevator_BoreEncoder_DistancePerPulse", encoder.getDistancePerPulse());
 
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
-
-        if ( !SmartDashboard.getBoolean("Elevator_LimitSwitch_Top", false) ){
-            SmartDashboard.putNumber("Elevator_Encoder_TopLimitSwitchDistance", encoder.getDistance());
-        }
     }
 
     private boolean getTopBeamBreak(){
