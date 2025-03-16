@@ -164,7 +164,7 @@ public final class Constants {
         public static final double END_EFFECTOR_INTAKE_SPEED = 0.25;
     }
 
-  
+
     public static final class VisionConstants {
         // Update to 2025
         public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );

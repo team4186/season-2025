@@ -40,21 +40,21 @@ public class AlgaeProcessorCommand extends Command {
     // first press arm moves down and motor intakes, second press brings arm back up, third press ejects.
     @Override
     public void execute() {
-        if(ejectTimer >= 30 || exit_timer >= 150){
+        if(ejectTimer >= 30){
             algaeProcessor.wheelStop();
             isfinished = algaeProcessor.reset();
         }
 
         if(button_count == 1){
+
             algaeProcessor.runMotor_Down();
             algaeProcessor.intake();
             exit_timer++;
-        }
-        else if(button_count == 2){
+
             algaeProcessor.runMotor_Up();
             algaeProcessor.wheelStop();
-        }
-        else{
+            }
+            else{
             algaeProcessor.eject();
             ejectTimer++;
         }
