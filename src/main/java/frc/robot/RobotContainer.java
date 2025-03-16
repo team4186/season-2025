@@ -90,10 +90,6 @@ public class RobotContainer {
   private final AlgaeProcessor algaeProcessor = new AlgaeProcessor(
           motorComponents.algaeProcessorWheelSingleMotor,
           motorComponents.algaeProcessorAngleSingleMotor,
-          new PIDController(
-                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_P,
-                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_I,
-                  Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_D),
           new DigitalInput(Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_LSChannel)
           );
 

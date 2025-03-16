@@ -16,23 +16,19 @@ public class Climber extends SubsystemBase {
 
     private final DigitalInput limitSwitch;
     private final SingleMotor climberSingleMotor;
-    private final RelativeEncoder angleEncoder;
+    private final RelativeEncoder climbEncoder;
     private static double current_angle;
-    private static double deployVoltage;
-    private static double voltage;
+    private static double speed;
     private static double deployAngle;
-    private static double resetAngle;
 
     public Climber(SingleMotor climberSingleMotor, DigitalInput limitSwitch){
         this.climberSingleMotor = climberSingleMotor;
         this.limitSwitch = limitSwitch;
 
-        angleEncoder = climberSingleMotor.getRelativeEncoder();
-        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), "NEO550"));
-        deployVoltage = Constants.ClimberConstants.CLIMBER_DEPLOY_VOLTAGE;
-        voltage = Constants.ClimberConstants.CLIMBER_VOLTAGE;
+        climbEncoder = climberSingleMotor.getRelativeEncoder();
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(climbEncoder.getPosition(), "NEO550"));
         deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
-        resetAngle = Constants.ClimberConstants.CLIMBER_RESET_ANGLE;
+        speed = Constants.ClimberConstants.CLIMBER_SPEED;
         
     }
 
@@ -45,6 +41,9 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putNumber("Climber Speed:", getCurrentSpeed());
         SmartDashboard.putBoolean("Climber limitSwitch", getBeamBreak());
 
+        if(getBeamBreak()){
+            resetEncoder();
+        }
     }
 
     private boolean getBeamBreak(){
@@ -59,7 +58,7 @@ public class Climber extends SubsystemBase {
 
         if(getCurrentAngle() <= deployAngle) {
             //Todo: Make sure (+/-) and direction is correct
-            climberSingleMotor.setVoltage(deployVoltage);
+            climberSingleMotor.accept(speed);
         }
         else{
             climberSingleMotor.stop();
@@ -85,7 +84,7 @@ public class Climber extends SubsystemBase {
     public boolean pull(){
 
         if(!getBeamBreak()) {
-            climberSingleMotor.setVoltage(-voltage);
+            climberSingleMotor.accept(-speed);
             return false;
         }
         else{
@@ -96,7 +95,7 @@ public class Climber extends SubsystemBase {
     
 
     public double getCurrentAngle() {
-        current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
+        current_angle = (UnitsUtility.ticksToDegrees(climbEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         return current_angle;
     }
 
@@ -110,4 +109,13 @@ public class Climber extends SubsystemBase {
     public void stop(){
         climberSingleMotor.stop();
     }
+    public void coast(){
+        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
+        climberSingleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    }
+
+    public void resetEncoder(){
+        climbEncoder.setPosition(0.0);
+    }
+
 }

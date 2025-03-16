@@ -59,7 +59,9 @@ public class AlgaeProcessorCommand extends Command {
                 if(!ready){
                     ready = algaeProcessor.cmd_runMotor_Up();
                 }
-                algaeProcessor.wheelStop();
+                else {
+                    algaeProcessor.wheelStop();
+                }
             }
         }
 
