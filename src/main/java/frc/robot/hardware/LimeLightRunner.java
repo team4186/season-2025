@@ -80,11 +80,11 @@ public class LimeLightRunner extends SubsystemBase{
 
     public double getZOffset() {
         // ty
-        return this.camPose[2]
+        return this.camPose[2];
     } 
 
     public double getThetaOffset() {
         // yaw
-        return this.camPose[4]
+        return this.camPose[4];
     }
 }
