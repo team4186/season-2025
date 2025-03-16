@@ -12,6 +12,8 @@ public final class DefaultMotorConfigs {
     public final SparkMaxConfig DefaultConfig = (SparkMaxConfig) new SparkMaxConfig()
             .smartCurrentLimit(50)
             .idleMode(SparkBaseConfig.IdleMode.kBrake);
+            //.idleMode(SparkBaseConfig.IdleMode.kCoast);
+
 
 
     public final SparkMaxConfig HoldingBaseConfig = (SparkMaxConfig) new SparkMaxConfig()

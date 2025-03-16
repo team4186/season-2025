@@ -19,24 +19,20 @@ public class AlgaeProcessor extends SubsystemBase {
     private final SingleMotor wheelMotor;
     private final SingleMotor angleMotor;
     private final RelativeEncoder angleEncoder;
-    private final PIDController anglePid;
     private static double current_angle;
-    private static double maxAngle, minAngle, maxSpeed, minSpeed, defaultAngle,
+    private static double maxAngle, maxSpeed, defaultAngle,
                              wheelIntakeSpeed, wheelOutputSpeed, angleSpeed;
 
 
-    public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch){
+    public AlgaeProcessor(SingleMotor wheelMotor, SingleMotor angleMotor, DigitalInput limitSwitch){
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
-        this.anglePid = anglePid;
         this.limitSwitch = limitSwitch;
 
         angleEncoder = angleMotor.getRelativeEncoder();
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), 42, Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_GEARBOX_RATIO));
         maxAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_ANGLE;
-        minAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_ANGLE;
         maxSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MAX_SPEED;
-        minSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_MIN_SPEED;
         defaultAngle = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_DEFAULT_ANGLE;
 
         wheelIntakeSpeed = Constants.AlgaeProcessorConstants.ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED;
@@ -52,25 +48,37 @@ public class AlgaeProcessor extends SubsystemBase {
         SmartDashboard.putNumber("Algae_Processor_Angle:", getCurrentAngle());
         SmartDashboard.putNumber("Algae_Processor_Speed:", getCurrentSpeed());
         SmartDashboard.putBoolean("Algae_Processor_limitSwitch", !UnitsUtility.isBeamBroken(limitSwitch,false,"Algae processor limit switch"));
+        if(getBeamBreak()){
+            resetEncoder();
+        }
     }
+
 
     private boolean getBeamBreak(){
         return !UnitsUtility.isBeamBroken(limitSwitch,false,"Processor limit switch");
     }
 
+    public void initialize(){
+        current_angle = getCurrentAngle();
+        //Todo: Check Inverse, update constants
+        if(!getBeamBreak() || current_angle > defaultAngle) {
+            angleMotor.accept(-maxSpeed);
+        }
+        else{
+            stop();
+        }
+    }
 
     //TODO: find angle motor speed ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
     public void runMotor_Up(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
-        if(!getBeamBreak()) {
-            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
-            angleMotor.accept(pidOutput);
+        if(!getBeamBreak() || current_angle > defaultAngle) {
+            angleMotor.accept(-maxSpeed);
         }
         else{
             stop();
-            resetEncoder();
         }
     }
 
@@ -78,9 +86,8 @@ public class AlgaeProcessor extends SubsystemBase {
     public boolean cmd_runMotor_Up(){
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
-        if(!getBeamBreak()) {
-            double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
-            angleMotor.accept(pidOutput);
+        if(!getBeamBreak() || current_angle > defaultAngle) {
+            angleMotor.accept(-maxSpeed);
             return false;
         }
 
@@ -95,8 +102,12 @@ public class AlgaeProcessor extends SubsystemBase {
         //Todo: Check Inverse, update constants
         wheelMotor.accept(-wheelIntakeSpeed);
 
-        double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
-        angleMotor.accept(pidOutput);
+        if(current_angle < maxAngle) {
+            angleMotor.accept(maxSpeed);
+        }
+        else{
+            stop();
+        }
     }
 
     public boolean cmd_runMotor_Down(){
@@ -104,10 +115,13 @@ public class AlgaeProcessor extends SubsystemBase {
         //Todo: Check Inverse, update constants
         wheelMotor.accept(-wheelIntakeSpeed);
 
-        double pidOutput = coerceIn(anglePid.calculate(current_angle, minAngle));
-        angleMotor.accept(pidOutput);
+        if(current_angle < maxAngle) {
+            angleMotor.accept(maxSpeed);
+            return false;
+        }
 
-        return current_angle >= minAngle - 2 && current_angle <= minAngle + 2;
+        stop();
+        return true;
     }
 
 
@@ -130,21 +144,6 @@ public class AlgaeProcessor extends SubsystemBase {
     }
 
 
-    // used to limit the pid calculation output to be within acceptable speeds
-    private double coerceIn(double value) {
-        int sign = 1;
-        if (value < 0) {
-            sign = -1;
-        }
-
-        if ( Math.abs( value ) > maxSpeed) {
-            return maxSpeed * sign;
-        } else {
-            return Math.max( Math.abs(value), minSpeed) * sign;
-        }
-    }
-
-
     // stops the arm and rolling motors
     public void stop(){
         wheelMotor.stop();
@@ -158,12 +157,10 @@ public class AlgaeProcessor extends SubsystemBase {
 
     // this function returns, avoid using for now in favor of manReset function below
     public boolean reset(){
-        double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle > defaultAngle) {
-            PIDoutput = coerceIn(anglePid.calculate(current_angle, defaultAngle));
-            angleMotor.accept(PIDoutput);
+        if(!getBeamBreak() || current_angle > defaultAngle) {
+            angleMotor.accept(-maxSpeed);
             return false;
         }
 

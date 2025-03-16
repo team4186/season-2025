@@ -53,14 +53,9 @@ public final class Constants {
 
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
     public static final class AlgaeProcessorConstants {
-        public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 15.0;
+        public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 5;
         public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.10;
-        public static final double ALGAE_PROCESSOR_MIN_SPEED = 0.08;
-        public static final double ALGAE_PROCESSOR_P = 0.1;
-        public static final double ALGAE_PROCESSOR_I = 0.0;
-        public static final double ALGAE_PROCESSOR_D = 0.0;
-        public static final double ALGAE_PROCESSOR_MAX_ANGLE = 150.0;
-        public static final double ALGAE_PROCESSOR_MIN_ANGLE = 75.0;
+        public static final double ALGAE_PROCESSOR_MAX_ANGLE = 50.0;
         public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 90;
 
         public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.25;
@@ -71,12 +66,9 @@ public final class Constants {
 
 
   public static final class ClimberConstants {
-      public static final double CLIMBER_VOLTAGE = 0.05;
-      // climber deploy should be far less than climber voltage, only to move on its own and not with robot weight
-      public static final double CLIMBER_DEPLOY_VOLTAGE = 0.02;
+      public static final double CLIMBER_SPEED = 0.05;
       public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
       public static final double CLIMBER_DEPLOY_ANGLE = 70; //TODO: placeholder, relative to limit switch
-      public static final double CLIMBER_RESET_ANGLE = 20; //TODO: placeholder, relative to limit switch
 
       public static final int CLIMBER_LSChannel = 8; //
   }
