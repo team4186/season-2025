@@ -121,7 +121,7 @@ public class RobotContainer {
         new PIDController(Constants.VisionConstants.DISTANCE_P,
                         Constants.VisionConstants.DISTANCE_I,
                         Constants.VisionConstants.DISTANCE_D),
-        Constants.VisionConstants.BUFFERDIST
+        Constants.VisionConstants.BUFFER_DIST
   );
 
 
