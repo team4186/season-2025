@@ -225,8 +225,11 @@ public class RobotContainer {
     Command driveFieldOrientedAngularVelocityKeyboard = drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
     Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
-/*    joystick.trigger().onTrue(ElevatorCommandL2);*/
-    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+    // Set default subsystem commands
+    drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity );
+    elevator.setDefaultCommand( Commands.runOnce( elevator::stopMotor, this.elevator ).repeatedly());
+
 
     if ( Robot.isSimulation() ){
       // override to sim controls
@@ -319,37 +322,24 @@ public class RobotContainer {
 //              onFalse(Commands.runOnce(deAlgae::brake));
 
 
-//         TESTING FOR FF ELEVATOR SysIdRoutine;
-//        joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward))
-//                .onFalse( Commands.runOnce(elevator::stopMotor) );
-//        joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse))
-//                .onFalse( Commands.runOnce(elevator::stopMotor) );
-//
-//        joystick.button(6).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward))
-//                .onFalse( Commands.runOnce(elevator::stopMotor) );
-//        joystick.button(4).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse))
-//                .onFalse( Commands.runOnce(elevator::stopMotor) );
+      // TESTING FOR FF ELEVATOR SysIdRoutine;
+      joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+      joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+      joystick.button(6).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+      joystick.button(4).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
 
-
-//      // end effector tests
-//      joystick.trigger()
-//              .and( joystick.button(1) )
+//      joystick.button( 2 )
 //              .whileTrue(endEffectorLoadCommand);
 //      joystick.trigger()
-//              .and( joystick.button(2) )
 //              .whileTrue(endEffectorEjectCommand);
-
-      joystick.button( 2 )
-              .whileTrue(endEffectorLoadCommand);
-      joystick.trigger()
-              .whileTrue(endEffectorEjectCommand);
-
-      // Elevator Simple GOTO level commands for testing
-      joystick.button(9).whileTrue( elevatorCommandL1 );
-      joystick.button(10).whileTrue( elevatorCommandL2 );
-      joystick.button(11).whileTrue( elevatorCommandL3 );
-      joystick.button(12).whileTrue( elevatorCommandL4 );
+//
+//      // Elevator Simple GOTO level commands for testing
+//      joystick.button(9).whileTrue( elevatorCommandL1 );
+//      joystick.button(10).whileTrue( elevatorCommandL2 );
+//      joystick.button(11).whileTrue( elevatorCommandL3 );
+//      joystick.button(12).whileTrue( elevatorCommandL4 );
     }
 
     // AlgaeProcessor testing

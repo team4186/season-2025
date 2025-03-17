@@ -49,12 +49,10 @@ public class AlgaeProcessorCommand extends Command {
         }
 
         if(button_count == 1){
-            if(deployTimer <= 100 && !deployed){
+            if(!deployed){
                 deployed = algaeProcessor.cmd_runMotor_Down();
                 algaeProcessor.intake();
-                deployTimer++;
             }
-
             else {
                 if(!ready){
                     ready = algaeProcessor.cmd_runMotor_Up();

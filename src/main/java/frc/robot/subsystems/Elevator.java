@@ -7,13 +7,11 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.units.measure.MutDistance;
-import edu.wpi.first.units.measure.MutLinearVelocity;
-import edu.wpi.first.units.measure.MutVoltage;
-import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,6 +47,12 @@ public class Elevator extends SubsystemBase{
     private final MutDistance m_distance = Meters.mutable(0);
     // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
     private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
+    // Mutable holder for unit-safe linear acceleration values, persisted to avoid reallocation.
+    private final MutLinearAcceleration m_acceleration = MetersPerSecondPerSecond.mutable(0);
+
+    private final Timer time = new Timer();
+    private double prevTime;
+    private double prevSpeed;
 
     public Elevator(
              DigitalInput bottomLimitSwitch,
@@ -85,24 +89,30 @@ public class Elevator extends SubsystemBase{
 
         // SysId Routine for dialing in values for our system
         routine = new SysIdRoutine(
+                // new SysIdRoutine.Config(Volts.of(0.6).per(Second), Volts.of(3.0), null),
                 new SysIdRoutine.Config(),
                 new SysIdRoutine.Mechanism(
                         this.elevatorMotors::setLeadVoltage,
                         this::logMotors,
                         this));
+
+        this.time.start();
+        this.prevSpeed = encoder.getRate();
+        this.prevTime = this.time.get();
     }
 
     // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
     private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
         sysIdRoutineLog.motor("Elevator")
                 .voltage(
-                        m_appliedVoltage.mut_replace(
-                                this.elevatorMotors.getLead().get()  * RobotController.getBatteryVoltage(), Volts)
+                        Volts.of(elevatorMotors.getLead().getBusVoltage() * RobotController.getBatteryVoltage())
                 )
                 .linearPosition(
-                        m_distance.mut_replace(getPositionMeters(), Meters))
+                        Meters.of(encoder.get()))
                 .linearVelocity(
-                        m_velocity.mut_replace(getVelocityMetersPerSecond(), MetersPerSecond));
+                        MetersPerSecond.of(encoder.getRate()))
+                .linearAcceleration(
+                        m_acceleration.mut_replace(getAccelerationMetersPerSecond(), MetersPerSecondPerSecond));
     }
 
 
@@ -120,11 +130,10 @@ public class Elevator extends SubsystemBase{
     public void periodic(){
         // publish smart dashboard info here
         SmartDashboard.putNumber("Elevator_RelativeEncoder_Distance", relativeEncoder.getPosition());
-        SmartDashboard.putNumber("Elevator_TranslatedDistance_Calculated", getPositionMeters());
         SmartDashboard.putNumber("Elevator_Velocity_Calculated", getVelocityMetersPerSecond());
 
         SmartDashboard.putNumber("Elevator_BoreEncoder_Distance", encoder.getDistance());
-        SmartDashboard.putNumber("Elevator_BoreEncoder_DistancePerPulse", encoder.getDistancePerPulse());
+        SmartDashboard.putNumber("Elevator_BoreEncoder_Rate", encoder.getRate());
 
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
@@ -221,6 +230,21 @@ public class Elevator extends SubsystemBase{
 //        return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
 //                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
         return encoder.getRate();
+    }
+
+    private double getAccelerationMetersPerSecond() {
+        // get current time and speed
+        double currTime = this.time.get();
+        double currSpeed = encoder.getRate();
+
+        // calc accel
+        double accel = (currSpeed - prevSpeed) / (currTime - prevTime);
+
+        // Update for next time step
+        prevSpeed = currSpeed;
+        prevTime = currTime;
+
+        return accel;
     }
     
     public boolean isAtTop() {
