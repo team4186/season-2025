@@ -305,8 +305,8 @@ public class RobotContainer {
 
 
 //       deAlgae Command testing
-      joystick.button(7).onTrue(deAlgaeCommand);
-      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+//      joystick.button(7).onTrue(deAlgaeCommand);
+//      joystick.button(7).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
 
 
 //      joystick.button(8).whileTrue(Commands.runOnce(deAlgae::Manpid_runMotor_Up).repeatedly())
@@ -340,30 +340,32 @@ public class RobotContainer {
 //              .and( joystick.button(2) )
 //              .whileTrue(endEffectorEjectCommand);
 
-      joystick.button( 2 )
-              .whileTrue(endEffectorLoadCommand);
-      joystick.trigger()
-              .whileTrue(endEffectorEjectCommand);
-
+//      joystick.button( 2 )
+//              .whileTrue(endEffectorLoadCommand);
+//      joystick.trigger()
+//              .whileTrue(endEffectorEjectCommand);
+//
       // Elevator Simple GOTO level commands for testing
-      joystick.button(9).whileTrue( elevatorCommandL1 );
-      joystick.button(10).whileTrue( elevatorCommandL2 );
-      joystick.button(11).whileTrue( elevatorCommandL3 );
-      joystick.button(12).whileTrue( elevatorCommandL4 );
+//      joystick.button(9).whileTrue( elevatorCommandL1 );
+//      joystick.button(10).whileTrue( elevatorCommandL2 );
+//      joystick.button(11).whileTrue( elevatorCommandL3 );
+//      joystick.button(12).whileTrue( elevatorCommandL4 );
     }
 
     // AlgaeProcessor testing
-//    joystick.button(5).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Up).repeatedly())
-//            .onFalse(Commands.runOnce(algaeProcessor::stop));
-//    joystick.button(6).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Down).repeatedly())
-//            .onFalse(Commands.runOnce(algaeProcessor::stop));
-//    joystick.button(7).whileTrue(Commands.runOnce(algaeProcessor::eject).repeatedly())
-//            .onFalse(Commands.runOnce(algaeProcessor::stop));
-//    joystick.button(12).onTrue(Commands.runOnce(algaeProcessor::resetEncoder));
-//    joystick.button(4).whileTrue(Commands.runOnce(algaeProcessor::coast)).
-//            onFalse(Commands.runOnce(algaeProcessor::brake));
-//    joystick.button(8).onTrue(algaeProcessorCommand);
-//    joystick.button(8).onTrue((Commands.runOnce(deAlgaeCommand::button_detect)));
+    joystick.button(5).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Up).repeatedly())
+            .onFalse(Commands.runOnce(algaeProcessor::stop));
+    joystick.button(6).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Down).repeatedly())
+            .onFalse(Commands.runOnce(algaeProcessor::stop));
+    joystick.button(7).whileTrue(Commands.runOnce(algaeProcessor::eject).repeatedly())
+            .onFalse(Commands.runOnce(algaeProcessor::stop));
+    joystick.button(8).whileTrue(Commands.runOnce(algaeProcessor::intake).repeatedly())
+            .onFalse(Commands.runOnce(algaeProcessor::stop));
+    joystick.button(12).onTrue(Commands.runOnce(algaeProcessor::resetEncoder));
+    joystick.button(4).whileTrue(Commands.runOnce(algaeProcessor::coast)).
+            onFalse(Commands.runOnce(algaeProcessor::brake));
+    joystick.button(3).onTrue(algaeProcessorCommand);
+    joystick.button(3).onTrue((Commands.runOnce(algaeProcessorCommand::button_detect)));
 
   // Climber testing
 //    joystick.button(5).whileTrue(Commands.runOnce(climber::runMotor_Up).repeatedly())
@@ -376,8 +378,8 @@ public class RobotContainer {
 
 
     // CLIMBER
-    joystick.button(8).onTrue(climberCommand);
-    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
+//    joystick.button(8).onTrue(climberCommand);
+//    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
   
   // AlignToTarget testing
       // joystick.button(6).whileTrue(Commands.runOnce(AlignToTarget).repeatedly());
