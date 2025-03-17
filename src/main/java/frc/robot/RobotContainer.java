@@ -25,6 +25,7 @@ import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
 import java.io.File;
+import frc.robot.commands.actions.ElevatorReturnToDefault;
 
 import swervelib.SwerveInputStream;
 
@@ -120,12 +121,12 @@ public class RobotContainer {
         Constants.VisionConstants.BUFFER_DIST
   );
 
+  ElevatorReturnToDefault elevatorDefaultCommand = new ElevatorReturnToDefault(elevator);
 
   EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector);
   EndEffectorLoadCommand endEffectorLoadCommand = new EndEffectorLoadCommand(endEffector);
 
   DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
-
   AlgaeProcessorCommand algaeProcessorCommand = new AlgaeProcessorCommand(algaeProcessor);
 
   ClimberCommand climberCommand = new ClimberCommand(climber);
