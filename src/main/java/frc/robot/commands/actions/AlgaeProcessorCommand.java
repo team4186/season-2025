@@ -19,7 +19,6 @@ public class AlgaeProcessorCommand extends Command {
     private boolean isfinished = false;
     private int ejectTimer = 0;
     private boolean ready = false;
-    private int deployTimer = 0;
     private boolean deployed = false;
 
 
@@ -43,27 +42,27 @@ public class AlgaeProcessorCommand extends Command {
     // first press arm moves down and motor intakes, timer determines when to bring arm back, second press ejects.
     @Override
     public void execute() {
-        if(ejectTimer >= 30){
+        // exit case
+        if(ejectTimer >= 60){
             algaeProcessor.wheelStop();
             isfinished = algaeProcessor.reset();
         }
 
-        if(button_count == 1){
-            if(!deployed){
-                deployed = algaeProcessor.cmd_runMotor_Down();
-                algaeProcessor.intake();
-            }
-            else {
-                if(!ready){
-                    ready = algaeProcessor.cmd_runMotor_Up();
-                }
-                else {
-                    algaeProcessor.wheelStop();
-                }
-            }
+        if(button_count >= 3 && !ready){
+            ready = algaeProcessor.cmd_runMotor_Up();
         }
 
-        else if(button_count > 1 && ready){
+        if(button_count == 1 && !deployed) {
+            deployed = algaeProcessor.cmd_runMotor_Down();
+            algaeProcessor.intake();
+        }
+
+        else if(button_count == 2 && deployed && !ready){
+            ready = algaeProcessor.cmd_runMotor_Up();
+            algaeProcessor.holdAlgae();
+        }
+
+        else if(button_count >= 3 && ready){
             algaeProcessor.eject();
             ejectTimer++;
         }
@@ -98,12 +97,11 @@ public class AlgaeProcessorCommand extends Command {
     public void end(boolean interrupted)
     {
         button_count = 0;
-        algaeProcessor.stop();
         isfinished = false;
         ejectTimer = 0;
         ready = false;
         deployed = false;
-        deployTimer = 0;
+        algaeProcessor.stop();
     }
 
     public void button_detect(){

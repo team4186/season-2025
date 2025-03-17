@@ -54,12 +54,14 @@ public final class Constants {
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
     public static final class AlgaeProcessorConstants {
         public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 5;
-        public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.10;
+        public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.25;
         public static final double ALGAE_PROCESSOR_MAX_ANGLE = 50.0;
         public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 90;
+        public static final double ALGAE_PROCESSOR_HOLDING_ANGLE = 30;
 
-        public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.25;
+        public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.35;
         public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 1.0;
+        public static final double ALGAE_PROCESSOR_WHEEL_HOLDING_SPEED = 0.10;
 
         public static final int ALGAE_PROCESSOR_LSChannel = 0; //
     }
@@ -163,7 +165,7 @@ public final class Constants {
         public static final double END_EFFECTOR_INTAKE_SPEED = 0.5;
     }
 
-  
+
     public static final class VisionConstants {
         // Update to 2025
         public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
