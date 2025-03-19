@@ -13,11 +13,11 @@ public class AlignToTargetCommand extends Command {
     private boolean isFinished;
     private double xOffset;
     private double distanceOffset;
-    private PIDController turnPID;
-    private PIDController strafePID;
-    private PIDController distancePID;
+    private final PIDController turnPID;
+    private final PIDController strafePID;
+    private final PIDController distancePID;
     // Distance the drive train needs to stop from the wall.
-    private double bufferDist;
+    private final double bufferDist;
 
     public AlignToTargetCommand(LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, PIDController turnPID, PIDController strafePID, PIDController distancePID, double bufferDist) {
         this.visionSubsystem = visionSubsystem;
@@ -48,10 +48,7 @@ public class AlignToTargetCommand extends Command {
 
     // The numbers are arbituary, it can be changed later.
     public boolean closeEnough(double input) {
-        if (input >= -0.2 && input <= 0.2) {
-            return true;
-        }
-        return false;
+        return input >= -0.2 && input <= 0.2;
     }
 
     @Override
