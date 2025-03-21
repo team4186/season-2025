@@ -45,8 +45,6 @@ public final class ElevatorCommand extends Command {
      */
     @Override
     public void execute() {
-
-
         elevatorSubsystem.goToLevel(goalLevel);
 //        if (taskState == Task.GO_TO_LEVEL) {
 //            // if break case -> taskState = Task.RESET

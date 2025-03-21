@@ -32,11 +32,6 @@ public class SingleMotor {
     }
 
 
-    public void setVoltage(double value) {
-        this.motor.setVoltage(value);
-    }
-
-
     public void stop() {
         this.motor.stopMotor();
     }

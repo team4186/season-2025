@@ -2,18 +2,17 @@ package frc.robot.sparkmaxconfigs;
 
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
-//import frc.robot.subsystems.Climber;
-//import frc.robot.subsystems.Elevator;
+
 
 // Components Singleton
 public final class Components {
 
     private static Components instance = null;
 
+
     public final ElevatorMotorSet elevatorMotorSet = new ElevatorMotors().elevatorMotors;
 
     public final SingleMotor endEffectorSingleMotor = new EndEffectorMotor().endEffectorMotor;
-
 
     private final AlgaeProcessorMotors algaeProcessorMotors = new AlgaeProcessorMotors();
     public final SingleMotor algaeProcessorWheelSingleMotor =  algaeProcessorMotors.wheelMotor;

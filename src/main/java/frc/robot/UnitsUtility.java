@@ -6,6 +6,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import java.lang.Math;
+
+
 public final class UnitsUtility {
     
     private UnitsUtility() {}
@@ -34,6 +36,7 @@ public final class UnitsUtility {
 //		// return ( (pos / (encoderTicks * gearRatio)) * 360) % 360;
 //        return ( (encoderTicks/ gearRatio) * 360) % 360;
 //	}
+
 
     public static double ticksToDegrees(double encoderTicks, double gearRatio) {
         // return ( (pos / (encoderTicks * gearRatio)) * 360) % 360;

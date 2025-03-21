@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -12,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
 import frc.robot.UnitsUtility;
 
+
 public class Climber extends SubsystemBase {
 
     private final DigitalInput limitSwitch;
@@ -20,6 +22,7 @@ public class Climber extends SubsystemBase {
     private static double current_angle;
     private static double speed;
     private static double deployAngle;
+
 
     public Climber(SingleMotor climberSingleMotor, DigitalInput limitSwitch){
         this.climberSingleMotor = climberSingleMotor;
@@ -47,6 +50,7 @@ public class Climber extends SubsystemBase {
         }
     }
 
+
     private boolean getBeamBreak(){
         return !UnitsUtility.isBeamBroken(limitSwitch,false,"Climber limit switch");
     }
@@ -54,7 +58,6 @@ public class Climber extends SubsystemBase {
 
     //TODO: find angle motor voltage ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
-
     public void deploy(){
 
         if(getCurrentAngle() <= deployAngle) {
@@ -65,6 +68,7 @@ public class Climber extends SubsystemBase {
             climberSingleMotor.stop();
         }
     }
+
 
 //    public boolean reset(){
 //        if(Math.abs(getCurrentAngle()-resetAngle)<=10){
@@ -81,6 +85,7 @@ public class Climber extends SubsystemBase {
 //            return false;
 //        }
 //    }
+
 
     public boolean pull(){
 
@@ -100,6 +105,7 @@ public class Climber extends SubsystemBase {
         return current_angle;
     }
 
+
     public double getCurrentSpeed(){
         double angleSpeed = climberSingleMotor.motor.get();
         return angleSpeed;
@@ -110,7 +116,9 @@ public class Climber extends SubsystemBase {
     public void stop(){
         climberSingleMotor.stop();
     }
-    public void coast(){
+
+
+    public void coast() {
         SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
         climberSingleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     }
@@ -118,5 +126,4 @@ public class Climber extends SubsystemBase {
     public void resetEncoder(){
         climbEncoder.setPosition(0.0);
     }
-
 }

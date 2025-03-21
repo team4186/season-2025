@@ -1,20 +1,23 @@
 package frc.robot.commands.actions;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climber;
+
 
 public class ClimberCommand extends Command {
 
     /* Intended Usage:
      * deploy w/ minimum voltage
      * on button press force motor back till limit switch enable    * */
-
     private final Climber climber;
 
     private int button_count = 0;
     private boolean isfinished = false;
 
+
     public ClimberCommand(Climber climber) {
         this.climber = climber;
+        addRequirements(this.climber);
     }
 
 
@@ -40,7 +43,9 @@ public class ClimberCommand extends Command {
 
     }
 
+    @Override
     public boolean isFinished() {return isfinished;}
+
 
     @Override
     public void end(boolean interrupted)
@@ -53,5 +58,4 @@ public class ClimberCommand extends Command {
     public void button_detect(){
         button_count++;
     }
-
 }

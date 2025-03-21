@@ -1,7 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Meter;
@@ -53,6 +52,7 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
+
 
 public class SwerveSubsystem extends SubsystemBase {
   private final SwerveDrive swerveDrive;
@@ -119,15 +119,6 @@ public class SwerveSubsystem extends SubsystemBase {
             )
     );
   }
-
-
-  /**
-   * Set up the photon vision class.
-   */
-  //public void setupPhotonVision()
-//  {
-//    vision = new Vision(swerveDrive::getPose, swerveDrive.field);
-//  }
 
 
   @Override
@@ -359,6 +350,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     .forEach(it -> it.setAngle(0.0))
     );
   }
+
 
   /**
    * Returns a Command that drives the swerve drive to a specific distance at a given speed.

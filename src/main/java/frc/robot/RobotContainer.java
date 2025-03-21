@@ -229,7 +229,7 @@ public class RobotContainer {
 
     // Set default subsystem commands
     drivebase.setDefaultCommand( driveFieldOrientedAnglularVelocity );
-    elevator.setDefaultCommand( Commands.runOnce( elevator::stopMotor, this.elevator ).repeatedly());
+    elevator.setDefaultCommand( Commands.runOnce( elevator::stopMotor, elevator ).repeatedly());
 
 
     if ( Robot.isSimulation() ){
@@ -238,10 +238,9 @@ public class RobotContainer {
       // joystick.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
       // NOTE: Change later?
       joystick.trigger().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(10, 3, new Rotation2d()))));
-      joystick.button(11).whileTrue(drivebase.sysIdDriveMotorCommand());
     }
 
-    if ( DriverStation.isTest() ){
+    if ( DriverStation.isTest() ) {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
 
 //      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly() );

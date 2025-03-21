@@ -47,12 +47,7 @@ public class Elevator extends SubsystemBase{
     private final MutDistance m_distance = Meters.mutable(0);
     // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
     private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
-    // Mutable holder for unit-safe linear acceleration values, persisted to avoid reallocation.
-    private final MutLinearAcceleration m_acceleration = MetersPerSecondPerSecond.mutable(0);
 
-    private final Timer time = new Timer();
-    private double prevTime;
-    private double prevSpeed;
 
     public Elevator(
              DigitalInput bottomLimitSwitch,
@@ -76,43 +71,34 @@ public class Elevator extends SubsystemBase{
 
         this.getSubsystem();
 
-        // TODO: Placeholder for later CAN Installation
         // Limit Switches
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
 
-        // Encoder 8800.000000
-
         this.encoder = encoder;
-        // this.encoder.reset();
         this.encoder.setDistancePerPulse( 1.06938/6626.506 );
+        this.encoder.setMinRate(0.015); // MetersPerSecond
 
-        // SysId Routine for dialing in values for our system
+        // SysId Routine for updating FeedForward values
         routine = new SysIdRoutine(
                 // new SysIdRoutine.Config(Volts.of(0.6).per(Second), Volts.of(3.0), null),
-                new SysIdRoutine.Config(),
+                new SysIdRoutine.Config(), // Default: 1 Volts/Second, 7 Volts
                 new SysIdRoutine.Mechanism(
                         this.elevatorMotors::setLeadVoltage,
                         this::logMotors,
                         this));
-
-        this.time.start();
-        this.prevSpeed = encoder.getRate();
-        this.prevTime = this.time.get();
     }
 
-    // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
+
+    // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestamp
     private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
         sysIdRoutineLog.motor("Elevator")
                 .voltage(
-                        Volts.of(elevatorMotors.getLead().getBusVoltage() * RobotController.getBatteryVoltage())
-                )
+                        Volts.of(elevatorMotors.getLead().getBusVoltage() * RobotController.getBatteryVoltage()))
                 .linearPosition(
                         Meters.of(encoder.get()))
                 .linearVelocity(
-                        MetersPerSecond.of(encoder.getRate()))
-                .linearAcceleration(
-                        m_acceleration.mut_replace(getAccelerationMetersPerSecond(), MetersPerSecondPerSecond));
+                        MetersPerSecond.of(encoder.getRate()));
     }
 
 
@@ -135,16 +121,22 @@ public class Elevator extends SubsystemBase{
         SmartDashboard.putNumber("Elevator_BoreEncoder_Distance", encoder.getDistance());
         SmartDashboard.putNumber("Elevator_BoreEncoder_Rate", encoder.getRate());
 
-        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
-        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
+//        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
+//        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", getTopBeamBreak());
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", getBottomBeamBreak());
     }
+
 
     private boolean getTopBeamBreak(){
-        return UnitsUtility.isBeamBroken(topLimitSwitch,false,"Elevator bottom switch");
+        // return true by default to stop motor from exceeding limits
+        return UnitsUtility.isBeamBroken(topLimitSwitch,true,"Elevator Top Limit Switch");
     }
 
+
     private boolean getBottomBeamBreak(){
-        return UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"DeAlgae limit switch");
+        // return true by default to stop motor from exceeding limits
+        return UnitsUtility.isBeamBroken(bottomLimitSwitch,true,"Elevator Bottom Limit Switch");
     }
 
 
@@ -154,19 +146,10 @@ public class Elevator extends SubsystemBase{
      */
     public void goToLevel( int requestedLevel ) {
         double levelHeight = getLevelConstant(requestedLevel);
-        double topLevel = getLevelConstant(5);
-        double bottomLevel = getLevelConstant(0);
+        pid.setGoal(levelHeight);
 
-        double diff = levelHeight - getPositionMeters();
-
-        double currentPos = getPositionMeters();
-        boolean isPositive =  ( levelHeight - currentPos >= 0 );
-
-        // stop motors if ( negative difference -> check bottom limit OR positive difference -> check top limit )
-
-
-        //if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
-        if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && getTopBeamBreak())) {
+        //if (velocity is negative AND bottomBeamBreak) OR (velocity is positive AND topBeamBreak) {
+        if ( (encoder.getRate() < 0 && getBottomBeamBreak()) || (encoder.getRate() > 0 && getTopBeamBreak()) ) {
             elevatorMotors.stop();
         } else {
             double voltsOutput = MathUtil.clamp(
@@ -177,9 +160,6 @@ public class Elevator extends SubsystemBase{
         }
 
     }
-
-//    public boolean isAtZero() {
-//        return UnitsUtility.isBeamBroken(bottomLimitSwitch,)    }
 
 
     public double getLevelConstant( int level ){
@@ -195,7 +175,7 @@ public class Elevator extends SubsystemBase{
     }
 
 
-    public boolean isAtLevelThreshold( int level ){
+    public boolean isAtLevelThreshold( int level ) {
         return MathUtil.isNear(
                 getPositionMeters(),
                 getLevelConstant( level ),
@@ -227,33 +207,19 @@ public class Elevator extends SubsystemBase{
 
 
     public double getVelocityMetersPerSecond() {
-//        return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-//                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
         return encoder.getRate();
     }
 
-    private double getAccelerationMetersPerSecond() {
-        // get current time and speed
-        double currTime = this.time.get();
-        double currSpeed = encoder.getRate();
 
-        // calc accel
-        double accel = (currSpeed - prevSpeed) / (currTime - prevTime);
-
-        // Update for next time step
-        prevSpeed = currSpeed;
-        prevTime = currTime;
-
-        return accel;
-    }
-    
     public boolean isAtTop() {
         return topLimitSwitch.get();
     }
 
+
     public boolean isAtBottom() {
         return bottomLimitSwitch.get();
     }
+
 
     public void stopMotor() {
 

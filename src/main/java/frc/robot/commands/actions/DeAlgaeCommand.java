@@ -1,9 +1,10 @@
 package frc.robot.commands.actions;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.DeAlgae;
 
-public class DeAlgaeCommand extends Command {
 
+public class DeAlgaeCommand extends Command {
     //TODO: deAlgae commands config buttons later
 
     /* Intended Usage:
@@ -23,6 +24,7 @@ public class DeAlgaeCommand extends Command {
 
     public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
+        addRequirements(this.deAlgae);
     }
 
 
@@ -41,20 +43,19 @@ public class DeAlgaeCommand extends Command {
     public void execute() {
 
         // One stroke DeAlgae
-        if(button_count >= 2){
+        if (button_count >= 2) {
             deployed = true;
         }
 
-        if(deployed || exit_timer >= 150){
-            isfinished = deAlgae.reset();
-        }
 
 //        if(deployed || exit_timer >= 150){
 //            isfinished = deAlgae.pid_reset();
-//
-//        }
+        if (deployed || exit_timer >= 150) {
+            isfinished = deAlgae.reset();
 
-        else if(deAlgae.runMotor_Up()){
+//      else if(deAlgae.pid_runMotor_Up()){
+//          deployed = true;
+        } else if(deAlgae.runMotor_Up()){
             deployed = true;
         }
 
@@ -63,7 +64,6 @@ public class DeAlgaeCommand extends Command {
 //        }
 
         exit_timer ++;
-
 
 
         //TODO: working two stage deAlgae
@@ -145,9 +145,11 @@ public class DeAlgaeCommand extends Command {
         deployed = false;
     }
 
+
     public void button_detect(){
         button_count++;
     }
+
 
 //    public void return_button(){
 //        SmartDashboard.putNumber("button presses", button_count);

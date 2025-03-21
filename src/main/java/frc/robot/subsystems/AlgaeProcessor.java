@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -12,6 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
 import frc.robot.UnitsUtility;
 import static frc.robot.UnitsUtility.isBeamBroken;
+
 
 public class AlgaeProcessor extends SubsystemBase {
 
@@ -115,15 +117,14 @@ public class AlgaeProcessor extends SubsystemBase {
         return current_angle;
     }
 
+
     public double getCurrentSpeed(){
         angleSpeed = angleMotor.motor.get();
         return angleSpeed;
     }
 
+
     // moves arm down with pid until it reaches the min angle while spinning the rolling motor inverted
-
-
-
     public void resetEncoder(){
         angleEncoder.setPosition(0.0);
     }
@@ -135,11 +136,13 @@ public class AlgaeProcessor extends SubsystemBase {
         angleMotor.stop();
     }
 
+
     public void wheelStop(){
         wheelMotor.stop();
     }
-    // moves arm back to being parallel with the elevator with pid
 
+
+    // moves arm back to being parallel with the elevator with pid
     // this function returns, avoid using for now in favor of manReset function below
     public boolean reset(){
         current_angle = getCurrentAngle();
@@ -153,22 +156,27 @@ public class AlgaeProcessor extends SubsystemBase {
         return true;
     }
 
+
     public void eject(){
         wheelMotor.accept(wheelOutputSpeed);
     }
+
 
     public void intake(){
         wheelMotor.accept(-wheelIntakeSpeed);
     }
 
+
     public void holdAlgae(){
         wheelMotor.accept(-holdingSpeed);
     }
+
 
     public void coast(){
         SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
         angleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     }
+
 
     public void brake(){
         SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);

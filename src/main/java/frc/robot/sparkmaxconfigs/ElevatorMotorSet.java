@@ -14,11 +14,13 @@ public class ElevatorMotorSet {
 
 
     public ElevatorMotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig, boolean inverted) {
+        this.lead = lead;
+
         baseConfig
                 .inverted( inverted )
                 .openLoopRampRate(Constants.ElevatorConstants.ELEVATOR_RAMP_RATE);
 
-        lead.configure(
+        this.lead.configure(
                 baseConfig,
                 SparkBase.ResetMode.kNoResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
@@ -27,15 +29,13 @@ public class ElevatorMotorSet {
 
         followerConfig
                 .apply(baseConfig)
-                .follow(lead)
+                .follow(this.lead)
                 .inverted( !inverted );
 
         follower.configure(
                 followerConfig,
                 SparkBase.ResetMode.kNoResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
-
-        this.lead = lead;
     }
 
 

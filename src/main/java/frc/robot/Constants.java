@@ -1,7 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import com.pathplanner.lib.config.PIDConstants;
@@ -10,6 +9,9 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
+
+import static edu.wpi.first.units.Units.Meters;
+
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean constants. This
@@ -20,13 +22,12 @@ import swervelib.math.Matter;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-
-  // TODO: Update with final robot weight
-  public static final double ROBOT_MASS = (105.8) * 0.453592; // 32lbs * kg per pound
-  public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
-  public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprak max velocity lag
-  public static final double MAX_SPEED  = Units.feetToMeters(16.0);
-  // Maximum speed of the robot in meters per second, used to limit acceleration.
+    // TODO: Update with final robot weight
+    public static final double ROBOT_MASS = (105.8) * 0.453592; // 32lbs * kg per pound
+    public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+    public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprak max velocity lag
+    public static final double MAX_SPEED  = Units.feetToMeters(16.0);
+    // Maximum speed of the robot in meters per second, used to limit acceleration.
 
 
     // TODO: Update after testing auto
@@ -42,13 +43,13 @@ public final class Constants {
     }
 
 
-  public static final class OperatorConstants {
+    public static final class OperatorConstants {
     // Joystick Deadband
-    public static final double DEADBAND = 0.15;
-    public static final double LEFT_Y_DEADBAND = 0.1;
-    public static final double RIGHT_X_DEADBAND = 0.1;
-    public static final double TURN_CONSTANT = 6.0;
-  }
+        public static final double DEADBAND = 0.15;
+        public static final double LEFT_Y_DEADBAND = 0.1;
+        public static final double RIGHT_X_DEADBAND = 0.1;
+        public static final double TURN_CONSTANT = 6.0;
+    }
 
 
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
@@ -67,26 +68,26 @@ public final class Constants {
     }
 
 
-  public static final class ClimberConstants {
-      public static final double CLIMBER_SPEED = 0.2;
-      public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
-      public static final double CLIMBER_DEPLOY_ANGLE = 140; //TODO: placeholder, relative to limit switch
+    public static final class ClimberConstants {
+        public static final double CLIMBER_SPEED = 0.2;
+        public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
+        public static final double CLIMBER_DEPLOY_ANGLE = 140; //TODO: placeholder, relative to limit switch
 
-      public static final int CLIMBER_LSChannel = 8; //
-  }
+        public static final int CLIMBER_LSChannel = 8; //
+    }
 
 
-  public static final class DeAlgaeConstants {
-    public static final double DE_ALGAE_DEFAULT_ANGLE = 5.0;
-    public static final double DE_ALGAE_MAX_SPEED = 0.10;
-    public static final double DE_ALGAE_MIN_SPEED = 0.05;
-    public static final double DE_ALGAE_P = 0.05;
-    public static final double DE_ALGAE_I = 0.0;
-    public static final double DE_ALGAE_D = 0.0;
-    public static final double DE_ALGAE_MAX_ANGLE = 135.0;
-    public static final double DE_ALGAE_GEARBOX_RATIO = 54.8;
-    public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0;
-    public static final int DE_ALGAE_LSChannel = 9; //
+    public static final class DeAlgaeConstants {
+        public static final double DE_ALGAE_DEFAULT_ANGLE = 5.0;
+        public static final double DE_ALGAE_MAX_SPEED = 0.10;
+        public static final double DE_ALGAE_MIN_SPEED = 0.05;
+        public static final double DE_ALGAE_P = 0.05;
+        public static final double DE_ALGAE_I = 0.0;
+        public static final double DE_ALGAE_D = 0.0;
+        public static final double DE_ALGAE_MAX_ANGLE = 135.0;
+        public static final double DE_ALGAE_GEARBOX_RATIO = 54.8;
+        public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0;
+        public static final int DE_ALGAE_LSChannel = 9; //
     }
 
 
@@ -106,18 +107,11 @@ public final class Constants {
         public static final double ELEVATOR_LEVEL_THREE = 0.8; //118 cm
         public static final double ELEVATOR_LEVEL_FOUR = 1.4; //189 cm
         public static final double ELEVATOR_MAX_HEIGHT = 1.4198; // TODO: Determine threshold if different from highest level
-        // 131.2,
-        // 0.000302
-        // 0.171433
-        // 0.577076
-        // 1.3243
 
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
-
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_DOWN_SPEED = 0.1;
-        public static final double ELEVATOR_DEFAULT_SETPOINT_THRESHOLD = 2.5;
+
         //TODO: Change the two below, they are placeholders.
-        public static final double BORE_ENCODER_RADIUS = 1.0;
         public static final double ELEVATOR_GEAR_RATIO = 0.25;
         public static final double ELEVATOR_SHAFT_CIRCUMFERNCE = 2 * Math.PI * ELEVATOR_GEAR_RATIO;
         public static final double ENCODER_CONVERSION_FACTOR = ELEVATOR_SHAFT_CIRCUMFERNCE/(42.0/ELEVATOR_GEAR_RATIO); // CHANGE THIS!?!?!?!?! This is the value of distance/pulses
@@ -127,48 +121,36 @@ public final class Constants {
         public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(1.0);
         // TODO: Update values
         public static final double ELEVATOR_P = 2.5;
-        public static final double ELEVATOR_I = 0.1;
+        public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
 
+
+        // prev values
         public static final double ELEVATOR_KS = 0.00; // Static gain in volts
         public static final double ELEVATOR_KG = 1.75; // Gravity gain in volts
         public static final double ELEVATOR_KA = 1.0; // Velocity gain in V/(m/s)
         public static final double ELEVATOR_KV = 4.0; // Acceleration gain in V/(m/s^2)
-        public static final double ELEVATOR_DEFAULT_TOLERANCE = Units.inchesToMeters(1);
+
+        // Adjust these to reach optimal
+//        public static final double ELEVATOR_KS = 0.00; // Static gain in volts
+//        public static final double ELEVATOR_KG = 0.0; // Gravity gain in volts
+//        public static final double ELEVATOR_KA = 0.0; // Velocity gain in V/(m/s)
+//        public static final double ELEVATOR_KV = 0.0; // Acceleration gain in V/(m/s^2)
+
+        public static final double ELEVATOR_DEFAULT_TOLERANCE = 0.0075; // Meters (+/-)Tolerance
     }
 
 
-//    public static final class ElevatorYAGSLConstants {
-//
-//        public static final double ELEVATOR_P = 5;
-//        public static final double ELEVATOR_I = 0;
-//        public static final double ELEVATOR_D = 0;
-//        public static final double ELEVATOR_MAX_VELOCITY = 4.0;
-//        public static final double ELEVATOR_MAX_ACCELERATION = 6.0;
-//        public static final double ELEVATOR_S = 5; //voltage to overcome static friction
-//        public static final double ELEVATOR_G = 0; //voltage to overcome gravity
-//        public static final double ELEVATOR_V = 0; //velocity
-//        public static final double ELEVATOR_A = 0; //acceleration
-//        public static final double ELEVATOR_RAMP_RATE = 5;
-//        public static final double ELEVATOR_GEARING = 0;
-//        public static final double ELEVATOR_CARRIAGE_MASS = 0;
-//        public static final double ELEVATOR_DRUM_RADIUS = 0;
-//        public static final double ELEVATOR_MIN_HEIGHT_METERS = 5;
-//        public static final double ELEVATOR_MAX_HEIGHT_METERS = 0;
-//    }
-
     public static final class EndEffectorConstants {
         public static final int END_EFFECTOR_BEAM_BREAK = 3;
-
         public static final double END_EFFECTOR_EJECT_SPEED = 0.4;
-
         public static final double END_EFFECTOR_INTAKE_SPEED = 0.5;
     }
 
 
     public static final class VisionConstants {
         // Update to 2025
-        public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2024Crescendo );
+        public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2025ReefscapeWelded);
         // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
         public static final double MAXIMUM_AMBIGUITY = 0.25;
         public static final double ANGLE_P = 0.05;

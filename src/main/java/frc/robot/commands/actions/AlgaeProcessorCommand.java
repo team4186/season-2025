@@ -1,9 +1,10 @@
 package frc.robot.commands.actions;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeProcessor;
 
-public class AlgaeProcessorCommand extends Command {
 
+public class AlgaeProcessorCommand extends Command {
     //TODO: deAlgae commands config buttons later
 
     /* Intended Usage:
@@ -13,10 +14,9 @@ public class AlgaeProcessorCommand extends Command {
      * isFinished -> when exit_timer reaches 500/ ~10 seconds
      * Interrupted -> Send reset command, stop motor, reset arm ...
      * */
-
     private final AlgaeProcessor algaeProcessor;
     private int button_count = 0;
-    private boolean isfinished = false;
+    private boolean isFinished = false;
     private int ejectTimer = 0;
     private boolean ready = false;
     private boolean deployed = false;
@@ -24,6 +24,7 @@ public class AlgaeProcessorCommand extends Command {
 
     public AlgaeProcessorCommand(AlgaeProcessor algaeProcessor) {
         this.algaeProcessor = algaeProcessor;
+        addRequirements(this.algaeProcessor);
     }
 
 
@@ -31,38 +32,34 @@ public class AlgaeProcessorCommand extends Command {
      * The initial subroutine of a command.  Called once when the command is initially scheduled.
      */
     @Override
-    public void initialize() {}
+    public void initialize() {
+    }
 
 
     /**
      * The main body of a command.  Called repeatedly while the command is scheduled. (That is, it is called repeatedly
      * until {@link #isFinished()}) returns true.)
      */
-
     // first press arm moves down and motor intakes, timer determines when to bring arm back, second press ejects.
     @Override
     public void execute() {
         // exit case
-        if(ejectTimer >= 60){
+        if (ejectTimer >= 60) {
             algaeProcessor.wheelStop();
-            isfinished = algaeProcessor.reset();
+            isFinished = algaeProcessor.reset();
         }
 
-        if(button_count >= 3 && !ready){
+        if (button_count >= 3 && !ready) {
             ready = algaeProcessor.cmd_runMotor_Up();
         }
 
-        if(button_count == 1 && !deployed) {
+        if (button_count == 1 && !deployed) {
             deployed = algaeProcessor.cmd_runMotor_Down();
             algaeProcessor.intake();
-        }
-
-        else if(button_count == 2 && deployed && !ready){
+        } else if (button_count == 2 && deployed && !ready) {
             ready = algaeProcessor.cmd_runMotor_Up();
             algaeProcessor.holdAlgae();
-        }
-
-        else if(button_count >= 3 && ready){
+        } else if (button_count >= 3 && ready) {
             algaeProcessor.eject();
             ejectTimer++;
         }
@@ -83,7 +80,9 @@ public class AlgaeProcessorCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return isfinished;}
+    public boolean isFinished() {
+        return isFinished;
+    }
 
 
     /**
@@ -94,18 +93,17 @@ public class AlgaeProcessorCommand extends Command {
      * @param interrupted whether the command was interrupted/canceled
      */
     @Override
-    public void end(boolean interrupted)
-    {
+    public void end(boolean interrupted) {
         button_count = 0;
-        isfinished = false;
+        isFinished = false;
         ejectTimer = 0;
         ready = false;
         deployed = false;
         algaeProcessor.stop();
     }
 
-    public void button_detect(){
+
+    public void button_detect() {
         button_count++;
     }
-
 }

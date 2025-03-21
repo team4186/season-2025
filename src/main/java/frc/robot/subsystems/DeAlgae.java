@@ -1,4 +1,5 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -11,6 +12,7 @@ import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
 import java.lang.Math;
 import frc.robot.UnitsUtility;
+
 
 public class DeAlgae extends SubsystemBase {
 
@@ -94,6 +96,7 @@ public class DeAlgae extends SubsystemBase {
         wheelMotor.accept(-wheelMaxSpeed);
     }
 
+
     public boolean runMotor_Up(){
         current_angle = getCurrentAngle();
 
@@ -121,6 +124,7 @@ public class DeAlgae extends SubsystemBase {
         }
         wheelMotor.accept(-wheelMaxSpeed);
     }
+
 
     public double getCurrentAngle() {
         current_angle = (UnitsUtility.ticksToDegrees(angleEncoder.getPosition(), Constants.DeAlgaeConstants.DE_ALGAE_GEARBOX_RATIO));
@@ -162,7 +166,6 @@ public class DeAlgae extends SubsystemBase {
 
 
     // moves arm back to being parallel with the elevator with pid
-
     // this function returns, avoid using for now in favor of manReset function below
     public boolean reset(){
         double PIDoutput;
@@ -194,6 +197,7 @@ public class DeAlgae extends SubsystemBase {
         return false;
 
     }
+
 
     public void Manpid_reset(){
         double PIDoutput;
