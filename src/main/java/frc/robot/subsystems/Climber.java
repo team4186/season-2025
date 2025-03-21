@@ -1,90 +1,129 @@
 package frc.robot.subsystems;
+
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.UnitsUtility;
 import frc.robot.sparkmaxconfigs.SingleMotor;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.MathUtil;
+import java.lang.Math;
+import frc.robot.UnitsUtility;
 
-//TODO: check if motor requires voltage to lock, fix return statements
+
 public class Climber extends SubsystemBase {
-    private final SingleMotor motor;
-    private final RelativeEncoder encoder;
 
-    private final PIDController PIDController;
-    private final double targetAngle;
+    private final DigitalInput limitSwitch;
+    private final SingleMotor climberSingleMotor;
+    private final RelativeEncoder climbEncoder;
+    private static double current_angle;
+    private static double speed;
+    private static double deployAngle;
 
-     private final DigitalInput beamBreak;
 
-    public Climber(
-            SingleMotor motor,
-            DigitalInput beamBreak,
-            PIDController PIDController,
-            double targetAngle){
-        this.motor = motor;
-        this.encoder = motor.getRelativeEncoder();
-        this.beamBreak = beamBreak;
-        this.PIDController = PIDController;
-        this.targetAngle = targetAngle;
+    public Climber(SingleMotor climberSingleMotor, DigitalInput limitSwitch){
+        this.climberSingleMotor = climberSingleMotor;
+        this.limitSwitch = limitSwitch;
+
+        climbEncoder = climberSingleMotor.getRelativeEncoder();
+        current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(climbEncoder.getPosition(),Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
+        deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
+        speed = Constants.ClimberConstants.CLIMBER_SPEED;
+        
     }
 
 
     @Override
     public void periodic(){
-        /* TODO:
-        SmartDashboard.putNumber("DeAlgae Angle:", getCurrentAngle());
-        SmartDashboard.putNumber("DeAlgae Speed:", getCurrent_Speed());
-        */
-    }
+        // publish smart dashboard info here
+        // SmartDashboard.putNumber("key", value);
+        SmartDashboard.putNumber("Climber_RelativeEncoder_Raw", getCurrentAngle());
+        SmartDashboard.putNumber("Climber_Angle:", getCurrentAngle());
+        SmartDashboard.putNumber("Climber_Speed:", getCurrentSpeed());
+        SmartDashboard.putBoolean("Climber_LimitSwitch", getBeamBreak());
 
-
-    //Avoid using for now, no safeties
-    public void deployClimb() {
-        if (getEncoderPos() < targetAngle){
-            motor.setVoltage(MathUtil.clamp(PIDController.calculate(getEncoderPos(), targetAngle),
-                    Constants.ClimberConstants.MINSPEED,
-                    Constants.ClimberConstants.MAXSPEED));
-            encoder.setPosition(0.0);
+        if(getBeamBreak()){
+            resetEncoder();
         }
     }
 
 
-    public void stowClimb(){
-        if (!UnitsUtility.isBeamBroken(beamBreak, false, this.getName()) ) {
-            motor.setVoltage(MathUtil.clamp(PIDController.calculate(getEncoderPos(), -targetAngle),
-                    Constants.ClimberConstants.MINSPEED, Constants.ClimberConstants.MAXSPEED));
-            encoder.setPosition(0.0);
-        } else {
-            motor.stop();
+    private boolean getBeamBreak(){
+        return !UnitsUtility.isBeamBroken(limitSwitch,false,"Climber limit switch");
+    }
+
+
+    //TODO: find angle motor voltage ratio
+    //moves arm up with pid until it reaches the max angle while spinning the rolling motor
+    public void deploy(){
+
+        if(getCurrentAngle() <= deployAngle) {
+            //Todo: Make sure (+/-) and direction is correct
+            climberSingleMotor.accept(speed);
+        }
+        else{
+            climberSingleMotor.stop();
         }
     }
 
 
-    //engageClimb uses beam breaks, has safety and uses higher voltage than deploy
-    public void engageClimb() {
-        if ( UnitsUtility.isBeamBroken(beamBreak, true, "ClimberSubsystem")) {
-            motor.stop();
-        } else {
-            motor.setVoltage(Constants.ClimberConstants.CLIMBER_CLIMB_VOLTAGE);//only use if motor requires power while up
+//    public boolean reset(){
+//        if(Math.abs(getCurrentAngle()-resetAngle)<=10){
+//            climberSingleMotor.stop();
+//            return true;
+//        } else if(getCurrentAngle()<=resetAngle){
+//            climberSingleMotor.setVoltage(deployVoltage);
+//            return false;
+//        } else if(getCurrentAngle()>=resetAngle){
+//            climberSingleMotor.setVoltage(-deployVoltage);
+//            return false;
+//        } else {
+//            climberSingleMotor.stop();
+//            return false;
+//        }
+//    }
+
+
+    public boolean pull(){
+
+        if(!getBeamBreak()) {
+            climberSingleMotor.accept(-speed);
+            return false;
+        }
+        else{
+            climberSingleMotor.stop();
+            return true;
         }
     }
+    
 
-
-    // processorPos is the current position of the processor encoder ticks.
-    public void stop() {
-        motor.stop();
+    public double getCurrentAngle() {
+        current_angle = (UnitsUtility.ticksToDegrees(climbEncoder.getPosition(), Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
+        return current_angle;
     }
 
 
-    public void resetEncoder() {
-        encoder.setPosition(0.0);
+    public double getCurrentSpeed(){
+        double angleSpeed = climberSingleMotor.motor.get();
+        return angleSpeed;
     }
 
 
-    public double getEncoderPos() {
-        return UnitsUtility.ticksToDegrees(encoder.getPosition(), Constants.ClimberConstants.GEARRATIO);
+    // stops the arm and rolling motors
+    public void stop(){
+        climberSingleMotor.stop();
+    }
+
+
+    public void coast() {
+        SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
+        climberSingleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    }
+
+    public void resetEncoder(){
+        climbEncoder.setPosition(0.0);
     }
 }

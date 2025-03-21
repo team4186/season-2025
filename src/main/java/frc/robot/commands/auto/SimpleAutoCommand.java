@@ -1,17 +1,28 @@
-package frc.robot.commands.actions;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.EndEffector;
+import frc.robot.commands.actions.ElevatorCommand;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.SwerveSubsystem;
 
 
-public class EndEffectorLoadCommand extends Command {
-    private final EndEffector endEffector;
-    private boolean isFinished = false;
+public class SimpleAutoCommand extends Command {
+    // WARNING: NOT a new elevator, you pass subsystem from robot container when calling command!
 
 
-    public EndEffectorLoadCommand(EndEffector endEffector) {
-        this.endEffector = endEffector;
-        addRequirements( this.endEffector );
+    private enum Task {
+        Move,
+        Align,
+        Elevator,
+        Eject,
+        Reset,
+        Stop
+    }
+
+
+    public SimpleAutoCommand(SwerveSubsystem driveSubSystem, Elevator elevatorSubsystemParam, int requestedLevel) {
+
+        addRequirements();
     }
 
 
@@ -19,7 +30,8 @@ public class EndEffectorLoadCommand extends Command {
      * The initial subroutine of a command.  Called once when the command is initially scheduled.
      */
     @Override
-    public void initialize() {}
+    public void initialize() {
+    }
 
 
     /**
@@ -28,11 +40,8 @@ public class EndEffectorLoadCommand extends Command {
      */
     @Override
     public void execute() {
-        if (endEffector.hasGamePiece()) {
-            isFinished = true;
-        }
-        
-        endEffector.intake();
+
+
     }
 
 
@@ -50,7 +59,10 @@ public class EndEffectorLoadCommand extends Command {
      * @return whether this command has finished.
      */
     @Override
-    public boolean isFinished() {return isFinished;}
+    public boolean isFinished() {
+        //return taskState == ElevatorCommand.Task.STOP;
+        return false;
+    }
 
 
     /**
@@ -62,6 +74,10 @@ public class EndEffectorLoadCommand extends Command {
      */
     @Override
     public void end(boolean interrupted) {
-        endEffector.stop();
+        // Idle mode is set to brake. However, this will not hold the elevator in place.
+        // gravity will still continue to push the elevator down until the very bottom.
+        // However, brake does make the elevator descend slowly, so it wouldn't crash (this also resets encoders).
+        // elevatorSubsystem.stopMotor();
+
     }
 }

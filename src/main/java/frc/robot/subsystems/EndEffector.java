@@ -25,8 +25,9 @@ public class EndEffector extends SubsystemBase {
     @Override
     public void periodic(){
         // publish smart dashboard info here
-        SmartDashboard.putBoolean("hasGamePiece", hasGamePiece());
-        SmartDashboard.putNumber("EndEffectorVoltage", relativeEncoder.getVelocity());
+        SmartDashboard.putBoolean("EndEffector_hasGamePiece", hasGamePiece());
+        SmartDashboard.putNumber("EndEffector_RelativeEncoder_Raw", relativeEncoder.getPosition());
+        SmartDashboard.putNumber("EndEffector_Velocity", relativeEncoder.getVelocity());
     }
 
 
@@ -40,14 +41,14 @@ public class EndEffector extends SubsystemBase {
         if ( hasGamePiece() ) {
             endEffectorMotor.stop();
         } else {
-            endEffectorMotor.setVoltage( Constants.EndEffectorConstants.END_EFFECTOR_INTAKE_VOLTAGE );
+            endEffectorMotor.accept( Constants.EndEffectorConstants.END_EFFECTOR_INTAKE_SPEED );
         }
     }
 
 
     public void eject() {
         if ( hasGamePiece() ) {
-            endEffectorMotor.setVoltage(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_VOLTAGE);
+            endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_SPEED);
         } else {
             endEffectorMotor.stop();
         }
@@ -59,7 +60,7 @@ public class EndEffector extends SubsystemBase {
     }
 
 
-    public void testSpeeds(double voltage){
-        endEffectorMotor.setVoltage(voltage);
+    public void testSpeeds(double speed){
+        endEffectorMotor.accept(speed);
     }
 }

@@ -5,6 +5,7 @@ import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import edu.wpi.first.units.measure.Voltage;
 import frc.robot.Constants;
 
 
@@ -13,11 +14,13 @@ public class ElevatorMotorSet {
 
 
     public ElevatorMotorSet(SparkMax lead, SparkMax follower, SparkBaseConfig baseConfig, boolean inverted) {
+        this.lead = lead;
+
         baseConfig
                 .inverted( inverted )
                 .openLoopRampRate(Constants.ElevatorConstants.ELEVATOR_RAMP_RATE);
 
-        lead.configure(
+        this.lead.configure(
                 baseConfig,
                 SparkBase.ResetMode.kNoResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
@@ -26,15 +29,13 @@ public class ElevatorMotorSet {
 
         followerConfig
                 .apply(baseConfig)
-                .follow(lead)
+                .follow(this.lead)
                 .inverted( !inverted );
 
         follower.configure(
                 followerConfig,
                 SparkBase.ResetMode.kNoResetSafeParameters,
                 SparkBase.PersistMode.kPersistParameters);
-
-        this.lead = lead;
     }
 
 
@@ -42,8 +43,13 @@ public class ElevatorMotorSet {
         return this.lead.getEncoder();
     }
 
+    public SparkMax getLead(){
+        return this.lead;
+    }
 
-    public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage );}
+    public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage ); }
+
+    public void setLeadVoltage(Voltage voltage) { this.lead.setVoltage(voltage); }
 
 
     public void stop(){

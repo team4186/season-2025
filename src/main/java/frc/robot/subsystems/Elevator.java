@@ -1,12 +1,17 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
-import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.units.measure.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.sysid.SysIdRoutineLog;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -16,6 +21,8 @@ import frc.robot.Constants;
 import frc.robot.UnitsUtility;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import java.util.InputMismatchException;
+
+import static edu.wpi.first.units.Units.*;
 
 public class Elevator extends SubsystemBase{
 
@@ -34,16 +41,24 @@ public class Elevator extends SubsystemBase{
     private final SysIdRoutine routine;
 
 
+    // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
+    private final MutVoltage m_appliedVoltage = Volts.mutable(0);
+    // Mutable holder for unit-safe linear distance values, persisted to avoid reallocation.
+    private final MutDistance m_distance = Meters.mutable(0);
+    // Mutable holder for unit-safe linear velocity values, persisted to avoid reallocation.
+    private final MutLinearVelocity m_velocity = MetersPerSecond.mutable(0);
+
+
     public Elevator(
              DigitalInput bottomLimitSwitch,
              DigitalInput topLimitSwitch,
-             ElevatorMotorSet elevatorMotor,
+             ElevatorMotorSet elevatorMotors,
              Encoder encoder,
              ProfiledPIDController pid,
              ElevatorFeedforward elevatorFeedforward
     ) {
 
-        this.elevatorMotors = elevatorMotor;
+        this.elevatorMotors = elevatorMotors;
 
         // TODO: Replace relative encoder when THRU-BORE Encoder installed
         this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
@@ -56,33 +71,34 @@ public class Elevator extends SubsystemBase{
 
         this.getSubsystem();
 
-        // TODO: Placeholder for later CAN Installation
         // Limit Switches
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
 
-        // Encoder
         this.encoder = encoder;
-        this.encoder.reset();
-        // this.encoder.setDistancePerPulse( 0 );
+        this.encoder.setDistancePerPulse( 1.06938/6626.506 );
+        this.encoder.setMinRate(0.015); // MetersPerSecond
 
-        // SysId Routine for dialing in values for our system
+        // SysId Routine for updating FeedForward values
         routine = new SysIdRoutine(
-                new SysIdRoutine.Config(),
-                new SysIdRoutine.Mechanism(this::voltageDrive, this::logMotors, this)
-        );
+                // new SysIdRoutine.Config(Volts.of(0.6).per(Second), Volts.of(3.0), null),
+                new SysIdRoutine.Config(), // Default: 1 Volts/Second, 7 Volts
+                new SysIdRoutine.Mechanism(
+                        this.elevatorMotors::setLeadVoltage,
+                        this::logMotors,
+                        this));
     }
 
 
-    // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestep
+    // callback reads sensors so that the routine can log the voltage, position, and velocity at each timestamp
     private void logMotors(SysIdRoutineLog sysIdRoutineLog) {
-
-    }
-
-
-    // callback that passes requested voltage directly to your motor controllers
-    private void voltageDrive(Voltage voltage) {
-//        elevatorMotors.
+        sysIdRoutineLog.motor("Elevator")
+                .voltage(
+                        Volts.of(elevatorMotors.getLead().getBusVoltage() * RobotController.getBatteryVoltage()))
+                .linearPosition(
+                        Meters.of(encoder.get()))
+                .linearVelocity(
+                        MetersPerSecond.of(encoder.getRate()));
     }
 
 
@@ -99,44 +115,41 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic(){
         // publish smart dashboard info here
-        SmartDashboard.putNumber("Elevator_RelativeEncoderDistance", relativeEncoder.getPosition());
-        SmartDashboard.putNumber("Elevator_TranslatedDistance", getPositionMeters());
-        SmartDashboard.putNumber("Elevator_Velocity", getVelocityMetersPerSecond());
+        SmartDashboard.putNumber("Elevator_RelativeEncoder_Distance", relativeEncoder.getPosition());
+        SmartDashboard.putNumber("Elevator_Velocity_Calculated", getVelocityMetersPerSecond());
 
-        /* TODO: Implement when CANIds established
-        SmartDashboard.putNumber("Elevator_EncoderDistance", encoder.getDistance());
-        SmartDashboard.putBoolean("Elevator_TopLimitSwitch", topLimitSwitch.get());
-        SmartDashboard.putBoolean("Elevator_BottomLimitSwitch", bottomLimitSwitch.get());
-        */
+        SmartDashboard.putNumber("Elevator_BoreEncoder_Distance", encoder.getDistance());
+        SmartDashboard.putNumber("Elevator_BoreEncoder_Rate", encoder.getRate());
+
+//        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
+//        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", getTopBeamBreak());
+        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", getBottomBeamBreak());
+    }
+
+
+    private boolean getTopBeamBreak(){
+        // return true by default to stop motor from exceeding limits
+        return UnitsUtility.isBeamBroken(topLimitSwitch,true,"Elevator Top Limit Switch");
+    }
+
+
+    private boolean getBottomBeamBreak(){
+        // return true by default to stop motor from exceeding limits
+        return UnitsUtility.isBeamBroken(bottomLimitSwitch,true,"Elevator Bottom Limit Switch");
     }
 
 
     /**
-     * This is the thing we can do to find the distance the motor has traveled.
-     * To get the distance traveled from a bore encoder, you need to count the number of pulses generated by the encoder
-     *  and multiply that number by the "distance per pulse" which is calculated based on the circumference of the bore
-     *  and the encoder's resolution (pulses per revolution) - essentially, converting the rotational movement of the
-     *  bore into a linear distance traveled.
-     * <p>
-     * Key steps:
-     *      Measure the bore circumference: This is the distance traveled for one full rotation of the bore.
-     *      Find the encoder resolution: This is the number of pulses the encoder generates per revolution.
-     *      Calculate "distance per pulse": Divide the bore circumference by the encoder resolution.
-     *      Read encoder pulses: In your control system, read the number of pulses generated by the encoder.
-     *      Calculate distance traveled: Multiply the "distance per pulse" by the number of encoder pulses rea
+     * TODO: measure elevator shaft radius and put it in constants.
+     * Ask Chris for the gear ratio for the elevator.
      */
     public void goToLevel( int requestedLevel ) {
         double levelHeight = getLevelConstant(requestedLevel);
-        double topLevel = getLevelConstant(5);
-        double bottomLevel = getLevelConstant(0);
+        pid.setGoal(levelHeight);
 
-        double currentPos = getPositionMeters();
-        boolean isPositive =  ( levelHeight - currentPos >= 0) ;
-
-        // stop motors if ( negative difference -> check bottom limit OR positive difference -> check top limit )
-        // TODO: Switch when
-        //  if ( (!isPositive && UnitsUtility.isBeamBroken(bottomLimitSwitch, true, this.getName())) || (isPositive && UnitsUtility.isBeamBroken(topLimitSwitch, true, this.getName()))) {
-        if ( (!isPositive && bottomLevel <= currentPos ) || (isPositive && topLevel >= currentPos )) {
+        //if (velocity is negative AND bottomBeamBreak) OR (velocity is positive AND topBeamBreak) {
+        if ( (encoder.getRate() < 0 && getBottomBeamBreak()) || (encoder.getRate() > 0 && getTopBeamBreak()) ) {
             elevatorMotors.stop();
         } else {
             double voltsOutput = MathUtil.clamp(
@@ -162,7 +175,7 @@ public class Elevator extends SubsystemBase{
     }
 
 
-    public boolean isAtLevelThreshold( int level ){
+    public boolean isAtLevelThreshold( int level ) {
         return MathUtil.isNear(
                 getPositionMeters(),
                 getLevelConstant( level ),
@@ -186,19 +199,50 @@ public class Elevator extends SubsystemBase{
 
     // TODO: BEFORE TESTING Replace with setting in configs
     public double getPositionMeters() {
-        return relativeEncoder.getPosition() *
-                (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING);
+//        return relativeEncoder.getPosition() *
+//                (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
+//                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING) * 1.179042253521127;
+        return encoder.getDistance();
     }
 
 
     public double getVelocityMetersPerSecond() {
-        return (relativeEncoder.getVelocity() / 60) * (2 * Math.PI * Constants.ElevatorConstants.ELEVATOR_DRUM_RADIUS)
-                * (1 / Constants.ElevatorConstants.ELEVATOR_GEARING);
+        return encoder.getRate();
+    }
+
+
+    public boolean isAtTop() {
+        return topLimitSwitch.get();
+    }
+
+
+    public boolean isAtBottom() {
+        return bottomLimitSwitch.get();
     }
 
 
     public void stopMotor() {
+
+//        int direction = 1;
+//        double velocity = getVelocityMetersPerSecond();
+//
+//
+////        double voltsOutput = MathUtil.clamp(
+////                elevatorFeedforward.calculateWithVelocities(
+////                        getVelocityMetersPerSecond(),
+////                        0.0), -7, 7);
+//        double voltsOutput = 7;
+//
+//        if ( velocity >= 0.1 ) {
+//            direction = -1;
+//        }
+//
+//        elevatorMotors.setLeadVoltage( voltsOutput * direction);
         elevatorMotors.stop();
+    }
+
+    public Command slowToStop(){
+        return this.run( this::stopMotor );
+                //.until(() -> encoder.getRate() >= -0.05 && relativeEncoder.getVelocity() <= 0.05);
     }
 }

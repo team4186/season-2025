@@ -4,9 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.AllianceStationID;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -146,7 +148,11 @@ public class Robot extends TimedRobot {
      * This function is called once when the robot is first started up.
      */
     @Override
-    public void simulationInit() { }
+    public void simulationInit() {
+        DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
+//        DriverStationSim.setAllianceStationId(AllianceStationID.Blue2);
+//        DriverStationSim.setAllianceStationId(AllianceStationID.Blue3);
+    }
 
 
     /**

@@ -2,31 +2,28 @@ package frc.robot.sparkmaxconfigs;
 
 import com.revrobotics.spark.SparkLowLevel;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.motorcontrol.Spark;
-import frc.robot.Constants;
-import frc.robot.subsystems.AlgaeProcessor;
-//import frc.robot.subsystems.Climber;
-//import frc.robot.subsystems.Elevator;
+
 
 // Components Singleton
 public final class Components {
 
     private static Components instance = null;
 
-    public final ElevatorMotorSet elevatorMotors = new ElevatorMotors().elevatorMotors;
 
-    public final SingleMotor endEffectorMotor = new EndEffectorMotor().endEffectorMotor;
+    public final ElevatorMotorSet elevatorMotorSet = new ElevatorMotors().elevatorMotors;
 
-    public final SingleMotor climberMotor = new ClimberMotor().climberMotor;
+    public final SingleMotor endEffectorSingleMotor = new EndEffectorMotor().endEffectorMotor;
 
     private final AlgaeProcessorMotors algaeProcessorMotors = new AlgaeProcessorMotors();
-    public final SingleMotor algaeProcessorWheelMotor =  algaeProcessorMotors.wheelMotor;
-    public final SingleMotor algaeProcessorAngleMotor = algaeProcessorMotors.angleMotor;
+    public final SingleMotor algaeProcessorWheelSingleMotor =  algaeProcessorMotors.wheelMotor;
+    public final SingleMotor algaeProcessorAngleSingleMotor = algaeProcessorMotors.angleMotor;
+
+    private final ClimberMotor climberMotors = new ClimberMotor();
+    public final SingleMotor climberSingleMotor =  climberMotors.climbMotor;
 
     private final DeAlgaeMotors deAlgaeMotors = new DeAlgaeMotors();
-    public final SingleMotor deAlgaeWheelMotor = deAlgaeMotors.wheelMotor;
-    public final SingleMotor deAlgaeAngleMotor = deAlgaeMotors.angleMotor;
+    public final SingleMotor deAlgaeWheelSingleMotor = deAlgaeMotors.wheelMotor;
+    public final SingleMotor deAlgaeAngleSingleMotor = deAlgaeMotors.angleMotor;
 
 
     // private Constructor
@@ -41,50 +38,50 @@ public final class Components {
     }
 
 
-    public static final class AlgaeProcessorMotors {
-        public SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(98, SparkLowLevel.MotorType.kBrushless),
+    private static final class AlgaeProcessorMotors {
+        private final SingleMotor wheelMotor = new SingleMotor(
+                new SparkMax(13, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 false);
 
-        public SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(99, SparkLowLevel.MotorType.kBrushless),
+        private final SingleMotor angleMotor = new SingleMotor(
+                new SparkMax(14, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
-                true);
+                false);
     }
 
 
-    public static final class ClimberMotor {
-        public SingleMotor climberMotor = new SingleMotor(
+    private static final class ClimberMotor {
+        private final SingleMotor climbMotor = new SingleMotor(
                 new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
-                false);
+                true);
     }
 
 
-    public static final class DeAlgaeMotors {
-        public SingleMotor wheelMotor = new SingleMotor(
-                new SparkMax(11, SparkLowLevel.MotorType.kBrushless),
+    private static final class DeAlgaeMotors {
+        private final SingleMotor wheelMotor = new SingleMotor(
+                new SparkMax(10, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 false);
 
-        public SingleMotor angleMotor = new SingleMotor(
-                new SparkMax(10, SparkLowLevel.MotorType.kBrushless),
+        private final SingleMotor angleMotor = new SingleMotor(
+                new SparkMax(11, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 true);
     }
 
 
-    public static final class EndEffectorMotor {
-        public final SingleMotor endEffectorMotor = new SingleMotor(
+    private static final class EndEffectorMotor {
+        private final SingleMotor endEffectorMotor = new SingleMotor(
                 new SparkMax(12, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
                 true);
     }
 
 
-    public static final class ElevatorMotors {
-        public final ElevatorMotorSet elevatorMotors = new ElevatorMotorSet(
+    private static final class ElevatorMotors {
+        private final ElevatorMotorSet elevatorMotors = new ElevatorMotorSet(
                 new SparkMax(16, SparkLowLevel.MotorType.kBrushless), // lead
                 new SparkMax(17, SparkLowLevel.MotorType.kBrushless), // follower
                 DefaultMotorConfigs.getInstance().ElevatorBaseConfig,
