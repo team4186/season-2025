@@ -150,12 +150,14 @@ public class Elevator extends SubsystemBase{
 
         //if (velocity is negative AND bottomBeamBreak) OR (velocity is positive AND topBeamBreak) {
         if ( (encoder.getRate() < 0 && getBottomBeamBreak()) || (encoder.getRate() > 0 && getTopBeamBreak()) ) {
-            elevatorMotors.stop();
+            stopMotor();
         } else {
             double voltsOutput = MathUtil.clamp(
                     elevatorFeedforward.calculateWithVelocities(
                             getVelocityMetersPerSecond(),
                             pid.getSetpoint().velocity) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
+            SmartDashboard.putNumber("Requested Elevator Velocity", pid.getSetpoint().velocity);
+            SmartDashboard.putNumber("Difference in Elevator Velocity", pid.getSetpoint().velocity - encoder.getRate());
             elevatorMotors.setLeadVoltage(voltsOutput);
         }
 
@@ -193,6 +195,8 @@ public class Elevator extends SubsystemBase{
 
     // TODO: BRAINSTORM: Useful for adjusting past breakpoint? should just reset instead probably?
     public void reset() {
+        // Travel to level, slower than normal or just as fast?
+        // Move slowly until bottom limit switch?
         goToLevel(0);
     }
 
@@ -223,6 +227,7 @@ public class Elevator extends SubsystemBase{
 
     public void stopMotor() {
 
+        // TODO: Use this function to come to a stop using feed forward after updating!
 //        int direction = 1;
 //        double velocity = getVelocityMetersPerSecond();
 //

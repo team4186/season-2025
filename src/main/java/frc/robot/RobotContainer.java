@@ -24,6 +24,8 @@ import frc.robot.commands.actions.*;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
+
+import java.awt.event.ComponentAdapter;
 import java.io.File;
 import frc.robot.commands.actions.ElevatorReturnToDefault;
 
@@ -232,7 +234,7 @@ public class RobotContainer {
 
         // Set default subsystem commands
         drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
-        elevator.setDefaultCommand( Commands.runOnce( elevator::reset, elevator ).repeatedly());
+        // elevator.setDefaultCommand( Commands.runOnce( elevator::reset, elevator ).repeatedly());
 
 
         if ( Robot.isSimulation() ){
@@ -315,6 +317,9 @@ public class RobotContainer {
             joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
             joystick.button(5).whileTrue(drivebase.centerModulesCommand());
 
+            // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
+            joystick.button(8).whileTrue(elevatorCommandL3);
+
 
             ///  Elevator
 
@@ -370,19 +375,19 @@ public class RobotContainer {
         }
 
         // AlgaeProcessor testing
-        joystick.button(5).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Up).repeatedly())
-              .onFalse(Commands.runOnce(algaeProcessor::stop));
-        joystick.button(6).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Down).repeatedly())
-              .onFalse(Commands.runOnce(algaeProcessor::stop));
-        joystick.button(7).whileTrue(Commands.runOnce(algaeProcessor::eject).repeatedly())
-              .onFalse(Commands.runOnce(algaeProcessor::stop));
-        joystick.button(8).whileTrue(Commands.runOnce(algaeProcessor::intake).repeatedly())
-              .onFalse(Commands.runOnce(algaeProcessor::stop));
-        joystick.button(12).onTrue(Commands.runOnce(algaeProcessor::resetEncoder));
-        joystick.button(4).whileTrue(Commands.runOnce(algaeProcessor::coast)).
-              onFalse(Commands.runOnce(algaeProcessor::brake));
-        joystick.button(3).onTrue(algaeProcessorCommand);
-        joystick.button(3).onTrue((Commands.runOnce(algaeProcessorCommand::button_detect)));
+//        joystick.button(5).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Up).repeatedly())
+//              .onFalse(Commands.runOnce(algaeProcessor::stop));
+//        joystick.button(6).whileTrue(Commands.runOnce(algaeProcessor::runMotor_Down).repeatedly())
+//              .onFalse(Commands.runOnce(algaeProcessor::stop));
+//        joystick.button(7).whileTrue(Commands.runOnce(algaeProcessor::eject).repeatedly())
+//              .onFalse(Commands.runOnce(algaeProcessor::stop));
+//        joystick.button(8).whileTrue(Commands.runOnce(algaeProcessor::intake).repeatedly())
+//              .onFalse(Commands.runOnce(algaeProcessor::stop));
+//        joystick.button(12).onTrue(Commands.runOnce(algaeProcessor::resetEncoder));
+//        joystick.button(4).whileTrue(Commands.runOnce(algaeProcessor::coast)).
+//              onFalse(Commands.runOnce(algaeProcessor::brake));
+//        joystick.button(3).onTrue(algaeProcessorCommand);
+//        joystick.button(3).onTrue((Commands.runOnce(algaeProcessorCommand::button_detect)));
 
         // Climber testing
         //    joystick.button(5).whileTrue(Commands.runOnce(climber::runMotor_Up).repeatedly())
