@@ -24,11 +24,8 @@ import frc.robot.commands.actions.*;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.sparkmaxconfigs.Components;
 import frc.robot.subsystems.*;
-
-import java.awt.event.ComponentAdapter;
 import java.io.File;
 import frc.robot.commands.actions.ElevatorReturnToDefault;
-
 import swervelib.SwerveInputStream;
 
 
@@ -319,7 +316,6 @@ public class RobotContainer {
 
             // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
             joystick.button(8).whileTrue(elevatorCommandL3);
-
 
             ///  Elevator
 
