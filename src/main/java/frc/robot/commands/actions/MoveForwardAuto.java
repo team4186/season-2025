@@ -11,9 +11,7 @@ public class MoveForwardAuto extends Command {
      */
 
     private final SwerveSubsystem driveTrain;
-    private final Elevator elevatorSubsystem;
     private boolean isFinished = false;
-    private final int level;
     private final double driveDistance;
 
     @Override
