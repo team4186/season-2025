@@ -231,7 +231,7 @@ public class RobotContainer {
         // Command driveFieldOrientedAngularVelocityWithPov = drivebase.driveFieldOriented();
 
 
-        //  Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
+        Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
         //
         //  Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
         //  Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
@@ -250,9 +250,11 @@ public class RobotContainer {
 
         if ( Robot.isSimulation() ){
             // override to sim controls
-            // drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-            joystickDriver.button(7).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-            joystickDriver.button(8).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(10, 3, new Rotation2d()))));
+//            drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
+            joystickDriver.button(3).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+            joystickDriver.button(4).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 6, new Rotation2d()))));
+            joystickDriver.button(5).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(6, 3, new Rotation2d()))));
+            joystickDriver.button(6).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(6, 6, new Rotation2d()))));
 
             // setting angle with pov
             for (int angle = 0; angle < 360; angle += 45 ){
