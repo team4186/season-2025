@@ -36,7 +36,8 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
 
-    final CommandJoystick joystick = new CommandJoystick(0);
+    final CommandJoystick joystickDriver = new CommandJoystick(0);
+    final CommandJoystick joystickOperator = new CommandJoystick(1);
     private final Components motorComponents = Components.getInstance();
 
 
@@ -161,10 +162,19 @@ public class RobotContainer {
      */
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
             drivebase.getSwerveDrive(),
-                    () -> attenuated( joystick.getY(), 2, 1.0 ) * -1,
-                    () -> attenuated( joystick.getX(), 2, 1.0 ) * -1)
+                    () -> attenuated( joystickDriver.getY(), 2, 1.0 ) * -1,
+                    () -> attenuated( joystickDriver.getX(), 2, 1.0 ) * -1)
             .withControllerRotationAxis(
-                    () -> attenuated( joystick.getTwist(), 3, 0.75 ) * 1)
+                    () -> attenuated( joystickDriver.getTwist(), 3, 0.75 ) * 1)
+            .deadband(OperatorConstants.DEADBAND)
+            .allianceRelativeControl(true);
+
+    SwerveInputStream driveAngularVelocitySlow = SwerveInputStream.of(
+                    drivebase.getSwerveDrive(),
+                    () -> attenuated( joystickDriver.getY(), 2, 0.5 ) * -1,
+                    () -> attenuated( joystickDriver.getX(), 2, 0.5 ) * -1)
+            .withControllerRotationAxis(
+                    () -> attenuated( joystickDriver.getTwist(), 3, 0.375 ) * 1)
             .deadband(OperatorConstants.DEADBAND)
             .allianceRelativeControl(true);
 
@@ -181,18 +191,18 @@ public class RobotContainer {
 
     SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(
             drivebase.getSwerveDrive(),
-                    () -> -joystick.getY(),
-                    () -> -joystick.getX())
+                    () -> -joystickDriver.getY(),
+                    () -> -joystickDriver.getX())
             .withControllerRotationAxis(
-                    () -> joystick.getRawAxis(2))
+                    () -> joystickDriver.getRawAxis(2))
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
 
     // Derive the heading axis with math!
     SwerveInputStream driveDirectAngleKeyboard = driveAngularVelocityKeyboard.copy().withControllerHeadingAxis(
-            () -> Math.sin( joystick.getRawAxis(2) * Math.PI ) * ( Math.PI * 2 ),
-            () -> Math.cos( joystick.getRawAxis(2) * Math.PI ) * ( Math.PI * 2))
+            () -> Math.sin( joystickDriver.getRawAxis(2) * Math.PI ) * ( Math.PI * 2 ),
+            () -> Math.cos( joystickDriver.getRawAxis(2) * Math.PI ) * ( Math.PI * 2))
             .headingWhile(true);
 
 
@@ -217,6 +227,7 @@ public class RobotContainer {
     private void configureBindings() {
 
         Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+        Command driveFieldOrientedAngularVelocitySlow = drivebase.driveFieldOriented(driveAngularVelocitySlow);
         // Command driveFieldOrientedAngularVelocityWithPov = drivebase.driveFieldOriented();
 
 
@@ -233,15 +244,15 @@ public class RobotContainer {
         drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
 
         // TODO: Uncomment and test after FF set
-        // elevator.setDefaultCommand( elevatorDefaultCommand );
+        elevator.setDefaultCommand( elevatorDefaultCommand );
         // elevator.setDefaultCommand( Commands.runOnce( elevator::reset, elevator ).repeatedly());
 
 
         if ( Robot.isSimulation() ){
             // override to sim controls
             // drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-            joystick.button(7).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-            joystick.button(8).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(10, 3, new Rotation2d()))));
+            joystickDriver.button(7).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+            joystickDriver.button(8).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(10, 3, new Rotation2d()))));
 
             // setting angle with pov
             for (int angle = 0; angle < 360; angle += 45 ){
@@ -255,14 +266,14 @@ public class RobotContainer {
             //      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly() );
             //      joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
 
-            joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+            joystickDriver.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
 
-            joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-            joystick.button(5).whileTrue(drivebase.centerModulesCommand());
-            joystick.button(10).onTrue( Commands.runOnce( drivebase::lock, drivebase ));
+            joystickDriver.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+            joystickDriver.button(5).whileTrue(drivebase.centerModulesCommand());
+            joystickDriver.button(10).onTrue( Commands.runOnce( drivebase::lock, drivebase ));
 
-            joystick.button(11).onTrue( drivebase.setMotorBrakeCommand(true) );
-            joystick.button(12).onTrue( drivebase.setMotorBrakeCommand(false) );
+            joystickDriver.button(11).onTrue( drivebase.setMotorBrakeCommand(true) );
+            joystickDriver.button(12).onTrue( drivebase.setMotorBrakeCommand(false) );
 
               // TESTING FOR FF ELEVATOR SysIdRoutine;
             //        joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
@@ -281,24 +292,26 @@ public class RobotContainer {
             // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
 
             // EndEffector
-            joystick.trigger().whileTrue(endEffectorEjectCommand);
-            joystick.button(2).whileTrue(endEffectorLoadCommand);
+            joystickDriver.trigger().whileTrue(endEffectorEjectCommand);
+            joystickDriver.button(2).whileTrue(endEffectorLoadCommand);
 
             // Algae - Cycle State on button press
-            joystick.button(3).onTrue(algaeProcessorCommand);
-            joystick.button(5).onTrue(deAlgaeCommand);
+            joystickOperator.button(3).onTrue(algaeProcessorCommand);
+            joystickOperator.button(3).onTrue((Commands.runOnce(algaeProcessorCommand::button_detect)));
+
+            joystickOperator.button(5).onTrue(deAlgaeCommand);
 
             // Climber
-            joystick.button(6).onTrue(climberCommand);
+            joystickOperator.button(6).onTrue(climberCommand);
 
 
             // Elevator - Go to level and maintain
-            joystick.button(7).whileTrue(elevatorCommandL1);
-            joystick.button(8).whileTrue(elevatorCommandL2);
-            joystick.button(9).whileTrue(elevatorCommandL3);
-            joystick.button(10).whileTrue(elevatorCommandL4);
-
-
+            joystickOperator.button(7).whileTrue(elevatorCommandL1);
+            joystickOperator.button(8).whileTrue(elevatorCommandL2);
+            joystickOperator.button(9).whileTrue(elevatorCommandL3);
+            joystickOperator.button(10).whileTrue(elevatorCommandL4);
+            // Joystick Operator strafing here for buttons 11 and 12
+            joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
 
             ///
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));

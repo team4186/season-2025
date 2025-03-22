@@ -26,7 +26,7 @@ public final class ElevatorCommand extends Command {
         elevatorSubsystem = elevatorSubsystemParam;
         goalLevel = requestedLevel;
         taskState = Task.GO_TO_LEVEL;
-        timer = new Timer();
+//        timer = new Timer();
         addRequirements(elevatorSubsystem);
     }
 

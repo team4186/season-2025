@@ -98,8 +98,8 @@ public final class Constants {
         public static final int ELEVATOR_ENCODER_ID_B = 4;
 
         public static final double ELEVATOR_RAMP_RATE = 5;
-        public static final double ELEVATOR_MAX_VELOCITY = 0.25;
-        public static final double ELEVATOR_MAX_ACCELERATION = 0.25;
+        public static final double ELEVATOR_MAX_VELOCITY = 1.0;
+        public static final double ELEVATOR_MAX_ACCELERATION = 1.0;
 
         public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
         public static final double ELEVATOR_LEVEL_ONE = 0.197; // why even consider the tray? can we score with the elevator?
@@ -120,15 +120,20 @@ public final class Constants {
         public static final double ELEVATOR_CARRIAGE_MASS = 4.0; // end effector mass, with / without
         public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(1.0);
         // TODO: Update values
-        public static final double ELEVATOR_P = 0.0;
+        public static final double ELEVATOR_P = 8.0;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
 
 
+//        public static final double ELEVATOR_KS = 0.00; // Static gain in volts
+//        public static final double ELEVATOR_KG = 0.195; // Gravity gain in volts
+//        public static final double ELEVATOR_KV = 3.07; // Velocity gain in V/(m/s)
+//        public static final double ELEVATOR_KA = 0.41;
+
         // Adjust these to reach optimal
-        public static final double ELEVATOR_KS = 0.00; // Static gain in volts
+        public static final double ELEVATOR_KS = 0.05; // Static gain in volts
         public static final double ELEVATOR_KG = 0.195; // Gravity gain in volts
-        public static final double ELEVATOR_KV = 0.50; // Velocity gain in V/(m/s)
+        public static final double ELEVATOR_KV = 4.0; // Velocity gain in V/(m/s)
         public static final double ELEVATOR_KA = 0.00; // Acceleration gain in V/(m/s^2)
 
         public static final double ELEVATOR_DEFAULT_TOLERANCE = 0.0075; // Meters (+/-)Tolerance

@@ -24,7 +24,7 @@ import java.util.InputMismatchException;
 
 import static edu.wpi.first.units.Units.*;
 
-public class Elevator extends SubsystemBase{
+public class Elevator extends SubsystemBase {
 
     // Motor, Encoder, and Limit Switches variables
     private final ElevatorMotorSet elevatorMotors;
@@ -40,6 +40,14 @@ public class Elevator extends SubsystemBase{
 
     private final SysIdRoutine routine;
 
+    private final Timer timer;
+    private double prevTimestamp;
+    private double prevVelocity;
+
+    private double maxVel;
+    private double minVel;
+    private double minAccel;
+    private double maxAccel;
 
     // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
     private final MutVoltage m_appliedVoltage = Volts.mutable(0);
@@ -87,6 +95,17 @@ public class Elevator extends SubsystemBase{
                         this.elevatorMotors::setLeadVoltage,
                         this::logMotors,
                         this));
+
+        this.timer = new Timer();
+        timer.start();
+        prevTimestamp = 0.0;
+        prevVelocity = 0.0;
+
+        maxVel = 0;
+        minVel = 0;
+        minAccel = 0;
+        maxAccel = 0;
+
     }
 
 
@@ -115,16 +134,47 @@ public class Elevator extends SubsystemBase{
     @Override
     public void periodic(){
         // publish smart dashboard info here
-        SmartDashboard.putNumber("Elevator_RelativeEncoder_Distance", relativeEncoder.getPosition());
-        SmartDashboard.putNumber("Elevator_Velocity_Calculated", getVelocityMetersPerSecond());
+//        SmartDashboard.putNumber("Elevator_RelativeEncoder_Distance", relativeEncoder.getPosition());
+//        SmartDashboard.putNumber("Elevator_Velocity_Calculated", getVelocityMetersPerSecond());
+        maxVel = Math.max( encoder.getRate(), maxVel);
+        minVel = Math.min( encoder.getRate(), minVel);
+        maxAccel = Math.max( getAcceleration(), maxAccel);
+        minAccel = Math.min( getAcceleration(), minAccel);
 
         SmartDashboard.putNumber("Elevator_BoreEncoder_Distance", encoder.getDistance());
         SmartDashboard.putNumber("Elevator_BoreEncoder_Rate", encoder.getRate());
+        SmartDashboard.putNumber("Elevator_Requested_Velocity", Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY);
+//        SmartDashboard.putNumber("Elevator_Velocity_Difference", Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY - encoder.getRate());
+
+        SmartDashboard.putNumber("Elevator_Velocity_Var", maxVel - minVel);
+        SmartDashboard.putNumber("Elevator_Velocity_Max", maxVel);
+        SmartDashboard.putNumber("Elevator_Acceleration_Var", maxAccel - minAccel);
+        SmartDashboard.putNumber("Elevator_Acceleration_Max", maxAccel);
+
+        SmartDashboard.putNumber("Elevator_Acceleration_Expected", Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION);
+//        SmartDashboard.putNumber("Elevator_Acceleration_Difference", Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION - getAcceleration());
+
+
 
 //        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
 //        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", getTopBeamBreak());
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", getBottomBeamBreak());
+    }
+
+    private double getAcceleration() {
+        double currVelocity = encoder.getRate();
+        double currTimestamp = timer.get();
+        double prevVelocity = this.prevVelocity;
+        double prevTimestamp = this.prevTimestamp;
+
+
+        double currAccel = (currVelocity - prevVelocity) / (currTimestamp - prevTimestamp);
+
+        this.prevVelocity = currVelocity;
+        this.prevTimestamp = currTimestamp;
+
+        return currAccel;
     }
 
 
@@ -152,13 +202,16 @@ public class Elevator extends SubsystemBase{
         if ( (encoder.getRate() < 0 && getBottomBeamBreak()) || (encoder.getRate() > 0 && getTopBeamBreak()) ) {
             stopMotor();
         } else {
-            double voltsOutput = MathUtil.clamp(
-                    elevatorFeedforward.calculateWithVelocities(
-                            getVelocityMetersPerSecond(),
-                            pid.getSetpoint().velocity) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
-            SmartDashboard.putNumber("Requested Elevator Velocity", pid.getSetpoint().velocity);
-            SmartDashboard.putNumber("Difference in Elevator Velocity", pid.getSetpoint().velocity - encoder.getRate());
-            elevatorMotors.setLeadVoltage(voltsOutput);
+//            double voltsOutput = MathUtil.clamp(
+//                    elevatorFeedforward.calculateWithVelocities(
+//                            getVelocityMetersPerSecond(),
+////                            Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
+//                            pid.getSetpoint().velocity) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
+            //            elevatorMotors.setLeadVoltage(voltsOutput);
+            elevatorMotors.setLeadVoltage(
+                    pid.calculate(encoder.getDistance())
+                            + elevatorFeedforward.calculate(pid.getSetpoint().velocity));
+
         }
 
     }
@@ -227,23 +280,10 @@ public class Elevator extends SubsystemBase{
 
     public void stopMotor() {
 
-        // TODO: Use this function to come to a stop using feed forward after updating!
-//        int direction = 1;
-//        double velocity = getVelocityMetersPerSecond();
-//
-//
-////        double voltsOutput = MathUtil.clamp(
-////                elevatorFeedforward.calculateWithVelocities(
-////                        getVelocityMetersPerSecond(),
-////                        0.0), -7, 7);
-//        double voltsOutput = 7;
-//
-//        if ( velocity >= 0.1 ) {
-//            direction = -1;
-//        }
-//
-//        elevatorMotors.setLeadVoltage( voltsOutput * direction);
-        elevatorMotors.stop();
+        elevatorMotors.setLeadVoltage(
+                pid.calculate(encoder.getDistance())
+                        + elevatorFeedforward.calculate(0));
+//        elevatorMotors.stop();
     }
 
     public Command slowToStop(){
