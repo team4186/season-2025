@@ -601,6 +601,11 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
 
+  public Command setMotorBrakeCommand(boolean brake ) {
+    return this.runOnce( () -> swerveDrive.setMotorIdleMode(brake) );
+  }
+
+
   /**
    * Gets the current yaw angle of the robot, as reported by the swerve pose estimator in the underlying drivebase.
    * Note, this is not the raw gyro reading, this may be corrected from calls to resetOdometry().

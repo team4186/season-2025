@@ -229,8 +229,11 @@ public class RobotContainer {
         //  Command driveSetpointGenKeyboard = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
 
-        // Set default subsystem commands
+        // Set default subsystem commands here
         drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
+
+        // TODO: Uncomment and test after FF set
+        // elevator.setDefaultCommand( elevatorDefaultCommand );
         // elevator.setDefaultCommand( Commands.runOnce( elevator::reset, elevator ).repeatedly());
 
 
@@ -247,53 +250,20 @@ public class RobotContainer {
         }
 
         if ( DriverStation.isTest() ) {
+            // Test commands go here
 
             //      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly() );
             //      joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
 
             joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+
             joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
             joystick.button(5).whileTrue(drivebase.centerModulesCommand());
-            joystick.button(6).onTrue(Commands.none());
+            joystick.button(10).onTrue( Commands.runOnce( drivebase::lock, drivebase ));
 
-            // Example Align Command Object
-            //joystick.button(10).whileTrue(alignCommand);
-            // AlgaeProcessor Tests
-            /**
-             * Extend
-             * Retract
-             * Intake Algae
-             * Eject Algae
-             */
+            joystick.button(11).onTrue( drivebase.setMotorBrakeCommand(true) );
+            joystick.button(12).onTrue( drivebase.setMotorBrakeCommand(false) );
 
-            // Climber Tests
-            /**
-             * Extend
-             * Latch
-             * Retract
-             */
-
-            // DeAlgae Tests
-            /**
-             * Extend
-             * Remove Algae (up)
-             * Remove Algae (down)
-             */
-
-            /*
-            runs deAlgaeCommand when button is held down.
-            Is interrupted when let go and automatically moves back to default position
-            and stops rolling motor.
-            */
-
-            // joystick.button(7).whileTrue(deAlgaeCommand);
-
-
-            // Elevator Tests
-            /**
-             * Level 1, 2, 3
-             * Limit switch (upper, lower)
-             */
               // TESTING FOR FF ELEVATOR SysIdRoutine;
             //        joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
             //        joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
@@ -302,22 +272,32 @@ public class RobotContainer {
             //        joystick.button(4).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
 
-            // EndEffector Tests
-            /**
-             * Intake / Eject Coral
-             */
-
-
         } else {
 
-            /// Swerve
-            joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-            joystick.button(5).whileTrue(drivebase.centerModulesCommand());
+            /// Useful swerve commands
+//            joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+//            joystick.button(5).whileTrue(drivebase.centerModulesCommand());
 
             // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
-            joystick.button(8).whileTrue(elevatorCommandL3);
 
-            ///  Elevator
+            // EndEffector
+            joystick.trigger().whileTrue(endEffectorEjectCommand);
+            joystick.button(2).whileTrue(endEffectorLoadCommand);
+
+            // Algae - Cycle State on button press
+            joystick.button(3).onTrue(algaeProcessorCommand);
+            joystick.button(5).onTrue(deAlgaeCommand);
+
+            // Climber
+            joystick.button(6).onTrue(climberCommand);
+
+
+            // Elevator - Go to level and maintain
+            joystick.button(7).whileTrue(elevatorCommandL1);
+            joystick.button(8).whileTrue(elevatorCommandL2);
+            joystick.button(9).whileTrue(elevatorCommandL3);
+            joystick.button(10).whileTrue(elevatorCommandL4);
+
 
 
             ///
@@ -406,9 +386,9 @@ public class RobotContainer {
 
     // Adjust joystick input from linear to exponential curve
     private double attenuated(double value, int exponent, double scale) {
-      double res = scale * Math.pow( Math.abs(value), exponent );
-      if ( value < 0 ) { res *= -1; }
-      return res;
+        double res = scale * Math.pow( Math.abs(value), exponent );
+        if ( value < 0 ) { res *= -1; }
+        return res;
     }
 
 
@@ -418,8 +398,11 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-      // An example command will be run in autonomous
-      return drivebase.getAutonomousCommand("New Auto");
+        // An example command will be run in autonomous
+
+        // return drivebase.getAutonomousCommand("New Auto");
+        // TODO: Update with AutoCommand when implemented
+        return null;
     }
 
 
