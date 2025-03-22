@@ -277,6 +277,8 @@ public class RobotContainer {
             joystickDriver.button(11).onTrue( drivebase.setMotorBrakeCommand(true) );
             joystickDriver.button(12).onTrue( drivebase.setMotorBrakeCommand(false) );
 
+            joystickDriver.trigger().onTrue( drivebase.driveToDistanceCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY) );
+
               // TESTING FOR FF ELEVATOR SysIdRoutine;
             //        joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
             //        joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
@@ -425,8 +427,8 @@ public class RobotContainer {
 
         // return drivebase.getAutonomousCommand("New Auto");
         // TODO: Update with AutoCommand when implemented
-        return driveTrain.driveToDistanceAutoCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY);
-        // return Commands.none();
+        // return drivebase.driveToDistanceAutoCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY);
+        return Commands.none();
     }
 
 

@@ -370,18 +370,20 @@ public class SwerveSubsystem extends SubsystemBase {
     }
   
 
-  public Command driveToDistanceAutoCommand(double distanceInMeters, double speedInMetersPerSecond) {
-    autoTimer.start();
-    if(autoTimer.get() >= 5.0) {
-      autoTImer.stop();
-      return run(
-              () -> drive(new ChassisSpeeds(speedInMetersPerSecond, 0, 0))
-      ).until(
-              () -> swerveDrive.getPose().getTranslation()
-                      .getDistance( new Translation2d(0, 0) ) > distanceInMeters
-      );
-    }
-  }
+//  public Command driveToDistanceAutoCommand(double distanceInMeters, double speedInMetersPerSecond) {
+//    autoTimer.start();
+//    if(autoTimer.get() >= 5.0) {
+//      autoTimer.stop();
+//      return run(
+//              () -> drive(new ChassisSpeeds(speedInMetersPerSecond, 0, 0))
+//      ).until(
+//              () -> swerveDrive.getPose().getTranslation()
+//                      .getDistance( new Translation2d(0, 0) ) > distanceInMeters
+//      );
+//    }
+//
+//    return null;
+//  }
 
 
   /**
