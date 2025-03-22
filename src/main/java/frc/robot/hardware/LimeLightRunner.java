@@ -33,16 +33,26 @@ public class LimeLightRunner extends SubsystemBase {
     public void setLight(boolean mode) {
         final double res;
         if (mode) {
-            res = 3.0;
+            res = 2.0;
         } else {
-            res = 1.0;
+            res = 3.0;
         }
         tableTag.getEntry("ledMode").setValue(res);
+            /*
+            [0]	use the LED Mode set in the current pipeline
+            [1]	force off
+            [2]	force blink
+            [3]	force on
+            */
     }
 
 
+
+
     public boolean hasTargetTag() {
-        return tableTag.getEntry("tv").getDouble(0.0) > 0.0;
+//        return tableTag.getEntry("tv").getDouble(0.0) > 0.0;
+        return tableTag.getEntry("tv").getInteger(0) > 0;
+
     }
 
 
