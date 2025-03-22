@@ -292,8 +292,10 @@ public class RobotContainer {
             // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
 
             // EndEffector
-            joystickDriver.trigger().whileTrue(endEffectorEjectCommand);
-            joystickDriver.button(2).whileTrue(endEffectorLoadCommand);
+//            joystickDriver.trigger().whileTrue(endEffectorEjectCommand);
+//            joystickDriver.button(2).whileTrue(endEffectorLoadCommand);
+            joystickDriver.trigger().whileTrue(Commands.runOnce(endEffector::eject, endEffector).repeatedly());
+            joystickDriver.button(2).whileTrue(Commands.runOnce(endEffector::intake, endEffector).repeatedly());
 
             // Algae - Cycle State on button press
             joystickOperator.button(3).onTrue(algaeProcessorCommand);
@@ -303,15 +305,21 @@ public class RobotContainer {
 
             // Climber
             joystickOperator.button(6).onTrue(climberCommand);
+            joystickOperator.button(6).onTrue((Commands.runOnce(climberCommand::button_detect)));
+
 
 
             // Elevator - Go to level and maintain
             joystickOperator.button(7).whileTrue(elevatorCommandL1);
             joystickOperator.button(8).whileTrue(elevatorCommandL2);
             joystickOperator.button(9).whileTrue(elevatorCommandL3);
-            joystickOperator.button(10).whileTrue(elevatorCommandL4);
+//            joystickOperator.button(10).whileTrue(elevatorCommandL4);
+
+
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
+            joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
+            joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
 
             ///
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -415,7 +423,7 @@ public class RobotContainer {
 
         // return drivebase.getAutonomousCommand("New Auto");
         // TODO: Update with AutoCommand when implemented
-        return null;
+        return Commands.none();
     }
 
 
