@@ -61,7 +61,7 @@ public final class Constants {
         public static final double ALGAE_PROCESSOR_HOLDING_ANGLE = 30;
 
         public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.35;
-        public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 0.5h;
+        public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 0.5;
         public static final double ALGAE_PROCESSOR_WHEEL_HOLDING_SPEED = 0.10;
 
         public static final int ALGAE_PROCESSOR_LSChannel = 0; //
