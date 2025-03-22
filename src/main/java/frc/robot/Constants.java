@@ -36,6 +36,7 @@ public final class Constants {
         public static final PIDConstants AUTO_ANGLE_PID = new PIDConstants(0.05, 0.0, 0.0);
         // Assume the below is in feet
         public static final double DRIVE_DISTANCE = 6.0; 
+        public static final double DRIVE_VELOCITY = 0.8;
     }
 
 

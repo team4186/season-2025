@@ -1,7 +1,9 @@
 package frc.robot.commands.actions;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.SwerveSubsystem;
+
 
 public class MoveForwardAuto extends Command {
     /**
@@ -18,6 +20,7 @@ public class MoveForwardAuto extends Command {
     public MoveForwardAuto(SwerveSubsystem driveTrain, double driveDistance) {
         this.driveTrain = driveTrain;
         this.distance = distance;
+        this.currentDist = driveTrain.
         addRequirements(SwerveSubsystem);
     }
 
@@ -26,7 +29,8 @@ public class MoveForwardAuto extends Command {
 
     @Override
     public void execute() {
-        
+        // have current dist, have desired dist, output a velocity output
+        driveTrain.drive(this.driveVel, )
     }
 
     @Override
