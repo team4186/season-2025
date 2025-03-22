@@ -52,12 +52,13 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-
+import edu.wpi.first.wpilibj.Timer;
 
 public class SwerveSubsystem extends SubsystemBase {
   private final SwerveDrive swerveDrive;
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
   private final boolean visionDriveTest = false;
+  private final Timer autoTimer = new Timer();
   //private Vision vision;
 
   /**
@@ -360,13 +361,29 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return a Command that drives the swerve drive to a specific distance at a given speed
    */
   public Command driveToDistanceCommand(double distanceInMeters, double speedInMetersPerSecond) {
-    return run(
-            () -> drive(new ChassisSpeeds(speedInMetersPerSecond, 0, 0))
-    ).until(
-            () -> swerveDrive.getPose().getTranslation()
-                    .getDistance( new Translation2d(0, 0) ) > distanceInMeters
-    );
-  }
+      return run(
+              () -> drive(new ChassisSpeeds(speedInMetersPerSecond, 0, 0))
+      ).until(
+              () -> swerveDrive.getPose().getTranslation()
+                      .getDistance( new Translation2d(0, 0) ) > distanceInMeters
+      );
+    }
+  
+
+//  public Command driveToDistanceAutoCommand(double distanceInMeters, double speedInMetersPerSecond) {
+//    autoTimer.start();
+//    if(autoTimer.get() >= 5.0) {
+//      autoTimer.stop();
+//      return run(
+//              () -> drive(new ChassisSpeeds(speedInMetersPerSecond, 0, 0))
+//      ).until(
+//              () -> swerveDrive.getPose().getTranslation()
+//                      .getDistance( new Translation2d(0, 0) ) > distanceInMeters
+//      );
+//    }
+//
+//    return null;
+//  }
 
 
   /**

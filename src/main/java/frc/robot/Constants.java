@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
 
+import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
 
 
@@ -32,8 +33,11 @@ public final class Constants {
 
     // TODO: Update after testing auto
     public static final class AutonConstants {
-        public static final PIDConstants AUTO_TRANSLATION_PID = new PIDConstants(0.0, 0.0, 0.0);
-        public static final PIDConstants AUTO_ANGLE_PID = new PIDConstants(0.0, 0.0, 0.0);
+        public static final PIDConstants AUTO_TRANSLATION_PID = new PIDConstants(0.05, 0.0, 0.0);
+        public static final PIDConstants AUTO_ANGLE_PID = new PIDConstants(0.05, 0.0, 0.0);
+        // Assume the below is in feet
+        public static final double DRIVE_DISTANCE = Meters.convertFrom(2.0, Feet);
+        public static final double DRIVE_VELOCITY = 1.0;
     }
 
 
