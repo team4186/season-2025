@@ -61,7 +61,7 @@ public final class Constants {
         public static final double ALGAE_PROCESSOR_HOLDING_ANGLE = 30;
 
         public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.35;
-        public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 1.0;
+        public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 0.5h;
         public static final double ALGAE_PROCESSOR_WHEEL_HOLDING_SPEED = 0.10;
 
         public static final int ALGAE_PROCESSOR_LSChannel = 0; //
@@ -79,7 +79,7 @@ public final class Constants {
 
     public static final class DeAlgaeConstants {
         public static final double DE_ALGAE_DEFAULT_ANGLE = 5.0;
-        public static final double DE_ALGAE_MAX_SPEED = 0.2;
+        public static final double DE_ALGAE_MAX_SPEED = 0.1;
         public static final double DE_ALGAE_MIN_SPEED = 0.1;
         public static final double DE_ALGAE_P = 0.05;
         public static final double DE_ALGAE_I = 0.0;
