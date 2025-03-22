@@ -62,7 +62,12 @@ public class AlgaeProcessorCommand extends Command {
             algaeProcessor.wheelStop();
         }
         else if(button_count >= 4){
-            isFinished = algaeProcessor.reset();
+            if(button_count % 2 == 0) {
+                isFinished = algaeProcessor.reset();
+            }
+            else{
+                algaeProcessor.cmd_runMotor_Down();
+            }
         }
 
     }
