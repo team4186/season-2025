@@ -44,25 +44,25 @@ public class AlgaeProcessorCommand extends Command {
     @Override
     public void execute() {
         // exit case
-        if (ejectTimer >= 60) {
-            algaeProcessor.wheelStop();
-            isFinished = algaeProcessor.reset();
-        }
+//        if (ejectTimer >= 60) {
+//            algaeProcessor.wheelStop();
+//            isFinished = algaeProcessor.reset();
+//        }
 
-        if (button_count >= 3 && !ready) {
-            ready = algaeProcessor.cmd_runMotor_Up();
-        }
 
-        if (button_count == 1 && !deployed) {
-            deployed = algaeProcessor.cmd_runMotor_Down();
+        if (button_count == 1) {
+            algaeProcessor.cmd_runMotor_Down();
             algaeProcessor.intake();
-        } else if (button_count == 2 && deployed && !ready) {
-            ready = algaeProcessor.cmd_runMotor_Up();
-            algaeProcessor.holdAlgae();
-        } else if (button_count >= 3 && ready) {
+        } else if (button_count == 2) {
+            algaeProcessor.stop();
             algaeProcessor.eject();
-            ejectTimer++;
+        } else if (button_count == 3){
+            algaeProcessor.wheelStop();
+        }else if(button_count >= 4){
+            isFinished = algaeProcessor.reset();
+
         }
+
     }
 
 

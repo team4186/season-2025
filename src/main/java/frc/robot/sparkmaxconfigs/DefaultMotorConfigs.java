@@ -37,5 +37,5 @@ public final class DefaultMotorConfigs {
             .smartCurrentLimit(40)
             .openLoopRampRate(Constants.ElevatorConstants.ELEVATOR_RAMP_RATE)
             .idleMode(SparkBaseConfig.IdleMode.kBrake);
-            // .idleMode(SparkBaseConfig.IdleMode.kCoast); // Uncomment during testing if needed
+            //.idleMode(SparkBaseConfig.IdleMode.kCoast); // Uncomment during testing if needed
 }
