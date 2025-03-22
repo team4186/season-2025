@@ -124,8 +124,13 @@ public final class Constants {
         public static final double ELEVATOR_CARRIAGE_MASS = 4.0; // end effector mass, with / without
         public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(1.0);
         // TODO: Update values
-        public static final double ELEVATOR_P = 8.0;
-        public static final double ELEVATOR_I = 0.0;
+        /**
+         * Previous values:
+         *   P = 8.0
+         *   I and D are 0
+         */
+        public static final double ELEVATOR_P = 4.5;
+        public static final double ELEVATOR_I = 1.5;
         public static final double ELEVATOR_D = 0.0;
 
 
