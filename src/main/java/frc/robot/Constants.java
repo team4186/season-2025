@@ -129,8 +129,8 @@ public final class Constants {
          *   P = 8.0
          *   I and D are 0
          */
-        public static final double ELEVATOR_P = 4.5;
-        public static final double ELEVATOR_I = 1.5;
+        public static final double ELEVATOR_P = 20.0;
+        public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
 
 
