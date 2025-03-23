@@ -89,8 +89,8 @@ public class Elevator extends SubsystemBase {
 
         // SysId Routine for updating FeedForward values
         routine = new SysIdRoutine(
-                // new SysIdRoutine.Config(Volts.of(0.6).per(Second), Volts.of(3.0), null),
-                new SysIdRoutine.Config(), // Default: 1 Volts/Second, 7 Volts
+                new SysIdRoutine.Config(Volts.of(0.5).per(Second), Volts.of(3.5), null),
+                // new SysIdRoutine.Config(), // Default: 1 Volts/Second, 7 Volts
                 new SysIdRoutine.Mechanism(
                         this.elevatorMotors::setLeadVoltage,
                         this::logMotors,
@@ -289,5 +289,13 @@ public class Elevator extends SubsystemBase {
     public Command slowToStop(){
         return this.run( this::stopMotor );
                 //.until(() -> encoder.getRate() >= -0.05 && relativeEncoder.getVelocity() <= 0.05);
+    }
+
+    public Runnable applyVoltage(double voltage, boolean isPositive) {
+        if (isPositive){
+            return () -> elevatorMotors.setLeadVoltage( voltage );
+        } else {
+            return () -> elevatorMotors.setLeadVoltage( voltage * -1 );
+        }
     }
 }

@@ -264,28 +264,37 @@ public class RobotContainer {
 
         if ( DriverStation.isTest() ) {
             // Test commands go here
+            drivebase.setDefaultCommand(Commands.none());
+            elevator.setDefaultCommand(Commands.none());
 
             //      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly() );
             //      joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
 
-            joystickDriver.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+//            joystickDriver.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+//
+//            joystickDriver.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+//            joystickDriver.button(5).whileTrue(drivebase.centerModulesCommand());
+//            joystickDriver.button(10).onTrue( Commands.runOnce( drivebase::lock, drivebase ));
+//
+//            joystickDriver.button(11).onTrue( drivebase.setMotorBrakeCommand(true) );
+//            joystickDriver.button(12).onTrue( drivebase.setMotorBrakeCommand(false) );
+//
+//            joystickDriver.trigger().onTrue( drivebase.driveToDistanceCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY) );
 
-            joystickDriver.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-            joystickDriver.button(5).whileTrue(drivebase.centerModulesCommand());
-            joystickDriver.button(10).onTrue( Commands.runOnce( drivebase::lock, drivebase ));
 
-            joystickDriver.button(11).onTrue( drivebase.setMotorBrakeCommand(true) );
-            joystickDriver.button(12).onTrue( drivebase.setMotorBrakeCommand(false) );
 
-            joystickDriver.trigger().onTrue( drivebase.driveToDistanceCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY) );
-
-              // TESTING FOR FF ELEVATOR SysIdRoutine;
-            //        joystick.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-            //        joystick.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-            //
-            //        joystick.button(6).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
-            //        joystick.button(4).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
-
+              // TESTING FOR FF ELEVATOR SysIdRoutine; SENSITIVE
+//                    joystickDriver.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+//                    joystickDriver.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+//            //
+//                    joystickDriver.button(6).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kForward));
+//                    joystickDriver.button(4).whileTrue(elevator.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+//
+//                    // Voltage Down
+//                    joystickDriver.button(11).whileTrue( Commands.runOnce(elevator.applyVoltage(7, false)).repeatedly());
+//
+//                    // Voltage Up
+//                    joystickDriver.button(9).whileTrue( Commands.runOnce(elevator.applyVoltage(7, true)).repeatedly());
 
         } else {
 
@@ -407,6 +416,7 @@ public class RobotContainer {
         // AlignToTarget testing
         // joystick.button(6).whileTrue(Commands.runOnce(AlignToTarget).repeatedly());
     }
+
 
 
     // Adjust joystick input from linear to exponential curve
