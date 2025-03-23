@@ -296,10 +296,10 @@ public class RobotContainer {
             // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
 
             // EndEffector
-//            joystickDriver.trigger().whileTrue(endEffectorEjectCommand);
-//            joystickDriver.button(2).whileTrue(endEffectorLoadCommand);
-            joystickDriver.trigger().whileTrue(Commands.runOnce(endEffector::eject, endEffector).repeatedly());
-            joystickDriver.button(2).whileTrue(Commands.runOnce(endEffector::intake, endEffector).repeatedly());
+            joystickDriver.trigger().onTrue(endEffectorEjectCommand);
+            joystickDriver.button(2).onTrue(endEffectorLoadCommand);
+//            joystickDriver.trigger().whileTrue(Commands.runOnce(endEffector::eject, endEffector).repeatedly());
+//            joystickDriver.button(2).whileTrue(Commands.runOnce(endEffector::intake, endEffector).repeatedly());
 
             // Algae - Cycle State on button press
             joystickOperator.button(3).onTrue(algaeProcessorCommand);
@@ -323,7 +323,7 @@ public class RobotContainer {
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
             joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
-            joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
+            //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
             // joystickDriver.button(
             ///
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));

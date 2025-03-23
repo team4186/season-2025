@@ -64,5 +64,6 @@ public class EndEffectorEjectCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         endEffector.stop();
+        isFinished = false;
     }
 }

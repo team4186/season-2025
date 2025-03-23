@@ -362,7 +362,7 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Command driveToDistanceCommand(double distanceInMeters, double speedInMetersPerSecond) {
       return run(
-              () -> drive(new ChassisSpeeds(speedInMetersPerSecond, 0, 0))
+              () -> drive(new ChassisSpeeds(-speedInMetersPerSecond, 0, 0))
       );
     }
   
