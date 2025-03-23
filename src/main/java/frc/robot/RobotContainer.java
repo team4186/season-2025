@@ -120,7 +120,8 @@ public class RobotContainer {
 
     ElevatorReturnToDefault elevatorDefaultCommand = new ElevatorReturnToDefault(elevator);
 
-    EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector);
+    EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector, false);
+    EndEffectorEjectCommand endEffectorEjectCommandSlow = new EndEffectorEjectCommand(endEffector, true);
     EndEffectorLoadCommand endEffectorLoadCommand = new EndEffectorLoadCommand(endEffector);
 
     DeAlgaeCommand deAlgaeCommand = new DeAlgaeCommand(deAlgae);
@@ -267,6 +268,8 @@ public class RobotContainer {
             drivebase.setDefaultCommand(Commands.none());
             elevator.setDefaultCommand(Commands.none());
 
+            joystickOperator.trigger().onTrue(endEffectorEjectCommandSlow);
+            joystickDriver.trigger().onTrue(endEffectorEjectCommand);
             //      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly() );
             //      joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
 
@@ -305,8 +308,11 @@ public class RobotContainer {
             // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
 
             // EndEffector
+            joystickOperator.trigger().onTrue(endEffectorEjectCommandSlow);
             joystickDriver.trigger().onTrue(endEffectorEjectCommand);
+
             joystickDriver.button(2).onTrue(endEffectorLoadCommand);
+            joystickOperator.button(2).onTrue(endEffectorLoadCommand);
 //            joystickDriver.trigger().whileTrue(Commands.runOnce(endEffector::eject, endEffector).repeatedly());
 //            joystickDriver.button(2).whileTrue(Commands.runOnce(endEffector::intake, endEffector).repeatedly());
 

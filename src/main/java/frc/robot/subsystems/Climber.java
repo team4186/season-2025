@@ -29,6 +29,8 @@ public class Climber extends SubsystemBase {
         this.limitSwitch = limitSwitch;
 
         climbEncoder = climberSingleMotor.getRelativeEncoder();
+        climbEncoder.setPosition(0.0);
+
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(climbEncoder.getPosition(),Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
         speed = Constants.ClimberConstants.CLIMBER_SPEED;

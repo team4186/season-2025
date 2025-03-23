@@ -73,9 +73,9 @@ public final class Constants {
 
 
     public static final class ClimberConstants {
-        public static final double CLIMBER_SPEED = 0.2;
+        public static final double CLIMBER_SPEED = 0.4;
         public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
-        public static final double CLIMBER_DEPLOY_ANGLE = 230; //TODO: placeholder, relative to limit switch
+        public static final double CLIMBER_DEPLOY_ANGLE = 300; //TODO: placeholder, relative to limit switch
 
         public static final int CLIMBER_LSChannel = 8; //
     }
@@ -134,6 +134,8 @@ public final class Constants {
         public static final double ELEVATOR_D = 0.0;
 
 
+
+
 //        public static final double ELEVATOR_KS = 0.00; // Static gain in volts
 //        public static final double ELEVATOR_KG = 0.195; // Gravity gain in volts
 //        public static final double ELEVATOR_KV = 3.07; // Velocity gain in V/(m/s)
@@ -151,8 +153,9 @@ public final class Constants {
 
     public static final class EndEffectorConstants {
         public static final int END_EFFECTOR_BEAM_BREAK = 3;
-        public static final double END_EFFECTOR_EJECT_SPEED = 0.4;
-        public static final double END_EFFECTOR_INTAKE_SPEED = 0.25;
+        public static final double END_EFFECTOR_EJECT_SPEED = 0.45;
+        public static final double END_EFFECTOR_EJECT_SPEED_L1 = 0.35;
+        public static final double END_EFFECTOR_INTAKE_SPEED = 0.35;
     }
 
 
