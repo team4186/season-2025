@@ -317,14 +317,21 @@ public class RobotContainer {
 //            joystickDriver.button(2).whileTrue(Commands.runOnce(endEffector::intake, endEffector).repeatedly());
 
             // Algae - Cycle State on button press
-            joystickOperator.button(3).onTrue(algaeProcessorCommand);
-            joystickOperator.button(3).onTrue((Commands.runOnce(algaeProcessorCommand::button_detect)));
+            //TODO: add back when processor is added back
+//            joystickOperator.button(3).onTrue(algaeProcessorCommand);
+//            joystickOperator.button(3).onTrue((Commands.runOnce(algaeProcessorCommand::button_detect)));
 
             joystickOperator.button(5).onTrue(deAlgaeCommand);
 
             // Climber
             joystickOperator.button(6).onTrue(climberCommand);
             joystickOperator.button(6).onTrue((Commands.runOnce(climberCommand::button_detect)));
+
+            //manual control
+            joystickOperator.button(11).whileTrue(Commands.runOnce((climber::deploy), climber).repeatedly())
+                        .onFalse(Commands.runOnce(climber::stop));
+            joystickOperator.button(12).whileTrue(Commands.runOnce((climber::pull), climber).repeatedly())
+                        .onFalse(Commands.runOnce(climber::stop));
 
 
 
