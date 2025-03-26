@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase {
     private static double deployAngle;
 
 
-    public Climber(SingleMotor climberSingleMotor, DigitalInput limitSwitch){
+    public Climber( SingleMotor climberSingleMotor, DigitalInput limitSwitch ){
         this.climberSingleMotor = climberSingleMotor;
         this.limitSwitch = limitSwitch;
 
@@ -34,20 +34,17 @@ public class Climber extends SubsystemBase {
         current_angle = Math.toDegrees(UnitsUtility.ticksToDegrees(climbEncoder.getPosition(),Constants.ClimberConstants.CLIMBER_GEARBOX_RATIO));
         deployAngle = Constants.ClimberConstants.CLIMBER_DEPLOY_ANGLE;
         speed = Constants.ClimberConstants.CLIMBER_SPEED;
-        
     }
 
 
     @Override
-    public void periodic(){
-        // publish smart dashboard info here
-        // SmartDashboard.putNumber("key", value);
+    public void periodic() {
         SmartDashboard.putNumber("Climber_RelativeEncoder_Raw", getCurrentAngle());
         SmartDashboard.putNumber("Climber_Angle:", getCurrentAngle());
         SmartDashboard.putNumber("Climber_Speed:", getCurrentSpeed());
         SmartDashboard.putBoolean("Climber_LimitSwitch", getBeamBreak());
 
-        if(getBeamBreak()){
+        if( getBeamBreak() ) {
             resetEncoder();
         }
     }
@@ -60,9 +57,9 @@ public class Climber extends SubsystemBase {
 
     //TODO: find angle motor voltage ratio
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
-    public void deploy(){
+    public void deploy() {
 
-        if(getCurrentAngle() <= deployAngle) {
+        if( getCurrentAngle() <= deployAngle ) {
             //Todo: Make sure (+/-) and direction is correct
             climberSingleMotor.accept(speed);
         }
@@ -89,7 +86,7 @@ public class Climber extends SubsystemBase {
 //    }
 
 
-    public boolean pull(){
+    public boolean pull() {
 
         if(!getBeamBreak()) {
             climberSingleMotor.accept(-speed);
@@ -108,7 +105,7 @@ public class Climber extends SubsystemBase {
     }
 
 
-    public double getCurrentSpeed(){
+    public double getCurrentSpeed() {
         double angleSpeed = climberSingleMotor.motor.get();
         return angleSpeed;
     }

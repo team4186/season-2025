@@ -22,7 +22,7 @@ public class AlgaeProcessorCommand extends Command {
     private boolean deployed = false;
 
 
-    public AlgaeProcessorCommand(AlgaeProcessor algaeProcessor) {
+    public AlgaeProcessorCommand( AlgaeProcessor algaeProcessor ) {
         this.algaeProcessor = algaeProcessor;
         addRequirements(this.algaeProcessor);
     }
@@ -50,26 +50,22 @@ public class AlgaeProcessorCommand extends Command {
 //        }
 
 
-        if (button_count == 1) {
+        if ( button_count == 1 ) {
             algaeProcessor.cmd_runMotor_Down();
             algaeProcessor.intake();
-        }
-        else if (button_count == 2) {
+        } else if ( button_count == 2 ) {
             algaeProcessor.stop();
             algaeProcessor.eject();
-        }
-        else if (button_count == 3){
+        } else if ( button_count == 3 ){
             algaeProcessor.wheelStop();
         }
-        else if(button_count >= 4){
-            if(button_count % 2 == 0) {
+        else if ( button_count >= 4) {
+            if ( button_count % 2 == 0) {
                 isFinished = algaeProcessor.reset();
-            }
-            else{
+            } else {
                 algaeProcessor.cmd_runMotor_Down();
             }
         }
-
     }
 
 
@@ -100,7 +96,7 @@ public class AlgaeProcessorCommand extends Command {
      * @param interrupted whether the command was interrupted/canceled
      */
     @Override
-    public void end(boolean interrupted) {
+    public void end( boolean interrupted ) {
         button_count = 0;
         isFinished = false;
         ejectTimer = 0;

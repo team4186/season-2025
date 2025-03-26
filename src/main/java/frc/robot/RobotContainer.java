@@ -45,7 +45,6 @@ public class RobotContainer {
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(
             new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
 
-
     private final Elevator elevator = new Elevator(
             new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
             new DigitalInput(Constants.ElevatorConstants.ELEVATOR_TOP_LIMIT_ID),
@@ -118,8 +117,6 @@ public class RobotContainer {
           Constants.VisionConstants.BUFFER_DIST
     );
 
-    ElevatorReturnToDefault elevatorDefaultCommand = new ElevatorReturnToDefault(elevator);
-
     EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector, false);
     EndEffectorEjectCommand endEffectorEjectCommandSlow = new EndEffectorEjectCommand(endEffector, true);
     EndEffectorLoadCommand endEffectorLoadCommand = new EndEffectorLoadCommand(endEffector);
@@ -133,6 +130,8 @@ public class RobotContainer {
     /**
      * Elevator commands
      */
+    ElevatorReturnToDefault elevatorDefaultCommand = new ElevatorReturnToDefault(elevator);
+
     ElevatorCommand elevatorCommandL1 = new ElevatorCommand(elevator,
             1);
 
@@ -233,7 +232,7 @@ public class RobotContainer {
 
 
         Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
-        //
+
         //  Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
         //  Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
         //  Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
@@ -257,7 +256,7 @@ public class RobotContainer {
             joystickDriver.button(5).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(6, 3, new Rotation2d()))));
             joystickDriver.button(6).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(6, 6, new Rotation2d()))));
 
-            // setting angle with pov
+            // setting angle with pov placeholder
             for (int angle = 0; angle < 360; angle += 45 ){
                 // joystick.pov(angle).whileTrue()
             }
@@ -285,8 +284,7 @@ public class RobotContainer {
 //            joystickDriver.trigger().onTrue( drivebase.driveToDistanceCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY) );
 
 
-
-              // TESTING FOR FF ELEVATOR SysIdRoutine; SENSITIVE
+              // TESTING FOR FF ELEVATOR SysIdRoutine -> SENSITIVE!!!
 //                    joystickDriver.button(5).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
 //                    joystickDriver.button(3).whileTrue(elevator.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
 //            //
@@ -304,8 +302,6 @@ public class RobotContainer {
             /// Useful swerve commands
 //            joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 //            joystick.button(5).whileTrue(drivebase.centerModulesCommand());
-
-            // joystick.button(3).whileTrue(Commands.runOnce(elevator::stopMotor, elevator).repeatedly()); // TODO: Test once FF stop implemented!
 
             // EndEffector
             joystickOperator.trigger().onTrue(endEffectorEjectCommandSlow);
@@ -327,7 +323,6 @@ public class RobotContainer {
             joystickOperator.button(6).onTrue((Commands.runOnce(climberCommand::button_detect)));
 
 
-
             // Elevator - Go to level and maintain
             joystickOperator.button(7).whileTrue(elevatorCommandL1);
             joystickOperator.button(8).whileTrue(elevatorCommandL2);
@@ -339,8 +334,7 @@ public class RobotContainer {
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
             joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
             //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
-            // joystickDriver.button(
-            ///
+
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
             // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
@@ -414,7 +408,6 @@ public class RobotContainer {
         //            onFalse(Commands.runOnce(climber::brake));
 
 
-
         // CLIMBER
         //    joystick.button(8).onTrue(climberCommand);
         //    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
@@ -422,7 +415,6 @@ public class RobotContainer {
         // AlignToTarget testing
         // joystick.button(6).whileTrue(Commands.runOnce(AlignToTarget).repeatedly());
     }
-
 
 
     // Adjust joystick input from linear to exponential curve

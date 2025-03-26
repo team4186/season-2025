@@ -5,6 +5,7 @@ import frc.robot.subsystems.EndEffector;
 
 
 public class EndEffectorLoadCommand extends Command {
+
     private final EndEffector endEffector;
     private boolean isFinished = false;
 

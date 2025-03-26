@@ -35,6 +35,7 @@ public final class Constants {
     public static final class AutonConstants {
         public static final PIDConstants AUTO_TRANSLATION_PID = new PIDConstants(0.05, 0.0, 0.0);
         public static final PIDConstants AUTO_ANGLE_PID = new PIDConstants(0.05, 0.0, 0.0);
+
         // Assume the below is in feet
         public static final double DRIVE_DISTANCE = Meters.convertFrom(2.0, Feet);
         public static final double DRIVE_VELOCITY = 1.0;
@@ -48,7 +49,6 @@ public final class Constants {
 
 
     public static final class OperatorConstants {
-    // Joystick Deadband
         public static final double DEADBAND = 0.15;
         public static final double LEFT_Y_DEADBAND = 0.1;
         public static final double RIGHT_X_DEADBAND = 0.1;
@@ -58,40 +58,43 @@ public final class Constants {
 
     // TODO: Update with motor constants such as MAX_SPEED, PID_CONSTANTS, ECT.
     public static final class AlgaeProcessorConstants {
+        public static final int ALGAE_PROCESSOR_LSChannel = 0;
+
         public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 5;
-        public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.25;
         public static final double ALGAE_PROCESSOR_MAX_ANGLE = 50.0;
         public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 90;
         public static final double ALGAE_PROCESSOR_HOLDING_ANGLE = 30;
 
+        public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.25;
         public static final double ALGAE_PROCESSOR_WHEEL_INTAKE_SPEED = 0.35;
         public static final double ALGAE_PROCESSOR_WHEEL_OUTPUT_SPEED = 0.5;
         public static final double ALGAE_PROCESSOR_WHEEL_HOLDING_SPEED = 0.10;
-
-        public static final int ALGAE_PROCESSOR_LSChannel = 0; //
     }
 
 
     public static final class ClimberConstants {
+        public static final int CLIMBER_LSChannel = 8;
+
         public static final double CLIMBER_SPEED = 0.4;
         public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
         public static final double CLIMBER_DEPLOY_ANGLE = 300; //TODO: placeholder, relative to limit switch
-
-        public static final int CLIMBER_LSChannel = 8; //
     }
 
 
     public static final class DeAlgaeConstants {
-        public static final double DE_ALGAE_DEFAULT_ANGLE = 5.0;
-        public static final double DE_ALGAE_MAX_SPEED = 0.2;
-        public static final double DE_ALGAE_MIN_SPEED = 0.1;
+        public static final int DE_ALGAE_LSChannel = 9; //
+
         public static final double DE_ALGAE_P = 0.05;
         public static final double DE_ALGAE_I = 0.0;
         public static final double DE_ALGAE_D = 0.0;
+
+        public static final double DE_ALGAE_DEFAULT_ANGLE = 5.0;
+        public static final double DE_ALGAE_MAX_SPEED = 0.2;
+        public static final double DE_ALGAE_MIN_SPEED = 0.1;
+
         public static final double DE_ALGAE_MAX_ANGLE = 135.0;
         public static final double DE_ALGAE_GEARBOX_RATIO = 54.8;
         public static final double DE_ALGAE_WHEEL_MAX_SPEED = 1.0;
-        public static final int DE_ALGAE_LSChannel = 9; //
     }
 
 
@@ -106,10 +109,10 @@ public final class Constants {
         public static final double ELEVATOR_MAX_ACCELERATION = 1.0;
 
         public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
-        public static final double ELEVATOR_LEVEL_ONE = 0.197; // why even consider the tray? can we score with the elevator?
-        public static final double ELEVATOR_LEVEL_TWO = 0.369; //70 cm
-        public static final double ELEVATOR_LEVEL_THREE = 0.8; //118 cm
-        public static final double ELEVATOR_LEVEL_FOUR = 1.4; //189 cm
+        public static final double ELEVATOR_LEVEL_ONE = 0.1970; // why even consider the tray? can we score with the elevator?
+        public static final double ELEVATOR_LEVEL_TWO = 0.3690; // 70 cm
+        public static final double ELEVATOR_LEVEL_THREE = 0.8000; // 118 cm
+        public static final double ELEVATOR_LEVEL_FOUR = 1.4000; // 189 cm
         public static final double ELEVATOR_MAX_HEIGHT = 1.4198; // TODO: Determine threshold if different from highest level
 
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
@@ -123,6 +126,7 @@ public final class Constants {
         public static final double ELEVATOR_GEARING = 12.0; // TODO: Update with gear ratio
         public static final double ELEVATOR_CARRIAGE_MASS = 4.0; // end effector mass, with / without
         public static final double ELEVATOR_DRUM_RADIUS = Units.inchesToMeters(1.0);
+
         // TODO: Update values
         /**
          * Previous values:
@@ -132,14 +136,6 @@ public final class Constants {
         public static final double ELEVATOR_P = 20.0;
         public static final double ELEVATOR_I = 0.0;
         public static final double ELEVATOR_D = 0.0;
-
-
-
-
-//        public static final double ELEVATOR_KS = 0.00; // Static gain in volts
-//        public static final double ELEVATOR_KG = 0.195; // Gravity gain in volts
-//        public static final double ELEVATOR_KV = 3.07; // Velocity gain in V/(m/s)
-//        public static final double ELEVATOR_KA = 0.41;
 
         // Adjust these to reach optimal
         public static final double ELEVATOR_KS = 0.05; // Static gain in volts
@@ -153,6 +149,7 @@ public final class Constants {
 
     public static final class EndEffectorConstants {
         public static final int END_EFFECTOR_BEAM_BREAK = 3;
+
         public static final double END_EFFECTOR_EJECT_SPEED = 0.45;
         public static final double END_EFFECTOR_EJECT_SPEED_L1 = 0.35;
         public static final double END_EFFECTOR_INTAKE_SPEED = 0.35;
@@ -160,19 +157,22 @@ public final class Constants {
 
 
     public static final class VisionConstants {
-        // Update to 2025
         public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2025ReefscapeWelded);
+
         // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
         public static final double MAXIMUM_AMBIGUITY = 0.25;
         public static final double ANGLE_P = 0.05;
         public static final double ANGLE_I = 0.0;
         public static final double ANGLE_D = 0.0;
+
         public static final double STRAFE_P = 0.05;
         public static final double STRAFE_I = 0.0;
         public static final double STRAFE_D = 0.0;
+
         public static final double DISTANCE_P = 0.05;
         public static final double DISTANCE_I = 0.0;
         public static final double DISTANCE_D = 0.0;
+
         // Change this (it is in foot)
         public static final double BUFFER_DIST = 1.0;
     }

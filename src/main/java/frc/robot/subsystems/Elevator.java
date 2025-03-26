@@ -202,16 +202,9 @@ public class Elevator extends SubsystemBase {
         if ( (encoder.getRate() < 0 && getBottomBeamBreak()) || (encoder.getRate() > 0 && getTopBeamBreak()) ) {
             stopMotor();
         } else {
-//            double voltsOutput = MathUtil.clamp(
-//                    elevatorFeedforward.calculateWithVelocities(
-//                            getVelocityMetersPerSecond(),
-////                            Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
-//                            pid.getSetpoint().velocity) + pid.calculate(getPositionMeters(), levelHeight), -7, 7);
-            //            elevatorMotors.setLeadVoltage(voltsOutput);
             elevatorMotors.setLeadVoltage(
                     pid.calculate(encoder.getDistance())
                             + elevatorFeedforward.calculate(pid.getSetpoint().velocity));
-
         }
 
     }

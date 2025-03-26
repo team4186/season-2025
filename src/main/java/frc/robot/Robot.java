@@ -27,6 +27,8 @@ public class Robot extends TimedRobot {
     private RobotContainer robotContainer;
     private Timer disabledTimer;
     private final Field2d field = new Field2d();
+
+
     public Robot() { instance = this; }
 
 
@@ -151,11 +153,7 @@ public class Robot extends TimedRobot {
      * This function is called once when the robot is first started up.
      */
     @Override
-    public void simulationInit() {
-        DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
-//        DriverStationSim.setAllianceStationId(AllianceStationID.Blue2);
-//        DriverStationSim.setAllianceStationId(AllianceStationID.Blue3);
-    }
+    public void simulationInit() { }
 
 
     /**

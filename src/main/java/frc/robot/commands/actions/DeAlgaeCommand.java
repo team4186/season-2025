@@ -5,7 +5,6 @@ import frc.robot.subsystems.DeAlgae;
 
 
 public class DeAlgaeCommand extends Command {
-    //TODO: deAlgae commands config buttons later
 
     /* Intended Usage:
     * Run with command while being held, alternate directions for 2 seconds in alternating directions.
@@ -14,7 +13,6 @@ public class DeAlgaeCommand extends Command {
     * isFinished -> when exit_timer reaches 500/ ~10 seconds
     * Interrupted -> Send reset command, stop motor, reset arm ...
     * */
-
     private final DeAlgae deAlgae;
     //private int timer = 0;
     private int exit_timer = 0;

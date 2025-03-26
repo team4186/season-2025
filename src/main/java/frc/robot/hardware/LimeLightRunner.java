@@ -51,8 +51,6 @@ public class LimeLightRunner extends SubsystemBase {
     }
 
 
-
-
     public boolean hasTargetTag() {
 //        return tableTag.getEntry("tv").getDouble(0.0) > 0.0;
         return tableTag.getEntry("tv").getInteger(0) > 0;
@@ -86,7 +84,7 @@ public class LimeLightRunner extends SubsystemBase {
         double angleInRadians = Math.toRadians((mountedAngle + getTagYOffset()));
         double distance = 33.75 / tan(angleInRadians); // TODO: update mountedAngle and distance offset after mounting
 
-        if (hasTargetTag()) {
+        if ( hasTargetTag() ) {
             return distance;
         }
 

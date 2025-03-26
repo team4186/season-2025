@@ -24,13 +24,16 @@ public class MoveForwardAuto extends Command {
 //        addRequirements(driveTrain);
     }
 
+
     @Override
     public void initialize() {}
+
 
     @Override
     public void execute() {
         // have current dist, have desired dist, output a velocity output
     }
+
 
     @Override
     public boolean isFinished() {
@@ -38,8 +41,7 @@ public class MoveForwardAuto extends Command {
         return true;
     }
 
-    @Override
-    public void end(boolean interrupted) {
 
-    }
+    @Override
+    public void end(boolean interrupted) { }
 }
