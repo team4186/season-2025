@@ -15,7 +15,7 @@ public class ClimberCommand extends Command {
     private boolean isfinished = false;
 
 
-    public ClimberCommand(Climber climber) {
+    public ClimberCommand( Climber climber ) {
         this.climber = climber;
         addRequirements(this.climber);
     }
@@ -25,7 +25,7 @@ public class ClimberCommand extends Command {
      * The initial subroutine of a command.  Called once when the command is initially scheduled.
      */
     @Override
-    public void initialize() {}
+    public void initialize() { }
 
 
     /**
@@ -40,20 +40,20 @@ public class ClimberCommand extends Command {
         else if(button_count == 2){
             isfinished = climber.pull();
         }
-
     }
 
+
     @Override
-    public boolean isFinished() {return isfinished;}
+    public boolean isFinished() { return isfinished; }
 
 
     @Override
-    public void end(boolean interrupted)
-    {
+    public void end(boolean interrupted) {
         button_count = 0;
         climber.stop();
         isfinished = false;
     }
+
 
     public void button_detect(){
         button_count++;

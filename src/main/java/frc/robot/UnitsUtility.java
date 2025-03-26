@@ -1,15 +1,12 @@
 package frc.robot;
 
-// JLR - nit: Does the class have what we need already -> import edu.wpi.first.math.util.Units
-// Utility Class
-// Ziyao - I'm not sure if they have the TicksToMeters or TicksToDegrees methods.
 import edu.wpi.first.wpilibj.DigitalInput;
 
 import java.lang.Math;
 
 
 public final class UnitsUtility {
-    
+
     private UnitsUtility() {}
 
 
@@ -38,6 +35,7 @@ public final class UnitsUtility {
 //	}
 
 
+    // TODO: use positive and negative degrees for items that do not have full rotations and need to be aligned to zero
     public static double ticksToDegrees(double encoderTicks, double gearRatio) {
         // return ( (pos / (encoderTicks * gearRatio)) * 360) % 360;
         return ( (encoderTicks/ gearRatio) * 360) % 360;

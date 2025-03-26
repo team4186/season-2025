@@ -14,18 +14,22 @@ public class LimeLightRunner extends SubsystemBase {
 
 
     public LimeLightRunner() {
-        this.tableTag = NetworkTableInstance.getDefault().getTable("limelight-tag");
+        this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
         this.camPose = tableTag.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
     }
 
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Has Target Tag?", hasTargetTag());
-        SmartDashboard.putNumber("Horizontal Offset", getXOffset());
-        SmartDashboard.putNumber("Distance away", getZOffset());
-        SmartDashboard.putNumber("Angle", getThetaOffset());
-        SmartDashboard.putNumber("% of Image", getTagArea());
+        SmartDashboard.putBoolean("Limelight_HasTargetTag?", hasTargetTag());
+        // SmartDashboard.putNumber("Limelight_Horizontal_Offset", getXOffset());
+        SmartDashboard.putNumber("Limelight_Target_Distance", getZOffset());
+        SmartDashboard.putNumber("Limelight_Angle", getThetaOffset());
+        SmartDashboard.putNumber("Limelight_%_of_Image", getTagArea());
+
+        SmartDashboard.putNumber("Limelight_X_Offset", getTagXOffset());
+        SmartDashboard.putNumber("Limelight_Y_Offset", getTagYOffset());
+        SmartDashboard.putNumber("Limelight_Z_Offset", getTagZOffset());
         setLight(hasTargetTag());
     }
 
@@ -38,11 +42,19 @@ public class LimeLightRunner extends SubsystemBase {
             res = 1.0;
         }
         tableTag.getEntry("ledMode").setValue(res);
+            /*
+            [0]	use the LED Mode set in the current pipeline
+            [1]	force off
+            [2]	force blink
+            [3]	force on
+            */
     }
 
 
     public boolean hasTargetTag() {
-        return tableTag.getEntry("tv").getDouble(0.0) > 0.0;
+//        return tableTag.getEntry("tv").getDouble(0.0) > 0.0;
+        return tableTag.getEntry("tv").getInteger(0) > 0;
+
     }
 
 
@@ -53,6 +65,11 @@ public class LimeLightRunner extends SubsystemBase {
 
     public double getTagYOffset() {
         return tableTag.getEntry("ty").getDouble(0.0);
+    }
+
+
+    public double getTagZOffset() {
+        return tableTag.getEntry("tz").getDouble(0.0);
     }
 
 
@@ -67,7 +84,7 @@ public class LimeLightRunner extends SubsystemBase {
         double angleInRadians = Math.toRadians((mountedAngle + getTagYOffset()));
         double distance = 33.75 / tan(angleInRadians); // TODO: update mountedAngle and distance offset after mounting
 
-        if (hasTargetTag()) {
+        if ( hasTargetTag() ) {
             return distance;
         }
 

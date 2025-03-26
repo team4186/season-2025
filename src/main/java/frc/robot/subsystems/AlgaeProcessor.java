@@ -88,7 +88,7 @@ public class AlgaeProcessor extends SubsystemBase {
     }
 
 
-    public void runMotor_Down(){
+    public void runMotor_Down() {
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
         if(current_angle < maxAngle) {
@@ -99,7 +99,8 @@ public class AlgaeProcessor extends SubsystemBase {
         }
     }
 
-    public boolean cmd_runMotor_Down(){
+
+    public boolean cmd_runMotor_Down() {
         current_angle = getCurrentAngle();
         //Todo: Check Inverse, update constants
         if(current_angle < maxAngle) {
@@ -118,7 +119,7 @@ public class AlgaeProcessor extends SubsystemBase {
     }
 
 
-    public double getCurrentSpeed(){
+    public double getCurrentSpeed() {
         angleSpeed = angleMotor.motor.get();
         return angleSpeed;
     }
@@ -131,7 +132,7 @@ public class AlgaeProcessor extends SubsystemBase {
 
 
     // stops the arm and rolling motors
-    public void stop(){
+    public void stop() {
         wheelMotor.stop();
         angleMotor.stop();
     }
@@ -172,13 +173,13 @@ public class AlgaeProcessor extends SubsystemBase {
     }
 
 
-    public void coast(){
+    public void coast() {
         SparkMaxConfig coastConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kCoast);
         angleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     }
 
 
-    public void brake(){
+    public void brake() {
         SparkMaxConfig brakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(SparkBaseConfig.IdleMode.kBrake);
         angleMotor.motor.configure(brakeConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     }

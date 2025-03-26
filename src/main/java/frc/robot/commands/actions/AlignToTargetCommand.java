@@ -8,6 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 
 public class AlignToTargetCommand extends Command {
+
     private final LimeLightRunner visionSubsystem;
     private final SwerveSubsystem swerveSubsystem;
     private boolean isFinished;
@@ -32,14 +33,13 @@ public class AlignToTargetCommand extends Command {
 
 
     @Override
-    public void initialize() {
-    }
+    public void initialize() { }
 
 
     @Override
     public void execute() {
         // Add in if statement to check if both distance sensors are true. If not then it is unaligned.
-        if(visionSubsystem.hasTargetTag()) {
+        if( visionSubsystem.hasTargetTag() ) {
             Translation2d driveVec = new Translation2d(strafePID.calculate(visionSubsystem.getXOffset(), 0.0), distancePID.calculate(visionSubsystem.getZOffset(), bufferDist));
             swerveSubsystem.drive(driveVec, turnPID.calculate(visionSubsystem.getThetaOffset(), 0.0), true);
         }
@@ -47,7 +47,7 @@ public class AlignToTargetCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return closeEnough(visionSubsystem.getXOffset()) && closeEnough(visionSubsystem.getThetaOffset()) && closeEnough(visionSubsystem.getZOffset());
+        return closeEnough( visionSubsystem.getXOffset() ) && closeEnough( visionSubsystem.getThetaOffset() ) && closeEnough( visionSubsystem.getZOffset() );
     }
 
 
@@ -58,6 +58,5 @@ public class AlignToTargetCommand extends Command {
 
 
     @Override
-    public void end(boolean interrupted) {
-    }
+    public void end(boolean interrupted) { }
 }

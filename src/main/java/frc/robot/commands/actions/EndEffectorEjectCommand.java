@@ -8,10 +8,13 @@ public class EndEffectorEjectCommand extends Command {
 
     private final EndEffector endEffector;
     private boolean isFinished = false;
+    private final boolean goSlow;
 
 
-    public EndEffectorEjectCommand(EndEffector endEffector) {
+    public EndEffectorEjectCommand(EndEffector endEffector, boolean goSlow){
         this.endEffector = endEffector;
+        this.goSlow = goSlow;
+
         addRequirements( this.endEffector );
     }
 
@@ -29,7 +32,12 @@ public class EndEffectorEjectCommand extends Command {
      */
     @Override
     public void execute() {
-        endEffector.eject();
+
+        if (goSlow){
+            endEffector.ejectSlow();
+        } else {
+            endEffector.eject();
+        }
 
         if (!endEffector.hasGamePiece()){
             isFinished = true;
@@ -64,5 +72,6 @@ public class EndEffectorEjectCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         endEffector.stop();
+        isFinished = false;
     }
 }

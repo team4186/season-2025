@@ -6,7 +6,6 @@ import frc.robot.subsystems.Elevator;
 
 
 public final class ElevatorCommand extends Command {
-    // WARNING: NOT a new elevator, you pass subsystem from robot container when calling command!
     private final Elevator elevatorSubsystem;
     private boolean isFinished = false;
     private final int goalLevel;
@@ -26,7 +25,7 @@ public final class ElevatorCommand extends Command {
         elevatorSubsystem = elevatorSubsystemParam;
         goalLevel = requestedLevel;
         taskState = Task.GO_TO_LEVEL;
-        timer = new Timer();
+//        timer = new Timer();
         addRequirements(elevatorSubsystem);
     }
 

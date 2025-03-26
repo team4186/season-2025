@@ -5,6 +5,7 @@ import frc.robot.subsystems.EndEffector;
 
 
 public class EndEffectorLoadCommand extends Command {
+
     private final EndEffector endEffector;
     private boolean isFinished = false;
 
@@ -63,5 +64,6 @@ public class EndEffectorLoadCommand extends Command {
     @Override
     public void end(boolean interrupted) {
         endEffector.stop();
+        isFinished = false;
     }
 }

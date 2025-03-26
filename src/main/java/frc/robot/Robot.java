@@ -9,8 +9,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DriverStationSim;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.SwerveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to each mode, as
@@ -23,6 +26,7 @@ public class Robot extends TimedRobot {
     private Command autonomousCommand;
     private RobotContainer robotContainer;
     private Timer disabledTimer;
+    private final Field2d field = new Field2d();
 
 
     public Robot() { instance = this; }
@@ -39,6 +43,7 @@ public class Robot extends TimedRobot {
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
         robotContainer = new RobotContainer();
+        SmartDashboard.putData("Field", field);
 
         // Create a timer to disable motor brake a few seconds after disable.  This will let the robot stop
         // immediately when disabled, but then also let it be pushed more
@@ -148,11 +153,7 @@ public class Robot extends TimedRobot {
      * This function is called once when the robot is first started up.
      */
     @Override
-    public void simulationInit() {
-        DriverStationSim.setAllianceStationId(AllianceStationID.Blue1);
-//        DriverStationSim.setAllianceStationId(AllianceStationID.Blue2);
-//        DriverStationSim.setAllianceStationId(AllianceStationID.Blue3);
-    }
+    public void simulationInit() { }
 
 
     /**

@@ -9,7 +9,6 @@ import frc.robot.subsystems.SwerveSubsystem;
 public class SimpleAutoCommand extends Command {
     // WARNING: NOT a new elevator, you pass subsystem from robot container when calling command!
 
-
     private enum Task {
         Move,
         Align,
@@ -21,7 +20,6 @@ public class SimpleAutoCommand extends Command {
 
 
     public SimpleAutoCommand(SwerveSubsystem driveSubSystem, Elevator elevatorSubsystemParam, int requestedLevel) {
-
         addRequirements();
     }
 
@@ -30,8 +28,7 @@ public class SimpleAutoCommand extends Command {
      * The initial subroutine of a command.  Called once when the command is initially scheduled.
      */
     @Override
-    public void initialize() {
-    }
+    public void initialize() { }
 
 
     /**
@@ -39,10 +36,7 @@ public class SimpleAutoCommand extends Command {
      * until {@link #isFinished()}) returns true.)
      */
     @Override
-    public void execute() {
-
-
-    }
+    public void execute() { }
 
 
     /**

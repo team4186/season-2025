@@ -331,4 +331,7 @@ gradle-app.setting
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 robot/networktables.json
 robot/simgui.json
-robot/simgui-ds.json
+robot/simgui-ds.jsson
+*simgui-window.json
+
+*.wpilog
