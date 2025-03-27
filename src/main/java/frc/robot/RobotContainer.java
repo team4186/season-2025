@@ -213,6 +213,11 @@ public class RobotContainer {
         // Configure the trigger bindings
         configureBindings();
         DriverStation.silenceJoystickConnectionWarning(true);
+
+        /* TODO: Register Named Commands used during PathPlanner
+        *   Update pathplanner to new field layout
+        *   Note: Care must be taken with commands that might conflict w.r.t. required subsystems and pathplanner
+        * */
         NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     }
 
