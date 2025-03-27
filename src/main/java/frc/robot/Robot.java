@@ -27,9 +27,15 @@ public class Robot extends TimedRobot {
     private RobotContainer robotContainer;
     private Timer disabledTimer;
     private final Field2d field = new Field2d();
+    private final SendableChooser<String> autoChooser = new SendableChooser<>();
+    private static final String placeholderAuto = "get to work";
 
-
-    public Robot() { instance = this; }
+    public Robot() {
+        autoChooser.addOption("Red pill", placeholderAuto);
+        autoChooser.addOption("Blue pill", placeholderAuto);
+        SmartDashboard.putData("Auto selection", autoChooser);
+        instance = this;
+    }
 
 
     public static Robot getInstance() { return instance; }
