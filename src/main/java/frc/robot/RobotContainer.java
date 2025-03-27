@@ -39,8 +39,8 @@ public class RobotContainer {
     final CommandJoystick joystickDriver = new CommandJoystick(0);
     final CommandJoystick joystickOperator = new CommandJoystick(1);
     private final Components motorComponents = Components.getInstance();
-
-
+    
+    
     // The robot's subsystems defined here...
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(
             new File( Filesystem.getDeployDirectory(), "swerve/team4186") );
@@ -230,6 +230,19 @@ public class RobotContainer {
      * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
      */
     private void configureBindings() {
+        
+        /**
+         * Make auto commands here.
+         */
+        private final Command placeholderAuto = drivebase.driveToDistanceCommand(10, 0.5);
+
+        /**
+         * Auto Selection
+         */
+        SendableChooser<Command> autoChooser = new SendableChooser<>();
+        autoChooser.setDefaultOption("No pill", placeholderAuto);
+        autoChooser.addOption("Red pill", placeholderAuto);
+        autoChooser.addOption("Blue pill", placeholderAuto);
 
         Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
         Command driveFieldOrientedAngularVelocitySlow = drivebase.driveFieldOriented(driveAngularVelocitySlow);
@@ -441,7 +454,7 @@ public class RobotContainer {
         // return drivebase.getAutonomousCommand("New Auto");
         // TODO: Update with AutoCommand when implemented
         // return drivebase.driveToDistanceAutoCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY);
-        return drivebase.driveToDistanceCommand(10,0.5);
+        return autoChooser.getSelected();
     }
 
 
