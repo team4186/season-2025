@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
@@ -39,7 +40,7 @@ public class RobotContainer {
     final CommandJoystick joystickDriver = new CommandJoystick(0);
     final CommandJoystick joystickOperator = new CommandJoystick(1);
     private final Components motorComponents = Components.getInstance();
-    
+    SendableChooser<Command> autoChooser = new SendableChooser<>();
     
     // The robot's subsystems defined here...
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(
@@ -234,12 +235,11 @@ public class RobotContainer {
         /**
          * Make auto commands here.
          */
-        private final Command placeholderAuto = drivebase.driveToDistanceCommand(10, 0.5);
+        final Command placeholderAuto = drivebase.driveToDistanceCommand(10, 0.5);
 
         /**
          * Auto Selection
          */
-        SendableChooser<Command> autoChooser = new SendableChooser<>();
         autoChooser.setDefaultOption("No pill", placeholderAuto);
         autoChooser.addOption("Red pill", placeholderAuto);
         autoChooser.addOption("Blue pill", placeholderAuto);
