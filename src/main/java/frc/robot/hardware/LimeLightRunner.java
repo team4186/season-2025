@@ -4,18 +4,22 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import static frc.robot.LimelightHelpers.setCameraPose_RobotSpace;
 import static java.lang.Math.tan;
 
 public class LimeLightRunner extends SubsystemBase {
 
     private final NetworkTable tableTag;
     private final double[] camPose;
+    private int TagID;
 
 
     public LimeLightRunner() {
+        // TODO: rename the cheese name, and finish measuring and update this stuff.
+        setCameraPose_RobotSpace("goat cheese",-0.295,0.0,0.0,0.0, 0.0, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
-        this.camPose = tableTag.getEntry("camerapose_targetspace").getDoubleArray(new double[6]);
+        this.camPose = tableTag.getEntry("botpose_targetspace").getDoubleArray(new double[6]);
+        this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
     }
 
 
@@ -30,6 +34,7 @@ public class LimeLightRunner extends SubsystemBase {
         SmartDashboard.putNumber("Limelight_X_Offset", getTagXOffset());
         SmartDashboard.putNumber("Limelight_Y_Offset", getTagYOffset());
         SmartDashboard.putNumber("Limelight_Z_Offset", getTagZOffset());
+        SmartDashboard.putNumber("TagID: ", getTagID());
         setLight(hasTargetTag());
     }
 
@@ -78,6 +83,8 @@ public class LimeLightRunner extends SubsystemBase {
     }
 
 
+
+
     public double getDistance() {
         // TODO: update after limelight is mounted for accurate reading
         double mountedAngle = 12.5;
@@ -91,6 +98,9 @@ public class LimeLightRunner extends SubsystemBase {
         return Double.NaN;
     }
 
+    public int getTagID() {
+        return this.TagID;
+    }
 
     public double getXOffset() {
         // tx
