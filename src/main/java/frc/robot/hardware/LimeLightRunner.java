@@ -20,8 +20,9 @@ public class LimeLightRunner extends SubsystemBase {
     public LimeLightRunner() {
         this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         // TODO: rename the cheese name, and finish measuring and update this stuff.
-        setCameraPose_RobotSpace("goat cheese",-0.295,0.088,0.0,0.0, 0.0, 0.0);
+        setCameraPose_RobotSpace("limelight",0.295,-0.088,0.0,0.0, 0.0, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
+        this.botPose = emptyArray;
     }
 
 
@@ -29,7 +30,7 @@ public class LimeLightRunner extends SubsystemBase {
     public void periodic() {
 
         this.botPoseTargetSpace = tableTag.getEntry("botpose_targetspace").getDoubleArray(emptyArray);
-        // this.botPose = tableTag.getEntry("botpose").getDoubleArray(emptyArray);
+        this.botPose = tableTag.getEntry("botpose").getDoubleArray(emptyArray);
         this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
 
         SmartDashboard.putBoolean("Limelight_HasTargetTag?", hasTargetTag());

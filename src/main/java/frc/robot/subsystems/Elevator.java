@@ -85,7 +85,7 @@ public class Elevator extends SubsystemBase {
 
         this.encoder = encoder;
         this.encoder.setDistancePerPulse( 1.06938/6626.506 );
-        this.encoder.setMinRate(0.015); // MetersPerSecond
+        this.encoder.setMinRate(0.0075); // MetersPerSecond
 
         // SysId Routine for updating FeedForward values
         routine = new SysIdRoutine(
@@ -186,7 +186,7 @@ public class Elevator extends SubsystemBase {
 
     private boolean getBottomBeamBreak(){
         // return true by default to stop motor from exceeding limits
-        return UnitsUtility.isBeamBroken(bottomLimitSwitch,true,"Elevator Bottom Limit Switch");
+        return !UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"Elevator Bottom Limit Switch");
     }
 
 
@@ -270,7 +270,7 @@ public class Elevator extends SubsystemBase {
 
 
     public boolean isAtBottom() {
-        return bottomLimitSwitch.get();
+        return !bottomLimitSwitch.get();
     }
 
 

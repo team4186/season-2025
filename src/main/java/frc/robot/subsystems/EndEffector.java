@@ -56,7 +56,7 @@ public class EndEffector extends SubsystemBase {
 
     public void ejectSlow() {
         if ( hasGamePiece() ) {
-            endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_SPEED_L1);
+            endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_SPEED_L4);
         } else {
             endEffectorMotor.stop();
         }

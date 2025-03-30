@@ -261,7 +261,7 @@ public class RobotContainer {
 
 
         // Set default subsystem commands here
-        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
+//        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
 
         // TODO: Uncomment and test after FF set
         elevator.setDefaultCommand( elevatorDefaultCommand );
@@ -349,7 +349,7 @@ public class RobotContainer {
             joystickOperator.button(9).whileTrue(elevatorCommandL3);
             // Uncomment below when testing.
             joystickOperator.button(11).whileTrue(alignCommand);
-//            joystickOperator.button(10).whileTrue(elevatorCommandL4);
+            joystickOperator.button(10).whileTrue(elevatorCommandL4);
 
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
