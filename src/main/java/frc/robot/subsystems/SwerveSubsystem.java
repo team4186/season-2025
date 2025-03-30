@@ -42,7 +42,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
-import org.photonvision.targeting.PhotonPipelineResult;
+import frc.robot.hardware.LimeLightRunner;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -52,11 +52,11 @@ import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
-import edu.wpi.first.wpilibj.Timer;
 
 public class SwerveSubsystem extends SubsystemBase {
   private final SwerveDrive swerveDrive;
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
+  private LimeLightRunner limelight = new LimeLightRunner();
   private final boolean visionDriveTest = false;
   private final Timer autoTimer = new Timer();
 
@@ -126,6 +126,7 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // When vision is enabled we must manually update odometry in SwerveDrive
+    addVisionReading();
     if (visionDriveTest) {
       swerveDrive.updateOdometry();
       //vision.updatePoseEstimation(swerveDrive);
@@ -740,8 +741,8 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Add a fake vision reading for testing purposes.
    */
-  public void addFakeVisionReading() {
-    swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
+  public void addVisionReading() {
+    swerveDrive.addVisionMeasurement(limelight.getVisionPose(), Timer.getFPGATimestamp());
   }
 
 
