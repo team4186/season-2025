@@ -10,7 +10,8 @@ import static java.lang.Math.tan;
 public class LimeLightRunner extends SubsystemBase {
 
     private final NetworkTable tableTag;
-    private final double[] camPose;
+    private final double[] botPoseTargetSpace;
+    private final double[] botPoseFieldSpace;
     private int TagID;
 
 
@@ -18,7 +19,8 @@ public class LimeLightRunner extends SubsystemBase {
         // TODO: rename the cheese name, and finish measuring and update this stuff.
         setCameraPose_RobotSpace("goat cheese",-0.295,0.0,0.0,0.0, 0.0, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
-        this.camPose = tableTag.getEntry("botpose_targetspace").getDoubleArray(new double[6]);
+        this.botPoseTargetSpace = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_targetspace").getDoubleArray(new double[6]);
+        this.botPoseFieldSpace = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_fieldspace").getDoubleArray(new double[6]);
         this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
     }
 
@@ -99,23 +101,23 @@ public class LimeLightRunner extends SubsystemBase {
     }
 
     public int getTagID() {
-        return this.TagID;
+        return TagID;
     }
 
     public double getXOffset() {
         // tx
-        return this.camPose[0];
+        return botPoseTargetSpace[0];
     }
 
 
     public double getZOffset() {
         // ty
-        return this.camPose[2];
+        return botPoseTargetSpace[2];
     } 
 
 
     public double getThetaOffset() {
         // yaw
-        return this.camPose[4];
+        return botPoseTargetSpace[4];
     }
 }

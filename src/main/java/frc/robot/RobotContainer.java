@@ -28,6 +28,7 @@ import frc.robot.subsystems.*;
 import java.io.File;
 import frc.robot.commands.actions.ElevatorReturnToDefault;
 import swervelib.SwerveInputStream;
+import com.pathplanner.lib.events.EventTrigger;
 
 
 /**
@@ -220,6 +221,7 @@ public class RobotContainer {
         *   Note: Care must be taken with commands that might conflict w.r.t. required subsystems and pathplanner
         * */
         NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+        new EventTrigger("Say hello").onTrue(Commands.print("Hello world"));
     }
 
 
