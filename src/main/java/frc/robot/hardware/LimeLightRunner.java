@@ -17,7 +17,7 @@ public class LimeLightRunner extends SubsystemBase {
 
     public LimeLightRunner() {
         // TODO: rename the cheese name, and finish measuring and update this stuff.
-        setCameraPose_RobotSpace("goat cheese",-0.295,-0.088,0.0,0.0, 0.0, 0.0);
+        setCameraPose_RobotSpace("goat cheese",-0.295,0.088,0.0,0.0, 0.0, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
         this.botPoseTargetSpace = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_targetspace").getDoubleArray(new double[6]);
         this.botPoseFieldSpace = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_fieldspace").getDoubleArray(new double[6]);
