@@ -26,7 +26,7 @@ public class LimeLightRunner extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Limelight_HasTargetTag?", hasTargetTag());
-        // SmartDashboard.putNumber("Limelight_Horizontal_Offset", getXOffset());
+        SmartDashboard.putNumber("Limelight_Horizontal_Offset", getXOffset());
         SmartDashboard.putNumber("Limelight_Target_Distance", getZOffset());
         SmartDashboard.putNumber("Limelight_Angle", getThetaOffset());
         SmartDashboard.putNumber("Limelight_%_of_Image", getTagArea());
