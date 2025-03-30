@@ -29,7 +29,7 @@ public class LimeLightRunner extends SubsystemBase {
     public void periodic() {
 
         this.botPoseTargetSpace = tableTag.getEntry("botpose_targetspace").getDoubleArray(emptyArray);
-        this.botPose = tableTag.getEntry("botpose").getDoubleArray(emptyArray);
+        // this.botPose = tableTag.getEntry("botpose").getDoubleArray(emptyArray);
         this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
 
         SmartDashboard.putBoolean("Limelight_HasTargetTag?", hasTargetTag());
@@ -126,9 +126,9 @@ public class LimeLightRunner extends SubsystemBase {
         return botPoseTargetSpace[4];
     }
 
-    public Pose2d getVisionPose() {
-        return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
-    }
+//    public Pose2d getVisionPose() {
+//        return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
+//    }
 
     
 }

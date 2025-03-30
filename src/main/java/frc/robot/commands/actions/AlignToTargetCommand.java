@@ -40,8 +40,17 @@ public class AlignToTargetCommand extends Command {
     public void execute() {
         // Add in if statement to check if both distance sensors are true. If not then it is unaligned.
         if( visionSubsystem.hasTargetTag() ) {
-            Translation2d driveVec = new Translation2d(strafePID.calculate(visionSubsystem.getXOffset(), 0.0), distancePID.calculate(visionSubsystem.getZOffset(), bufferDist));
-            swerveSubsystem.drive(driveVec, turnPID.calculate(visionSubsystem.getThetaOffset(), 0.0), true);
+            Translation2d driveVec = new Translation2d(
+                    0, //distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
+                    0); //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
+
+//                    distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
+//                    //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
+            swerveSubsystem.drive(
+                    driveVec,
+                    turnPID.calculate(visionSubsystem.getThetaOffset(),
+                            0.0),
+                    false);
         }
     }
 

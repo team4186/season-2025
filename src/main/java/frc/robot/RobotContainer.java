@@ -164,19 +164,19 @@ public class RobotContainer {
      */
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
             drivebase.getSwerveDrive(),
-                    () -> attenuated( joystickDriver.getY(), 2, 1.0 ) * -1,
-                    () -> attenuated( joystickDriver.getX(), 2, 1.0 ) * -1)
+                    () -> attenuated( joystickDriver.getY(), 2, 1.0 ) * 1,
+                    () -> attenuated( joystickDriver.getX(), 2, 1.0 ) * 1)
             .withControllerRotationAxis(
-                    () -> attenuated( joystickDriver.getTwist(), 3, 0.75 ) * 1)
+                    () -> attenuated( joystickDriver.getTwist(), 2, 0.75 ) * 1)
             .deadband(OperatorConstants.DEADBAND)
             .allianceRelativeControl(true);
 
     SwerveInputStream driveAngularVelocitySlow = SwerveInputStream.of(
                     drivebase.getSwerveDrive(),
-                    () -> attenuated( joystickDriver.getY(), 2, 0.5 ) * -1,
-                    () -> attenuated( joystickDriver.getX(), 2, 0.5 ) * -1)
+                    () -> attenuated( joystickDriver.getY(), 2, 0.5 ) * 1,
+                    () -> attenuated( joystickDriver.getX(), 2, 0.5 ) * 1)
             .withControllerRotationAxis(
-                    () -> attenuated( joystickDriver.getTwist(), 3, 0.375 ) * 1)
+                    () -> attenuated( joystickDriver.getTwist(), 2, 0.375 ) * 1)
             .deadband(OperatorConstants.DEADBAND)
             .allianceRelativeControl(true);
 
@@ -264,7 +264,7 @@ public class RobotContainer {
         drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
 
         // TODO: Uncomment and test after FF set
-        //elevator.setDefaultCommand( elevatorDefaultCommand );
+        elevator.setDefaultCommand( elevatorDefaultCommand );
         // elevator.setDefaultCommand( Commands.runOnce( elevator::reset, elevator ).repeatedly());
 
 
@@ -347,8 +347,9 @@ public class RobotContainer {
             joystickOperator.button(7).whileTrue(elevatorCommandL1);
             joystickOperator.button(8).whileTrue(elevatorCommandL2);
             joystickOperator.button(9).whileTrue(elevatorCommandL3);
+            // Uncomment below when testing.
+            joystickOperator.button(11).whileTrue(alignCommand);
 //            joystickOperator.button(10).whileTrue(elevatorCommandL4);
-
 
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);

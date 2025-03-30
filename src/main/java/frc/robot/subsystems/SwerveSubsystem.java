@@ -126,7 +126,7 @@ public class SwerveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // When vision is enabled we must manually update odometry in SwerveDrive
-    addVisionReading();
+    //addVisionReading();
     if (visionDriveTest) {
       swerveDrive.updateOdometry();
       //vision.updatePoseEstimation(swerveDrive);
@@ -741,9 +741,9 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Add a fake vision reading for testing purposes.
    */
-  public void addVisionReading() {
-    swerveDrive.addVisionMeasurement(limelight.getVisionPose(), Timer.getFPGATimestamp());
-  }
+//  public void addVisionReading() {
+//    swerveDrive.addVisionMeasurement(limelight.getVisionPose(), Timer.getFPGATimestamp());
+//  }
 
 
   /**

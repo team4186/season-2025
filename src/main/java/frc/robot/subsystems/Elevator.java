@@ -198,13 +198,16 @@ public class Elevator extends SubsystemBase {
         double levelHeight = getLevelConstant(requestedLevel);
         pid.setGoal(levelHeight);
 
+        double adjustment = pid.calculate(encoder.getDistance())
+                + elevatorFeedforward.calculate(pid.getSetpoint().velocity);
+
         //if (velocity is negative AND bottomBeamBreak) OR (velocity is positive AND topBeamBreak) {
-        if ( (encoder.getRate() < 0 && getBottomBeamBreak()) || (encoder.getRate() > 0 && getTopBeamBreak()) ) {
+        if ((encoder.getRate() < 0 && getBottomBeamBreak()) || (encoder.getRate() > 0 && getTopBeamBreak())) {
+            stopMotor();
+        } else if ( (encoder.getRate() == 0 && getTopBeamBreak() ) &&  adjustment > 0 ) {
             stopMotor();
         } else {
-            elevatorMotors.setLeadVoltage(
-                    pid.calculate(encoder.getDistance())
-                            + elevatorFeedforward.calculate(pid.getSetpoint().velocity));
+            elevatorMotors.setLeadVoltage( adjustment );
         }
 
     }
@@ -273,10 +276,10 @@ public class Elevator extends SubsystemBase {
 
     public void stopMotor() {
 
-        elevatorMotors.setLeadVoltage(
-                pid.calculate(encoder.getDistance())
-                        + elevatorFeedforward.calculate(0));
-//        elevatorMotors.stop();
+//        elevatorMotors.setLeadVoltage(
+//                pid.calculate(encoder.getDistance())
+//                        + elevatorFeedforward.calculate(0));
+      elevatorMotors.stop();
     }
 
     public Command slowToStop(){
