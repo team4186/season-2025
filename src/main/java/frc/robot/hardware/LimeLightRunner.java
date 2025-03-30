@@ -10,23 +10,26 @@ import static java.lang.Math.tan;
 public class LimeLightRunner extends SubsystemBase {
 
     private final NetworkTable tableTag;
-    private final double[] botPoseTargetSpace;
-    private final double[] botPoseFieldSpace;
+    private double[] botPoseTargetSpace;
+    private double[] botPoseFieldSpace;
     private int TagID;
-
+    private final double[] emptyArray;
 
     public LimeLightRunner() {
+        this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         // TODO: rename the cheese name, and finish measuring and update this stuff.
         setCameraPose_RobotSpace("goat cheese",-0.295,0.088,0.0,0.0, 0.0, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
-        this.botPoseTargetSpace = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_targetspace").getDoubleArray(new double[6]);
-        this.botPoseFieldSpace = NetworkTableInstance.getDefault().getTable("limelight").getEntry("botpose_fieldspace").getDoubleArray(new double[6]);
-        this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
     }
 
 
     @Override
     public void periodic() {
+
+        this.botPoseTargetSpace = tableTag.getEntry("botpose_targetspace").getDoubleArray(emptyArray);
+        this.botPoseFieldSpace = tableTag.getEntry("botpose_fieldspace").getDoubleArray(emptyArray);
+        this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
+
         SmartDashboard.putBoolean("Limelight_HasTargetTag?", hasTargetTag());
         SmartDashboard.putNumber("Limelight_Horizontal_Offset", getXOffset());
         SmartDashboard.putNumber("Limelight_Target_Distance", getZOffset());
