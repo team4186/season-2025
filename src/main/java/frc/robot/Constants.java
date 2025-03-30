@@ -133,9 +133,9 @@ public final class Constants {
          *   P = 8.0
          *   I and D are 0
          */
-        public static final double ELEVATOR_P = 20.0;
+        public static final double ELEVATOR_P = 15.0;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.0;
+        public static final double ELEVATOR_D = 9.0;
 
         // Adjust these to reach optimal
         public static final double ELEVATOR_KS = 0.05; // Static gain in volts

@@ -264,7 +264,7 @@ public class RobotContainer {
         drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
 
         // TODO: Uncomment and test after FF set
-        elevator.setDefaultCommand( elevatorDefaultCommand );
+        //elevator.setDefaultCommand( elevatorDefaultCommand );
         // elevator.setDefaultCommand( Commands.runOnce( elevator::reset, elevator ).repeatedly());
 
 
