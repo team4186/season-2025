@@ -106,8 +106,7 @@ public class Climber extends SubsystemBase {
 
 
     public double getCurrentSpeed() {
-        double angleSpeed = climberSingleMotor.motor.get();
-        return angleSpeed;
+        return climberSingleMotor.motor.get();
     }
 
 
