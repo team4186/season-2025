@@ -55,7 +55,7 @@ public final class Components {
         private final SingleMotor climbMotor = new SingleMotor(
                 new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
-                true);
+                false);
     }
 
 
