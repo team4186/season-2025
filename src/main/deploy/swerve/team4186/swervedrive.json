@@ -6,9 +6,9 @@
   },
   "invertedIMU": false,
   "modules": [
-    "ModuleB.json",
-    "ModuleC.json",
+    "ModuleD.json",
     "ModuleA.json",
-    "ModuleD.json"
+    "ModuleC.json",
+    "ModuleB.json"
   ]
 }
