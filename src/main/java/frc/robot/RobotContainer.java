@@ -261,7 +261,7 @@ public class RobotContainer {
 
 
         // Set default subsystem commands here
-//        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
+        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
 
         // TODO: Uncomment and test after FF set
         elevator.setDefaultCommand( elevatorDefaultCommand );
