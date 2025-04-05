@@ -22,11 +22,9 @@ public class LimeLightRunner extends SubsystemBase {
     public LimeLightRunner() {
         this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         // TODO: rename the cheese name, and finish measuring and update this stuff.
-        setCameraPose_RobotSpace("limelight",0.295,-0.088,0.215,0.0, 12.5, 0.0);
+        setCameraPose_RobotSpace("limelight",0.32831,-0.08669,0.21574,0.0, 12.5, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
         this.botPose = emptyArray;
-
-
     }
 
 
