@@ -57,8 +57,8 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase {
   private final SwerveDrive swerveDrive;
   private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
-  private LimeLightRunner limelight = new LimeLightRunner();
   private final boolean visionDriveTest = false;
+  private final boolean useVision;
   private final Timer autoTimer = new Timer();
 
   //private Vision vision;
@@ -68,7 +68,9 @@ public class SwerveSubsystem extends SubsystemBase {
    *
    * @param directory Directory of swerve drive config files.
    */
-  public SwerveSubsystem(File directory) {
+  public SwerveSubsystem(File directory, boolean shouldUseVision) {
+    this.useVision = shouldUseVision;
+
     // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
     try {
@@ -111,8 +113,9 @@ public class SwerveSubsystem extends SubsystemBase {
    * @param driveCfg      SwerveDriveConfiguration for the swerve.
    * @param controllerCfg Swerve Controller.
    */
-  public SwerveSubsystem(SwerveDriveConfiguration driveCfg, SwerveControllerConfiguration controllerCfg) {
-    swerveDrive = new SwerveDrive(
+  public SwerveSubsystem(SwerveDriveConfiguration driveCfg, SwerveControllerConfiguration controllerCfg, boolean useVision) {
+    this.useVision = useVision;
+      swerveDrive = new SwerveDrive(
             driveCfg,
             controllerCfg,
             Constants.MAX_SPEED,
@@ -128,6 +131,12 @@ public class SwerveSubsystem extends SubsystemBase {
   public void periodic() {
     // When vision is enabled we must manually update odometry in SwerveDrive
     //addVisionReading();
+
+//    if () {
+//
+//    } else {
+//
+//    }
 
     if (visionDriveTest) {
       swerveDrive.updateOdometry();
