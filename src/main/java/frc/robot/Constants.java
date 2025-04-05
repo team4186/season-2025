@@ -108,7 +108,7 @@ public final class Constants {
         public static final double ELEVATOR_MAX_VELOCITY = 1.0;
         public static final double ELEVATOR_MAX_ACCELERATION = 1.0;
 
-        public static final double ELEVATOR_MIN_HEIGHT = 0.005; //TODO: Update heights
+        public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
         public static final double ELEVATOR_LEVEL_ONE = 0.1970; // why even consider the tray? can we score with the elevator?
         public static final double ELEVATOR_LEVEL_TWO = 0.3690; // 70 cm
         public static final double ELEVATOR_LEVEL_THREE = 0.8; // 118 cm
@@ -133,9 +133,9 @@ public final class Constants {
          *   P = 8.0
          *   I and D are 0
          */
-        public static final double ELEVATOR_P = 13.5;
+        public static final double ELEVATOR_P = 14.5;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 9.0;
+        public static final double ELEVATOR_D = 7.5;
 
         // Adjust these to reach optimal
         public static final double ELEVATOR_KS = 0.05; // Static gain in volts
