@@ -53,19 +53,28 @@ public class AlgaeProcessorCommand extends Command {
         if ( button_count == 1 ) {
             algaeProcessor.cmd_runMotor_Down();
             algaeProcessor.intake();
-        } else if ( button_count == 2 ) {
+        }
+        else if ( button_count == 2 ) {
             algaeProcessor.stop();
             algaeProcessor.eject();
-        } else if ( button_count == 3 ){
+        }
+        else if ( button_count == 3 ){
             algaeProcessor.wheelStop();
         }
         else if ( button_count >= 4) {
             if ( button_count % 2 == 0) {
                 isFinished = algaeProcessor.reset();
+                algaeProcessor.wheelStop();
             } else {
                 algaeProcessor.cmd_runMotor_Down();
+                algaeProcessor.intake();
             }
         }
+
+        //if(button_count % 4 == 1){
+
+        //}
+
     }
 
 
