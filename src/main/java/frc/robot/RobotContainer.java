@@ -164,8 +164,8 @@ public class RobotContainer {
      */
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
             drivebase.getSwerveDrive(),
-                    () -> attenuated( joystickDriver.getY(), 2, 1.0 ) * 1,
-                    () -> attenuated( joystickDriver.getX(), 2, 1.0 ) * 1)
+                    () -> attenuated( joystickDriver.getY(), 2, 1.0 ) * -1,
+                    () -> attenuated( joystickDriver.getX(), 2, 1.0 ) * -1)
             .withControllerRotationAxis(
                     () -> attenuated( joystickDriver.getTwist(), 2, 0.75 ) * 1)
             .deadband(OperatorConstants.DEADBAND)
@@ -173,8 +173,8 @@ public class RobotContainer {
 
     SwerveInputStream driveAngularVelocitySlow = SwerveInputStream.of(
                     drivebase.getSwerveDrive(),
-                    () -> attenuated( joystickDriver.getY(), 2, 0.5 ) * 1,
-                    () -> attenuated( joystickDriver.getX(), 2, 0.5 ) * 1)
+                    () -> attenuated( joystickDriver.getY(), 2, 0.5 ) * -1,
+                    () -> attenuated( joystickDriver.getX(), 2, 0.5 ) * -1)
             .withControllerRotationAxis(
                     () -> attenuated( joystickDriver.getTwist(), 2, 0.375 ) * 1)
             .deadband(OperatorConstants.DEADBAND)
