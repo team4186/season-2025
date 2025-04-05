@@ -456,8 +456,8 @@ public class RobotContainer {
 
         // return drivebase.getAutonomousCommand("New Auto");
         // TODO: Update with AutoCommand when implemented
-        // return drivebase.driveToDistanceAutoCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY);
-        return drivebase.getAutonomousCommand("Auto 1");
+        return drivebase.driveToDistanceCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY);
+        // return drivebase.getAutonomousCommand("Auto 1");
     }
 
 
