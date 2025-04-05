@@ -44,10 +44,6 @@ public class Elevator extends SubsystemBase {
     private double prevTimestamp;
     private double prevVelocity;
 
-    private double maxVel;
-    private double minVel;
-    private double minAccel;
-    private double maxAccel;
 
     // Mutable holder for unit-safe voltage values, persisted to avoid reallocation.
     private final MutVoltage m_appliedVoltage = Volts.mutable(0);
@@ -72,13 +68,6 @@ public class Elevator extends SubsystemBase {
         this.relativeEncoder = this.elevatorMotors.getRelativeEncoder();
         this.relativeEncoder.setPosition(0.0);
 
-        // control
-        this.pid = pid;
-        this.pid.reset(0.0);
-        this.elevatorFeedforward = elevatorFeedforward;
-
-        this.getSubsystem();
-
         // Limit Switches
         this.bottomLimitSwitch = bottomLimitSwitch;
         this.topLimitSwitch = topLimitSwitch;
@@ -86,6 +75,11 @@ public class Elevator extends SubsystemBase {
         this.encoder = encoder;
         this.encoder.setDistancePerPulse( 1.06938/6626.506 );
         this.encoder.setMinRate(0.0075); // MetersPerSecond
+
+        // control
+        this.pid = pid;
+        this.pid.reset(0.0);
+        this.elevatorFeedforward = elevatorFeedforward;
 
         // SysId Routine for updating FeedForward values
         routine = new SysIdRoutine(
@@ -98,14 +92,6 @@ public class Elevator extends SubsystemBase {
 
         this.timer = new Timer();
         timer.start();
-        prevTimestamp = 0.0;
-        prevVelocity = 0.0;
-
-        maxVel = 0;
-        minVel = 0;
-        minAccel = 0;
-        maxAccel = 0;
-
     }
 
 
@@ -133,31 +119,12 @@ public class Elevator extends SubsystemBase {
 
     @Override
     public void periodic(){
-        // publish smart dashboard info here
-//        SmartDashboard.putNumber("Elevator_RelativeEncoder_Distance", relativeEncoder.getPosition());
-//        SmartDashboard.putNumber("Elevator_Velocity_Calculated", getVelocityMetersPerSecond());
-        maxVel = Math.max( encoder.getRate(), maxVel);
-        minVel = Math.min( encoder.getRate(), minVel);
-        maxAccel = Math.max( getAcceleration(), maxAccel);
-        minAccel = Math.min( getAcceleration(), minAccel);
-
         SmartDashboard.putNumber("Elevator_BoreEncoder_Distance", encoder.getDistance());
         SmartDashboard.putNumber("Elevator_BoreEncoder_Rate", encoder.getRate());
         SmartDashboard.putNumber("Elevator_Requested_Velocity", Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY);
-//        SmartDashboard.putNumber("Elevator_Velocity_Difference", Constants.ElevatorConstants.ELEVATOR_MAX_VELOCITY - encoder.getRate());
-
-        SmartDashboard.putNumber("Elevator_Velocity_Var", maxVel - minVel);
-        SmartDashboard.putNumber("Elevator_Velocity_Max", maxVel);
-        SmartDashboard.putNumber("Elevator_Acceleration_Var", maxAccel - minAccel);
-        SmartDashboard.putNumber("Elevator_Acceleration_Max", maxAccel);
 
         SmartDashboard.putNumber("Elevator_Acceleration_Expected", Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION);
-//        SmartDashboard.putNumber("Elevator_Acceleration_Difference", Constants.ElevatorConstants.ELEVATOR_MAX_ACCELERATION - getAcceleration());
 
-
-
-//        SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", topLimitSwitch.get());
-//        SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", bottomLimitSwitch.get());
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", getTopBeamBreak());
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", getBottomBeamBreak());
     }
@@ -282,11 +249,22 @@ public class Elevator extends SubsystemBase {
       elevatorMotors.stop();
     }
 
-    public Command slowToStop(){
-        return this.run( this::stopMotor );
-                //.until(() -> encoder.getRate() >= -0.05 && relativeEncoder.getVelocity() <= 0.05);
+
+    // Todo: Tune this value
+    public void slowResetToBottomLimitSwitch(){
+        if ( isAtBottom() ){
+            // add updated bottom with limit switch hit?
+            stopMotor();
+        } else {
+            elevatorMotors.setLeadVoltage(
+                    Constants.ElevatorConstants.ELEVATOR_KG - Constants.ElevatorConstants.ELEVATOR_KS
+                    // - Constants.ElevatorConstants.ELEVATOR_KG
+            );
+        }
     }
 
+
+    // Simple brake setting for
     public Runnable applyVoltage(double voltage, boolean isPositive) {
         if (isPositive){
             return () -> elevatorMotors.setLeadVoltage( voltage );
