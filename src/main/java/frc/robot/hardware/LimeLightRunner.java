@@ -10,6 +10,7 @@ import static java.lang.Math.tan;
 import frc.robot.LimelightHelpers;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import frc.robot.subsystems.SwerveSubsystem;
 
 public class LimeLightRunner extends SubsystemBase {
 
@@ -135,13 +136,13 @@ public class LimeLightRunner extends SubsystemBase {
     //TODO: replace varible names with already existing stuff, poseEstimator is new, needs to create poseEstimator object
     //TODO: m_gyro should be just the gyro values. need to import some classes. m_frontLeft and similar are the swervemodules
     //TODO: fix all the red stuff lol
-//    public Pose2d getVisionPose() {
-//        return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
-//    }
+    public Pose2d getVisionPose() {
+        return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
+    }
 
 //    public void updateEstamateOdometry() {
 //        m_poseEstimator.update(
-//                m_gyro.getRotation2d(),
+//                .getRotation2d(),
 //                new SwerveModulePosition[]{
 //                        m_frontLeft.getPosition(),
 //                        m_frontRight.getPosition(),
