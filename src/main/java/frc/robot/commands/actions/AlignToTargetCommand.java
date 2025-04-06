@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.math.controller.PIDController;
+import frc.robot.LimelightHelpers;
 
 
 public class AlignToTargetCommand extends Command {
@@ -23,7 +24,7 @@ public class AlignToTargetCommand extends Command {
 
     public AlignToTargetCommand(LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, PIDController turnPID, PIDController strafePID, PIDController distancePID, double bufferDist) {
         this.visionSubsystem = visionSubsystem;
-        this.swerveSubsystem = swerveSubsystem;;
+        this.swerveSubsystem = swerveSubsystem;
         this.turnPID = turnPID;
         this.strafePID = strafePID;
         this.distancePID = distancePID;
@@ -33,7 +34,7 @@ public class AlignToTargetCommand extends Command {
 
 
     @Override
-    public void initialize() { }
+    public void initialize() {}
 
 
     @Override
@@ -41,14 +42,14 @@ public class AlignToTargetCommand extends Command {
         // Add in if statement to check if both distance sensors are true. If not then it is unaligned.
         if( visionSubsystem.hasTargetTag() ) {
             Translation2d driveVec = new Translation2d(
-                    0, //distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
-                    0); //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
+                    visionSubsystem.getHelperZOffset, //distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
+                    vision.getHelperXOffset); //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
 
 //                    distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
 //                    //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
             swerveSubsystem.drive(
                     driveVec,
-                    turnPID.calculate(visionSubsystem.getThetaOffset(),
+                    turnPID.calculate(visionSubsystem.getAngleOffset(),
                             0.0),
                     false);
         }
@@ -56,7 +57,7 @@ public class AlignToTargetCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return closeEnough( visionSubsystem.getXOffset() ) && closeEnough( visionSubsystem.getThetaOffset() ) && closeEnough( visionSubsystem.getZOffset() );
+        return closeEnough( visionSubsystem.getHelperXOffset() ) && closeEnough( visionSubsystem.getAngleOffset() ) && closeEnough( visionSubsystem.getHelperZOffset() );
     }
 
 
