@@ -20,7 +20,7 @@ public class LimeLightRunner extends SubsystemBase {
     private final double[] emptyArray;
 
     public LimeLightRunner() {
-        this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+        this.emptyArray = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         // TODO: rename the cheese name, and finish measuring and update this stuff.
         setCameraPose_RobotSpace("limelight",0.32831,-0.08669,0.21574,0.0, 12.5, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
@@ -35,7 +35,7 @@ public class LimeLightRunner extends SubsystemBase {
         this.botPose = tableTag.getEntry("botpose").getDoubleArray(emptyArray);
         this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
 
-        SmartDashboard.putBoolean("Limelight_HasTargetTag?", hasTargetTag());
+        SmartDashboard.putBoolean("Limelight_HasTargetTag", hasTargetTag());
         SmartDashboard.putNumber("Limelight_Horizontal_Offset", getXOffset());
         SmartDashboard.putNumber("Limelight_Target_Distance", getZOffset());
         SmartDashboard.putNumber("Limelight_Angle", getThetaOffset());
@@ -44,7 +44,7 @@ public class LimeLightRunner extends SubsystemBase {
         SmartDashboard.putNumber("Limelight_X_Offset", getTagXOffset());
         SmartDashboard.putNumber("Limelight_Y_Offset", getTagYOffset());
         SmartDashboard.putNumber("Limelight_Z_Offset", getTagZOffset());
-        SmartDashboard.putNumber("TagID: ", getTagID());
+        SmartDashboard.putNumber("TagID", getTagID());
         setLight(hasTargetTag());
     }
 
