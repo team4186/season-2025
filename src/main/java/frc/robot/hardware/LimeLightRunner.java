@@ -18,13 +18,15 @@ public class LimeLightRunner extends SubsystemBase {
     private double[] botPose;
     private int TagID;
     private final double[] emptyArray;
+    private boolean useMegaTag2;
 
-    public LimeLightRunner() {
-        this.emptyArray = new double[] {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    public LimeLightRunner(boolean useMegaTag2) {
+        this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         // TODO: rename the cheese name, and finish measuring and update this stuff.
         setCameraPose_RobotSpace("limelight",0.32831,-0.08669,0.21574,0.0, 12.5, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
         this.botPose = emptyArray;
+        this.useMegaTag2 = useMegaTag2;
     }
 
 
@@ -129,7 +131,40 @@ public class LimeLightRunner extends SubsystemBase {
         return botPoseTargetSpace[4];
     }
 
+    //TODO: Limelight localization using Megatag2 from limelight docs
+    //TODO: replace varible names with already existing stuff, poseEstimator is new, needs to create poseEstimator object
+    //TODO: m_gyro should be just the gyro values. need to import some classes. m_frontLeft and similar are the swervemodules
+    //TODO: fix all the red stuff lol
 //    public Pose2d getVisionPose() {
 //        return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
+//    }
+
+//    public void updateEstamateOdometry() {
+//        m_poseEstimator.update(
+//                m_gyro.getRotation2d(),
+//                new SwerveModulePosition[]{
+//                        m_frontLeft.getPosition(),
+//                        m_frontRight.getPosition(),
+//                        m_backLeft.getPosition(),
+//                        m_backRight.getPosition()
+//                });
+//
+//        if (useMegaTag2 == true) {
+//            LimelightHelpers.SetRobotOrientation("limelight", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+//            LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+//            if (Math.abs(m_gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+//            {
+//                doRejectUpdate = true;
+//            }
+//            if (mt2.tagCount == 0) {
+//                doRejectUpdate = true;
+//            }
+//            if (!doRejectUpdate) {
+//                m_poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7, .7, 9999999));
+//                m_poseEstimator.addVisionMeasurement(
+//                        mt2.pose,
+//                        mt2.timestampSeconds);
+//            }
+//        }
 //    }
 }

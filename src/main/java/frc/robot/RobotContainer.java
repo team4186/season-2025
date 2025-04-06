@@ -44,7 +44,7 @@ public class RobotContainer {
     SendableChooser<Command> autoChooser = new SendableChooser<>();
     
     // The robot's subsystems defined here...
-    private final LimeLightRunner visionSubsystem = new LimeLightRunner();
+    private final LimeLightRunner visionSubsystem = new LimeLightRunner(false);
 
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(
             new File( Filesystem.getDeployDirectory(), "swerve/team4186"), false, visionSubsystem); //
