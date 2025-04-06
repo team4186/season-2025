@@ -20,6 +20,7 @@ public class LimeLightRunner extends SubsystemBase {
     private int TagID;
     private final double[] emptyArray;
     private boolean useMegaTag2;
+    private double[] LLHelpersBotPoseTargetSpace;
 
     public LimeLightRunner(boolean useMegaTag2) {
         this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
@@ -28,6 +29,7 @@ public class LimeLightRunner extends SubsystemBase {
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
         this.botPose = emptyArray;
         this.useMegaTag2 = useMegaTag2;
+        this.LLHelpersBotPoseTargetSpace = LimelightHelpers.getBotPose_TargetSpace("limelight");
     }
 
 
@@ -138,6 +140,21 @@ public class LimeLightRunner extends SubsystemBase {
     //TODO: fix all the red stuff lol
     public Pose2d getVisionPose() {
         return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
+    }
+
+    /** botpose_targetspace */
+    public double getAngleOffset() {
+        return LLHelpersBotPoseTargetSpace[4];
+    }
+
+    /** Horizontal offset from crosshair */
+    public double getHelperXOffset() {
+        return LLHelpersBotPoseTargetSpace[0];
+    }
+
+    /** Distance from camera to April tag */
+    public double getHelperZOffset() {
+        return LLHelpersBotPoseTargetSpace[2];
     }
 
 //    public void updateEstamateOdometry() {
