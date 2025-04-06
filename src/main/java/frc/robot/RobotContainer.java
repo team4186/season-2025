@@ -350,6 +350,7 @@ public class RobotContainer {
             // Uncomment below when testing.
             joystickOperator.button(11).whileTrue(alignCommand);
             joystickOperator.button(10).whileTrue(elevatorCommandL4);
+            joystickOperator.button(12).whileTrue((Commands.runOnce(elevator::slowResetToBottomLimitSwitch, elevator).repeatedly()));
 
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);

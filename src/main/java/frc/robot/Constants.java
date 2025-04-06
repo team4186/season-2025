@@ -150,7 +150,7 @@ public final class Constants {
     public static final class EndEffectorConstants {
         public static final int END_EFFECTOR_BEAM_BREAK = 3;
 
-        public static final double END_EFFECTOR_EJECT_SPEED = 0.60;
+        public static final double END_EFFECTOR_EJECT_SPEED = 0.50;
         public static final double END_EFFECTOR_EJECT_SPEED_L4 = 0.55;
         public static final double END_EFFECTOR_INTAKE_SPEED = 0.35;
     }
