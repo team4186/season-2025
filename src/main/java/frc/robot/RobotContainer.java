@@ -44,8 +44,10 @@ public class RobotContainer {
     SendableChooser<Command> autoChooser = new SendableChooser<>();
     
     // The robot's subsystems defined here...
+    private final LimeLightRunner visionSubsystem = new LimeLightRunner(false);
+
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(
-            new File( Filesystem.getDeployDirectory(), "swerve/team4186"), false); //
+            new File( Filesystem.getDeployDirectory(), "swerve/team4186"), false, visionSubsystem); //
 
     private final Elevator elevator = new Elevator(
             new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
@@ -97,8 +99,6 @@ public class RobotContainer {
             motorComponents.climberSingleMotor,
             new DigitalInput(Constants.ClimberConstants.CLIMBER_LSChannel)
             );
-
-    private final LimeLightRunner visionSubsystem = new LimeLightRunner();
 
 
     /**
