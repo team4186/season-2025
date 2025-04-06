@@ -98,7 +98,7 @@ public class RobotContainer {
             new DigitalInput(Constants.ClimberConstants.CLIMBER_LSChannel)
             );
 
-    private final LimeLightRunner visionSubsystem = new LimeLightRunner();
+    private final LimeLightRunner visionSubsystem = new LimeLightRunner(false);
 
 
     /**
