@@ -5,12 +5,10 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import static frc.robot.LimelightHelpers.setCameraPose_RobotSpace;
-import static java.lang.Math.tan;
 import frc.robot.LimelightHelpers;
+import java.lang.Math;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.subsystems.SwerveSubsystem;
 
 public class LimeLightRunner extends SubsystemBase {
 
@@ -25,7 +23,7 @@ public class LimeLightRunner extends SubsystemBase {
     public LimeLightRunner(boolean useMegaTag2) {
         this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
         // TODO: rename the cheese name, and finish measuring and update this stuff.
-        setCameraPose_RobotSpace("limelight",0.32831,-0.08669,0.21574,0.0, 12.5, 0.0);
+        LimelightHelpers.setCameraPose_RobotSpace("limelight",0.32831,-0.08669,0.21574,0.0, 12.5, 0.0);
         this.tableTag = NetworkTableInstance.getDefault().getTable("limelight");
         this.botPose = emptyArray;
         this.useMegaTag2 = useMegaTag2;
@@ -104,7 +102,7 @@ public class LimeLightRunner extends SubsystemBase {
         // TODO: update after limelight is mounted for accurate reading
         double mountedAngle = 12.5;
         double angleInRadians = Math.toRadians((mountedAngle + getTagYOffset()));
-        double distance = 33.75 / tan(angleInRadians); // TODO: update mountedAngle and distance offset after mounting
+        double distance = 33.75 / Math.tan(angleInRadians); // TODO: update mountedAngle and distance offset after mounting
 
         if ( hasTargetTag() ) {
             return distance;
@@ -142,6 +140,11 @@ public class LimeLightRunner extends SubsystemBase {
         return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
     }
 
+    /**
+     * Everything below is the same as the above but uses limelighthelpers, 
+     * which should be less error prone compared to using the networktables API.
+     */
+
     /** botpose_targetspace */
     public double getAngleOffset() {
         return LLHelpersBotPoseTargetSpace[4];
@@ -155,6 +158,11 @@ public class LimeLightRunner extends SubsystemBase {
     /** Distance from camera to April tag */
     public double getHelperZOffset() {
         return LLHelpersBotPoseTargetSpace[2];
+    }
+
+    /** has target tag or not */
+    public boolean getTV(String limelightName) {
+        return LimelightHelpers.getTV(limelightName);
     }
 
 //    public void updateEstamateOdometry() {
