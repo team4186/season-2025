@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.hardware.LimeLightRunner;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.LimelightHelpers;
 
 
 public class AlignToTargetCommand extends Command {
@@ -13,8 +12,6 @@ public class AlignToTargetCommand extends Command {
     private final LimeLightRunner visionSubsystem;
     private final SwerveSubsystem swerveSubsystem;
     private boolean isFinished;
-    private double xOffset;
-    private double distanceOffset;
     private final PIDController turnPID;
     private final PIDController strafePID;
     private final PIDController distancePID;
@@ -42,8 +39,8 @@ public class AlignToTargetCommand extends Command {
         // Add in if statement to check if both distance sensors are true. If not then it is unaligned.
         if( visionSubsystem.hasTargetTag() ) {
             Translation2d driveVec = new Translation2d(
-                    visionSubsystem.getHelperZOffset, //distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
-                    vision.getHelperXOffset); //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
+                    distancePID.calculate(visionSubsystem.getHelperZOffset(),0.0), //distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
+                    strafePID.calculate(visionSubsystem.getHelperXOffset(),0.0)); //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
 
 //                    distancePID.calculate(visionSubsystem.getZOffset(), bufferDist),
 //                    //strafePID.calculate( visionSubsystem.getXOffset(), 0.0));
