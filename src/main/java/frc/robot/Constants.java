@@ -157,8 +157,10 @@ public final class Constants {
 
 
     public static final class VisionConstants {
+        // Where is this used? It's defined in SwerveSubsystem but never used anywhere.
         public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2025ReefscapeWelded);
 
+        public static final String LIME_LIGHT_NAME = "limelight";
         // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
         public static final double MAXIMUM_AMBIGUITY = 0.25;
         public static final double ANGLE_P = 0.040;
@@ -174,6 +176,6 @@ public final class Constants {
         public static final double DISTANCE_D = 0.0;
 
         // Change this (it is in foot)
-        public static final double BUFFER_DIST = 1.0;
+        public static final double BUFFER_DIST = 0.0;
     }
 }
