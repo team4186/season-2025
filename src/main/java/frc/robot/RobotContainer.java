@@ -115,8 +115,37 @@ public class RobotContainer {
                           Constants.VisionConstants.STRAFE_D),
           new PIDController(Constants.VisionConstants.DISTANCE_P,
                           Constants.VisionConstants.DISTANCE_I,
-                          Constants.VisionConstants.DISTANCE_D),
-          Constants.VisionConstants.BUFFER_DIST
+                          Constants.VisionConstants.DISTANCE_D)
+    );
+
+    AlignToReefCommand alignToReefLeftCommand = new AlignToReefCommand(
+        true,
+        visionSubsystem,
+        drivebase,
+        new PIDController(Constants.VisionConstants.ANGLE_P,
+        Constants.VisionConstants.ANGLE_I,
+        Constants.VisionConstants.ANGLE_D),
+        new PIDController(Constants.VisionConstants.STRAFE_P,
+                Constants.VisionConstants.STRAFE_I,
+                Constants.VisionConstants.STRAFE_D),
+        new PIDController(Constants.VisionConstants.DISTANCE_P,
+                Constants.VisionConstants.DISTANCE_I,
+                Constants.VisionConstants.DISTANCE_D)
+    );
+
+    AlignToReefCommand alignToReefRightCommand = new AlignToReefCommand(
+        false,
+        visionSubsystem,
+        drivebase,
+        new PIDController(Constants.VisionConstants.ANGLE_P,
+        Constants.VisionConstants.ANGLE_I,
+        Constants.VisionConstants.ANGLE_D),
+new PIDController(Constants.VisionConstants.STRAFE_P,
+        Constants.VisionConstants.STRAFE_I,
+        Constants.VisionConstants.STRAFE_D),
+new PIDController(Constants.VisionConstants.DISTANCE_P,
+        Constants.VisionConstants.DISTANCE_I,
+        Constants.VisionConstants.DISTANCE_D)
     );
 
     EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector, false);
@@ -348,13 +377,20 @@ public class RobotContainer {
             joystickOperator.button(8).whileTrue(elevatorCommandL2);
             joystickOperator.button(9).whileTrue(elevatorCommandL3);
             // Uncomment below when testing.
-            joystickOperator.button(11).whileTrue(alignCommand);
-            joystickOperator.button(10).whileTrue(elevatorCommandL4);
+            //joystickOperator.button(11).whileTrue(alignCommand);
+        //     joystickOperator.button(10).whileTrue(elevatorCommandL4);
             joystickOperator.button(12).whileTrue((Commands.runOnce(elevator::slowResetToBottomLimitSwitch, elevator).repeatedly()));
 
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
             joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
+
+            // TODO: Uncomment this and test align to reef 
+        //     joystickOperator.button(10).whileTrue(alignToReefLeftCommand);
+        //     joystickOperator.button(11).whileTrue(alignToReefRightCommand);
+            // TODO: Uncomment this and test align to target (general version)
+        //      joystickOperator.button(12).whileTrue(alignCommand);
+
             //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
 
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
