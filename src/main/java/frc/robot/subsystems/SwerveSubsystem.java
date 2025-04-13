@@ -18,6 +18,7 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -195,12 +196,22 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive.getModulePositions();
     }
 
+    public Rotation2d getGyroRotation2d(){
+       return swerveDrive.getYaw();
+    }
+
+
+    //unsure if thats the right value
+    public double getRotationRate(){
+        return swerveDrive.getGyro().getYawAngularVelocity().baseUnitMagnitude();
+    }
+
     public void updateOdometry() {
         boolean doRejectUpdate = false;
         boolean useMegaTag2 = true;
 
         poseEstimator.update(
-                m_gyro.getRotation2d(),
+                getGyroRotation2d(),
                 getSwerveModulePosition()
                 );
 
@@ -209,7 +220,7 @@ public class SwerveSubsystem extends SubsystemBase {
         {
             LimelightHelpers.SetRobotOrientation("limelight", poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
             LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-            if(Math.abs(m_gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+            if(Math.abs(getRotationRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
             {
                 doRejectUpdate = true;
             }
