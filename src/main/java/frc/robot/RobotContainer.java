@@ -40,6 +40,9 @@ public class RobotContainer {
 
     final CommandJoystick joystickDriver = new CommandJoystick(0);
     final CommandJoystick joystickOperator = new CommandJoystick(1);
+
+    final CommandXboxController xboxController = new CommandXboxController(0);
+
     private final Components motorComponents = Components.getInstance();
     SendableChooser<Command> autoChooser = new SendableChooser<>();
     
@@ -47,7 +50,7 @@ public class RobotContainer {
     private final LimeLightRunner visionSubsystem = new LimeLightRunner(false);
 
     private final SwerveSubsystem drivebase  = new SwerveSubsystem(
-            new File( Filesystem.getDeployDirectory(), "swerve/team4186"), false, visionSubsystem); //
+            new File( Filesystem.getDeployDirectory(), "swerve/team4186"), false, visionSubsystem);
 
     private final Elevator elevator = new Elevator(
             new DigitalInput(Constants.ElevatorConstants.ELEVATOR_BOTTOM_LIMIT_ID),
@@ -207,6 +210,14 @@ new PIDController(Constants.VisionConstants.DISTANCE_P,
             .withControllerRotationAxis(
                     () -> attenuated( joystickDriver.getTwist(), 2, 0.375 ) * 1)
             .deadband(OperatorConstants.DEADBAND)
+            .allianceRelativeControl(true);
+
+    SwerveInputStream driveAngularVelocityXBox = SwerveInputStream.of(drivebase.getSwerveDrive(),
+                    () -> xboxController.getLeftY() * -1,
+                    () -> xboxController.getLeftX() * -1)
+            .withControllerRotationAxis(xboxController::getRightX)
+            .deadband(OperatorConstants.DEADBAND)
+            .scaleTranslation(0.8)
             .allianceRelativeControl(true);
 
     // TODO: Experiment with pov to set predefined angle

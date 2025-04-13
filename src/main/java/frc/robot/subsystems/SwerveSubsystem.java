@@ -25,6 +25,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -43,6 +44,8 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
+
+import frc.robot.LimelightHelpers;
 import org.json.simple.parser.ParseException;
 import frc.robot.hardware.LimeLightRunner;
 import swervelib.SwerveController;
@@ -62,6 +65,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final boolean visionDriveTest = false;
     private boolean useVision = false;
     private final Timer autoTimer = new Timer();
+    private SwerveDrivePoseEstimator poseEstimator;
 
     //private Vision vision;
 
@@ -186,6 +190,42 @@ public class SwerveSubsystem extends SubsystemBase {
 //    });
 //  }
 
+
+    public SwerveModulePosition[] getSwerveModulePosition(){
+        return swerveDrive.getModulePositions();
+    }
+
+    public void updateOdometry() {
+        boolean doRejectUpdate = false;
+        boolean useMegaTag2 = true;
+
+        poseEstimator.update(
+                m_gyro.getRotation2d(),
+                getSwerveModulePosition()
+                );
+
+
+        if (useMegaTag2 == true)
+        {
+            LimelightHelpers.SetRobotOrientation("limelight", poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+            LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+            if(Math.abs(m_gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+            {
+                doRejectUpdate = true;
+            }
+            if(mt2.tagCount == 0)
+            {
+                doRejectUpdate = true;
+            }
+            if(!doRejectUpdate)
+            {
+                poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+                poseEstimator.addVisionMeasurement(
+                        mt2.pose,
+                        mt2.timestampSeconds);
+            }
+        }
+    }
 
     /**
      * Use PathPlanner Path finding to go to a point on the field.
