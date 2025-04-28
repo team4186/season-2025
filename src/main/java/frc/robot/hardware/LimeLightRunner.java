@@ -10,6 +10,7 @@ import java.lang.Math;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
+
 public class LimeLightRunner extends SubsystemBase {
 
     private final NetworkTable tableTag;
@@ -19,6 +20,7 @@ public class LimeLightRunner extends SubsystemBase {
     private final double[] emptyArray;
     private boolean useMegaTag2;
     private double[] LLHelpersBotPoseTargetSpace;
+
 
     public LimeLightRunner(boolean useMegaTag2) {
         this.emptyArray = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
@@ -33,7 +35,6 @@ public class LimeLightRunner extends SubsystemBase {
 
     @Override
     public void periodic() {
-
         this.botPoseTargetSpace = tableTag.getEntry("botpose_targetspace").getDoubleArray(emptyArray);
         this.botPose = tableTag.getEntry("botpose").getDoubleArray(emptyArray);
         this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
@@ -96,8 +97,6 @@ public class LimeLightRunner extends SubsystemBase {
     }
 
 
-
-
     public double getDistance() {
         // TODO: update after limelight is mounted for accurate reading
         double mountedAngle = 12.5;
@@ -111,9 +110,11 @@ public class LimeLightRunner extends SubsystemBase {
         return Double.NaN;
     }
 
+
     public int getTagID() {
         return TagID;
     }
+
 
     public double getXOffset() {
         // tx
@@ -132,6 +133,7 @@ public class LimeLightRunner extends SubsystemBase {
         return botPoseTargetSpace[4];
     }
 
+
     //TODO: Limelight localization using Megatag2 from limelight docs
     //TODO: replace varible names with already existing stuff, poseEstimator is new, needs to create poseEstimator object
     //TODO: m_gyro should be just the gyro values. need to import some classes. m_frontLeft and similar are the swervemodules
@@ -139,6 +141,7 @@ public class LimeLightRunner extends SubsystemBase {
     public Pose2d getVisionPose() {
         return new Pose2d(botPose[0], botPose[1], Rotation2d.fromDegrees(botPose[5]));
     }
+
 
     /**
      * Everything below is the same as the above but uses limelighthelpers, 
@@ -150,20 +153,24 @@ public class LimeLightRunner extends SubsystemBase {
         return LLHelpersBotPoseTargetSpace[4];
     }
 
+
     /** Horizontal offset from crosshair */
     public double getHelperXOffset() {
         return LLHelpersBotPoseTargetSpace[0];
     }
+
 
     /** Distance from camera to April tag */
     public double getHelperZOffset() {
         return LLHelpersBotPoseTargetSpace[2];
     }
 
+
     /** has target tag or not */
     public boolean getTV(String limelightName) {
         return LimelightHelpers.getTV(limelightName);
     }
+
 
 //    public void updateEstamateOdometry() {
 //        m_poseEstimator.update(

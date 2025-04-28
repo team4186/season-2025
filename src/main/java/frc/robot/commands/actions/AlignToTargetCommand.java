@@ -8,10 +8,10 @@ import frc.robot.hardware.LimeLightRunner;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.math.controller.PIDController;
 
+
 /**
  * IMPORTANT: Tune PIDs or this will crash out.
  */
-
 public class AlignToTargetCommand extends Command {
     private boolean isFinished;
     private final LimeLightRunner visionSubsystem;
@@ -48,7 +48,8 @@ public class AlignToTargetCommand extends Command {
     @Override
     public void execute() {
         // Only move when a tag is visible and the tag in frame is the one that the limelight first saw when the command is triggered.
-        if( visionSubsystem.getTV(Constants.VisionConstants.LIME_LIGHT_NAME) && LimelightHelpers.getFiducialID(Constants.VisionConstants.LIME_LIGHT_NAME) == tagID) {
+        if ( visionSubsystem.getTV(Constants.VisionConstants.LIME_LIGHT_NAME)
+                && LimelightHelpers.getFiducialID(Constants.VisionConstants.LIME_LIGHT_NAME) == tagID) {
             Translation2d driveVec = new Translation2d(
                     distancePID.calculate(visionSubsystem.getHelperZOffset(), Constants.VisionConstants.BUFFER_DIST), 
                     strafePID.calculate(visionSubsystem.getHelperXOffset(),0.0));
@@ -68,6 +69,7 @@ public class AlignToTargetCommand extends Command {
         }
 
     }
+
 
     @Override
     public boolean isFinished() {

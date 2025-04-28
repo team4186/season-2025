@@ -59,7 +59,9 @@ import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
+
 public class SwerveSubsystem extends SubsystemBase {
+
     private final SwerveDrive swerveDrive;
     private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeWelded);
     private final LimeLightRunner limeLightRunner;
@@ -67,8 +69,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private boolean useVision = false;
     private final Timer autoTimer = new Timer();
     private SwerveDrivePoseEstimator poseEstimator;
+    // private Vision vision;
 
-    //private Vision vision;
 
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
@@ -76,8 +78,6 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param directory Directory of swerve drive config files.
      */
     public SwerveSubsystem(File directory, boolean shouldUseVision, LimeLightRunner vision) {
-
-
         // Configure the Telemetry before creating the SwerveDrive to avoid unnecessary objects being created.
         SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
         try {
@@ -106,10 +106,10 @@ public class SwerveSubsystem extends SubsystemBase {
 //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
 
 //      if (visionDriveTest) {
-//      // setupPhotonVision();
-//      // Stop the odometry thread if we are using vision that way we can synchronize updates better.
-//      swerveDrive.stopOdometryThread();
-//    }
+//          // setupPhotonVision();
+//          // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+//          swerveDrive.stopOdometryThread();
+//      }
 
         SwerveDrivePoseEstimator poseEstimator = swerveDrive.swerveDrivePoseEstimator;
 
@@ -143,8 +143,6 @@ public class SwerveSubsystem extends SubsystemBase {
                         Rotation2d.fromDegrees(0)
                 )
         );
-
-
     }
 
 
@@ -152,12 +150,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public void periodic() {
         // When vision is enabled we must manually update odometry in SwerveDrive
         //addVisionReading();
-
-        //    if () {
-        //
-        //    } else {
-        //
-        //    }
 
         if (visionDriveTest) {
             swerveDrive.updateOdometry();
@@ -196,6 +188,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return swerveDrive.getModulePositions();
     }
 
+
     public Rotation2d getGyroRotation2d(){
        return swerveDrive.getYaw();
     }
@@ -205,6 +198,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public double getRotationRate(){
         return swerveDrive.getGyro().getYawAngularVelocity().baseUnitMagnitude();
     }
+
 
     public void updateOdometry() {
         boolean doRejectUpdate = false;
@@ -216,20 +210,18 @@ public class SwerveSubsystem extends SubsystemBase {
                 );
 
 
-        if (useMegaTag2 == true)
-        {
+        if (useMegaTag2 == true) {
             LimelightHelpers.SetRobotOrientation("limelight", poseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
             LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-            if(Math.abs(getRotationRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
-            {
+            if (Math.abs(getRotationRate()) > 720) { // if our angular velocity is greater than 720 degrees per second, ignore vision updates
                 doRejectUpdate = true;
             }
-            if(mt2.tagCount == 0)
-            {
+
+            if (mt2.tagCount == 0) {
                 doRejectUpdate = true;
             }
-            if(!doRejectUpdate)
-            {
+
+            if (!doRejectUpdate) {
                 poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
                 poseEstimator.addVisionMeasurement(
                         mt2.pose,
@@ -237,6 +229,7 @@ public class SwerveSubsystem extends SubsystemBase {
             }
         }
     }
+
 
     /**
      * Use PathPlanner Path finding to go to a point on the field.
@@ -418,8 +411,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public Command driveCommand(
             DoubleSupplier translationX,
             DoubleSupplier translationY,
-            DoubleSupplier angularRotationX
-    ) {
+            DoubleSupplier angularRotationX) {
         return run(
                 () -> swerveDrive.drive(
                         SwerveMath.scaleTranslation(
@@ -446,8 +438,7 @@ public class SwerveSubsystem extends SubsystemBase {
             DoubleSupplier translationX,
             DoubleSupplier translationY,
             DoubleSupplier headingX,
-            DoubleSupplier headingY
-    ) {
+            DoubleSupplier headingY) {
         // swerveDrive.setHeadingCorrection(true); // Normally you would want heading correction for this kind of control.
         return run(
                 () -> {Translation2d scaledInputs = SwerveMath.scaleTranslation(
@@ -495,8 +486,7 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @param velocity Velocity according to the field.
      */
-    public void driveFieldOriented(ChassisSpeeds velocity)
-    {
+    public void driveFieldOriented(ChassisSpeeds velocity) {
         swerveDrive.driveFieldOriented(velocity);
     }
 
@@ -595,7 +585,6 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @param initialHolonomicPose The pose to set the odometry to
      */
-
     // After writing get Pose, reset it.
     public void resetOdometry(Pose2d initialHolonomicPose) {
         swerveDrive.resetOdometry(initialHolonomicPose);
@@ -636,8 +625,7 @@ public class SwerveSubsystem extends SubsystemBase {
     /**
      * Resets the gyro angle to zero and resets odometry to the same position, but facing toward 0.
      */
-    public void zeroGyro()
-    {
+    public void zeroGyro() {
         swerveDrive.zeroGyro();
     }
 
@@ -679,7 +667,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
 
-    public Command setMotorBrakeCommand(boolean brake ) {
+    public Command setMotorBrakeCommand(boolean brake) {
         return this.runOnce( () -> swerveDrive.setMotorIdleMode(brake) );
     }
 
@@ -709,8 +697,7 @@ public class SwerveSubsystem extends SubsystemBase {
             double xInput,
             double yInput,
             double headingX,
-            double headingY
-    ) {
+            double headingY) {
         Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
         return swerveDrive.swerveController.getTargetSpeeds(
                 scaledInputs.getX(),
@@ -787,8 +774,7 @@ public class SwerveSubsystem extends SubsystemBase {
     /**
      * Lock the swerve drive to prevent it from moving.
      */
-    public void lock()
-    {
+    public void lock() {
         swerveDrive.lockPose();
     }
 
@@ -806,8 +792,8 @@ public class SwerveSubsystem extends SubsystemBase {
     /**
      * Add a fake vision reading for testing purposes.
      */
-    //public void addVisionReading() {
-    //   swerveDrive.addVisionMeasurement(limelight.getVisionPose(), Timer.getFPGATimestamp());
+    // public void addVisionReading() {
+    //     swerveDrive.addVisionMeasurement(limelight.getVisionPose(), Timer.getFPGATimestamp());
     // }
 
 
@@ -819,6 +805,7 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDrive getSwerveDrive() {
         return swerveDrive;
     }
+
 
     /**
      * Get the path follower with events.

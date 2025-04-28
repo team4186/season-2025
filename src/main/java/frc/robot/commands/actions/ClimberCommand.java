@@ -5,7 +5,6 @@ import frc.robot.subsystems.Climber;
 
 
 public class ClimberCommand extends Command {
-
     /* Intended Usage:
      * deploy w/ minimum voltage
      * on button press force motor back till limit switch enable    * */

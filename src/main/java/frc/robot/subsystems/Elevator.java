@@ -21,8 +21,8 @@ import frc.robot.Constants;
 import frc.robot.UnitsUtility;
 import frc.robot.sparkmaxconfigs.ElevatorMotorSet;
 import java.util.InputMismatchException;
-
 import static edu.wpi.first.units.Units.*;
+
 
 public class Elevator extends SubsystemBase {
 
@@ -128,6 +128,7 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Top", getTopBeamBreak());
         SmartDashboard.putBoolean("Elevator_LimitSwitch_Bottom", getBottomBeamBreak());
     }
+
 
     private double getAcceleration() {
         double currVelocity = encoder.getRate();

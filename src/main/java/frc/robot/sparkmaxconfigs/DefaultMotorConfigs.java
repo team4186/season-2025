@@ -10,10 +10,10 @@ public final class DefaultMotorConfigs {
     private static DefaultMotorConfigs instance = null;
 
 
-    private DefaultMotorConfigs(){ }
+    private DefaultMotorConfigs() { }
 
 
-    public static DefaultMotorConfigs getInstance(){
+    public static DefaultMotorConfigs getInstance() {
         if (instance == null){
             instance = new DefaultMotorConfigs();
         }
