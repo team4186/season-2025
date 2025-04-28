@@ -24,7 +24,7 @@ public class Climber extends SubsystemBase {
     private static double deployAngle;
 
 
-    public Climber( SingleMotor climberSingleMotor, DigitalInput limitSwitch ){
+    public Climber( SingleMotor climberSingleMotor, DigitalInput limitSwitch ) {
         this.climberSingleMotor = climberSingleMotor;
         this.limitSwitch = limitSwitch;
 
@@ -44,13 +44,13 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putNumber("Climber_Speed:", getCurrentSpeed());
         SmartDashboard.putBoolean("Climber_LimitSwitch", getBeamBreak());
 
-        if( getBeamBreak() ) {
+        if (getBeamBreak()) {
             resetEncoder();
         }
     }
 
 
-    private boolean getBeamBreak(){
+    private boolean getBeamBreak() {
         return !UnitsUtility.isBeamBroken(limitSwitch,false,"Climber limit switch");
     }
 
@@ -59,11 +59,10 @@ public class Climber extends SubsystemBase {
     //moves arm up with pid until it reaches the max angle while spinning the rolling motor
     public void deploy() {
 
-        if( getCurrentAngle() <= deployAngle ) {
+        if ( getCurrentAngle() <= deployAngle ) {
             //Todo: Make sure (+/-) and direction is correct
             climberSingleMotor.accept(speed);
-        }
-        else{
+        } else {
             climberSingleMotor.stop();
         }
     }
@@ -88,11 +87,10 @@ public class Climber extends SubsystemBase {
 
     public boolean pull() {
 
-        if(!getBeamBreak()) {
+        if (!getBeamBreak()) {
             climberSingleMotor.accept(-speed);
             return false;
-        }
-        else{
+        } else {
             climberSingleMotor.stop();
             return true;
         }
@@ -106,13 +104,12 @@ public class Climber extends SubsystemBase {
 
 
     public double getCurrentSpeed() {
-        double angleSpeed = climberSingleMotor.motor.get();
-        return angleSpeed;
+        return climberSingleMotor.motor.get();
     }
 
 
     // stops the arm and rolling motors
-    public void stop(){
+    public void stop() {
         climberSingleMotor.stop();
     }
 
@@ -122,7 +119,8 @@ public class Climber extends SubsystemBase {
         climberSingleMotor.motor.configure(coastConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     }
 
-    public void resetEncoder(){
+
+    public void resetEncoder() {
         climbEncoder.setPosition(0.0);
     }
 }

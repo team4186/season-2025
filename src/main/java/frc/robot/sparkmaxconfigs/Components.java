@@ -30,8 +30,8 @@ public final class Components {
     private Components() { }
 
 
-    public static Components getInstance(){
-        if (instance == null){
+    public static Components getInstance() {
+        if (instance == null) {
             instance = new Components();
         }
         return instance;
@@ -55,7 +55,7 @@ public final class Components {
         private final SingleMotor climbMotor = new SingleMotor(
                 new SparkMax(15, SparkLowLevel.MotorType.kBrushless),
                 DefaultMotorConfigs.getInstance().DefaultConfig,
-                true);
+                false);
     }
 
 

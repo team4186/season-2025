@@ -25,7 +25,7 @@ public class DeAlgae extends SubsystemBase {
     private static double maxAngle, maxSpeed, minSpeed, defaultAngle, wheelMaxSpeed, angleSpeed;
 
 
-    public DeAlgae(SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch){
+    public DeAlgae( SingleMotor wheelMotor, SingleMotor angleMotor, PIDController anglePid, DigitalInput limitSwitch ) {
         this.wheelMotor = wheelMotor;
         this.angleMotor = angleMotor;
         this.anglePid = anglePid;
@@ -50,19 +50,19 @@ public class DeAlgae extends SubsystemBase {
         SmartDashboard.putBoolean("DeAlgae_LimitSwitch", getBeamBreak());
         SmartDashboard.putNumber("DeAlgae_RelativeEncoder_Raw", angleEncoder.getPosition());
 
-        if(getBeamBreak()){
+        if (getBeamBreak()) {
             resetEncoder();
         }
     }
 
 
-    private boolean getBeamBreak(){
+    private boolean getBeamBreak() {
         return !UnitsUtility.isBeamBroken(limitSwitch,false,"DeAlgae limit switch");
     }
 
 
-    //TODO: find angle motor speed ratio
-    //moves arm up with pid until it reaches the max angle while spinning the rolling motor
+    // TODO: find angle motor speed ratio
+    // moves arm up with pid until it reaches the max angle while spinning the rolling motor
     public boolean pid_runMotor_Up() {
         current_angle = getCurrentAngle();
 
@@ -91,10 +91,10 @@ public class DeAlgae extends SubsystemBase {
 
             double pidOutput = coerceIn(anglePid.calculate(current_angle, upper_limit));
             angleMotor.accept(pidOutput);
-        }
-        else {
+        } else {
             angleMotor.stop();
         }
+
         wheelMotor.accept(-wheelMaxSpeed);
     }
 
@@ -107,23 +107,23 @@ public class DeAlgae extends SubsystemBase {
         if (current_angle < maxAngle) {
             angleMotor.accept(maxSpeed);
             return false;
+        } else {
+            angleMotor.stop();
+            return true;
         }
-
-        angleMotor.stop();
-        return true;
     }
 
 
-    public void ManrunMotor_Up() {
+    public void manRunMotor_Up() {
         current_angle = getCurrentAngle();
-        if (current_angle < maxAngle) {
 
+        if (current_angle < maxAngle) {
             double pidOutput = coerceIn(anglePid.calculate(current_angle, maxAngle));
             angleMotor.accept(pidOutput);
-        }
-        else {
+        } else {
             angleMotor.stop();
         }
+
         wheelMotor.accept(-wheelMaxSpeed);
     }
 
@@ -173,7 +173,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle > defaultAngle) {
+        if (current_angle > defaultAngle) {
             angleMotor.accept(-maxSpeed);
             return false;
         }
@@ -187,8 +187,7 @@ public class DeAlgae extends SubsystemBase {
         double PIDoutput;
         current_angle = getCurrentAngle();
 
-        if(current_angle >= defaultAngle -1 || current_angle <= defaultAngle + 1
-                || getBeamBreak()){
+        if (current_angle >= defaultAngle -1 || current_angle <= defaultAngle + 1 || getBeamBreak()) {
             stop();
             resetEncoder();
             return true;
@@ -201,7 +200,7 @@ public class DeAlgae extends SubsystemBase {
     }
 
 
-    public void Manpid_reset() {
+    public void manPid_reset() {
         double PIDoutput;
         current_angle = getCurrentAngle();
 

@@ -8,24 +8,24 @@ import frc.robot.hardware.LimeLightRunner;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.math.controller.PIDController;
 
-
 /**
  * IMPORTANT: Tune PIDs or this will crash out.
  */
-public class AlignToTargetCommand extends Command {
+
+public class AlignToReefCommand extends Command {
     private boolean isFinished;
+    private final boolean side;
     private final LimeLightRunner visionSubsystem;
     private final SwerveSubsystem swerveSubsystem;
     private final PIDController turnPID;
     private final PIDController strafePID;
     private final PIDController distancePID;
-    // Just zero right now.
-    // If you're wondering why this is a double, it is because getFiducialID returns a double.
     private double tagID = -1;
 
 
-    public AlignToTargetCommand(LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, PIDController turnPID, PIDController strafePID, PIDController distancePID) {
+    public AlignToReefCommand(boolean side, LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, PIDController turnPID, PIDController strafePID, PIDController distancePID) {
         this.isFinished = false;
+        this.side = side;
         this.visionSubsystem = visionSubsystem;
         this.swerveSubsystem = swerveSubsystem;
         this.turnPID = turnPID;
@@ -47,12 +47,10 @@ public class AlignToTargetCommand extends Command {
 
     @Override
     public void execute() {
-        // Only move when a tag is visible and the tag in frame is the one that the limelight first saw when the command is triggered.
-        if ( visionSubsystem.getTV(Constants.VisionConstants.LIME_LIGHT_NAME)
-                && LimelightHelpers.getFiducialID(Constants.VisionConstants.LIME_LIGHT_NAME) == tagID) {
+        if ( visionSubsystem.getTV(Constants.VisionConstants.LIME_LIGHT_NAME) && LimelightHelpers.getFiducialID(Constants.VisionConstants.LIME_LIGHT_NAME) == tagID) {
             Translation2d driveVec = new Translation2d(
                     distancePID.calculate(visionSubsystem.getHelperZOffset(), Constants.VisionConstants.BUFFER_DIST), 
-                    strafePID.calculate(visionSubsystem.getHelperXOffset(),0.0));
+                    strafePID.calculate(visionSubsystem.getHelperXOffset(), side ? 0.0 : Constants.VisionConstants.RIGHT_SCORE_OFFSET));
 
             swerveSubsystem.drive(
                     driveVec,
@@ -60,10 +58,6 @@ public class AlignToTargetCommand extends Command {
                             0.0),
                     false);
         } else {
-            /**
-             * This also works considering that once the robot is aligned, it would be too close to the wall
-             * to see the apriltag, which would trigger this condition.
-             */
             swerveSubsystem.drive(new Translation2d(), 0.0, false);
             isFinished = true;
         }
@@ -79,7 +73,6 @@ public class AlignToTargetCommand extends Command {
 
     @Override
     public void end(boolean interrupted) { 
-        // stops driving
         swerveSubsystem.drive(new Translation2d(), 0.0, false);
     }
 }

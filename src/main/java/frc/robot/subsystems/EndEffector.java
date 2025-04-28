@@ -15,7 +15,7 @@ public class EndEffector extends SubsystemBase {
     private final DigitalInput tfLuna;
 
 
-    public EndEffector(SingleMotor endEffectorMotor, DigitalInput tfLuna){
+    public EndEffector(SingleMotor endEffectorMotor, DigitalInput tfLuna) {
         this.tfLuna = tfLuna;
         this.endEffectorMotor = endEffectorMotor;
         this.relativeEncoder = endEffectorMotor.getRelativeEncoder();
@@ -23,7 +23,7 @@ public class EndEffector extends SubsystemBase {
 
 
     @Override
-    public void periodic(){
+    public void periodic() {
         // publish smart dashboard info here
         SmartDashboard.putBoolean("EndEffector_hasGamePiece", hasGamePiece());
         SmartDashboard.putNumber("EndEffector_RelativeEncoder_Raw", relativeEncoder.getPosition());
@@ -37,7 +37,7 @@ public class EndEffector extends SubsystemBase {
     }
 
 
-    public void intake(){
+    public void intake() {
         if ( hasGamePiece() ) {
             endEffectorMotor.stop();
         } else {
@@ -56,7 +56,7 @@ public class EndEffector extends SubsystemBase {
 
     public void ejectSlow() {
         if ( hasGamePiece() ) {
-            endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_SPEED_L1);
+            endEffectorMotor.accept(Constants.EndEffectorConstants.END_EFFECTOR_EJECT_SPEED_L4);
         } else {
             endEffectorMotor.stop();
         }

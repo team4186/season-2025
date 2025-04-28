@@ -23,12 +23,12 @@ public class EndEffectorEjectCommand extends Command {
      * The initial subroutine of a command.  Called once when the command is initially scheduled.
      */
     @Override
-    public void initialize() {}
+    public void initialize() { }
 
 
     /**
      * The main body of a command.  Called repeatedly while the command is scheduled. (That is, it is called repeatedly
-     * until {@link #isFinished()}) returns true.)
+     * until {@link #isFinished()} returns true.)
      */
     @Override
     public void execute() {

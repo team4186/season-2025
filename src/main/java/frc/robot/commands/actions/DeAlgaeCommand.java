@@ -5,7 +5,6 @@ import frc.robot.subsystems.DeAlgae;
 
 
 public class DeAlgaeCommand extends Command {
-
     /* Intended Usage:
     * Run with command while being held, alternate directions for 2 seconds in alternating directions.
     * intended to be used with whileTrue()
@@ -19,6 +18,7 @@ public class DeAlgaeCommand extends Command {
     private int button_count = 0;
     private boolean isfinished = false;
     private boolean deployed = false;
+
 
     public DeAlgaeCommand(DeAlgae deAlgae) {
         this.deAlgae = deAlgae;
@@ -46,13 +46,14 @@ public class DeAlgaeCommand extends Command {
         }
 
 
-//        if(deployed || exit_timer >= 150){
-//            isfinished = deAlgae.pid_reset();
+//      if(deployed || exit_timer >= 150){
+//          isfinished = deAlgae.pid_reset();
         if (deployed || exit_timer >= 150) {
             isfinished = deAlgae.reset();
 
-//      else if(deAlgae.pid_runMotor_Up()){
+//      } else if(deAlgae.pid_runMotor_Up()) {
 //          deployed = true;
+
         } else if(deAlgae.runMotor_Up()){
             deployed = true;
         }
@@ -144,7 +145,7 @@ public class DeAlgaeCommand extends Command {
     }
 
 
-    public void button_detect(){
+    public void button_detect() {
         button_count++;
     }
 

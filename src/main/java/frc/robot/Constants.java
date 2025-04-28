@@ -9,7 +9,6 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import swervelib.math.Matter;
-
 import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
 
@@ -49,7 +48,7 @@ public final class Constants {
 
 
     public static final class OperatorConstants {
-        public static final double DEADBAND = 0.15;
+        public static final double DEADBAND = 0.09;
         public static final double LEFT_Y_DEADBAND = 0.1;
         public static final double RIGHT_X_DEADBAND = 0.1;
         public static final double TURN_CONSTANT = 6.0;
@@ -62,7 +61,7 @@ public final class Constants {
 
         public static final double ALGAE_PROCESSOR_DEFAULT_ANGLE = 5;
         public static final double ALGAE_PROCESSOR_MAX_ANGLE = 50.0;
-        public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 90;
+        public static final double ALGAE_PROCESSOR_GEARBOX_RATIO = 30;
         public static final double ALGAE_PROCESSOR_HOLDING_ANGLE = 30;
 
         public static final double ALGAE_PROCESSOR_MAX_SPEED = 0.25;
@@ -75,8 +74,8 @@ public final class Constants {
     public static final class ClimberConstants {
         public static final int CLIMBER_LSChannel = 8;
 
-        public static final double CLIMBER_SPEED = 0.4;
-        public static final double CLIMBER_GEARBOX_RATIO = 25; //TODO: slightly inaccurate
+        public static final double CLIMBER_SPEED = 0.9;
+        public static final double CLIMBER_GEARBOX_RATIO = 75; //TODO: slightly inaccurate
         public static final double CLIMBER_DEPLOY_ANGLE = 300; //TODO: placeholder, relative to limit switch
     }
 
@@ -111,8 +110,8 @@ public final class Constants {
         public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
         public static final double ELEVATOR_LEVEL_ONE = 0.1970; // why even consider the tray? can we score with the elevator?
         public static final double ELEVATOR_LEVEL_TWO = 0.3690; // 70 cm
-        public static final double ELEVATOR_LEVEL_THREE = 0.8000; // 118 cm
-        public static final double ELEVATOR_LEVEL_FOUR = 1.4000; // 189 cm
+        public static final double ELEVATOR_LEVEL_THREE = 0.8; // 118 cm
+        public static final double ELEVATOR_LEVEL_FOUR = 1.4150; // 189 cm
         public static final double ELEVATOR_MAX_HEIGHT = 1.4198; // TODO: Determine threshold if different from highest level
 
         public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
@@ -133,15 +132,15 @@ public final class Constants {
          *   P = 8.0
          *   I and D are 0
          */
-        public static final double ELEVATOR_P = 20.0;
+        public static final double ELEVATOR_P = 14.5;
         public static final double ELEVATOR_I = 0.0;
-        public static final double ELEVATOR_D = 0.0;
+        public static final double ELEVATOR_D = 7.5;
 
         // Adjust these to reach optimal
         public static final double ELEVATOR_KS = 0.05; // Static gain in volts
         public static final double ELEVATOR_KG = 0.195; // Gravity gain in volts
-        public static final double ELEVATOR_KV = 4.0; // Velocity gain in V/(m/s)
-        public static final double ELEVATOR_KA = 0.00; // Acceleration gain in V/(m/s^2)
+        public static final double ELEVATOR_KV = 2.0; // Velocity gain in V/(m/s)
+        public static final double ELEVATOR_KA = 0.0; // Acceleration gain in V/(m/s^2)
 
         public static final double ELEVATOR_DEFAULT_TOLERANCE = 0.0075; // Meters (+/-)Tolerance
     }
@@ -150,18 +149,27 @@ public final class Constants {
     public static final class EndEffectorConstants {
         public static final int END_EFFECTOR_BEAM_BREAK = 3;
 
-        public static final double END_EFFECTOR_EJECT_SPEED = 0.45;
-        public static final double END_EFFECTOR_EJECT_SPEED_L1 = 0.35;
+        public static final double END_EFFECTOR_EJECT_SPEED = 0.50;
+        public static final double END_EFFECTOR_EJECT_SPEED_L4 = 0.55;
         public static final double END_EFFECTOR_INTAKE_SPEED = 0.35;
     }
 
 
     public static final class VisionConstants {
+        // Where is this used? It's defined in SwerveSubsystem but never used anywhere.
         public static final AprilTagFieldLayout FIELD_LAYOUT = AprilTagFieldLayout.loadField( AprilTagFields.k2025ReefscapeWelded);
 
         // Ambiguity defined as a value between (0,1). Used in {@link Vision#filterPose}.
         public static final double MAXIMUM_AMBIGUITY = 0.25;
-        public static final double ANGLE_P = 0.05;
+
+        public static final String LIME_LIGHT_NAME = "limelight";
+
+        // Offset from april tag center for scoring on the right.
+        // Change number later.
+        public static final double RIGHT_SCORE_OFFSET = 1.0;
+
+        // Get to tuning
+        public static final double ANGLE_P = 0.040;
         public static final double ANGLE_I = 0.0;
         public static final double ANGLE_D = 0.0;
 
@@ -173,7 +181,14 @@ public final class Constants {
         public static final double DISTANCE_I = 0.0;
         public static final double DISTANCE_D = 0.0;
 
+        // More constants to tune *crying*
+        // TODO: set tolerance as well these are some default values to test (maybe it works, maybe it doesn't)
+        public static final double TURN_TOLERANCE = 1.0;
+        public static final double DISTANCE_TOLERANCE = 0.05;
+        public static final double STRAFE_TOLERANCE = 0.05;
+
+
         // Change this (it is in foot)
-        public static final double BUFFER_DIST = 1.0;
+        public static final double BUFFER_DIST = 0.0;
     }
 }
