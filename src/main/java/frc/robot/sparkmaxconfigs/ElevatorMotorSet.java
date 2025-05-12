@@ -10,52 +10,56 @@ import frc.robot.Constants;
 
 
 public class ElevatorMotorSet {
-    private final SparkMax lead;
+  private final SparkMax lead;
 
 
-    public ElevatorMotorSet(SparkMax leader, SparkMax follower, SparkBaseConfig baseConfig, boolean inverted) {
-        lead = leader;
+  public ElevatorMotorSet(SparkMax leader, SparkMax follower, SparkBaseConfig baseConfig, boolean inverted) {
+    lead = leader;
 
-        baseConfig
-                .inverted( inverted )
-                .openLoopRampRate(Constants.ElevatorConstants.ELEVATOR_RAMP_RATE);
+    baseConfig
+        .inverted(inverted)
+        .openLoopRampRate(Constants.ElevatorConstants.ELEVATOR_RAMP_RATE);
 
-        lead.configure(
-                baseConfig,
-                SparkBase.ResetMode.kNoResetSafeParameters,
-                SparkBase.PersistMode.kPersistParameters);
+    lead.configure(
+        baseConfig,
+        SparkBase.ResetMode.kNoResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
 
-        SparkMaxConfig followerConfig = new SparkMaxConfig();
+    SparkMaxConfig followerConfig = new SparkMaxConfig();
 
-        followerConfig
-                .apply(baseConfig)
-                .follow(lead)
-                .inverted( !inverted );
+    followerConfig
+        .apply(baseConfig)
+        .follow(lead)
+        .inverted( !inverted );
 
-        follower.configure(
-                followerConfig,
-                SparkBase.ResetMode.kNoResetSafeParameters,
-                SparkBase.PersistMode.kPersistParameters);
-    }
-
-
-    public RelativeEncoder getRelativeEncoder(){
-        return lead.getEncoder();
-    }
+    follower.configure(
+        followerConfig,
+        SparkBase.ResetMode.kNoResetSafeParameters,
+        SparkBase.PersistMode.kPersistParameters);
+  }
 
 
-    public SparkMax getLead(){
-        return lead;
-    }
+  public RelativeEncoder getRelativeEncoder() {
+    return lead.getEncoder();
+  }
 
 
-    public void setLeadVoltage(double voltage) { this.lead.setVoltage( voltage ); }
+  public SparkMax getLead() {
+    return lead;
+  }
 
 
-    public void setLeadVoltage(Voltage voltage) { this.lead.setVoltage(voltage); }
+  public void setLeadVoltage(double voltage) {
+    this.lead.setVoltage(voltage);
+  }
 
 
-    public void stop(){
-        lead.stopMotor();
-    }
+  public void setLeadVoltage(Voltage voltage) {
+    this.lead.setVoltage(voltage);
+  }
+
+
+  public void stop() {
+    lead.stopMotor();
+  }
 }
