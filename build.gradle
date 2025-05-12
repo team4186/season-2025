@@ -1,11 +1,16 @@
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2025.3.2"
+    id "checkstyle"
 }
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
+}
+
+checkstyle {
+    toolVersion = "10.23.1"
 }
 
 def ROBOT_MAIN_CLASS = "frc.robot.Main"
@@ -72,6 +77,9 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+//    checkstyle "com.puppycrawl.tools:checkstyle:${checkstyle.toolVersion}"
+//    checkstyle "group:artifact:version"
 }
 
 test {
