@@ -128,6 +128,9 @@ public class RobotContainer {
      */
     ElevatorReturnToDefault elevatorDefaultCommand = new ElevatorReturnToDefault(elevator);
 
+    ElevatorCommand elevatorCommandL0 = new ElevatorCommand(elevator,
+            0);
+
     ElevatorCommand elevatorCommandL1 = new ElevatorCommand(elevator,
             1);
 
@@ -325,6 +328,7 @@ public class RobotContainer {
             joystickOperator.button(9).whileTrue(elevatorCommandL3);
             joystickOperator.button(10).whileTrue(elevatorCommandL4);
 
+            joystickOperator.button(11).whileTrue(elevatorCommandL0);
 
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);

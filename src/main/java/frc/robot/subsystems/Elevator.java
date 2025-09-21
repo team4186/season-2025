@@ -239,7 +239,8 @@ public class Elevator extends SubsystemBase {
 
 
   public boolean isAtBottom() {
-    return !bottomLimitSwitch.get();
+    return bottomLimitSwitch.get();
+    //Got rid of an exclamation point before the bottomLimitSwitch.get() so might need to put it back. Did this as limit switch was invesrsed.
   }
 
 
