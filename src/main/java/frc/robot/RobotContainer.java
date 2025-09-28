@@ -99,18 +99,26 @@ public class RobotContainer {
     /**
      * Commands are implemented here...
      */
-    AlignToTargetCommand alignCommand = new AlignToTargetCommand(
-          visionSubsystem,
-          drivebase,
-          new PIDController(Constants.VisionConstants.ANGLE_P,
-                          Constants.VisionConstants.ANGLE_I,
-                          Constants.VisionConstants.ANGLE_D),
-          new PIDController(Constants.VisionConstants.STRAFE_P,
-                          Constants.VisionConstants.STRAFE_I,
-                          Constants.VisionConstants.STRAFE_D),
-          new PIDController(Constants.VisionConstants.DISTANCE_P,
-                          Constants.VisionConstants.DISTANCE_I,
-                          Constants.VisionConstants.DISTANCE_D)
+    AlignToReefCommand alignCommand = new AlignToReefCommand(
+            false,
+            //false for left, true for right align
+            visionSubsystem,
+            drivebase,
+            new PIDController(
+                    Constants.VisionConstants.ANGLE_P,
+                    Constants.VisionConstants.ANGLE_I,
+                    Constants.VisionConstants.ANGLE_D
+            ),
+            new PIDController(
+                    Constants.VisionConstants.STRAFE_P,
+                    Constants.VisionConstants.STRAFE_I,
+                    Constants.VisionConstants.STRAFE_D
+            ),
+            new PIDController(
+                    Constants.VisionConstants.DISTANCE_P,
+                    Constants.VisionConstants.DISTANCE_I,
+                    Constants.VisionConstants.DISTANCE_D
+            )
     );
 
     EndEffectorEjectCommand endEffectorEjectCommand = new EndEffectorEjectCommand(endEffector, false);
@@ -335,6 +343,9 @@ public class RobotContainer {
             joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
             //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
 
+            // AlignToTarget testing
+            joystickDriver.button(6).whileTrue((alignCommand));
+
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
             // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
@@ -412,8 +423,6 @@ public class RobotContainer {
         //    joystick.button(8).onTrue(climberCommand);
         //    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
 
-        // AlignToTarget testing
-        // joystick.button(6).whileTrue(Commands.runOnce(AlignToTarget).repeatedly());
     }
 
 

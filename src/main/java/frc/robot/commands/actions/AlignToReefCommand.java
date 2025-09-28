@@ -47,9 +47,10 @@ public class AlignToReefCommand extends Command {
 
   @Override
   public void execute() {
-    if ( visionSubsystem.getTV(Constants.VisionConstants.LIME_LIGHT_NAME) && LimelightHelpers.getFiducialID(Constants.VisionConstants.LIME_LIGHT_NAME) == tagID) {
+    if (visionSubsystem.getTV(Constants.VisionConstants.LIME_LIGHT_NAME) && (LimelightHelpers.getFiducialID(Constants.VisionConstants.LIME_LIGHT_NAME) == tagID)) {
+      isFinished = false;
       Translation2d driveVec = new Translation2d(
-          distancePID.calculate(visionSubsystem.getHelperZOffset(), Constants.VisionConstants.BUFFER_DIST),
+          -distancePID.calculate(visionSubsystem.getHelperZOffset(), Constants.VisionConstants.BUFFER_DIST),
           strafePID.calculate(visionSubsystem.getHelperXOffset(), side ? 0.0 : Constants.VisionConstants.RIGHT_SCORE_OFFSET));
 
       swerveSubsystem.drive(
@@ -58,7 +59,6 @@ public class AlignToReefCommand extends Command {
               0.0),
           false);
     } else {
-      swerveSubsystem.drive(new Translation2d(), 0.0, false);
       isFinished = true;
     }
 

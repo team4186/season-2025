@@ -134,8 +134,8 @@ public final class Constants {
      *   P = 8.0
      *   I and D are 0
      */
-    public static final double ELEVATOR_P = 7.5;
-    public static final double ELEVATOR_I = 0.0;
+    public static final double ELEVATOR_P = 8.5;
+    public static final double ELEVATOR_I = 0.5;
     public static final double ELEVATOR_D = 0.0;
 
     // Adjust these to reach optimal
@@ -168,18 +168,18 @@ public final class Constants {
 
     // Offset from april tag center for scoring on the right.
     // Change number later.
-    public static final double RIGHT_SCORE_OFFSET = 1.0;
+    public static final double RIGHT_SCORE_OFFSET = 0.0;
 
     // Get to tuning
-    public static final double ANGLE_P = 0.040;
+    public static final double ANGLE_P = 0.03;
     public static final double ANGLE_I = 0.0;
     public static final double ANGLE_D = 0.0;
 
-    public static final double STRAFE_P = 0.05;
+    public static final double STRAFE_P = 1.6;
     public static final double STRAFE_I = 0.0;
     public static final double STRAFE_D = 0.0;
 
-    public static final double DISTANCE_P = 0.05;
+    public static final double DISTANCE_P = 0.25;
     public static final double DISTANCE_I = 0.0;
     public static final double DISTANCE_D = 0.0;
 
@@ -190,7 +190,7 @@ public final class Constants {
     public static final double STRAFE_TOLERANCE = 0.05;
 
 
-    // Change this (it is in foot)
-    public static final double BUFFER_DIST = 0.0;
+    // Change this (it is in half foot)
+    public static final double BUFFER_DIST = 2.0;
   }
 }
