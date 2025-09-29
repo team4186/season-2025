@@ -168,8 +168,8 @@ public final class Constants {
 
     // Offset from april tag center for scoring on the right.
     // Change number later.
-    public static final double RIGHT_SCORE_OFFSET = 0.0;
-
+    public static final double LEFT_SCORE_OFFSET =  0.11;
+    public static final double RIGHT_SCORE_OFFSET =  0.47 ;
     // Get to tuning
     public static final double ANGLE_P = 0.03;
     public static final double ANGLE_I = 0.0;

@@ -51,7 +51,7 @@ public class AlignToReefCommand extends Command {
       isFinished = false;
       Translation2d driveVec = new Translation2d(
           -distancePID.calculate(visionSubsystem.getHelperZOffset(), Constants.VisionConstants.BUFFER_DIST),
-          strafePID.calculate(visionSubsystem.getHelperXOffset(), side ? 0.0 : Constants.VisionConstants.RIGHT_SCORE_OFFSET));
+          strafePID.calculate(visionSubsystem.getHelperXOffset(), side ? Constants.VisionConstants.RIGHT_SCORE_OFFSET : Constants.VisionConstants.LEFT_SCORE_OFFSET));
 
       swerveSubsystem.drive(
           driveVec,

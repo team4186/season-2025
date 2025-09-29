@@ -99,8 +99,30 @@ public class RobotContainer {
     /**
      * Commands are implemented here...
      */
-    AlignToReefCommand alignCommand = new AlignToReefCommand(
+    AlignToReefCommand alignCommandLeft = new AlignToReefCommand(
             false,
+            //false for left, true for right align
+            visionSubsystem,
+            drivebase,
+            new PIDController(
+                    Constants.VisionConstants.ANGLE_P,
+                    Constants.VisionConstants.ANGLE_I,
+                    Constants.VisionConstants.ANGLE_D
+            ),
+            new PIDController(
+                    Constants.VisionConstants.STRAFE_P,
+                    Constants.VisionConstants.STRAFE_I,
+                    Constants.VisionConstants.STRAFE_D
+            ),
+            new PIDController(
+                    Constants.VisionConstants.DISTANCE_P,
+                    Constants.VisionConstants.DISTANCE_I,
+                    Constants.VisionConstants.DISTANCE_D
+            )
+    );
+
+    AlignToReefCommand alignCommandRight = new AlignToReefCommand(
+            true,
             //false for left, true for right align
             visionSubsystem,
             drivebase,
@@ -344,8 +366,10 @@ public class RobotContainer {
             //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
 
             // AlignToTarget testing
-            joystickDriver.button(6).whileTrue((alignCommand));
+            joystickDriver.button(6).whileTrue((alignCommandRight));
+            joystickDriver.button(5).whileTrue((alignCommandLeft));
 
+            joystickDriver.povUp().whileTrue(drivebase.driveToDistanceCommand(0.1,0.5));
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
             // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
