@@ -73,6 +73,7 @@ public class RobotContainer {
             new DigitalInput(Constants.EndEffectorConstants.END_EFFECTOR_BEAM_BREAK)
     );
 
+
     private final DeAlgae deAlgae = new DeAlgae(
             motorComponents.deAlgaeWheelSingleMotor,
             motorComponents.deAlgaeAngleSingleMotor,
@@ -99,6 +100,8 @@ public class RobotContainer {
     /**
      * Commands are implemented here...
      */
+    ElevatorFailsafeCommand elevatorFailsafeCommand = new ElevatorFailsafeCommand(elevator, -1.0);
+
     AlignToReefCommand alignCommandLeft = new AlignToReefCommand(
             false,
             //false for left, true for right align
@@ -370,6 +373,8 @@ public class RobotContainer {
             joystickDriver.button(5).whileTrue((alignCommandLeft));
 
             joystickDriver.povUp().whileTrue(drivebase.driveToDistanceCommand(0.1,0.5));
+
+            joystickOperator.button(12).whileTrue(elevatorFailsafeCommand);
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
             // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));

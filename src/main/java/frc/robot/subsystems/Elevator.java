@@ -160,8 +160,9 @@ public class Elevator extends SubsystemBase {
     // return true by default to stop motor from exceeding limits
     return !UnitsUtility.isBeamBroken(bottomLimitSwitch,false,"Elevator Bottom Limit Switch");
   }
-
-
+  public void elevatorZeroFailsafe(double speed){
+    elevatorMotors.setLeadSpeed(speed);
+  }
   /**
    * TODO: measure elevator shaft radius and put it in constants.
    * Ask Chris for the gear ratio for the elevator.
