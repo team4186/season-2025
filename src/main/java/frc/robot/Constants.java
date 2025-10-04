@@ -111,8 +111,8 @@ public final class Constants {
 
     public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
     public static final double ELEVATOR_LEVEL_ONE = 0.1970; // why even consider the tray? can we score with the elevator?
-    public static final double ELEVATOR_LEVEL_TWO = 0.5050; // 70 cm
-    public static final double ELEVATOR_LEVEL_THREE = 0.8600; // 118 cm
+    public static final double ELEVATOR_LEVEL_TWO = 0.4900; // 0.5050 old 70 cm
+    public static final double ELEVATOR_LEVEL_THREE = 0.8200; // 0.86 old 118 cm
     public static final double ELEVATOR_LEVEL_FOUR = 1.4000; // 189 cm
     public static final double ELEVATOR_MAX_HEIGHT = 1.4198; // TODO: Determine threshold if different from highest level
 
