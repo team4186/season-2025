@@ -60,7 +60,7 @@ public class LimeLightRunner extends SubsystemBase {
     if (mode) {
       res = 3.0;
     } else {
-      res = 2.0;
+      res = 1.0;
     }
     tableTag.getEntry("ledMode").setValue(res);
             /*
