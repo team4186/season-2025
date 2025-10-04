@@ -210,6 +210,15 @@ public class RobotContainer {
             .deadband(OperatorConstants.DEADBAND)
             .allianceRelativeControl(true);
 
+    SwerveInputStream driveRobotRelativeSlow = SwerveInputStream.of(
+                    drivebase.getSwerveDrive(),
+                    () -> attenuated( joystickDriver.getY(), 2, 0.25 ) * 1,
+                    () -> attenuated( joystickDriver.getX(), 2, 0.25 ) * 1)
+            .withControllerRotationAxis(
+                    () -> attenuated( joystickDriver.getTwist(), 3, 0.25 ) * 1)
+            .deadband(OperatorConstants.DEADBAND)
+            .robotRelative(true);
+
     // TODO: Experiment with pov to set predefined angle
 //    SwerveInputStream driveAngularVelocityWithPov = driveAngularVelocity.copy().withControllerRotationAxis( joystick::pov );
 
@@ -260,6 +269,7 @@ public class RobotContainer {
 
         Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
         Command driveFieldOrientedAngularVelocitySlow = drivebase.driveFieldOriented(driveAngularVelocitySlow);
+        Command driveRobotOrientedSlow = drivebase.driveFieldOriented(driveRobotRelativeSlow);
         // Command driveFieldOrientedAngularVelocityWithPov = drivebase.driveFieldOriented();
 
 
@@ -366,6 +376,7 @@ public class RobotContainer {
 
             // Joystick Operator strafing here for buttons 11 and 12
             joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
+            joystickDriver.button(9).whileTrue(driveRobotOrientedSlow);
             joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
             //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
 
