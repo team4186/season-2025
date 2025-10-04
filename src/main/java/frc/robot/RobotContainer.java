@@ -100,7 +100,7 @@ public class RobotContainer {
     /**
      * Commands are implemented here...
      */
-    ElevatorFailsafeCommand elevatorFailsafeCommand = new ElevatorFailsafeCommand(elevator, -1.0);
+    ElevatorFailsafeCommand elevatorFailsafeCommand = new ElevatorFailsafeCommand(elevator, -0.25);
 
     AlignToReefCommand alignCommandLeft = new AlignToReefCommand(
             false,
@@ -275,8 +275,9 @@ public class RobotContainer {
         // Set default subsystem commands here
         drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
 
-        // TODO: Uncomment and test after FF set
+        // TODO: Testing removal of elevatorDefaultCommand
         elevator.setDefaultCommand( elevatorDefaultCommand );
+
         // elevator.setDefaultCommand( Commands.runOnce( elevator::reset, elevator ).repeatedly());
 
 
