@@ -19,6 +19,7 @@ public class AlignToTargetCommand extends Command {
   private final PIDController turnPID;
   private final PIDController strafePID;
   private final PIDController distancePID;
+
   // Just zero right now.
   // If you're wondering why this is a double, it is because getFiducialID returns a double.
   private double tagID = -1;
