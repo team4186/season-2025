@@ -175,7 +175,7 @@ public final class Constants {
     public static final double ANGLE_I = 0.0;
     public static final double ANGLE_D = 0.0;
 
-    public static final double STRAFE_P = 1.6;
+    public static final double STRAFE_P = 1.8; // 1.6 old
     public static final double STRAFE_I = 0.0;
     public static final double STRAFE_D = 0.0;
 
