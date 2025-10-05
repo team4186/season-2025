@@ -201,10 +201,30 @@ public class RobotContainer {
             .deadband(OperatorConstants.DEADBAND)
             .allianceRelativeControl(true);
 
+    // Copy of above but with x, y flipped for red side alliance
+    SwerveInputStream driveAngularVelocityRedAlliance = SwerveInputStream.of(
+                    drivebase.getSwerveDrive(),
+                    () -> attenuated( joystickDriver.getY(), 2, 1.0 ) * -1,
+                    () -> attenuated( joystickDriver.getX(), 2, 1.0 ) * -1)
+            .withControllerRotationAxis(
+                    () -> attenuated( joystickDriver.getTwist(), 3, 0.75 ) * 1)
+            .deadband(OperatorConstants.DEADBAND)
+            .allianceRelativeControl(true);
+
     SwerveInputStream driveAngularVelocitySlow = SwerveInputStream.of(
                     drivebase.getSwerveDrive(),
                     () -> attenuated( joystickDriver.getY(), 2, 0.5 ) * 1,
                     () -> attenuated( joystickDriver.getX(), 2, 0.5 ) * 1)
+            .withControllerRotationAxis(
+                    () -> attenuated( joystickDriver.getTwist(), 3, 0.375 ) * 1)
+            .deadband(OperatorConstants.DEADBAND)
+            .allianceRelativeControl(true);
+
+    // Copy of above but with x, y flipped for red side alliance
+    SwerveInputStream driveAngularVelocitySlowRedAlliance = SwerveInputStream.of(
+                    drivebase.getSwerveDrive(),
+                    () -> attenuated( joystickDriver.getY(), 2, 0.5 ) * -1,
+                    () -> attenuated( joystickDriver.getX(), 2, 0.5 ) * -1)
             .withControllerRotationAxis(
                     () -> attenuated( joystickDriver.getTwist(), 3, 0.375 ) * 1)
             .deadband(OperatorConstants.DEADBAND)
@@ -270,7 +290,9 @@ public class RobotContainer {
         Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
         Command driveFieldOrientedAngularVelocitySlow = drivebase.driveFieldOriented(driveAngularVelocitySlow);
         Command driveRobotOrientedSlow = drivebase.driveFieldOriented(driveRobotRelativeSlow);
-        // Command driveFieldOrientedAngularVelocityWithPov = drivebase.driveFieldOriented();
+
+        Command driveFieldOrientedAngularVelocityRed = drivebase.driveFieldOriented(driveAngularVelocity);
+        Command driveFieldOrientedAngularVelocitySlowRed = drivebase.driveFieldOriented(driveAngularVelocitySlow);
 
 
         Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
@@ -283,7 +305,8 @@ public class RobotContainer {
 
 
         // Set default subsystem commands here
-        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
+        // drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
+        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocityRed );
 
         // TODO: Testing removal of elevatorDefaultCommand
         elevator.setDefaultCommand( elevatorDefaultCommand );
@@ -358,35 +381,33 @@ public class RobotContainer {
             // Algae - Cycle State on button press
             joystickOperator.button(3).onTrue(algaeProcessorCommand);
             joystickOperator.button(3).onTrue((Commands.runOnce(algaeProcessorCommand::button_detect)));
-
             joystickOperator.button(5).onTrue(deAlgaeCommand);
 
             // Climber
             joystickOperator.button(6).onTrue(climberCommand);
             joystickOperator.button(6).onTrue((Commands.runOnce(climberCommand::button_detect)));
 
-
             // Elevator - Go to level and maintain
             joystickOperator.button(7).whileTrue(elevatorCommandL1);
             joystickOperator.button(8).whileTrue(elevatorCommandL2);
             joystickOperator.button(9).whileTrue(elevatorCommandL3);
             joystickOperator.button(10).whileTrue(elevatorCommandL4);
-
             joystickOperator.button(11).whileTrue(elevatorCommandL0);
+            joystickOperator.button(12).whileTrue(elevatorFailsafeCommand);
 
             // Joystick Operator strafing here for buttons 11 and 12
-            joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
-            joystickDriver.button(9).whileTrue(driveRobotOrientedSlow);
-            joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
-            //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
+            // joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
+            joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlowRed);
 
-            // AlignToTarget testing
-            joystickDriver.button(6).whileTrue((alignCommandRight));
             joystickDriver.button(5).whileTrue((alignCommandLeft));
+            joystickDriver.button(6).whileTrue((alignCommandRight));
+            joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
+
+            joystickDriver.button(9).whileTrue(driveRobotOrientedSlow);
+            //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
 
             joystickDriver.povUp().whileTrue(drivebase.driveToDistanceCommand(0.1,0.5));
 
-            joystickOperator.button(12).whileTrue(elevatorFailsafeCommand);
             //joystick.button(4).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
             // joystick.button(0).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
@@ -464,6 +485,19 @@ public class RobotContainer {
         //    joystick.button(8).onTrue(climberCommand);
         //    joystick.button(8).onTrue((Commands.runOnce(climberCommand::button_detect)));
 
+    }
+
+
+    public void updateDriverAllianceControls(){
+        var alliance = DriverStation.getAlliance();
+
+        if( alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red ) {
+            Command driveFieldOrientedRedAlliance = drivebase.driveFieldOriented(driveAngularVelocityRedAlliance);
+            Command driveFieldOrientedSlowRedAlliance = drivebase.driveFieldOriented(driveAngularVelocitySlowRedAlliance);
+
+            drivebase.setDefaultCommand(driveFieldOrientedRedAlliance);
+            joystickDriver.button(11).whileTrue(driveFieldOrientedSlowRedAlliance);
+        }
     }
 
 

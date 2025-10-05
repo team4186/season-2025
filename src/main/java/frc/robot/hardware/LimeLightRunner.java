@@ -58,7 +58,7 @@ public class LimeLightRunner extends SubsystemBase {
   public void setLight(boolean mode) {
     final double res;
     if (mode) {
-      res = 3.0;
+      res = 1.0;
     } else {
       res = 1.0;
     }
