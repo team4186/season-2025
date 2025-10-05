@@ -291,9 +291,8 @@ public class RobotContainer {
         Command driveFieldOrientedAngularVelocitySlow = drivebase.driveFieldOriented(driveAngularVelocitySlow);
         Command driveRobotOrientedSlow = drivebase.driveFieldOriented(driveRobotRelativeSlow);
 
-        Command driveFieldOrientedAngularVelocityRed = drivebase.driveFieldOriented(driveAngularVelocity);
-        Command driveFieldOrientedAngularVelocitySlowRed = drivebase.driveFieldOriented(driveAngularVelocitySlow);
-
+        // Command driveFieldOrientedAngularVelocityRed = drivebase.driveFieldOriented(driveAngularVelocity);
+        // Command driveFieldOrientedAngularVelocitySlowRed = drivebase.driveFieldOriented(driveAngularVelocitySlow);
 
         Command driveFieldOrientedDirectAngleKeyboard = drivebase.driveFieldOriented(driveDirectAngleKeyboard);
 
@@ -305,8 +304,7 @@ public class RobotContainer {
 
 
         // Set default subsystem commands here
-        // drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
-        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocityRed );
+        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
 
         // TODO: Testing removal of elevatorDefaultCommand
         elevator.setDefaultCommand( elevatorDefaultCommand );
@@ -321,11 +319,6 @@ public class RobotContainer {
             joystickDriver.button(4).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 6, new Rotation2d()))));
             joystickDriver.button(5).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(6, 3, new Rotation2d()))));
             joystickDriver.button(6).onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(6, 6, new Rotation2d()))));
-
-            // setting angle with pov placeholder
-            for (int angle = 0; angle < 360; angle += 45 ){
-                // joystick.pov(angle).whileTrue()
-            }
         }
 
         if ( DriverStation.isTest() ) {
@@ -395,15 +388,14 @@ public class RobotContainer {
             joystickOperator.button(11).whileTrue(elevatorCommandL0);
             joystickOperator.button(12).whileTrue(elevatorFailsafeCommand);
 
-            // Joystick Operator strafing here for buttons 11 and 12
-            // joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
-            joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlowRed);
 
             joystickDriver.button(5).whileTrue((alignCommandLeft));
             joystickDriver.button(6).whileTrue((alignCommandRight));
             joystickDriver.button(7).onTrue(Commands.runOnce(drivebase::zeroGyroWithAlliance));
 
             joystickDriver.button(9).whileTrue(driveRobotOrientedSlow);
+            // Joystick Operator strafing here for buttons 11 and 12
+            joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
             //joystickDriver.button(8).onTrue(Commands.runOnce(drivebase::zeroGyro));
 
             joystickDriver.povUp().whileTrue(drivebase.driveToDistanceCommand(0.1,0.5));
@@ -497,6 +489,12 @@ public class RobotContainer {
 
             drivebase.setDefaultCommand(driveFieldOrientedRedAlliance);
             joystickDriver.button(11).whileTrue(driveFieldOrientedSlowRedAlliance);
+        } else {
+            Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+            Command driveFieldOrientedAngularVelocitySlow = drivebase.driveFieldOriented(driveAngularVelocitySlow);
+
+            drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+            joystickDriver.button(11).whileTrue(driveFieldOrientedAngularVelocitySlow);
         }
     }
 
