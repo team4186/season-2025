@@ -21,6 +21,7 @@ public class AlignToReefCommand extends Command {
   private final PIDController strafePID;
   private final PIDController distancePID;
   private double tagID = -1;
+  private int currentIteration;
 
 
   public AlignToReefCommand(boolean side, LimeLightRunner visionSubsystem, SwerveSubsystem swerveSubsystem, PIDController turnPID, PIDController strafePID, PIDController distancePID) {
@@ -31,6 +32,7 @@ public class AlignToReefCommand extends Command {
     this.turnPID = turnPID;
     this.strafePID = strafePID;
     this.distancePID = distancePID;
+    this.currentIteration = 0;
     addRequirements(swerveSubsystem);
   }
 
@@ -49,6 +51,7 @@ public class AlignToReefCommand extends Command {
   public void execute() {
     if (visionSubsystem.getTV(Constants.VisionConstants.LIME_LIGHT_NAME) && (LimelightHelpers.getFiducialID(Constants.VisionConstants.LIME_LIGHT_NAME) == tagID)) {
       isFinished = false;
+      currentIteration = 0;
       Translation2d driveVec = new Translation2d(
           -distancePID.calculate(visionSubsystem.getHelperZOffset(), Constants.VisionConstants.BUFFER_DIST),
           strafePID.calculate(visionSubsystem.getHelperXOffset(), side ? Constants.VisionConstants.RIGHT_SCORE_OFFSET : Constants.VisionConstants.LEFT_SCORE_OFFSET));
@@ -59,7 +62,10 @@ public class AlignToReefCommand extends Command {
               0.0),
           false);
     } else {
-      isFinished = true;
+      currentIteration++;
+      if (currentIteration > 10) {
+        isFinished=true;
+      }
     }
 
   }
