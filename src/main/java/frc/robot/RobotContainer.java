@@ -326,8 +326,8 @@ public class RobotContainer {
             drivebase.setDefaultCommand(Commands.none());
             elevator.setDefaultCommand(Commands.none());
 
-            joystickOperator.trigger().onTrue(endEffectorEjectCommandSlow);
-            joystickDriver.trigger().onTrue(endEffectorEjectCommand);
+            joystickDriver.trigger().onTrue(endEffectorEjectCommandSlow);
+            joystickOperator.trigger().onTrue(endEffectorEjectCommand);
             //      joystick.button(2).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly() );
             //      joystick.button(3).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
 
@@ -363,8 +363,8 @@ public class RobotContainer {
 //            joystick.button(5).whileTrue(drivebase.centerModulesCommand());
 
             // EndEffector
-            joystickOperator.trigger().onTrue(endEffectorEjectCommandSlow);
-            joystickDriver.trigger().onTrue(endEffectorEjectCommand);
+            joystickOperator.trigger().onTrue(endEffectorEjectCommand);
+            joystickDriver.trigger().onTrue(endEffectorEjectCommandSlow);
 
             joystickDriver.button(2).onTrue(endEffectorLoadCommand);
             joystickOperator.button(2).onTrue(endEffectorLoadCommand);
