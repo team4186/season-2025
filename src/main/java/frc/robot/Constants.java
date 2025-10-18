@@ -111,9 +111,9 @@ public final class Constants {
 
     public static final double ELEVATOR_MIN_HEIGHT = 0.0; //TODO: Update heights
     public static final double ELEVATOR_LEVEL_ONE = 0.1970; // why even consider the tray? can we score with the elevator?
-    public static final double ELEVATOR_LEVEL_TWO = 0.3690; // 70 cm
-    public static final double ELEVATOR_LEVEL_THREE = 0.8; // 118 cm
-    public static final double ELEVATOR_LEVEL_FOUR = 1.4150; // 189 cm
+    public static final double ELEVATOR_LEVEL_TWO = 0.4900; // 0.5050 old 70 cm
+    public static final double ELEVATOR_LEVEL_THREE = 0.8200; // 0.86 old 118 cm
+    public static final double ELEVATOR_LEVEL_FOUR = 1.4000; // 189 cm
     public static final double ELEVATOR_MAX_HEIGHT = 1.4198; // TODO: Determine threshold if different from highest level
 
     public static final double ELEVATOR_DEFAULT_FREE_MOVE_SPEED = 0.4;
@@ -134,14 +134,14 @@ public final class Constants {
      *   P = 8.0
      *   I and D are 0
      */
-    public static final double ELEVATOR_P = 14.5;
-    public static final double ELEVATOR_I = 0.0;
-    public static final double ELEVATOR_D = 7.5;
+    public static final double ELEVATOR_P = 7.5;
+    public static final double ELEVATOR_I = 0.5;
+    public static final double ELEVATOR_D = 0.0;
 
     // Adjust these to reach optimal
-    public static final double ELEVATOR_KS = 0.05; // Static gain in volts
-    public static final double ELEVATOR_KG = 0.195; // Gravity gain in volts
-    public static final double ELEVATOR_KV = 2.0; // Velocity gain in V/(m/s)
+    public static final double ELEVATOR_KS = 0.0; // Static gain in volts
+    public static final double ELEVATOR_KG = 0.0; // Gravity gain in volts
+    public static final double ELEVATOR_KV = 0.0; // Velocity gain in V/(m/s)
     public static final double ELEVATOR_KA = 0.0; // Acceleration gain in V/(m/s^2)
 
     public static final double ELEVATOR_DEFAULT_TOLERANCE = 0.0075; // Meters (+/-)Tolerance
@@ -151,9 +151,10 @@ public final class Constants {
   public static final class EndEffectorConstants {
     public static final int END_EFFECTOR_BEAM_BREAK = 3;
 
-    public static final double END_EFFECTOR_EJECT_SPEED = 0.50;
-    public static final double END_EFFECTOR_EJECT_SPEED_L4 = 0.55;
-    public static final double END_EFFECTOR_INTAKE_SPEED = 0.35;
+    public static final double END_EFFECTOR_EJECT_SPEED_ADJ = 0.450;
+    public static final double END_EFFECTOR_EJECT_SPEED = 0.475;
+    // public static final double END_EFFECTOR_EJECT_SPEED_L4 = 0.55;
+    public static final double END_EFFECTOR_INTAKE_SPEED = 0.25;
   }
 
 
@@ -168,29 +169,29 @@ public final class Constants {
 
     // Offset from april tag center for scoring on the right.
     // Change number later.
-    public static final double RIGHT_SCORE_OFFSET = 1.0;
-
+    public static final double LEFT_SCORE_OFFSET =  0.11;
+    public static final double RIGHT_SCORE_OFFSET =  0.47 ;
     // Get to tuning
-    public static final double ANGLE_P = 0.040;
+    public static final double ANGLE_P = 0.03;
     public static final double ANGLE_I = 0.0;
     public static final double ANGLE_D = 0.0;
 
-    public static final double STRAFE_P = 0.05;
+    public static final double STRAFE_P = 1.8; // 1.6 old
     public static final double STRAFE_I = 0.0;
     public static final double STRAFE_D = 0.0;
 
-    public static final double DISTANCE_P = 0.05;
+    public static final double DISTANCE_P = 0.25;
     public static final double DISTANCE_I = 0.0;
     public static final double DISTANCE_D = 0.0;
 
     // More constants to tune *crying*
     // TODO: set tolerance as well these are some default values to test (maybe it works, maybe it doesn't)
-    public static final double TURN_TOLERANCE = 1.0;
+    public static final double TURN_TOLERANCE  = 1.0;
     public static final double DISTANCE_TOLERANCE = 0.05;
     public static final double STRAFE_TOLERANCE = 0.05;
 
 
-    // Change this (it is in foot)
-    public static final double BUFFER_DIST = 0.0;
+    // Change this (it is in half foot)
+    public static final double BUFFER_DIST = 2.0;
   }
 }

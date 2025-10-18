@@ -39,6 +39,7 @@ public class LimeLightRunner extends SubsystemBase {
     this.botPoseTargetSpace = tableTag.getEntry("botpose_targetspace").getDoubleArray(emptyArray);
     this.botPose = tableTag.getEntry("botpose").getDoubleArray(emptyArray);
     this.TagID = (int) tableTag.getEntry("tid").getInteger(-1);
+    this.LLHelpersBotPoseTargetSpace = LimelightHelpers.getBotPose_TargetSpace("limelight");
 
     SmartDashboard.putBoolean("Limelight_HasTargetTag", hasTargetTag());
     SmartDashboard.putNumber("Limelight_Horizontal_Offset", getXOffset());
@@ -57,7 +58,7 @@ public class LimeLightRunner extends SubsystemBase {
   public void setLight(boolean mode) {
     final double res;
     if (mode) {
-      res = 3.0;
+      res = 1.0;
     } else {
       res = 1.0;
     }

@@ -128,6 +128,8 @@ public class Robot extends TimedRobot {
     } else {
       CommandScheduler.getInstance().cancelAll();
     }
+    //TODO: check if this works 10/4/25
+    robotContainer.updateDriverAllianceControls();
   }
 
 
