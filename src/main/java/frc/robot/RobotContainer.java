@@ -4,7 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -16,6 +18,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -38,6 +41,7 @@ public class RobotContainer {
 
     final CommandJoystick joystickDriver = new CommandJoystick(0);
     final CommandJoystick joystickOperator = new CommandJoystick(1);
+    final CommandStadiaController stadiaController = new CommandStadiaController(0);
     private final Components motorComponents = Components.getInstance();
     private final LimeLightRunner visionSubsystem = new LimeLightRunner(false);
 
@@ -185,6 +189,23 @@ public class RobotContainer {
             .deadband(OperatorConstants.DEADBAND)
             .allianceRelativeControl(true);
 
+    SwerveInputStream driveStadia = SwerveInputStream.of(
+                    drivebase.getSwerveDrive(),
+                    () -> attenuated( stadiaController.getLeftY(), 2, 1.0 ) * -1,
+                    () -> attenuated( stadiaController.getLeftX(), 2, 1.0 ) * -1)
+            .withControllerRotationAxis(
+                    // () -> stadiaController.getRawAxis(2))
+                     stadiaController::getRightX)
+                    // () -> attenuated( joystickDriver.getTwist(), 3, 0.75 ) * 1)
+            .deadband(OperatorConstants.DEADBAND)
+            .scaleTranslation(0.8)
+            .allianceRelativeControl(true);
+
+    SwerveInputStream driveStadiaHeadingAxis = driveStadia.copy().withControllerHeadingAxis(
+                    stadiaController::getRightX,
+                    stadiaController::getRightY)
+            .headingWhile(true);
+
     // TODO: Experiment with pov to set predefined angle
 //    SwerveInputStream driveAngularVelocityWithPov = driveAngularVelocity.copy().withControllerRotationAxis( joystick::pov );
 
@@ -235,6 +256,8 @@ public class RobotContainer {
 
         Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
         Command driveFieldOrientedAngularVelocitySlow = drivebase.driveFieldOriented(driveAngularVelocitySlow);
+        Command driveFieldOrientedStadia = drivebase.driveFieldOriented(driveStadia);
+        Command driveFieldOrientedStadiaHeadingAxis = drivebase.driveFieldOriented(driveStadiaHeadingAxis);
         // Command driveFieldOrientedAngularVelocityWithPov = drivebase.driveFieldOriented();
 
 
@@ -248,7 +271,7 @@ public class RobotContainer {
 
 
         // Set default subsystem commands here
-        drivebase.setDefaultCommand( driveFieldOrientedAngularVelocity );
+        drivebase.setDefaultCommand( driveFieldOrientedStadia );
 
         // TODO: Uncomment and test after FF set
         elevator.setDefaultCommand( elevatorDefaultCommand );
@@ -441,11 +464,21 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An example command will be run in autonomous
+        try{
+            // Load the path you want to follow using its name in the GUI
+            PathPlannerPath path = PathPlannerPath.fromPathFile("pathplanner_test");
+
+            // Create a path following command using AutoBuilder. This will also trigger event markers.
+            return AutoBuilder.followPath(path);
+        } catch (Exception e) {
+            DriverStation.reportError("Big oops: " + e.getMessage(), e.getStackTrace());
+            return Commands.none();
+        }
 
         // return drivebase.getAutonomousCommand("New Auto");
         // TODO: Update with AutoCommand when implemented
         // return drivebase.driveToDistanceAutoCommand(Constants.AutonConstants.DRIVE_DISTANCE, Constants.AutonConstants.DRIVE_VELOCITY);
-        return drivebase.driveToDistanceCommand(10,0.5);
+        //return drivebase.driveToDistanceCommand(10,0.5);
     }
 
 
